@@ -40,9 +40,9 @@ public class Main {
 		
 		String test = "\"this is what\",\"I wanna test\",\"but, not these\",122";
 		String[] tokens = test.split("\",");
-		for(int i = 0; i < tokens.length; i++){
+		/*for(int i = 0; i < tokens.length; i++){
 			//System.out.println(tokens[i].replaceAll("\"", ""));
-		}
+		}*/
 		
 
 		QueryApi.fetchAnswers("http://dbpedia.org/resource/Albert_Einstein");
