@@ -6,6 +6,8 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import com.mapper.indexer.DataIndexerImpl;
 import com.mapper.message.Messages;
 import com.mapper.query.QueryApi;
+import com.mapper.query.SPARQLEndPointQueryAPI;
+import com.mapper.score.ScoreEngineImpl;
 
 /**
  * This class is the client for generating mappings from a given set of RDF
@@ -15,6 +17,14 @@ import com.mapper.query.QueryApi;
  */
 
 public class Main {
+
+	private static final String QUERY = "select distinct ?b ?label where {"
+			+ " { <http://dbpedia.org/resource/Mel_Gibson> ?b ?c. "
+			+ "?b <http://www.w3.org/2000/01/rdf-schema#label> ?label}"
+			+ "UNION{" + "?d ?b <http://dbpedia.org/resource/Mel_Gibson>. "
+			+ "?b <http://www.w3.org/2000/01/rdf-schema#label> ?label}}";
+
+	private static String extractedFactDataSet = Messages.getString("DATA_FILE_PATH");
 
 	/**
 	 * @param args
@@ -40,15 +50,22 @@ public class Main {
 		DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
 		dataIndexer.readData();
 
+		SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
+
 		QueryApi.fetchAnswers("http://dbpedia.org/resource/Mel_Gibson");
 
-		
-
-		
 		final long end = System.currentTimeMillis();
 
 		logger.info("Execution time was " + (end - start) + " ms.");
 
+		feedTuplesTofindMatches();
+
+	}
+
+	private static void feedTuplesTofindMatches() {
+
+		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
+		scoreEngine.readExtractedFacts(extractedFactDataSet);
 	}
 
 }

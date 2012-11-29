@@ -30,20 +30,20 @@ public class DataIndexerImpl implements IDataIndexer {
 	 * Collection to store the the DBPedia entities and literals mapped to their
 	 * hash values
 	 */
-	public static Map<Long, String> MAP_DBPEDIA_LITERALS = new FastHashMap();// new
-																				// FastHashMap();
-
+	public static Map<Long, String> MAP_DBPEDIA_LITERALS = new FastHashMap();
+	
+	//public static Map<Long, String> MAP_DBPEDIA_PROPERTY_LABELS = new FastHashMap();
+	
 	/**
 	 * List of S -> PO, P-> SO, O-> SP
 	 */
-	private static List<Long> LIST_DBPEDIA_ENTITIES = null;
+	public static List<Long> LIST_DBPEDIA_ENTITIES = null;
 
-	public static Map<Long, List<Long>> MAP_DBPEDIA_SUB_LITERALS = new FastHashMap();// new
-																						// FastHashMap();
-	public static Map<Long, List<Long>> MAP_DBPEDIA_PRED_LITERALS = new FastHashMap();// new
-																						// FastHashMap();
-	public static Map<Long, List<Long>> MAP_DBPEDIA_OBJ_LITERALS = new FastHashMap();// new
-																						// FastHashMap();
+	public static Map<Long, List<Long>> MAP_DBPEDIA_SUB_LITERALS = new FastHashMap();
+	public static Map<Long, List<Long>> MAP_DBPEDIA_PRED_LITERALS = new FastHashMap();
+	public static Map<Long, List<Long>> MAP_DBPEDIA_OBJ_LITERALS = new FastHashMap();
+	
+	public static Map<Long, List<Long>> MAP_PROPERTY_LABELS = new FastHashMap();
 
 	private static final String DELIMIT = "\",";
 

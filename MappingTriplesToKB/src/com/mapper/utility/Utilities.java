@@ -46,24 +46,17 @@ public class Utilities {
 	public static void printList(List<Long> resultList) {
 		try {
 
-			String propertyURI = null;
 			String propertyLabel = null;
 
 			for (int listCounter = 0; listCounter < resultList.size(); listCounter++) {
 				// print only the odd values
 				if (listCounter % 2 != 0) {
-					// logger.info(resultList.get(listCounter));
 					// this gives a set of properties for the given query
-					// need to make it generalized
 					UNIQUE_PROPERTIES.add(resultList.get(listCounter));
 				}
 			}
 			for (Long key : UNIQUE_PROPERTIES) {
-				propertyURI = DataIndexerImpl.MAP_DBPEDIA_LITERALS.get(key);
-
-				propertyLabel = extractPropertyFromURI(propertyURI);
-
-				logger.info(propertyURI + " => " + propertyLabel);
+				extractPropertyFromURI(key);
 			}
 			logger.info("Unique properties  = " + UNIQUE_PROPERTIES.size()
 					+ "\n");
@@ -76,15 +69,33 @@ public class Utilities {
 	/**
 	 * 
 	 * @param propertyURI
+	 * @param key
 	 * @return
 	 */
-	private static String extractPropertyFromURI(String propertyURI) {
+	private static void extractPropertyFromURI(final Long key) {
 
-		int lastIndex_slash = propertyURI.lastIndexOf("/");
-		int lastIndex_hash = propertyURI.lastIndexOf("#");
-		return propertyURI.substring(
-				((lastIndex_hash < lastIndex_slash) ? lastIndex_slash
-						: lastIndex_hash) + 1, propertyURI.length());
+		String propertyURI = DataIndexerImpl.MAP_DBPEDIA_LITERALS.get(key);
+
+		//logger.info(propertyURI + " => ");
+		// if this property exists in the map
+		if (DataIndexerImpl.MAP_PROPERTY_LABELS.containsKey(key)) {
+			// try retrieving the possible label names
+			List<Long> listPropertyLabels = DataIndexerImpl.MAP_PROPERTY_LABELS
+					.get(key);
+
+			// iterate the list of labels to display
+			for (Long v : listPropertyLabels) {
+				String value = "";
+				if (DataIndexerImpl.MAP_DBPEDIA_LITERALS.containsKey(v)) {
+					value = DataIndexerImpl.MAP_DBPEDIA_LITERALS.get(v);
+				}
+				System.out.print(value + ",  ");
+			}
+			System.out.println("");
+		} else { // just output the property
+			System.out.println(propertyURI);
+		}
+
 	}
 
 }
