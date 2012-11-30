@@ -24,7 +24,11 @@ public class Main {
 			+ "UNION{" + "?d ?b <http://dbpedia.org/resource/Mel_Gibson>. "
 			+ "?b <http://www.w3.org/2000/01/rdf-schema#label> ?label}}";
 
-	private static String extractedFactDataSet = Messages.getString("DATA_FILE_PATH");
+	private static String extractedFactDataSet = Messages
+			.getString("SOURCE_FACTS_FILE_PATH");
+
+	private static String outputFilePath = Messages
+			.getString("IE_OUTPUT_CSV_FILE_PATH");
 
 	/**
 	 * @param args
@@ -48,24 +52,24 @@ public class Main {
 		final long start = System.currentTimeMillis();
 
 		DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
-		dataIndexer.readData();
+		// dataIndexer.readData();
 
-		SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
+		// SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
 
-		QueryApi.fetchAnswers("http://dbpedia.org/resource/Mel_Gibson");
+		// QueryApi.fetchAnswers("http://dbpedia.org/resource/Mel_Gibson");
+
+		feedTuplesTofindMatches();
 
 		final long end = System.currentTimeMillis();
 
 		logger.info("Execution time was " + (end - start) + " ms.");
-
-		feedTuplesTofindMatches();
 
 	}
 
 	private static void feedTuplesTofindMatches() {
 
 		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
-		scoreEngine.readExtractedFacts(extractedFactDataSet);
+		scoreEngine.readExtractedFacts(extractedFactDataSet, outputFilePath);
 	}
 
 }
