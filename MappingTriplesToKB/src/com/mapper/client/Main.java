@@ -8,6 +8,7 @@ import com.mapper.message.Messages;
 import com.mapper.query.QueryApi;
 import com.mapper.query.SPARQLEndPointQueryAPI;
 import com.mapper.score.ScoreEngineImpl;
+import java.io.*;
 
 /**
  * This class is the client for generating mappings from a given set of RDF
@@ -29,6 +30,9 @@ public class Main {
 
 	private static String outputFilePath = Messages
 			.getString("IE_OUTPUT_CSV_FILE_PATH");
+
+	private static String uniquePropFilePath = Messages
+			.getString("UNIQUE_PROP_DATA_FILE_PATH");
 
 	/**
 	 * @param args
@@ -52,13 +56,13 @@ public class Main {
 		final long start = System.currentTimeMillis();
 
 		DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
-		// dataIndexer.readData();
+		dataIndexer.readData();
 
-		// SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
+		SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
 
-		// QueryApi.fetchAnswers("http://dbpedia.org/resource/Mel_Gibson");
+		findUniqueProperties();
 
-		feedTuplesTofindMatches();
+		// feedTuplesTofindMatches();
 
 		final long end = System.currentTimeMillis();
 
@@ -70,6 +74,20 @@ public class Main {
 
 		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
 		scoreEngine.readExtractedFacts(extractedFactDataSet, outputFilePath);
+	}
+
+	private static void findUniqueProperties() {
+		try {
+			FileWriter fstream = new FileWriter(uniquePropFilePath);
+			BufferedWriter out = new BufferedWriter(fstream);
+
+			QueryApi.fetchAnswers("http://dbpedia.org/resource/Mel_Gibson", out);
+
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

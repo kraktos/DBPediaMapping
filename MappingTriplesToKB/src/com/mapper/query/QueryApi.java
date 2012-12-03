@@ -3,6 +3,7 @@
  */
 package com.mapper.query;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +25,7 @@ public class QueryApi {
 
 	static Logger logger = Logger.getLogger(QueryApi.class.getName());
 
-	public static void fetchAnswers(final String queryString) {
+	public static void fetchAnswers(final String queryString, BufferedWriter out) {
 
 		// figure out the hashed key for the given query string
 		long hashedQueryKey = Hasher.hash64(queryString);
@@ -40,7 +41,7 @@ public class QueryApi {
 		List<Long> newList = new ArrayList<Long>(resultList_AsSubject);
 		newList.addAll(resultList_AsObject);
 
-		Utilities.printList(newList);
+		Utilities.printList(newList, out);
 
 	}
 }

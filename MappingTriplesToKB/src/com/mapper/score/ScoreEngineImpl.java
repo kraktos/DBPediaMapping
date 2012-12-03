@@ -63,7 +63,6 @@ public class ScoreEngineImpl implements IScoreEngine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

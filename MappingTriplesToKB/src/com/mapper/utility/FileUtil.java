@@ -1,5 +1,6 @@
 package com.mapper.utility;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 
 import com.csvreader.CsvWriter;
@@ -25,13 +26,26 @@ public class FileUtil {
 		try {
 
 			// write out the records
-			csvOutput.write(strTokens[0]);
-			csvOutput.write(strTokens[1]);
-			csvOutput.write(strTokens[2]);
+			csvOutput.write(strTokens[0]);// subject
+			csvOutput.write(strTokens[1]);// predicate
+			csvOutput.write(strTokens[2]);// object
+			csvOutput.write(strTokens[4]);// truth value: Required later for
+											// aposteriori probability
+											// calculation
 			csvOutput.endRecord();
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void writeToFlatFile(BufferedWriter out, String text) {
+		try {
+			// Create file
+			out.write(text);
+
+		} catch (Exception e) {// Catch exception if any
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
 }
