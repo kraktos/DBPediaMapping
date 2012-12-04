@@ -80,10 +80,10 @@ public class Utilities {
 
 		String propertyURI = DataIndexerImpl.MAP_DBPEDIA_LITERALS.get(key);
 
-		FileUtil.writeToFlatFile(out, propertyURI + " => ");
+		FileUtil.writeToFlatFile(out, propertyURI + "\n");
 
 		// if this property exists in the map
-		if (DataIndexerImpl.MAP_PROPERTY_LABELS.containsKey(key)) {
+		/*if (DataIndexerImpl.MAP_PROPERTY_LABELS.containsKey(key)) {
 
 			// try retrieving the possible label names
 			List<Long> listPropertyLabels = DataIndexerImpl.MAP_PROPERTY_LABELS
@@ -101,8 +101,13 @@ public class Utilities {
 
 		} else { // just output the property
 			FileUtil.writeToFlatFile(out, propertyURI + "\n");
-		}
+		}*/
 
+	}
+
+	public static String extractPredicatesFromTuples(final String word) {
+		String[] entities = word.split(",");
+		return entities[1];
 	}
 
 }

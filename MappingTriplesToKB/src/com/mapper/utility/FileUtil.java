@@ -1,9 +1,16 @@
 package com.mapper.utility;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
+
+import org.apache.log4j.Logger;
 
 import com.csvreader.CsvWriter;
+import com.mapper.client.Main;
 
 /**
  * Class to write a csv file
@@ -12,6 +19,8 @@ import com.csvreader.CsvWriter;
  * 
  */
 public class FileUtil {
+
+	static Logger logger = Logger.getLogger(FileUtil.class.getName());
 
 	/**
 	 * 
@@ -46,6 +55,27 @@ public class FileUtil {
 
 		} catch (Exception e) {// Catch exception if any
 			System.err.println("Error: " + e.getMessage());
+		}
+	}
+
+	public static void extractMatchingTuples(String userQuery, File file,
+			BufferedWriter outProperty) {
+		Scanner input;
+
+		try {
+
+			input = new Scanner(file);
+			while (input.hasNext()) {
+				String word = input.next();
+				if (word.contains(userQuery)) {
+					// Take these subset of data and match them against DBPedia
+					// store them somehow and match the predicates
+					writeToFlatFile(outProperty,
+							Utilities.extractPredicatesFromTuples(word) + "\n");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

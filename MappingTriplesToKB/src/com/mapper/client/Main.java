@@ -7,7 +7,10 @@ import com.mapper.indexer.DataIndexerImpl;
 import com.mapper.message.Messages;
 import com.mapper.query.QueryApi;
 import com.mapper.query.SPARQLEndPointQueryAPI;
+import com.mapper.score.FastJoinWrapper;
 import com.mapper.score.ScoreEngineImpl;
+import com.mapper.utility.FileUtil;
+
 import java.io.*;
 
 /**
@@ -31,13 +34,18 @@ public class Main {
 	private static String outputFilePath = Messages
 			.getString("IE_OUTPUT_CSV_FILE_PATH");
 
-	private static String uniquePropFilePath = Messages
+	private static String propTargetFilePath = Messages
 			.getString("UNIQUE_PROP_DATA_FILE_PATH");
+
+	private static String propSourceFilePath = Messages
+			.getString("IE_OUTPUT_PROP_FILE_PATH");
 
 	/**
 	 * @param args
+	 * @throws IOException
 	 */
-	public static void main(String[] args) throws OWLOntologyCreationException {
+	public static void main(String[] args) throws OWLOntologyCreationException,
+			IOException {
 
 		Logger logger = Logger.getLogger(Main.class.getName());
 
@@ -56,13 +64,22 @@ public class Main {
 		final long start = System.currentTimeMillis();
 
 		DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
-		dataIndexer.readData();
+		//dataIndexer.readData();
 
-		SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
+		//SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
 
-		findUniqueProperties();
+		//findUniqueProperties();
 
-		// feedTuplesTofindMatches();
+		//createCSVFilefromIEDataSet();
+
+		// once we have both the DB Pedia data and CSV form of IE extracted
+		// data,
+		// we can figure out which properties from the IE output actually
+		// matches into the properties of DBPedia data
+		//createPropertySetFile();
+
+		// calculate scores
+		computeMatch(propSourceFilePath, propTargetFilePath);
 
 		final long end = System.currentTimeMillis();
 
@@ -70,15 +87,56 @@ public class Main {
 
 	}
 
-	private static void feedTuplesTofindMatches() {
+	/**
+	 * 
+	 * @param propSourceFilePath
+	 *            The IE output properties list
+	 * @param propTargetFilePath
+	 *            The DBPedia properties
+	 */
+	private static void computeMatch(final String propSourceFilePath,
+			String propTargetFilePath) {
+
+		// TODO: different similarity matches goes here
+		
+		FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
+
+	}
+
+	private static void createPropertySetFile() throws IOException {
+
+		// Take the user query and extract those tuples from the CSV file
+		// TODO: think of doing it in without query api
+		String userQuery = "mel_gibson";
+		final File file = new File(outputFilePath);
+
+		FileWriter fstream = new FileWriter(propSourceFilePath);
+		BufferedWriter outProperty = new BufferedWriter(fstream);
+
+		FileUtil.extractMatchingTuples(userQuery, file, outProperty);
+
+		outProperty.close();
+
+	}
+
+	/**
+	 * Transform a set of extracted facts output from any IE engine like NELL,
+	 * and convert it to a CSV file with associated truth values of each such
+	 * fact.
+	 */
+	private static void createCSVFilefromIEDataSet() {
 
 		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
 		scoreEngine.readExtractedFacts(extractedFactDataSet, outputFilePath);
 	}
 
+	/**
+	 * This finds the set of unique properties for a given literal. The literal
+	 * may be occurring as a subject or object.
+	 */
 	private static void findUniqueProperties() {
 		try {
-			FileWriter fstream = new FileWriter(uniquePropFilePath);
+			FileWriter fstream = new FileWriter(propTargetFilePath);
 			BufferedWriter out = new BufferedWriter(fstream);
 
 			QueryApi.fetchAnswers("http://dbpedia.org/resource/Mel_Gibson", out);
