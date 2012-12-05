@@ -9,9 +9,14 @@ import com.mapper.query.QueryApi;
 import com.mapper.query.SPARQLEndPointQueryAPI;
 import com.mapper.score.FastJoinWrapper;
 import com.mapper.score.ScoreEngineImpl;
+import com.mapper.score.Similarity;
 import com.mapper.utility.FileUtil;
 
 import java.io.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * This class is the client for generating mappings from a given set of RDF
@@ -21,6 +26,8 @@ import java.io.*;
  */
 
 public class Main {
+
+	static Logger logger = Logger.getLogger(Main.class.getName());
 
 	private static final String QUERY = "select distinct ?b ?label where {"
 			+ " { <http://dbpedia.org/resource/Mel_Gibson> ?b ?c. "
@@ -40,14 +47,15 @@ public class Main {
 	private static String propSourceFilePath = Messages
 			.getString("IE_OUTPUT_PROP_FILE_PATH");
 
+	// The top k matches of similarity
+	private static int TOP_K = 5;
+
 	/**
 	 * @param args
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			IOException {
-
-		Logger logger = Logger.getLogger(Main.class.getName());
 
 		final String owlPath = (args.length > 0) ? args[0] : Messages
 				.getString("OWL_FILE_PATH");
@@ -64,24 +72,24 @@ public class Main {
 		final long start = System.currentTimeMillis();
 
 		DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
-		//dataIndexer.readData();
+		// dataIndexer.readData();
 
-		//SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
+		// SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
 
-		//findUniqueProperties();
+		// findUniqueProperties();
 
-		//createCSVFilefromIEDataSet();
+		// createCSVFilefromIEDataSet();
 
 		// once we have both the DB Pedia data and CSV form of IE extracted
 		// data,
 		// we can figure out which properties from the IE output actually
 		// matches into the properties of DBPedia data
-		//createPropertySetFile();
+		// createPropertySetFile();
+
+		final long end = System.currentTimeMillis();
 
 		// calculate scores
 		computeMatch(propSourceFilePath, propTargetFilePath);
-
-		final long end = System.currentTimeMillis();
 
 		logger.info("Execution time was " + (end - start) + " ms.");
 
@@ -93,14 +101,23 @@ public class Main {
 	 *            The IE output properties list
 	 * @param propTargetFilePath
 	 *            The DBPedia properties
+	 * @param tOP_K2
+	 * @throws IOException
 	 */
 	private static void computeMatch(final String propSourceFilePath,
-			String propTargetFilePath) {
+			String propTargetFilePath) throws IOException {
 
 		// TODO: different similarity matches goes here
-		
-		FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
 
+		// FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
+
+		// Measure Type II
+		Similarity.computeLevenstein(propSourceFilePath, propTargetFilePath,
+				TOP_K);
+
+		// Measure Levenstein Edit
+		// logger.info("Edit Distance = " +
+		// Similarity.computeLevensteinEditDistance("hello", ""));
 	}
 
 	private static void createPropertySetFile() throws IOException {
