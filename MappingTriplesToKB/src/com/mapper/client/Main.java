@@ -27,6 +27,7 @@ import java.util.TreeMap;
 
 public class Main {
 
+	// logger
 	static Logger logger = Logger.getLogger(Main.class.getName());
 
 	private static final String QUERY = "select distinct ?b ?label where {"
@@ -46,9 +47,6 @@ public class Main {
 
 	private static String propSourceFilePath = Messages
 			.getString("IE_OUTPUT_PROP_FILE_PATH");
-
-	// The top k matches of similarity
-	private static int TOP_K = 5;
 
 	/**
 	 * @param args
@@ -89,7 +87,7 @@ public class Main {
 		final long end = System.currentTimeMillis();
 
 		// calculate scores
-		computeMatch(propSourceFilePath, propTargetFilePath);
+		calculateScore(propSourceFilePath, propTargetFilePath);
 
 		logger.info("Execution time was " + (end - start) + " ms.");
 
@@ -104,17 +102,11 @@ public class Main {
 	 * @param tOP_K2
 	 * @throws IOException
 	 */
-	private static void computeMatch(final String propSourceFilePath,
+	private static void calculateScore(final String propSourceFilePath,
 			String propTargetFilePath) throws IOException {
 
-		// TODO: different similarity matches goes here
-
-		// Measure Type I : Fast Join
-		// FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
-
-		// Measure Type II : Levenstein Edit Distance
-		Similarity.extractLinesToCompare(propSourceFilePath,
-				propTargetFilePath, TOP_K);
+		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
+		scoreEngine.calculateScore(propSourceFilePath, propTargetFilePath);
 	}
 
 	private static void createPropertySetFile() throws IOException {

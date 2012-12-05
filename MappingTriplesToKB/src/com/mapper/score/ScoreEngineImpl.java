@@ -7,8 +7,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import com.csvreader.CsvWriter;
+import com.ibm.icu.util.Measure;
 import com.mapper.utility.FileUtil;
 
 /**
@@ -19,15 +21,23 @@ public class ScoreEngineImpl implements IScoreEngine {
 
 	private static final String DELIMIT = "\t";// "^([^\t]+)\t([^\t]+)\t([^\t]+)";
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see com.mapper.score.IScoreEngine#calculateScore()
+	 * @param propSourceFilePath
+	 *            The IE output properties list
+	 * @param propTargetFilePath
+	 *            The DBPedia properties
+	 * @param tOP_K2
+	 * @throws IOException
 	 */
-	@Override
-	public int calculateScore() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void calculateScore(final String propSourceFilePath,
+			String propTargetFilePath) throws IOException {
+
+		// Measure Type I : Fast Join
+		// FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
+
+		Similarity.extractLinesToCompare(propSourceFilePath,
+				propTargetFilePath, TOP_K, MEASURE.LEVENSTEIN);
 	}
 
 	/**

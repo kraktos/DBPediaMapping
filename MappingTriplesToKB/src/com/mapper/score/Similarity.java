@@ -17,6 +17,8 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
+import com.mapper.score.IScoreEngine.MEASURE;
+
 /**
  * Core class to plug in any similarity computation algorithm
  * 
@@ -36,40 +38,47 @@ public class Similarity {
 	 * @param leftArg
 	 *            file path of source texts
 	 * @param rightArg
-	 *            file path of targets texts
+	 *            file path of target texts
 	 * @param TOP_K
 	 *            customizable top k ranked matches
+	 * @param measure
+	 *            The measure we are interested in
 	 * @throws IOException
 	 */
 	public static void extractLinesToCompare(final String leftArg,
-			final String rightArg, int TOP_K) throws IOException {
+			final String rightArg, int TOP_K, MEASURE measure)
+			throws IOException {
 
 		BufferedReader leftArgBuf = new BufferedReader(new InputStreamReader(
 				new FileInputStream(leftArg)));
 
-		String lineFromLeftFile;
-		String lineFromRightFile;
+		String lineFromSourceFile;
+		String lineFromTargetFile;
 
 		int kCounter = 0;
-		double score;
+		double score = 0;
 
 		// start reading from the first file
-		while ((lineFromLeftFile = leftArgBuf.readLine()) != null) {
+		while ((lineFromSourceFile = leftArgBuf.readLine()) != null) {
 
 			BufferedReader rightArgBuf = new BufferedReader(
 					new InputStreamReader(new FileInputStream(rightArg)));
 
 			// simultaneously start reading from the second file
-			while ((lineFromRightFile = rightArgBuf.readLine()) != null) {
+			while ((lineFromTargetFile = rightArgBuf.readLine()) != null) {
 
 				// Measure Type II : Levenstein Edit Distance
-				//score = levensteinEditScore(lineFromLeftFile, lineFromRightFile);
+				if (measure.equals(MEASURE.LEVENSTEIN))
+					score = levensteinEditScore(lineFromSourceFile,
+							lineFromTargetFile);
 
 				// Measure Type III: Dice Coefficient
-				 score = diceCoefficient(lineFromLeftFile, lineFromRightFile);
+				if (measure.equals(MEASURE.DICE))
+					score = diceCoefficient(lineFromSourceFile,
+							lineFromTargetFile);
 
 				// put them in a collection,
-				topKMap.put(lineFromLeftFile + " <-> " + lineFromRightFile,
+				topKMap.put(lineFromSourceFile + " <-> " + lineFromTargetFile,
 						new Double(score));
 			}
 
@@ -108,18 +117,17 @@ public class Similarity {
 	// *********************************************************//
 
 	/**
-	 * @param lineFromLeftFile
-	 * @param lineFromRightFile
+	 * @param lineFromSourceFile
+	 * @param lineFromTargetFile
 	 * @return lexical similarity value in the range [0,1], Higher the better
-	 *         match Hence the return value is reciprocated. Making it in tandem
-	 *         with other scores as well.
+	 *         match
 	 */
-	private static double diceCoefficient(final String lineFromLeftFile,
-			final String lineFromRightFile) {
+	private static double diceCoefficient(final String lineFromSourceFile,
+			final String lineFromTargetFile) {
 
-		ArrayList<String> pairs1 = wordLetterPairs(lineFromLeftFile
+		ArrayList<String> pairs1 = wordLetterPairs(lineFromSourceFile
 				.toUpperCase());
-		ArrayList<String> pairs2 = wordLetterPairs(lineFromRightFile
+		ArrayList<String> pairs2 = wordLetterPairs(lineFromTargetFile
 				.toUpperCase());
 		int intersection = 0;
 		int union = pairs1.size() + pairs2.size();
@@ -203,7 +211,7 @@ public class Similarity {
 				}
 			}
 		}
-		return (double) 1 /(dp[s1.length()][s2.length()]);
+		return (double) 1 / (dp[s1.length()][s2.length()]);
 	}
 
 	/**
