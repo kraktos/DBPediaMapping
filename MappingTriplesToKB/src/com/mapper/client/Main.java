@@ -109,15 +109,12 @@ public class Main {
 
 		// TODO: different similarity matches goes here
 
+		// Measure Type I : Fast Join
 		// FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
 
-		// Measure Type II
-		Similarity.computeLevenstein(propSourceFilePath, propTargetFilePath,
-				TOP_K);
-
-		// Measure Levenstein Edit
-		// logger.info("Edit Distance = " +
-		// Similarity.computeLevensteinEditDistance("hello", ""));
+		// Measure Type II : Levenstein Edit Distance
+		Similarity.extractLinesToCompare(propSourceFilePath,
+				propTargetFilePath, TOP_K);
 	}
 
 	private static void createPropertySetFile() throws IOException {

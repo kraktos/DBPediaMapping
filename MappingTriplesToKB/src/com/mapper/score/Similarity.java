@@ -29,7 +29,7 @@ public class Similarity {
 	static Logger logger = Logger.getLogger(Similarity.class.getName());
 
 	// map to store the top k matched results
-	static Map<String, Long> topKMap = new TreeMap<String, Long>();
+	static Map<String, Object> topKMap = new TreeMap<String, Object>();
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class Similarity {
 	 *            customizable top k ranked matches
 	 * @throws IOException
 	 */
-	public static void computeLevenstein(final String leftArg,
+	public static void extractLinesToCompare(final String leftArg,
 			final String rightArg, int TOP_K) throws IOException {
 
 		BufferedReader leftArgBuf = new BufferedReader(new InputStreamReader(
@@ -51,7 +51,7 @@ public class Similarity {
 		String lineFromRightFile;
 
 		int kCounter = 0;
-		int score;
+		double score;
 
 		// start reading from the first file
 		while ((lineFromLeftFile = leftArgBuf.readLine()) != null) {
@@ -62,12 +62,15 @@ public class Similarity {
 			// simultaneously start reading from the second file
 			while ((lineFromRightFile = rightArgBuf.readLine()) != null) {
 
-				// compute the score
-				score = levensteinEditScore(lineFromLeftFile, lineFromRightFile);
+				// Measure Type II : Levenstein Edit Distance
+				//score = levensteinEditScore(lineFromLeftFile, lineFromRightFile);
+
+				// Measure Type III: Dice Coefficient
+				 score = diceCoefficient(lineFromLeftFile, lineFromRightFile);
 
 				// put them in a collection,
 				topKMap.put(lineFromLeftFile + " <-> " + lineFromRightFile,
-						new Long(score));
+						new Double(score));
 			}
 
 			// print out the top k result mathces for a property
@@ -101,15 +104,89 @@ public class Similarity {
 		topKMap.clear();
 	}
 
+	// ************ DICE CO-EFFICIENT
+	// *********************************************************//
+
+	/**
+	 * @param lineFromLeftFile
+	 * @param lineFromRightFile
+	 * @return lexical similarity value in the range [0,1], Higher the better
+	 *         match Hence the return value is reciprocated. Making it in tandem
+	 *         with other scores as well.
+	 */
+	private static double diceCoefficient(final String lineFromLeftFile,
+			final String lineFromRightFile) {
+
+		ArrayList<String> pairs1 = wordLetterPairs(lineFromLeftFile
+				.toUpperCase());
+		ArrayList<String> pairs2 = wordLetterPairs(lineFromRightFile
+				.toUpperCase());
+		int intersection = 0;
+		int union = pairs1.size() + pairs2.size();
+		for (int i = 0; i < pairs1.size(); i++) {
+			Object pair1 = pairs1.get(i);
+			for (int j = 0; j < pairs2.size(); j++) {
+				Object pair2 = pairs2.get(j);
+				if (pair1.equals(pair2)) {
+					intersection++;
+					pairs2.remove(j);
+					break;
+				}
+			}
+		}
+		return (2.0 * intersection) / union;
+	}
+
+	/**
+	 * 
+	 * @param str
+	 * @return an ArrayList of 2-character Strings.
+	 */
+	private static ArrayList<String> wordLetterPairs(String str) {
+		ArrayList<String> allPairs = new ArrayList<String>();
+
+		// Tokenize the string and put the tokens/words into an array
+		String[] words = str.split("\\s");
+		// For each word
+		for (int w = 0; w < words.length; w++) {
+			// Find the pairs of characters
+			String[] pairsInWord = letterPairs(words[w]);
+			for (int p = 0; p < pairsInWord.length; p++) {
+				allPairs.add(pairsInWord[p]);
+			}
+		}
+		return allPairs;
+	}
+
+	/**
+	 * 
+	 * @param str
+	 * @return an array of adjacent letter pairs contained in the input string
+	 */
+	private static String[] letterPairs(String str) {
+		int numPairs = str.length() - 1;
+		String[] pairs = new String[numPairs];
+		for (int i = 0; i < numPairs; i++) {
+			pairs[i] = str.substring(i, i + 2);
+		}
+		return pairs;
+	}
+
+	// ******************************************************************************//
+
+	// ************ LEVENSTEIN EDIT
+	// *************************************************//
+
 	/**
 	 * 
 	 * @param s1
 	 *            argument string 1
 	 * @param s2
 	 *            argument string 2
-	 * @return
+	 * @return A score denoting the similatity between two strings. Lesser the
+	 *         better
 	 */
-	public static int levensteinEditScore(final String s1, final String s2) {
+	public static double levensteinEditScore(final String s1, final String s2) {
 
 		int[][] dp = new int[s1.length() + 1][s2.length() + 1];
 
@@ -126,7 +203,7 @@ public class Similarity {
 				}
 			}
 		}
-		return dp[s1.length()][s2.length()];
+		return (double) 1 /(dp[s1.length()][s2.length()]);
 	}
 
 	/**
@@ -135,7 +212,7 @@ public class Similarity {
 	 *            input map to sort by values
 	 * @return List of keys sorted by values
 	 */
-	public static List<String> sortByValue(final Map<String, Long> map) {
+	public static List<String> sortByValue(final Map<String, Object> map) {
 		List<String> keys = new ArrayList<String>();
 		keys.addAll(map.keySet());
 		Collections.sort(keys, new Comparator<Object>() {
@@ -146,7 +223,8 @@ public class Similarity {
 				if (v1 == null) {
 					return (v2 == null) ? 0 : 1;
 				} else if (v1 instanceof Comparable) {
-					return ((Comparable<Object>) v1).compareTo(v2);
+					// negative coz we want the highest value first
+					return -(((Comparable<Object>) v1).compareTo(v2));
 				} else {
 					return 0;
 				}
@@ -154,5 +232,5 @@ public class Similarity {
 		});
 		return keys;
 	}
-
+	// ******************************************************************************//
 }
