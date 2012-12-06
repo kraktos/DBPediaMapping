@@ -19,11 +19,17 @@ public interface IScoreEngine {
 	// The top k matches of similarity
 	static int TOP_K = 8;
 
-	// enum of measures available
+	// measures available
 	public enum MEASURE {
 		DICE, LEVENSTEIN
 	}
 
+	/**
+	 * 
+	 * @param propSourceFilePath
+	 * @param propTargetFilePath
+	 * @throws IOException
+	 */
 	public void calculateScore(final String propSourceFilePath,
 			String propTargetFilePath) throws IOException;
 

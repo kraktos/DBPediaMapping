@@ -73,7 +73,7 @@ public class Similarity {
 							lineFromTargetFile);
 
 				// Measure Type III: Dice Coefficient
-				if (measure.equals(MEASURE.DICE))
+				else if (measure.equals(MEASURE.DICE))
 					score = diceCoefficient(lineFromSourceFile,
 							lineFromTargetFile);
 
