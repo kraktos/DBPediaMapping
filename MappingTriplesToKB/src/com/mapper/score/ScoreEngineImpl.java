@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.csvreader.CsvWriter;
 import com.ibm.icu.util.Measure;
@@ -21,6 +23,9 @@ public class ScoreEngineImpl implements IScoreEngine {
 
 	private static final String DELIMIT = "\t";// "^([^\t]+)\t([^\t]+)\t([^\t]+)";
 
+	// map to store the top k matched results
+	static Map<String, Object> topKMap = new TreeMap<String, Object>();
+
 	/**
 	 * 
 	 * @param propSourceFilePath
@@ -29,15 +34,14 @@ public class ScoreEngineImpl implements IScoreEngine {
 	 *            The DBPedia properties
 	 * @param tOP_K2
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	public void calculateScore(final String propSourceFilePath,
-			String propTargetFilePath) throws IOException {
+			String propTargetFilePath) throws IOException, InterruptedException {
 
-		// Measure Type I : Fast Join
-		// FastJoinWrapper.join(propSourceFilePath, propTargetFilePath);
-
+		// Find the score with different measures
 		Similarity.extractLinesToCompare(propSourceFilePath,
-				propTargetFilePath, TOP_K, MEASURE.LEVENSTEIN);
+				propTargetFilePath, TOP_K, MEASURE.DICE, topKMap);
 	}
 
 	/**

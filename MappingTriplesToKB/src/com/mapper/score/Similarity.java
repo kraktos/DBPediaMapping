@@ -30,9 +30,6 @@ public class Similarity {
 	// logger
 	static Logger logger = Logger.getLogger(Similarity.class.getName());
 
-	// map to store the top k matched results
-	static Map<String, Object> topKMap = new TreeMap<String, Object>();
-
 	/**
 	 * 
 	 * @param leftArg
@@ -43,51 +40,75 @@ public class Similarity {
 	 *            customizable top k ranked matches
 	 * @param measure
 	 *            The measure we are interested in
+	 * @param topKMap
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	public static void extractLinesToCompare(final String leftArg,
-			final String rightArg, int TOP_K, MEASURE measure)
-			throws IOException {
+			final String rightArg, int TOP_K, MEASURE measure,
+			Map<String, Object> topKMap) throws IOException,
+			InterruptedException {
 
-		BufferedReader leftArgBuf = new BufferedReader(new InputStreamReader(
-				new FileInputStream(leftArg)));
+		if (measure.equals(MEASURE.FASTJOIN)) {
+			// Measure Type I : Fast Join
+			FastJoinWrapper.join(leftArg, rightArg, TOP_K, topKMap);
+		} else {
 
-		String lineFromSourceFile;
-		String lineFromTargetFile;
+			BufferedReader leftArgBuf = new BufferedReader(
+					new InputStreamReader(new FileInputStream(leftArg)));
 
-		int kCounter = 0;
-		double score = 0;
+			String lineFromSourceFile;
+			String lineFromTargetFile;
 
-		// start reading from the first file
-		while ((lineFromSourceFile = leftArgBuf.readLine()) != null) {
+			int kCounter = 0;
+			double score = 0;
 
-			BufferedReader rightArgBuf = new BufferedReader(
-					new InputStreamReader(new FileInputStream(rightArg)));
+			// start reading from the first file
+			while ((lineFromSourceFile = leftArgBuf.readLine()) != null) {
 
-			// simultaneously start reading from the second file
-			while ((lineFromTargetFile = rightArgBuf.readLine()) != null) {
+				BufferedReader rightArgBuf = new BufferedReader(
+						new InputStreamReader(new FileInputStream(rightArg)));
 
-				// Measure Type II : Levenstein Edit Distance
-				if (measure.equals(MEASURE.LEVENSTEIN))
-					score = levensteinEditScore(lineFromSourceFile,
-							lineFromTargetFile);
+				// simultaneously start reading from the second file
+				while ((lineFromTargetFile = rightArgBuf.readLine()) != null) {
 
-				// Measure Type III: Dice Coefficient
-				else if (measure.equals(MEASURE.DICE))
-					score = diceCoefficient(lineFromSourceFile,
-							lineFromTargetFile);
+					// Measure Type II : Levenstein Edit Distance
+					if (measure.equals(MEASURE.LEVENSTEIN))
+						score = levensteinEditScore(lineFromSourceFile,
+								lineFromTargetFile);
 
-				// put them in a collection,
-				topKMap.put(lineFromSourceFile + " <-> " + lineFromTargetFile,
-						new Double(score));
+					// Measure Type III: Dice Coefficient
+					else if (measure.equals(MEASURE.DICE))
+						score = diceCoefficient(lineFromSourceFile,
+								lineFromTargetFile);
+
+					addToCollection(lineFromSourceFile, lineFromTargetFile,
+							score, topKMap);
+				}
+
+				// print out the top k result mathces for a property
+				printTopKMatches(TOP_K, kCounter, topKMap);
+
+				// reset counter for next property
+				kCounter = 0;
+
+				// clear the map for next set of property matches
+				topKMap.clear();
 			}
-
-			// print out the top k result mathces for a property
-			printTopKMatches(TOP_K, kCounter);
-
-			// reset counter for next property
-			kCounter = 0;
 		}
+	}
+
+	/**
+	 * @param lineFromSourceFile
+	 * @param lineFromTargetFile
+	 * @param score
+	 * @param topKMap
+	 */
+	public static void addToCollection(String lineFromSourceFile,
+			String lineFromTargetFile, double score, Map<String, Object> topKMap) {
+		// put them in a collection,
+		topKMap.put(lineFromSourceFile + " <-> " + lineFromTargetFile,
+				new Double(score));
 	}
 
 	/**
@@ -95,9 +116,11 @@ public class Similarity {
 	 *            customizable top k ranked matches *
 	 * @param kCounter
 	 *            track the top K ranks
+	 * @param topKMap
 	 * @return
 	 */
-	public static void printTopKMatches(int TOP_K, int kCounter) {
+	public static void printTopKMatches(int TOP_K, int kCounter,
+			Map<String, Object> topKMap) {
 		for (Iterator<String> i = sortByValue(topKMap).iterator(); i.hasNext();) {
 			String key = i.next();
 			logger.info(" TOP " + TOP_K + " values = " + key + ", "
@@ -109,8 +132,6 @@ public class Similarity {
 			}
 		}
 
-		// clear the map for next set of property matches
-		topKMap.clear();
 	}
 
 	// ************ DICE CO-EFFICIENT

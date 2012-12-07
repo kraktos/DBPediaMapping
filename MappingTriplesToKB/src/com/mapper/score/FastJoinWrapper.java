@@ -1,41 +1,60 @@
 package com.mapper.score;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import org.apache.log4j.Logger;
+
+import com.mapper.utility.Utilities;
 
 public class FastJoinWrapper {
 
-	public static String FASTJOIN_EXE_UNX = "/home/arnab/Work/fastjoin/linux/FastJoin"; 
+	// define Logger
+	static Logger logger = Logger.getLogger(FastJoinWrapper.class.getName());
+
+	public static String FASTJOIN_EXE_UNX = "/home/arnab/Work/fastjoin/linux/FastJoin";
 	public static String FASTJOIN_MEASURE = "FDICE";
-	public static double FASTJOIN_DELTA = 0.38;
-	public static double FASTJOIN_TAU = 0.38;
+	public static double FASTJOIN_DELTA = 0.2;
+	public static double FASTJOIN_TAU = 0.2;
 
 	/**
+	 * @param TOP_K
+	 * @param topKMap
 	 * @param args
+	 * @throws InterruptedException
+	 * @throws IOException
 	 */
-	/*public static void FastJoinScore(String[] args) {
 
-		if (args.length > 0) {
-			FASTJOIN_EXE_UNX = args[0];
-		}
-		
-		join("/home/arnab/Work/data/NELL/propertySource.txt",
-				"/home/arnab/Work/data/DBPedia/propertyTarget2.txt");
-	}*/
+	public static void join(String sourcePath, String targetPath, int TOP_K,
+			Map<String, Object> topKMap) throws InterruptedException,
+			IOException {
 
-	public static void join(String sourcePath, String targetPath) {
+		Set<String> setSourceLabels = new HashSet<String>();
+		BufferedReader bri = null;
+		Process process = null;
+
 		try {
 			String line;
-			Process p = Runtime.getRuntime().exec(
+			String sourceLabel = "";
+			String targetLabel = "";
+
+			process = Runtime.getRuntime().exec(
 					FASTJOIN_EXE_UNX + " " + FASTJOIN_MEASURE + " "
 							+ FASTJOIN_DELTA + " " + FASTJOIN_TAU + " "
 							+ sourcePath + " " + targetPath + "");
-			BufferedReader bri = new BufferedReader(new InputStreamReader(
-					p.getInputStream()));
+
+			bri = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
 
 			int type = 0;
-			String sourceLabel = "";
-			String targetLabel = "";
+			int kCounter = 0;
+
 			double confidence = 0.0;
 			while ((line = bri.readLine()) != null) {
 				String[] fields = line.split(" ");
@@ -47,10 +66,15 @@ public class FastJoinWrapper {
 				// *** type == 2 ***
 				else if (type == 2) {
 					targetLabel = line;
-					//
-					System.out.println(sourceLabel + " ~ " + targetLabel
-							+ "  =>" + confidence);
+
+					setSourceLabels.add(sourceLabel);
+
+					// add them in a collection to figure out top k ranks
+					Similarity.addToCollection(sourceLabel, targetLabel,
+							confidence, topKMap);
+
 					type = 0;
+
 				}
 				// *** type == 0 ***
 				else if (type == 0) {
@@ -62,12 +86,38 @@ public class FastJoinWrapper {
 					} catch (NumberFormatException e) {
 					}
 				}
+
+			} // end of while
+
+			// Different way to print for the fast join case
+			for (String str : setSourceLabels) {
+				for (Iterator<String> i = Similarity.sortByValue(topKMap)
+						.iterator(); i.hasNext();) {
+					String key = i.next();
+
+					Double value = (Double) topKMap.get(key);
+
+					if (key.contains(str + " <-> ")) {
+
+						logger.info(" TOP " + TOP_K + " values = " + key + ", "
+								+ value.doubleValue());
+						kCounter++;
+						// once top k fetched break out
+						if (kCounter == TOP_K) {
+							break;
+						}
+					}
+				}
+				kCounter = 0;
 			}
-			bri.close();
-			p.waitFor();
+
 		} catch (Exception err) {
 			err.printStackTrace();
+		} finally {
+			setSourceLabels.clear();
+			topKMap.clear();
+			bri.close();
+			process.waitFor();
 		}
 	}
-
 }

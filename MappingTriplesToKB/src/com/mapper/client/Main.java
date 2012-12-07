@@ -51,9 +51,10 @@ public class Main {
 	/**
 	 * @param args
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws OWLOntologyCreationException,
-			IOException {
+			IOException, InterruptedException {
 
 		final String owlPath = (args.length > 0) ? args[0] : Messages
 				.getString("OWL_FILE_PATH");
@@ -101,9 +102,10 @@ public class Main {
 	 *            The DBPedia properties
 	 * @param tOP_K2
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	private static void calculateScore(final String propSourceFilePath,
-			String propTargetFilePath) throws IOException {
+			String propTargetFilePath) throws IOException, InterruptedException {
 
 		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
 		scoreEngine.calculateScore(propSourceFilePath, propTargetFilePath);
