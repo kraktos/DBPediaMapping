@@ -13,7 +13,7 @@ import com.csvreader.CsvWriter;
 import com.mapper.client.Main;
 
 /**
- * Class to write a csv file
+ * Class to peform IO operations
  * 
  * @author Arnab Dutta
  * 
@@ -48,6 +48,14 @@ public class FileUtil {
 		}
 	}
 
+	/**
+	 * Writes a piece of text to a writer object
+	 * 
+	 * @param out
+	 *            writer object to write the output
+	 * @param text
+	 *            the text to write
+	 */
 	public static void writeToFlatFile(BufferedWriter out, String text) {
 		try {
 			// Create file
@@ -58,6 +66,12 @@ public class FileUtil {
 		}
 	}
 
+	/**
+	 * 
+	 * @param userQuery
+	 * @param file
+	 * @param outProperty
+	 */
 	public static void extractMatchingTuples(String userQuery, File file,
 			BufferedWriter outProperty) {
 		Scanner input;
@@ -70,8 +84,11 @@ public class FileUtil {
 				if (word.contains(userQuery)) {
 					// Take these subset of data and match them against DBPedia
 					// store them somehow and match the predicates
-					writeToFlatFile(outProperty,
-							Utilities.extractPredicatesFromTuples(word) + "\n");
+					// writeToFlatFile(outProperty,
+					// Utilities.extractPredicatesFromTuples(word) + "\n");
+
+					writeToFlatFile(outProperty, word + "\n");
+
 				}
 			}
 		} catch (Exception e) {

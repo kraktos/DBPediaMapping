@@ -3,6 +3,8 @@
  */
 package com.mapper.indexer;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 import com.mapper.client.Main;
@@ -13,16 +15,17 @@ import com.mapper.client.Main;
  */
 public interface IDataIndexer {
 
-	public Logger logger = Logger.getLogger(Main.class.getName());
+	public Logger logger = Logger.getLogger(IDataIndexer.class.getName());
 
 	/**
 	 * reads data in chunks
+	 * @throws IOException 
 	 */
-	public void readData();
+	public void readData() throws IOException;
 
 	/**
-	 * creates indexes over the data
+	 * creates indexes over the DBPedia data
 	 */
-	public void indexData();
+	void indexData(String subject, String predicate, String object);
 
 }

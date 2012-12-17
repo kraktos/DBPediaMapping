@@ -36,12 +36,30 @@ public class ScoreEngineImpl implements IScoreEngine {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public void calculateScore(final String propSourceFilePath,
+	public void calculateScoreForFileInput(final String propSourceFilePath,
 			String propTargetFilePath) throws IOException, InterruptedException {
 
 		// Find the score with different measures
 		Similarity.extractLinesToCompare(propSourceFilePath,
 				propTargetFilePath, TOP_K, MEASURE.DICE, topKMap);
+	}
+
+	/**
+	 * 
+	 * @param propSourceText
+	 *            The IE output texts
+	 * @param propTargetFilePath
+	 *            The DBPedia properties
+	 * @param tOP_K2
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void calculateScoreForTextInput(final String propSourceText,
+			String propTargetFilePath) throws IOException, InterruptedException {
+
+		// Find the score with different measures
+		Similarity.compareTexts(propSourceText, propTargetFilePath, TOP_K,
+				MEASURE.DICE, topKMap);
 	}
 
 	/**

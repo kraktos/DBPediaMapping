@@ -18,6 +18,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import com.mapper.score.IScoreEngine.MEASURE;
+import com.mapper.utility.Utilities;
 
 /**
  * Core class to plug in any similarity computation algorithm
@@ -95,6 +96,54 @@ public class Similarity {
 				// clear the map for next set of property matches
 				topKMap.clear();
 			}
+		}
+	}
+
+	public static void compareTexts(final String leftArg,
+			final String rightArg, int TOP_K, MEASURE measure,
+			Map<String, Object> topKMap) throws IOException,
+			InterruptedException {
+
+		if (measure.equals(MEASURE.FASTJOIN)) {
+			// Measure Type I : Fast Join
+			FastJoinWrapper.join(leftArg, rightArg, TOP_K, topKMap);
+		} else {
+
+			String lineFromSourceFile = leftArg;
+			String lineFromTargetFile;
+
+			int kCounter = 0;
+			double score = 0;
+
+			BufferedReader rightArgBuf = new BufferedReader(
+					new InputStreamReader(new FileInputStream(rightArg)));
+
+			// simultaneously start reading from the second file
+			while ((lineFromTargetFile = rightArgBuf.readLine()) != null) {
+
+				// Measure Type II : Levenstein Edit Distance
+				if (measure.equals(MEASURE.LEVENSTEIN))
+					score = levensteinEditScore(lineFromSourceFile,
+							lineFromTargetFile);
+
+				// Measure Type III: Dice Coefficient
+				else if (measure.equals(MEASURE.DICE))
+					score = diceCoefficient(lineFromSourceFile,
+							lineFromTargetFile);
+
+				addToCollection(lineFromSourceFile, lineFromTargetFile, score,
+						topKMap);
+			}
+
+			// print out the top k result mathces for a property
+			printTopKMatches(TOP_K, kCounter, topKMap);
+
+			// reset counter for next property
+			kCounter = 0;
+
+			// clear the map for next set of property matches
+			topKMap.clear();
+
 		}
 	}
 
@@ -262,4 +311,50 @@ public class Similarity {
 		return keys;
 	}
 	// ******************************************************************************//
+
+	/**
+	 * 
+	 * @param tupleFromIE
+	 * @param dbPediaSubjObjsFilePath
+	 * @param dbPediaPredicatesFilePath
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static void matchTuple(String tupleFromIE,
+			String dbPediaSubjObjsFilePath, String dbPediaPredicatesFilePath)
+			throws IOException, InterruptedException {
+	
+		final String[] strSplit = tupleFromIE.split(",");
+		String subject = strSplit[0];
+		String predicate = strSplit[1];
+		String object = strSplit[2];
+		// System.out.println(subject);
+	
+		calculateScore(Utilities.extractLabel(subject), dbPediaSubjObjsFilePath);
+	
+		System.out.println("\n");
+	
+		calculateScore(Utilities.extractLabel(predicate), dbPediaPredicatesFilePath);
+	
+		System.out.println("\n");
+	
+		calculateScore(Utilities.extractLabel(object), dbPediaSubjObjsFilePath);
+	
+		System.out.println("-----------------------------------");
+	
+	}
+
+	/**
+	 * 
+	 * @param sourceText
+	 * @param propTargetFilePath
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public static void calculateScore(final String sourceText,
+			String propTargetFilePath) throws IOException, InterruptedException {
+	
+		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
+		scoreEngine.calculateScoreForTextInput(sourceText, propTargetFilePath);
+	}
 }
