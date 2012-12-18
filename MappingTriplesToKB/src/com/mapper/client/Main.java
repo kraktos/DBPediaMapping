@@ -8,9 +8,7 @@ import com.mapper.message.Messages;
 import com.mapper.query.QueryApi;
 import com.mapper.query.SPARQLEndPointQueryAPI;
 import com.mapper.score.FastJoinWrapper;
-import com.mapper.score.ScoreEngineImpl;
 import com.mapper.score.Similarity;
-import com.mapper.utility.FileUtil;
 import com.mapper.utility.Utilities;
 
 import java.io.*;
@@ -38,7 +36,7 @@ public class Main {
 			+ "?b <http://www.w3.org/2000/01/rdf-schema#label> ?label}}";
 
 	// raw IE output file
-	private static String extractedFactDataSet = Messages
+	public static String extractedFactDataSet = Messages
 			.getString("SOURCE_FACTS_FILE_PATH");
 
 	// output from IE engine in CSV format
@@ -58,6 +56,9 @@ public class Main {
 	// output location of predicates in DBPEdia
 	public static String dbPediaPredicatesFilePath = Messages
 			.getString("DBPEDIA_PREDICATES_FILE_PATH");
+
+	// test query to prun the IE engine csv file
+	public static String searchQuery = Messages.getString("SEARCH_ITEM");
 
 	/**
 	 * @param args
@@ -86,26 +87,28 @@ public class Main {
 
 		logger.info("END of INDEXING DBPEDIA DATA .......");
 
-		logger.info("STARTING PROCESSING OF IE OUTPUT TUPLES .......");
+		logger.info("STARTING PROCESSING OF RAW IE OUTPUT FILE .......");
 
 		// SPARQLEndPointQueryAPI.queryDBPedia(QUERY);
-
 		// findUniqueProperties();
 
 		// Take the IE output and convert it to CSV file
-		createCSVFilefromIEDataSet();
+		Utilities.createCSVFilefromIEDataSet();
 
-		logger.info("END OF CSV FILE CREATION FOR THE INPUT IE DATA  => "
+		logger.info("END OF CSV FILE CREATION FOR THE RAW IE OUTPUT FILE  => "
 				+ ieOutputCsvFilePath);
+
+		logger.info("STARTING TO CREATE A SAMPLE SOURCE FILE WITH TUPLES MATCHING  \""
+				+ searchQuery + "\"");
 
 		// once we have both the DB Pedia data and CSV form of IE extracted
 		// data, we can figure out which properties from the IE output actually
 		// matches into the properties of DBPedia data
-		createSubSetOfIEOuputTuples();
+		Utilities.createSubSetOfIEOuputTuples();
 
 		// Task is now to take each tuples from the subset file and match with
 		// the DB Pedia files
-		logger.info("MAPPING OF A TUPLE FROM THE FILE "
+		logger.info("STARTING TO MAP A TUPLE FROM THE SAMPLE FILE "
 				+ greppedIEOutputCsvFilePath + " BEGINS\n");
 		Utilities.mapTuple();
 
@@ -114,42 +117,6 @@ public class Main {
 		logger.info("PROCESS COMPLETED..EXECUTION TIME => " + (end - start)
 				+ " ms.");
 
-	}
-
-	/**
-	 * Method to create a sub set of data from the data set provided by the IE
-	 * engine. This is purely for test purpose. Can be removed later on.
-	 * 
-	 * @throws IOException
-	 */
-	private static void createSubSetOfIEOuputTuples() throws IOException {
-
-		// Take the user query and extract those tuples from the CSV file
-		// TODO: think of doing it in without query api.
-		// At some point there would be no grepped files..we have to match
-		// the entire IE output tuples
-		String userQuery = "mel_gibson";
-		final File file = new File(ieOutputCsvFilePath);
-
-		FileWriter fstream = new FileWriter(greppedIEOutputCsvFilePath);
-		BufferedWriter greppedIEOutput = new BufferedWriter(fstream);
-
-		FileUtil.extractMatchingTuples(userQuery, file, greppedIEOutput);
-
-		greppedIEOutput.close();
-
-	}
-
-	/**
-	 * Transform a set of extracted facts output from any IE engine like NELL,
-	 * and convert it to a CSV file with associated truth values of each such
-	 * fact.
-	 */
-	private static void createCSVFilefromIEDataSet() {
-
-		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
-		scoreEngine.readExtractedFacts(extractedFactDataSet,
-				ieOutputCsvFilePath);
 	}
 
 	/**

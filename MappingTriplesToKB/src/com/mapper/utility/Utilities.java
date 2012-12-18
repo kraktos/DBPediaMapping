@@ -5,6 +5,7 @@ package com.mapper.utility;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -20,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import com.mapper.client.Main;
 import com.mapper.indexer.DataIndexerImpl;
+import com.mapper.score.ScoreEngineImpl;
 import com.mapper.score.Similarity;
 
 /**
@@ -174,9 +176,46 @@ public class Utilities {
 	 */
 	public static String extractLabel(String tupleFromIE) {
 
-		return tupleFromIE.substring(tupleFromIE.lastIndexOf(":") + 1,
+		String s =  tupleFromIE.substring(tupleFromIE.lastIndexOf(":") + 1,
 				tupleFromIE.length());
+		return s;
 
+	}
+
+	/**
+	 * Method to create a sub set of data from the data set provided by the IE
+	 * engine. This is purely for test purpose. Can be removed later on.
+	 * 
+	 * @throws IOException
+	 */
+	public static void createSubSetOfIEOuputTuples() throws IOException {
+	
+		// Take the user query and extract those tuples from the CSV file
+		// TODO: think of doing it in without query api.
+		// At some point there would be no grepped files..we have to match
+		// the entire IE output tuples
+		String userQuery = Main.searchQuery;
+		final File file = new File(Main.ieOutputCsvFilePath);
+	
+		FileWriter fstream = new FileWriter(Main.greppedIEOutputCsvFilePath);
+		BufferedWriter greppedIEOutput = new BufferedWriter(fstream);
+	
+		FileUtil.extractMatchingTuples(userQuery, file, greppedIEOutput);
+	
+		greppedIEOutput.close();
+	
+	}
+
+	/**
+	 * Transform a set of extracted facts output from any IE engine like NELL,
+	 * and convert it to a CSV file with associated truth values of each such
+	 * fact.
+	 */
+	public static void createCSVFilefromIEDataSet() {
+	
+		ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
+		scoreEngine.readExtractedFacts(Main.extractedFactDataSet,
+				Main.ieOutputCsvFilePath);
 	}
 
 }

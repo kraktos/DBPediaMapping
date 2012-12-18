@@ -227,10 +227,12 @@ public class Similarity {
 		String[] words = str.split("\\s");
 		// For each word
 		for (int w = 0; w < words.length; w++) {
-			// Find the pairs of characters
-			String[] pairsInWord = letterPairs(words[w]);
-			for (int p = 0; p < pairsInWord.length; p++) {
-				allPairs.add(pairsInWord[p]);
+			if (words[w].length() > 0) {
+				// Find the pairs of characters
+				String[] pairsInWord = letterPairs(words[w]);
+				for (int p = 0; p < pairsInWord.length; p++) {
+					allPairs.add(pairsInWord[p]);
+				}
 			}
 		}
 		return allPairs;

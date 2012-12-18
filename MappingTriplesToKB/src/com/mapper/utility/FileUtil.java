@@ -81,7 +81,7 @@ public class FileUtil {
 			input = new Scanner(file);
 			while (input.hasNext()) {
 				String word = input.next();
-				if (word.contains(userQuery)) {
+				if (word.toLowerCase().contains(userQuery.toLowerCase())) {
 					// Take these subset of data and match them against DBPedia
 					// store them somehow and match the predicates
 					// writeToFlatFile(outProperty,
