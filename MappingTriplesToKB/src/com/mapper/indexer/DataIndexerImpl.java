@@ -17,6 +17,7 @@ import org.apache.commons.collections.FastHashMap;
 
 import com.mapper.client.Main;
 import com.mapper.pojo.Fact;
+import com.mapper.utility.Constants;
 import com.mapper.utility.Hasher;
 import com.mapper.utility.Utilities;
 
@@ -55,7 +56,6 @@ public class DataIndexerImpl implements IDataIndexer {
 	public static Set<String> SET_DBPEDIA_PREDICATES = new HashSet<String>();
 	public static Set<String> SET_DBPEDIA_OBJECTS = new HashSet<String>();
 
-	private static final String DELIMIT = "\",";
 
 	private static final long MEGABYTE = 1024L * 1024L;
 
@@ -93,7 +93,7 @@ public class DataIndexerImpl implements IDataIndexer {
 			while ((strLine = br.readLine()) != null) {
 
 				// break comma separated line using one or more tabs
-				st = strLine.split(DELIMIT);
+				st = strLine.split(Constants.DELIMIT);
 
 				subject = st[0].contains("\"") ? st[0].replaceAll("\"", "")
 						: st[0];

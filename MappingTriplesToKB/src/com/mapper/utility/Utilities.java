@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +26,8 @@ import com.mapper.score.ScoreEngineImpl;
 import com.mapper.score.Similarity;
 
 /**
+ * All different kinds of utility methods are placed here
+ * 
  * @author Arnab Dutta
  */
 public class Utilities
@@ -212,6 +215,71 @@ public class Utilities
 
         ScoreEngineImpl scoreEngine = new ScoreEngineImpl();
         scoreEngine.readExtractedFacts(Main.extractedFactDataSet, Main.ieOutputCsvFilePath);
+    }
+
+    /**
+     * The tuples coming from the IE engine are usually noisy. Add all cleansing logic here.
+     * 
+     * @param stringArg String to Clean
+     * @return
+     */
+    public static String cleanseLabels(String stringArg)
+    {
+
+        // remove any "http://" coz it wont be helpful in calculating the score
+        if (stringArg.lastIndexOf("http://") != -1) {
+            // stringArg = stringArg.substring(stringArg.lastIndexOf("http://") + 1, stringArg.length());
+            stringArg = stringArg.replaceAll("http://", "");
+        }
+
+        if (stringArg.indexOf("en.wikipedia.org/wiki/") != -1) {
+            // stringArg = stringArg.substring(stringArg.lastIndexOf("en.wikipedia.org/wiki/") + 1, stringArg.length());
+            stringArg = stringArg.replaceAll("en.wikipedia.org/wiki/", "");
+
+        }
+
+        // extract the label
+        if (stringArg.lastIndexOf(":") != -1)
+            stringArg = stringArg.substring(stringArg.lastIndexOf(":") + 1, stringArg.length());
+
+        return stringArg;
+    }
+
+    /**
+     * Method to check if a given String value exists in the given set
+     * 
+     * @param set The set to check
+     * @param stringValue The value to check
+     * @return
+     */
+    public static boolean checkUniqueness(Set<String> set, String stringValue)
+    {
+
+        if (!set.contains(stringValue)) {
+            set.add(stringValue);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param start the timer start point
+     * @param message the message you want to display
+     */
+    public static void endTimer(final long start, final String message)
+    {
+        long end = System.currentTimeMillis();
+        long execTime = end - start;
+        logger.info(message + " " + String.format("%02d ms", TimeUnit.MILLISECONDS.toMillis(execTime)));
+    }
+
+    /**
+     * @return the start point of time
+     */
+    public static long startTimer()
+    {
+        long start = System.currentTimeMillis();
+        return start;
     }
 
 }

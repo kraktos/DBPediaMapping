@@ -5,6 +5,7 @@ package com.mapper.dbConnectivity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,6 +13,7 @@ import java.sql.Statement;
 import org.apache.log4j.Logger;
 
 import com.mapper.message.Messages;
+import com.mapper.utility.Utilities;
 
 /**
  * @author Arnab Dutta
@@ -75,7 +77,7 @@ public class DBConnection
     static {
         registerDriver();
 
-        logger.info("PostgreSQL JDBC Driver Registered!");
+        logger.info("PostgreSQL JDBC Driver Registered!\n");
 
     }
 
@@ -83,7 +85,8 @@ public class DBConnection
     {
         try {
 
-            setConnection(DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword));
+            // setConnection(DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword));
+            this.connection = DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword);
 
             if (this.connection != null) {
                 return getConnection();
@@ -93,7 +96,7 @@ public class DBConnection
             }
 
         } catch (SQLException e) {
-            logger.error("Connection Failed! Check output console");
+            logger.error("Connection Failed! Check output console" + e.getMessage());
         }
         return null;
 
@@ -102,40 +105,43 @@ public class DBConnection
     /**
      * @param statement Statement reference
      * @param resultSet ResultSet reference
-     * @param testString
+     * @param queriedItem
      * @param start
      */
-    public static void performDBOperation(Statement statement, ResultSet resultSet, String testString,
+    public static void performDBOperation(Statement statement, ResultSet resultSet, String queriedItem,
         final String query)
     {
 
-        StringBuilder queryBuilder = null;
-
         Connection connection;
+        PreparedStatement preparedStatement = null;
+
         DBConnection dbConnection = new DBConnection();
         connection = dbConnection.initDB();
 
         // start Timer
         final long start = System.currentTimeMillis();
 
+        int count = 0;
         try {
             if (connection != null) {
-                statement = connection.createStatement();
 
-                queryBuilder = new StringBuilder(query);
-                queryBuilder.append("'%" + testString.toUpperCase() + "%'");
+                // set the prepared statement unknown parameters
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, Utilities.cleanseLabels(queriedItem));
 
-                statement = connection.createStatement();
-
-                resultSet = statement.executeQuery(queryBuilder.toString());
+                // execute the statement and fetch the result set
+                resultSet = preparedStatement.executeQuery();
 
                 if (!resultSet.next()) {
                     logger.info("no data");
                 } else {
 
+                    logger.info(" TOP MATCHES FOR \"" + queriedItem + "\"\n" + preparedStatement.toString());
                     do {
-                        logger.info(resultSet.getString(1) + "\t\t" + resultSet.getString(2));
-                    } while (resultSet.next());
+                        logger.info(resultSet.getString(1) + "   " + resultSet.getString(2) + "    "
+                            + resultSet.getDouble(3));
+                        count++;
+                    } while (resultSet.next() && count < 3);
                 }
             }
 
@@ -147,21 +153,24 @@ public class DBConnection
             logger.info("\n  -----------------------      ------------------------------ \n");
 
         } catch (SQLException e) {
-            DBTestClient.logger.error("Statement Creation Failed!" + e.getMessage());
+            logger.error("Statement Creation Failed!" + e.getMessage());
         } finally {
             try {
                 if (resultSet != null) {
                     resultSet.close();
+                    resultSet = null;
                 }
-                if (statement != null) {
-                    statement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                    preparedStatement = null;
                 }
                 if (connection != null) {
                     connection.close();
+                    connection = null;
                 }
 
             } catch (SQLException ex) {
-                DBTestClient.logger.error("Statement Creation Failed!" + ex.getMessage());
+                logger.error("Statement Creation Failed!" + ex.getMessage());
 
             }
 

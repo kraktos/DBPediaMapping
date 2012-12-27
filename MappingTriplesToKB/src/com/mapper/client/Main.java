@@ -9,6 +9,7 @@ import com.mapper.query.QueryApi;
 import com.mapper.query.SPARQLEndPointQueryAPI;
 import com.mapper.score.FastJoinWrapper;
 import com.mapper.score.Similarity;
+import com.mapper.utility.FileUtil;
 import com.mapper.utility.Utilities;
 
 import java.io.*;
@@ -72,8 +73,8 @@ public class Main
 
         final long start = System.currentTimeMillis();
 
-        DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
-        dataIndexer.readData();
+        //DataIndexerImpl dataIndexer = new DataIndexerImpl(dataPath);
+        //dataIndexer.readData();
 
         logger.info("END of INDEXING DBPEDIA DATA .......");
 
@@ -83,25 +84,29 @@ public class Main
         // findUniqueProperties();
 
         // Take the IE output and convert it to CSV file
-        Utilities.createCSVFilefromIEDataSet();
+       // Utilities.createCSVFilefromIEDataSet();
 
         logger.info("END OF CSV FILE CREATION FOR THE RAW IE OUTPUT FILE  => " + ieOutputCsvFilePath);
 
-        logger.info("STARTING TO CREATE A SAMPLE SOURCE FILE WITH TUPLES MATCHING  \"" + searchQuery + "\"");
+        // At this point, we take a tuple from the IE and start processing it by
+        // matching each with the DBPedia entries
+
+        logger.info("STARTING THE MAPPING PROCEDURE ");
+        FileUtil.readIEFile(ieOutputCsvFilePath);
 
         // once we have both the DB Pedia data and CSV form of IE extracted
         // data, we can figure out which properties from the IE output actually
         // matches into the properties of DBPedia data
-        Utilities.createSubSetOfIEOuputTuples();
+        //Utilities.createSubSetOfIEOuputTuples();
 
         // Task is now to take each tuples from the subset file and match with
         // the DB Pedia files
-        logger.info("STARTING TO MAP A TUPLE FROM THE SAMPLE FILE " + greppedIEOutputCsvFilePath + " BEGINS\n");
-        Utilities.mapTuple();
+        //logger.info("STARTING TO MAP A TUPLE FROM THE SAMPLE FILE " + greppedIEOutputCsvFilePath + " BEGINS\n");
+        //Utilities.mapTuple();
 
-        final long end = System.currentTimeMillis();
+        //final long end = System.currentTimeMillis();
 
-        logger.info("PROCESS COMPLETED..EXECUTION TIME => " + (end - start) + " ms.");
+        //logger.info("PROCESS COMPLETED..EXECUTION TIME => " + (end - start) + " ms.");
 
     }
 
