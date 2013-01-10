@@ -18,8 +18,10 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import com.hp.hpl.jena.sparql.function.library.strlen;
 import com.mapper.utility.Constants;
 import com.mapper.utility.FileUtil;
+import com.mapper.utility.Utilities;
 
 /**
  * This class builds an index over the DBPedia data.
@@ -55,7 +57,7 @@ public class DBPediaIndexBuilder
         indexFilePath = new File(Constants.DBPEDIA_INDEX_DIR);
 
         // clear any pre-existing index files
-        if(Constants.EMPTY_INDICES)
+        if (Constants.EMPTY_INDICES)
             FileUtil.emptyIndexDir(indexFilePath);
 
         analyzer = new StandardAnalyzer(Version.LUCENE_36);
@@ -65,10 +67,10 @@ public class DBPediaIndexBuilder
         writer = new IndexWriter(dir, iwc);
 
         // start timer
-        long start = System.currentTimeMillis();
+        long start = Utilities.startTimer();
 
         // rename all files
-        FileUtil.renameFiles(docDir);
+        // FileUtil.renameFiles(docDir);
 
         // start indexing iteratively all files at the location
         indexDocs(writer, docDir);
@@ -77,19 +79,7 @@ public class DBPediaIndexBuilder
         writer.close();
 
         // end timer
-        long end = System.currentTimeMillis();
-        long millis = end - start;
-        
-        String format = String.format(
-            "%02d hh: %02d mm: %02d ss",
-            TimeUnit.MILLISECONDS.toHours(millis),
-            TimeUnit.MILLISECONDS.toMinutes(millis)
-                - TimeUnit.MINUTES.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-            TimeUnit.MILLISECONDS.toSeconds(millis)
-                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-        
-        logger.info("\nINDEXING COMPLETED IN " + format);
-
+        Utilities.endTimer(start, "INDEXING COMPLETED IN ");
     }
 
     /**
@@ -138,26 +128,28 @@ public class DBPediaIndexBuilder
                     String label = null;
 
                     // read comma separated file line by line
-                    while ((strLine = br.readLine()) != null) {
+                    while ((strLine = br.readLine()) != null && strLine.startsWith(Constants.DBPEDIA_HEADER)) {
                         // break comma separated line using ","
                         document = new Document();
-                        array = strLine.split(",");
+                        array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
 
-                        // display csv values
                         uri = (array[0] != null) ? array[0] : "";
                         uriField = new Field("uriField", uri.trim(), Field.Store.YES, Field.Index.NOT_ANALYZED);
                         document.add(uriField);
 
                         label = (array[1] != null) ? array[1] : "";
-                        labelField = new Field("labelField", label, Field.Store.YES, Field.Index.NOT_ANALYZED);
+                        labelField = new Field("labelField", label.trim(), Field.Store.YES, Field.Index.NOT_ANALYZED);
                         document.add(labelField);
 
-                        label = label.trim().replaceAll(" ", "_").toUpperCase();
+                        label = label.trim().toUpperCase();
                         labelCapsField = new Field("labelCapsField", label, Field.Store.YES, Field.Index.NOT_ANALYZED);
                         document.add(labelCapsField);
 
                         writer.addDocument(document);
                     }
+
+                } catch (Exception ex) {
+                    logger.error(ex.getMessage());
 
                 } finally {
                     // Close the input stream

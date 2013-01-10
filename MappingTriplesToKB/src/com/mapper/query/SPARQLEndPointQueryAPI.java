@@ -41,16 +41,16 @@ public class SPARQLEndPointQueryAPI {
 		List<QuerySolution> listResults = ResultSetFormatter.toList(results);
 
 		List<String> listVarnames = results.getResultVars();
-		logger.info(" results var = " + results.getResultVars().toString());
+		//logger.info(" results var = " + results.getResultVars().toString());
 
 		for (QuerySolution querySol : listResults) {
 			for (int indx = 0; indx < listVarnames.size();) {
 				String key = querySol.get(listVarnames.get(indx++)).toString();
 				String value = querySol.get(listVarnames.get(indx++))
 						.toString();
-				// logger.info(key + "  " + value);
+				logger.info(key + "  " + value);
 
-				addToMap(key, value);
+				//addToMap(key, value);
 			}
 		}
 

@@ -34,9 +34,8 @@ public class QueryEngine
         IndexSearcher searcher = null;
 
         try {
-            // store the parameter value in query variable
 
-            if (Constants.INDEX) {
+            if (Constants.INDEX_AGAIN) {
                 DBPediaIndexBuilder.indexer();
             }
             long start = Utilities.startTimer();
@@ -52,10 +51,10 @@ public class QueryEngine
 
             // create the query term
             Term term = new Term("labelCapsField", userQuery.toUpperCase());
-            FuzzyQuery fuzzyQuery = new FuzzyQuery(term, .1F);
+            FuzzyQuery fuzzyQuery = new FuzzyQuery(term, Constants.SIMILARITY);
 
             // execute the search on top results
-            TopDocs hits = searcher.search(fuzzyQuery, null, 100);
+            TopDocs hits = searcher.search(fuzzyQuery, null, Constants.MAX_RESULTS);
 
             final Set<String> set = new HashSet<String>();
 
@@ -65,7 +64,11 @@ public class QueryEngine
             for (ScoreDoc scoredoc : hits.scoreDocs) {
                 // Retrieve the matched document and show relevant details
                 Document doc = searcher.doc(scoredoc.doc);
-                boolean isUnique = Utilities.checkUniqueness(set, doc.getFieldable("uriField").stringValue());
+
+                // TODO
+                boolean isUnique =
+                    Utilities.checkUniqueness(set,
+                        doc.getFieldable("uriField").stringValue() + doc.getFieldable("labelField").stringValue());
                 if (isUnique) {
                     logger.info(doc.getFieldable("labelField").stringValue() + " => "
                         + doc.getFieldable("uriField").stringValue() + "   " + scoredoc.score / hits.getMaxScore());
