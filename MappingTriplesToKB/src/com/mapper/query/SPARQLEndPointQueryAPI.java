@@ -20,75 +20,75 @@ import com.mapper.utility.Hasher;
 
 /**
  * @author Arnab Dutta
- * 
  */
-public class SPARQLEndPointQueryAPI {
+public class SPARQLEndPointQueryAPI
+{
 
-	public static void queryDBPedia(final String QUERY) {
+    Logger logger = Logger.getLogger(SPARQLEndPointQueryAPI.class.getName());
 
-		Logger logger = Logger
-				.getLogger(SPARQLEndPointQueryAPI.class.getName());
+    public static void queryDBPedia(final String QUERY)
+    {
 
-		String sparqlQueryString1 = QUERY;
+        Logger logger = Logger.getLogger(SPARQLEndPointQueryAPI.class.getName());
 
-		Query query = QueryFactory.create(sparqlQueryString1);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(
-				"http://dbpedia.org/sparql", query);
+        String sparqlQueryString1 = QUERY;
 
-		// get the result set
-		ResultSet results = qexec.execSelect();
+        Query query = QueryFactory.create(sparqlQueryString1);
+        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
 
-		List<QuerySolution> listResults = ResultSetFormatter.toList(results);
+        // get the result set
+        ResultSet results = qexec.execSelect();
 
-		List<String> listVarnames = results.getResultVars();
-		//logger.info(" results var = " + results.getResultVars().toString());
+        List<QuerySolution> listResults = ResultSetFormatter.toList(results);
 
-		for (QuerySolution querySol : listResults) {
-			for (int indx = 0; indx < listVarnames.size();) {
-				String key = querySol.get(listVarnames.get(indx++)).toString();
-				String value = querySol.get(listVarnames.get(indx++))
-						.toString();
-				logger.info(key + "  " + value);
+        List<String> listVarnames = results.getResultVars();
+        // logger.info(" results var = " + results.getResultVars().toString());
 
-				//addToMap(key, value);
-			}
-		}
+        for (QuerySolution querySol : listResults) {
+            for (int indx = 0; indx < listVarnames.size();) {
+                String key = querySol.get(listVarnames.get(indx++)).toString();
+                String value = querySol.get(listVarnames.get(indx++)).toString();
+                logger.info(key + "  " + value);
 
-		/*
-		 * for (Iterator<?> it = DataIndexerImpl.MAP_PROPERTY_LABELS.entrySet()
-		 * .iterator(); it.hasNext();) { Map.Entry<Long, List<Long>> entry =
-		 * (Entry<Long, List<Long>>) it .next(); Long key = entry.getKey();
-		 * System.out.println(DataIndexerImpl.MAP_DBPEDIA_LITERALS.get(key) +
-		 * "  => "); for (Long val : entry.getValue()) {
-		 * System.out.print(DataIndexerImpl.MAP_DBPEDIA_LITERALS.get(val) +
-		 * ",  "); } System.out.println("\n");
-		 * 
-		 * }
-		 */
+                // addToMap(key, value);
+            }
+        }
 
-		qexec.close();
-	}
+        qexec.close();
+    }
 
-	private static void addToMap(String key, String value) {
+    public static ResultSet queryDBPediaEndPoint(final String QUERY)
+    {
 
-		List<Long> tempList;
+        Query query = QueryFactory.create(QUERY);
+        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
 
-		long propertyHash = Hasher.hash64(key);
-		long labelHash = Hasher.hash64(value);
+        // get the result set
+        ResultSet results = qexec.execSelect();
+        qexec.close();
 
-		// add the label names
-		DataIndexerImpl.MAP_DBPEDIA_LITERALS
-				.put(Long.valueOf(labelHash), value);
+        return results;
+    }
 
-		if (DataIndexerImpl.MAP_PROPERTY_LABELS.containsKey(propertyHash)) {
-			tempList = DataIndexerImpl.MAP_PROPERTY_LABELS.get(propertyHash);
-			tempList.add(labelHash);
-			DataIndexerImpl.MAP_PROPERTY_LABELS.put(propertyHash, tempList);
-		} else {
-			DataIndexerImpl.LIST_DBPEDIA_ENTITIES = new ArrayList<Long>();
-			DataIndexerImpl.LIST_DBPEDIA_ENTITIES.add(labelHash);
-			DataIndexerImpl.MAP_PROPERTY_LABELS.put(propertyHash,
-					DataIndexerImpl.LIST_DBPEDIA_ENTITIES);
-		}
-	}
+    private static void addToMap(String key, String value)
+    {
+
+        List<Long> tempList;
+
+        long propertyHash = Hasher.hash64(key);
+        long labelHash = Hasher.hash64(value);
+
+        // add the label names
+        DataIndexerImpl.MAP_DBPEDIA_LITERALS.put(Long.valueOf(labelHash), value);
+
+        if (DataIndexerImpl.MAP_PROPERTY_LABELS.containsKey(propertyHash)) {
+            tempList = DataIndexerImpl.MAP_PROPERTY_LABELS.get(propertyHash);
+            tempList.add(labelHash);
+            DataIndexerImpl.MAP_PROPERTY_LABELS.put(propertyHash, tempList);
+        } else {
+            DataIndexerImpl.LIST_DBPEDIA_ENTITIES = new ArrayList<Long>();
+            DataIndexerImpl.LIST_DBPEDIA_ENTITIES.add(labelHash);
+            DataIndexerImpl.MAP_PROPERTY_LABELS.put(propertyHash, DataIndexerImpl.LIST_DBPEDIA_ENTITIES);
+        }
+    }
 } // end class

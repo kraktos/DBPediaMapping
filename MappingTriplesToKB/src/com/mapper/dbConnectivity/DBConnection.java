@@ -106,7 +106,7 @@ public class DBConnection
      * @param statement Statement reference
      * @param resultSet ResultSet reference
      * @param queriedItem
-     * @param start
+     * @param startTime
      */
     public static void performDBOperation(Statement statement, ResultSet resultSet, String queriedItem,
         final String query)

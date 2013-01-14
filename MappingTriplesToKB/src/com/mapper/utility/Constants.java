@@ -38,15 +38,28 @@ public class Constants
     // tweaking these can dramatically effect the query response time
 
     // default 50% similarity and above, lower this value to fetch even lesser similar items
-    public static final float SIMILARITY = 0.6F;
+    public static final float SIMILARITY = 0.5F;
 
     // change the value to fetch these many records
-    public static final int MAX_RESULTS = 5;
+    public static final int MAX_RESULTS = 50;
 
     // Number of top k matching elements you wish to retrieve
     public static final int TOPK = 5;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "prison break";
+    public static final String SAMPLE_QUERY = "Lower_Saxony";
+    
+    
+    // *****************IE Engines output locations ***************************************************
+    
+    // location of the output file generated the IE Engine ReVerb 
+    public static final String IE_TUPLES_PATH="/home/arnab/Work/data/ReVerb/melGibsonOnly.csv";
+
+    // Delimiter used to parse the ReVerb extracted tuples
+    public static final String REVERB_IE_DELIMIT = "\t";
+
+    // Delimiter used to parse the ReVerb extracted tuples
+    public static final String NELL_IE_DELIMIT = "\t";
+    
 
 }

@@ -46,9 +46,9 @@ public class Utilities
     public static void printMap(Map< ? , ? > map)
     {
         for (Iterator< ? > it = map.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<Long, String> entry = (Entry<Long, String>) it.next();
-            Long key = entry.getKey();
-            String value = entry.getValue();
+            Map.Entry< ? , ? > entry = (Entry< ? , ? >) it.next();
+            Object key = entry.getKey();
+            Object value = entry.getValue();
             logger.info(key + "  " + value);
         }
     }
@@ -280,6 +280,13 @@ public class Utilities
     {
         long start = System.currentTimeMillis();
         return start;
+    }
+
+    public static void printList(List< ? > resultList)
+    {
+        for (int listCounter = 0; listCounter < resultList.size(); listCounter++) {
+            logger.debug(resultList.get(listCounter));
+        }
     }
 
 }

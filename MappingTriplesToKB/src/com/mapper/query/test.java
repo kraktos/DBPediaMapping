@@ -50,7 +50,7 @@ public class test
     public static void main(String[] args) throws IOException
     {
 
-        int factor = 26756001; // 5590001;//5580001;
+        int factor = 28476001; // 5590001;//5580001;
         String s = "";
 
         FileWriter fstream = new FileWriter(Constants.DBPEDIA_DATA_DIR + "/out.csv");
