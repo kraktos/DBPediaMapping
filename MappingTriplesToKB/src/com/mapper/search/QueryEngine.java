@@ -27,12 +27,19 @@ import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.mapper.indexer.DBPediaIndexBuilder;
 import com.mapper.query.SPARQLEndPointQueryAPI;
 import com.mapper.relationMatcher.QueryAPIWrapper;
+import com.mapper.relationMatcher.ResultDAO;
 import com.mapper.relationMatcher.TupleProcessor;
 import com.mapper.utility.Constants;
 import com.mapper.utility.Utilities;
 
 public class QueryEngine
 {
+    // Default Constructor
+    public QueryEngine()
+    {
+
+    }
+
     // logger
     public static Logger logger = Logger.getLogger(QueryEngine.class.getName());
 
@@ -43,36 +50,42 @@ public class QueryEngine
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public static List<String> doSearch(final String userQuery) throws Exception
+    public static List<ResultDAO> doSearch(final String userQuery) throws Exception
     {
         IndexReader reader = null;
         IndexSearcher searcher = null;
 
         Set<String> setURI = new HashSet<String>();
-        List<String> returnList = new ArrayList<String>();
+        List<ResultDAO> returnList = new ArrayList<ResultDAO>();
 
         String labelField = null;
         String uriField = null;
 
+        long start = 0;
+
         try {
 
+            // flag to determine if u need to recompute the indices
             if (Constants.INDEX_AGAIN) {
                 DBPediaIndexBuilder.indexer();
             }
-            long start = Utilities.startTimer();
+            // start timer
+            start = Utilities.startTimer();
 
             // create File object of our index directory
             File file = new File(Constants.DBPEDIA_INDEX_DIR);
 
             // create index reader object
             reader = IndexReader.open(FSDirectory.open(file));
+            // reader = DirectoryReader.open(FSDirectory.open(file));
 
             // create index searcher object
             searcher = new IndexSearcher(reader);
 
             // create the query term
-            Term term = new Term("labelCapsField", userQuery.toUpperCase());
-            FuzzyQuery fuzzyQuery = new FuzzyQuery(term, Constants.SIMILARITY);
+            Term term = new Term("labelField", userQuery);
+            FuzzyQuery fuzzyQuery =
+                new FuzzyQuery(term, Constants.SIMILARITY, (int) Constants.PREFIX_LENGTH_PERCENT * userQuery.length());
 
             // execute the search on top results
             TopDocs hits = searcher.search(fuzzyQuery, null, Constants.MAX_RESULTS);
@@ -80,34 +93,36 @@ public class QueryEngine
             if (hits.totalHits == 0)
                 throw new Exception();
 
+            // iterate the results
             for (ScoreDoc scoredoc : hits.scoreDocs) {
                 // Retrieve the matched document and show relevant details
                 Document doc = searcher.doc(scoredoc.doc);
 
                 uriField = doc.getFieldable("uriField").stringValue();
                 labelField = doc.getFieldable("labelField").stringValue();
+
+                // uriField = doc.get("uriField");
+                // labelField = doc.get("labelField");
                 double score = scoredoc.score / hits.getMaxScore();
 
-                // TODO
+                // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField + labelField);
                 if (isUnique) {
-                    // logger.info(labelField + " => " + uriField + "   " + score);
-                    returnList.add(uriField);
-                    // we are interested in
+                    logger.info(labelField + " => " + uriField + "   " + score);
+                    returnList.add(new ResultDAO(uriField, score));
+                    // we are interested in only the top k results
                     if (setURI.size() == Constants.TOPK) {
                         return returnList;
                     }
                 }
             }
 
-            Utilities.endTimer(start, "QUERY ANSWERED IN ");
-
         } catch (Exception ex) {
-
             logger.error("NO MATCHING RECORDS FOUND !! ");
         } finally {
             setURI.clear();
             setURI = null;
+            Utilities.endTimer(start, "QUERY ANSWERED IN ");
         }
         return returnList;
     }
@@ -121,10 +136,10 @@ public class QueryEngine
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public static List<String> performSearch(final String subjFromTuple, final String objFromTuple)
+    public static List<List<ResultDAO>> performSearch(final String subjFromTuple, final String objFromTuple)
         throws InterruptedException, ExecutionException
     {
-        List<String> retList = new ArrayList<String>();
+        List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
         long start = Utilities.startTimer();
 
         // we just need two threads to perform the search
@@ -132,8 +147,8 @@ public class QueryEngine
 
         // The idea is we parallely process the two queries simultaneously and receive back the results
         // to the main thread i.e here. This is not possible with Thread class.
-        Future<String> subjTask = pool.submit(new QueryAPIWrapper(subjFromTuple, start));
-        Future<String> objTask = pool.submit(new QueryAPIWrapper(objFromTuple, start));
+        Future<List<ResultDAO>> subjTask = pool.submit(new QueryAPIWrapper(subjFromTuple, start));
+        Future<List<ResultDAO>> objTask = pool.submit(new QueryAPIWrapper(objFromTuple, start));
 
         // receive back the results from the two thread runners
         // and add them to the return collection
@@ -148,8 +163,8 @@ public class QueryEngine
      * takes a subject and object from the DBPedia and tries to find all possible set of predicates connecting
      * these two two entities (subject and object)
      * 
-     * @param subject the DBPedia entity occuring as subject
-     * @param object the DBPedia entity occuring as object
+     * @param subject the DBPedia entity occurring as subject
+     * @param object the DBPedia entity occurring as object
      * @param actualPredicate the predicate coming form IE engines
      */
     public static void fetchPredicates(final String dbPediaSubj, final String dbPediaObj,
@@ -160,9 +175,15 @@ public class QueryEngine
         String sparqlQuery =
             "select ?predicates where {{<" + dbPediaSubj + "> ?predicates <" + dbPediaObj + ">} UNION {<" + dbPediaObj
                 + "> ?predicates <" + dbPediaSubj + ">}}";
+
+        // String sparqlQuery = "select ?predicates where {<" + dbPediaSubj + "> ?predicates <" + dbPediaObj + ">}";
+
         logger.info(sparqlQuery);
 
+        // fetch the result set
         ResultSet results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
+
+        // store in a local collection to iterate
         List<QuerySolution> listResults = ResultSetFormatter.toList(results);
 
         // if we have some results proceed
@@ -171,38 +192,50 @@ public class QueryEngine
             logger.info("'" + actualPredicateFromIE + "'" + " matches => ");
             // this is a possible set of matches for the given predicate
             for (QuerySolution querySol : listResults) {
-                String key = querySol.get(listVarnames.get(0)).toString();
-                logger.info(key + "  ");
+                String matchedProp = querySol.get(listVarnames.get(0)).toString();
+                logger.info(matchedProp + "  ");
 
                 // update the count for all such possibilities for a given predicate
-                updatePredicateMap(actualPredicateFromIE, key);
+                updatePredicateMap(actualPredicateFromIE, matchedProp);
             }
         }
-
     }
 
     /**
      * @param actualPredicateFromIE
-     * @param key
+     * @param matchedProp
      */
-    public static void updatePredicateMap(final String actualPredicateFromIE, String key)
+    public static void updatePredicateMap(final String actualPredicateFromIE, String matchedProp)
     {
         HashMap<String, Integer> propertyVsCountMap = null;
         // the map contains the key already, then just update its value map
         if (TupleProcessor.predicateSurfaceFormsMap.containsKey(actualPredicateFromIE)) {
-            // retrieve the whole map first
+            // update the count of this property first
+            int countIEPredicate = TupleProcessor.iePredicatesCountMap.get(actualPredicateFromIE);
+            TupleProcessor.iePredicatesCountMap.put(actualPredicateFromIE, countIEPredicate + 1);
+
+            // retrieve the whole map which is the value against "actualPredicateFromIE"
             propertyVsCountMap = TupleProcessor.predicateSurfaceFormsMap.get(actualPredicateFromIE);
+
             // if the current key is occurring in this map, increment its value
-            if (propertyVsCountMap.containsKey(key)) {
-                int value = propertyVsCountMap.get(key);
-                propertyVsCountMap.put(key, value + 1);
+            if (propertyVsCountMap.containsKey(matchedProp)) {
+                int value = propertyVsCountMap.get(matchedProp);
+                propertyVsCountMap.put(matchedProp, value + 1);
+
+                // add also keep a global count of the occurrence of this "matchedProp"
+                int dbPediaPropCount = TupleProcessor.dbPediaPredicatesCountMap.get(matchedProp);
+                TupleProcessor.dbPediaPredicatesCountMap.put(matchedProp, dbPediaPropCount + 1);
+
             } else { // add this new key as a possible prediction of the surface form
-                propertyVsCountMap.put(key, 1);
+                propertyVsCountMap.put(matchedProp, 1);
+                TupleProcessor.dbPediaPredicatesCountMap.put(matchedProp, 1);
             }
         } else { // add a new entry i.e a new predicate from IE data set
             propertyVsCountMap = new HashMap<String, Integer>();
-            propertyVsCountMap.put(key, 1);
+            propertyVsCountMap.put(matchedProp, 1);
             TupleProcessor.predicateSurfaceFormsMap.put(actualPredicateFromIE, propertyVsCountMap);
+            TupleProcessor.iePredicatesCountMap.put(actualPredicateFromIE, 1);
+            TupleProcessor.dbPediaPredicatesCountMap.put(matchedProp, 1);
         }
     }
 

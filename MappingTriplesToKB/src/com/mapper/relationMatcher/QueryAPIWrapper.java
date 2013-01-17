@@ -19,7 +19,7 @@ import com.mapper.utility.Utilities;
  * @author Arnab Dutta
  */
 public class QueryAPIWrapper implements Callable // implements Runnable
-    <String>
+    <List<ResultDAO>>
 {
     // define Logger
     static Logger logger = Logger.getLogger(QueryAPIWrapper.class.getName());
@@ -39,16 +39,16 @@ public class QueryAPIWrapper implements Callable // implements Runnable
     }
 
     @Override
-    public String call() throws Exception
+    public List<ResultDAO> call() throws Exception
     {
         String topMathchedEntity = null;
-        List<String> list = null;
+        List<ResultDAO> list = null;
         try {
 
             // make the search operation
             list = QueryEngine.doSearch(this.queryTerm);
 
-            topMathchedEntity = list.get(0);
+            // topMathchedEntity = list.get(0);
 
             // Let the thread sleep for a while.
             Thread.sleep(500);
@@ -59,10 +59,11 @@ public class QueryAPIWrapper implements Callable // implements Runnable
         } catch (Exception e) {
             logger.error("Error while searching for the term " + this.queryTerm + ";  " + e.getMessage());
         } finally {
-            list.clear();
-            list = null;
+            // list.clear();
+            // list = null;
         }
-        return topMathchedEntity;
+        // return topMathchedEntity;
+        return list;
     }
 
 }

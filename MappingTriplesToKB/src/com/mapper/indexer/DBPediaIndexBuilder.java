@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -14,11 +13,12 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.LogMergePolicy;
+import org.apache.lucene.index.SegmentInfo;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import com.hp.hpl.jena.sparql.function.library.strlen;
 import com.mapper.utility.Constants;
 import com.mapper.utility.FileUtil;
 import com.mapper.utility.Utilities;
@@ -51,7 +51,7 @@ public class DBPediaIndexBuilder
             System.exit(1);
         }
 
-        logger.info("Start indexing");
+        logger.info("Started indexing");
 
         // get a reference to index directory file
         indexFilePath = new File(Constants.DBPEDIA_INDEX_DIR);
@@ -61,22 +61,35 @@ public class DBPediaIndexBuilder
             FileUtil.emptyIndexDir(indexFilePath);
 
         analyzer = new StandardAnalyzer(Version.LUCENE_36);
-        Directory dir = FSDirectory.open(indexFilePath);
-
         IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer);
-        writer = new IndexWriter(dir, iwc);
-
+        
+        //create a directory of the Indices
+        Directory indexDirectory = FSDirectory.open(indexFilePath);
+        
+        //load in RAM the index directory
+        //RAMDirectory ramDir = new RAMDirectory(indexDirectory);
+        
+        // create a Index writer
+        writer = new IndexWriter(indexDirectory, iwc);
+      
         // start timer
         long start = Utilities.startTimer();
 
-        // rename all files
-        // FileUtil.renameFiles(docDir);
-
         // start indexing iteratively all files at the location
         indexDocs(writer, docDir);
-
+        
+        new LogMergePolicy()
+        {            
+            @Override
+            protected long size(SegmentInfo arg0) throws IOException
+            {
+                return 0;
+            }
+        }.setMergeFactor(3); 
+        
         writer.forceMerge(1);
         writer.close();
+        writer.commit();
 
         // end timer
         Utilities.endTimer(start, "INDEXING COMPLETED IN ");
@@ -112,9 +125,12 @@ public class DBPediaIndexBuilder
                 String strLine = "";
                 FileInputStream fstream = null;
 
+                /**
+                 * Lucene indexes on particular fields. We crerate two fields for the URI and one for the labels
+                 */
+
                 Field uriField = null;
                 Field labelField = null;
-                Field labelCapsField = null;
 
                 try {
                     fstream = new FileInputStream(file);
@@ -129,6 +145,7 @@ public class DBPediaIndexBuilder
 
                     // read comma separated file line by line
                     while ((strLine = br.readLine()) != null && strLine.startsWith(Constants.DBPEDIA_HEADER)) {
+                        logger.debug(strLine);
                         // break comma separated line using ","
                         document = new Document();
                         array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
@@ -141,15 +158,15 @@ public class DBPediaIndexBuilder
                         labelField = new Field("labelField", label.trim(), Field.Store.YES, Field.Index.NOT_ANALYZED);
                         document.add(labelField);
 
-                        label = label.trim().toUpperCase();
-                        labelCapsField = new Field("labelCapsField", label, Field.Store.YES, Field.Index.NOT_ANALYZED);
-                        document.add(labelCapsField);
-
+                        /*
+                         * label = label.trim().toUpperCase(); labelCapsField = new Field("labelCapsField", label,
+                         * Field.Store.YES, Field.Index.NOT_ANALYZED); document.add(labelCapsField);
+                         */
                         writer.addDocument(document);
                     }
 
                 } catch (Exception ex) {
-                    logger.error(ex.getMessage());
+                    logger.error(ex.getMessage() + " while reading  " + strLine);
 
                 } finally {
                     // Close the input stream

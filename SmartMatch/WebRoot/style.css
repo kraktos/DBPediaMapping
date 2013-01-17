@@ -1,0 +1,259 @@
+/*
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+table {
+	table-layout: fixed;
+	width: 100%;
+	cellpadding : 5px;
+	cellspacing : 3px;
+}
+
+
+body {
+	position: relative;
+	overflow: hidden;
+	background: url('hd.jpg') no-repeat scroll;
+	background-size: 100% 100%;
+	min-height: 700px;
+}
+
+.front-bg {
+	position: fixed;
+	width: 200%;
+	height: 200%;
+	left: 0%;
+	background-image: url("hd.png") no-repeat 0 0;
+}
+
+.submit {
+	background: url("search_button_green.png") no-repeat 0 0;
+	border: none;
+	cursor: pointer;
+	height: 30px;
+	width: 40px;
+}
+
+.button {
+	background: url("configure.png") no-repeat;
+	cursor: pointer;
+	border: none;
+	height: 30px;
+	width: 40px;
+}
+
+.styled-button-1 {
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 0 0;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 0 0;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 1px 0 0;
+	color: #333;
+	background-color: #FA2;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: none;
+	font-family: 'Helvetica Neue', Arial, sans-serif;
+	font-size: 16px;
+	font-weight: 700;
+	height: 32px;
+	padding: 4px 16px;
+	text-shadow: #FE6 0 1px 0
+}
+
+.thumb {
+	max-width: 700px;
+	max-height: 700px;
+	width: expression(this.width >                                         100 ? 
+		      
+		                    
+		           "100px" :            
+		 
+		          
+		               true);
+	height: expression(this.height >                                         100 ? 
+		      
+		                    
+		           "100px" :            
+		 
+		          
+		               true);
+}
+
+.style6 {
+	border-bottom: 4px solid orange;
+	border-bottom-left-radius: 10px;
+	border-left: 4px solid orange;
+	border-right: 0 none #FFF;
+	border-top: 4px solid orange;
+	border-top-left-radius: 10px;
+	float: left;
+	font-size: 15pt;
+	height: 32px;
+	margin-top: .2cm;
+	padding: 2px;
+	width: 95%
+}
+
+button {
+	border: 1px solid maroon;
+	background-color: red;
+	border-radius: 4px;
+	box-shadow: inset 0 1px 3px pink, inset 0 -5px 15px maroon, 0 2px 1px
+		black;
+	-o-box-shadow: inset 0 1px 3px pink, inset 0 -5px 15px maroon, 0 2px 1px
+		black;
+	-webkit-box-shadow: inset 0 1px 3px pink, inset 0 -5px 15px maroon, 0
+		2px 1px black;
+	-moz-box-shadow: inset 0 1px 3px pink, inset 0 -5px 15px maroon, 0 2px
+		1px black;
+	color: white;
+	text-shadow: 0 1px 1px black;
+	padding: 5px 30px;
+}
+
+.HEADLINE {
+	font-family: "Lucida Grande", Tahoma;;
+	font-size: 40px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	text-align: center;
+	font-weight: bold;
+	color: #222;
+}
+
+.SUBHEADLINE {
+	font-family: "Lucida Grande", Tahoma;
+	font-size: 20px;
+	font-weight: lighter;
+	font-variant: normal;
+	text-transform: uppercase;
+	color: #666666;
+	margin-top: 10px;
+	text-align: center !important;
+	letter-spacing: 0.6em;
+}
+
+.CSSTableGenerator {
+	margin: 0px;
+	padding: 0px;
+	width: 50%;
+	
+	border: 1px solid #000000;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	border-top-left-radius: 0px;
+}
+
+.CSSTableGenerator table {
+	width: 100%;
+	height: 50%;
+	margin: 0px;
+	padding: 4px;
+}
+
+.CSSTableGenerator tr:last-child td:last-child {
+	-moz-border-radius-bottomright: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.CSSTableGenerator table tr:first-child td:first-child {
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	border-top-left-radius: 0px;
+}
+
+.CSSTableGenerator table tr:first-child td:last-child {
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.CSSTableGenerator tr:last-child td:first-child {
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.CSSTableGenerator tr:hover td {
+	
+}
+
+.CSSTableGenerator tr:nth-child(odd) {
+	background-color: #ffaa56;
+}
+
+.CSSTableGenerator tr:nth-child(even) {
+	background-color: #ffffff;
+}
+
+.CSSTableGenerator td {
+	vertical-align: middle;
+	border: 1px solid #000000;
+	border-width: 0px 1px 1px 0px;
+	text-align: center;
+	padding: 7px;
+	font-size: 15px;
+	font-family: Arial;
+	font-weight: normal;
+	color: #000000;
+}
+
+.CSSTableGenerator tr:last-child td {
+	border-width: 0px 1px 0px 0px;
+}
+
+.CSSTableGenerator tr td:last-child {
+	border-width: 0px 0px 1px 0px;
+}
+
+.CSSTableGenerator tr:last-child td:last-child {
+	border-width: 0px 0px 0px 0px;
+}
+
+.CSSTableGenerator tr:first-child td {
+	background: -o-linear-gradient(bottom, #ff7f00 5%, #bf5f00 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff7f00
+		), color-stop(1, #bf5f00) );
+	background: -moz-linear-gradient(center top, #ff7f00 5%, #bf5f00 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00",
+		endColorstr="#bf5f00" );
+	background: -o-linear-gradient(top, #ff7f00, bf5f00);
+	background-color: #ff7f00;
+	border: 0px solid #000000;
+	text-align: center;
+	border-width: 0px 0px 1px 1px;
+	font-size: 14px;
+	font-family: Arial;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+.CSSTableGenerator tr:first-child:hover td {
+	background: -o-linear-gradient(bottom, #ff7f00 5%, #bf5f00 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff7f00
+		), color-stop(1, #bf5f00) );
+	background: -moz-linear-gradient(center top, #ff7f00 5%, #bf5f00 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00",
+		endColorstr="#bf5f00" );
+	background: -o-linear-gradient(top, #ff7f00, bf5f00);
+	background-color: #ff7f00;
+}
+
+.CSSTableGenerator tr:first-child td:first-child {
+	border-width: 0px 0px 1px 0px;
+}
+
+.CSSTableGenerator tr:first-child td:last-child {
+	border-width: 0px 0px 1px 1px;
+}

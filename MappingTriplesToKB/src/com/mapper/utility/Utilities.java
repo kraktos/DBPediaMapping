@@ -285,7 +285,7 @@ public class Utilities
     public static void printList(List< ? > resultList)
     {
         for (int listCounter = 0; listCounter < resultList.size(); listCounter++) {
-            logger.debug(resultList.get(listCounter));
+            logger.info(resultList.get(listCounter));
         }
     }
 

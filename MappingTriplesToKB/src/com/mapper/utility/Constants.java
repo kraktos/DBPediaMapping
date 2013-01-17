@@ -29,13 +29,18 @@ public class Constants
 
     // *****************INDEXING STRATEGIES ************************************************
     // flag to determine whether to concat to old indices or recreate all from scratch
-    public static final boolean EMPTY_INDICES = false;
+    public static final boolean EMPTY_INDICES = true;
 
     // Flag to denote if indexing is to be done or query on old indices
     public static final boolean INDEX_AGAIN = false;
 
     // *****************FETCH STRATEGIES ***************************************************
     // tweaking these can dramatically effect the query response time
+
+    // percentage length of common (non-fuzzy) prefix in the user query you want to match, higher value
+    // makes it to search over smaller data matches not on all of them. Here it means 80% of the query term
+    // should contain in the result sets
+    public static final float PREFIX_LENGTH_PERCENT = 0.6F;
 
     // default 50% similarity and above, lower this value to fetch even lesser similar items
     public static final float SIMILARITY = 0.5F;
@@ -47,19 +52,17 @@ public class Constants
     public static final int TOPK = 5;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "Lower_Saxony";
-    
-    
+    public static final String SAMPLE_QUERY = "awarded";
+
     // *****************IE Engines output locations ***************************************************
-    
-    // location of the output file generated the IE Engine ReVerb 
-    public static final String IE_TUPLES_PATH="/home/arnab/Work/data/ReVerb/melGibsonOnly.csv";
+
+    // location of the output file generated the IE Engine ReVerb
+    public static final String IE_TUPLES_PATH = "/home/arnab/Work/data/ReVerb/melGibsonOnly.csv";
 
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String REVERB_IE_DELIMIT = "\t";
 
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String NELL_IE_DELIMIT = "\t";
-    
 
 }

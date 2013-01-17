@@ -7,8 +7,8 @@ public class FastJoinWrapper {
 
 	public static String FASTJOIN_EXE_UNX; //"/home/arnab/Work/fastjoin/linux/FastJoin";// "E:/projects/infolis/code/uma-cs/LOHAI2/fastjoin/win32/FastJoin.exe";
 	public static String FASTJOIN_MEASURE = "FDICE";
-	public static double FASTJOIN_DELTA = 0.4;
-	public static double FASTJOIN_TAU = 0.4;
+	public static double FASTJOIN_DELTA = 0.38;
+	public static double FASTJOIN_TAU = 0.38;
 
 	/**
 	 * @param args
@@ -19,8 +19,8 @@ public class FastJoinWrapper {
 			FASTJOIN_EXE_UNX = args[0];
 		}
 		
-		join("/home/arnab/Work/fastjoin/test/source.txt",
-				"/home/arnab/Work/fastjoin/test/target.txt");
+		join("/home/arnab/Work/data/NELL/propertySource.txt",
+				"/home/arnab/Work/data/DBPedia/propertyTarget2.txt");
 	}
 
 	public static void join(String sourcePath, String targetPath) {
