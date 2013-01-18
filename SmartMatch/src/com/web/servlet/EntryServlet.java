@@ -61,6 +61,7 @@ public class EntryServlet extends HttpServlet
 
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
 
+        // initailize with some default values
         float score = Constants.SIMILARITY;
         int topK = Constants.TOPK;
 

@@ -75,21 +75,19 @@
 			<tr>
 				<td><input class="style6" title="Enter your search subject"
 					type="text" value="Subject" onClick="(this.value='')"
-					name="subject" />
-				</td>
+					name="subject" /></td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text" value="Predicate" onClick="(this.value='')"
-					name="predicate" />
-				</td>
+					name="predicate" /></td>
 				<td><input class="style6" type="text"
 					title="Enter your search object" value="Object"
-					onClick="(this.value='')" name="object" />
-				</td>
+					onClick="(this.value='')" name="object" /></td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');"></td>
+					onclick="toggle4('box');">
+				</td>
 			</tr>
 
 			<!-- Parameter Extra Fields -->
@@ -99,9 +97,24 @@
 
 				<td>
 					<div id="box" style="display: none;padding: 5px;">
-						<input class="style6" title="Set threshold similarity" type="text"
-							value="0.5" name="sim" size="40" /> <input class="style6"
-							title="Top K results" type="text" value="5" name="topk" size="40" />
+
+						<table>
+							<tr>
+								<td><h4 class=SUBHEADLINE2>Similarity</h4></td>
+								<td><input class="style5" title="Set threshold similarity"
+									type="text" value="0.5" name="sim" size="40" /></td>
+							</tr>
+							<tr>
+
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
+								</td>
+								<td><input class="style5" title="Top K results" type="text"
+									value="5" name="topk" size="40" />
+								</td>
+							</tr>
+
+						</table>
+
 					</div></td>
 
 

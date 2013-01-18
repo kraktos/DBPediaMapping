@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.FuzzyQuery;
@@ -34,10 +35,25 @@ import com.mapper.utility.Utilities;
 
 public class QueryEngine
 {
+
+    private static int TOP_K = Constants.TOPK;
+
+    private static float SIM = Constants.SIMILARITY;
+
     // Default Constructor
     public QueryEngine()
     {
 
+    }
+
+    public static void setTopK(int topK)
+    {
+        TOP_K = topK;
+    }
+
+    public static void setSimilarity(float sim)
+    {
+        SIM = sim;
     }
 
     // logger
@@ -50,7 +66,7 @@ public class QueryEngine
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public static List<ResultDAO> doSearch(final String userQuery) throws Exception
+    public static List<ResultDAO> doSearch(String userQuery) throws Exception
     {
         IndexReader reader = null;
         IndexSearcher searcher = null;
@@ -76,16 +92,15 @@ public class QueryEngine
             File file = new File(Constants.DBPEDIA_INDEX_DIR);
 
             // create index reader object
-            reader = IndexReader.open(FSDirectory.open(file));
-            // reader = DirectoryReader.open(FSDirectory.open(file));
+            // reader = IndexReader.open(FSDirectory.open(file));
+            reader = DirectoryReader.open(FSDirectory.open(file));
 
             // create index searcher object
             searcher = new IndexSearcher(reader);
 
-            // create the query term
-            Term term = new Term("labelField", userQuery);
-            FuzzyQuery fuzzyQuery =
-                new FuzzyQuery(term, Constants.SIMILARITY, (int) Constants.PREFIX_LENGTH_PERCENT * userQuery.length());
+            // create the fuzzy query
+
+            FuzzyQuery fuzzyQuery = new FuzzyQuery(new Term("labelField", userQuery));
 
             // execute the search on top results
             TopDocs hits = searcher.search(fuzzyQuery, null, Constants.MAX_RESULTS);
@@ -98,20 +113,20 @@ public class QueryEngine
                 // Retrieve the matched document and show relevant details
                 Document doc = searcher.doc(scoredoc.doc);
 
-                uriField = doc.getFieldable("uriField").stringValue();
-                labelField = doc.getFieldable("labelField").stringValue();
+                // uriField = doc.getFieldable("uriField").stringValue();
+                // labelField = doc.getFieldable("labelField").stringValue();
 
-                // uriField = doc.get("uriField");
-                // labelField = doc.get("labelField");
+                uriField = doc.get("uriField");
+                labelField = doc.get("labelField");
                 double score = scoredoc.score / hits.getMaxScore();
 
                 // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField + labelField);
                 if (isUnique) {
                     logger.info(labelField + " => " + uriField + "   " + score);
-                    returnList.add(new ResultDAO(uriField, score));
+                    returnList.add(new ResultDAO(uriField, Math.round(score * 100.0)));
                     // we are interested in only the top k results
-                    if (setURI.size() == Constants.TOPK) {
+                    if (setURI.size() == TOP_K) {
                         return returnList;
                     }
                 }

@@ -8,13 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.LogMergePolicy;
-import org.apache.lucene.index.SegmentInfo;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -41,7 +40,7 @@ public class DBPediaIndexBuilder
     {
 
         IndexWriter writer = null;
-        StandardAnalyzer analyzer = null;
+        Analyzer analyzer = null;
         File indexFilePath = null;
 
         final File docDir = new File(Constants.DBPEDIA_DATA_DIR);
@@ -60,36 +59,25 @@ public class DBPediaIndexBuilder
         if (Constants.EMPTY_INDICES)
             FileUtil.emptyIndexDir(indexFilePath);
 
-        analyzer = new StandardAnalyzer(Version.LUCENE_36);
-        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_36, analyzer);
-        
-        //create a directory of the Indices
+        analyzer = Constants.LUCENE_ANALYZER;
+        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+        iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+
+        // create a directory of the Indices
         Directory indexDirectory = FSDirectory.open(indexFilePath);
-        
-        //load in RAM the index directory
-        //RAMDirectory ramDir = new RAMDirectory(indexDirectory);
-        
+
         // create a Index writer
         writer = new IndexWriter(indexDirectory, iwc);
-      
+
         // start timer
         long start = Utilities.startTimer();
 
         // start indexing iteratively all files at the location
         indexDocs(writer, docDir);
-        
-        new LogMergePolicy()
-        {            
-            @Override
-            protected long size(SegmentInfo arg0) throws IOException
-            {
-                return 0;
-            }
-        }.setMergeFactor(3); 
-        
+
         writer.forceMerge(1);
-        writer.close();
         writer.commit();
+        writer.close();
 
         // end timer
         Utilities.endTimer(start, "INDEXING COMPLETED IN ");
@@ -131,6 +119,7 @@ public class DBPediaIndexBuilder
 
                 Field uriField = null;
                 Field labelField = null;
+                Field labelCapsField = null;
 
                 try {
                     fstream = new FileInputStream(file);
@@ -151,17 +140,13 @@ public class DBPediaIndexBuilder
                         array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
 
                         uri = (array[0] != null) ? array[0] : "";
-                        uriField = new Field("uriField", uri.trim(), Field.Store.YES, Field.Index.NOT_ANALYZED);
+                        uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
                         document.add(uriField);
 
                         label = (array[1] != null) ? array[1] : "";
-                        labelField = new Field("labelField", label.trim(), Field.Store.YES, Field.Index.NOT_ANALYZED);
+                        labelField = new StringField("labelField", label.trim(), Field.Store.YES);
                         document.add(labelField);
 
-                        /*
-                         * label = label.trim().toUpperCase(); labelCapsField = new Field("labelCapsField", label,
-                         * Field.Store.YES, Field.Index.NOT_ANALYZED); document.add(labelCapsField);
-                         */
                         writer.addDocument(document);
                     }
 

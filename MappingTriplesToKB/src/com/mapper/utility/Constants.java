@@ -3,6 +3,9 @@
  */
 package com.mapper.utility;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
+
 /**
  * This class stores a set of constants required for the application
  * 
@@ -28,11 +31,14 @@ public class Constants
     public static final String DBPEDIA_HEADER = "http://dbpedia.org/";
 
     // *****************INDEXING STRATEGIES ************************************************
+    // change here to use different analyzers
+    public static final Analyzer LUCENE_ANALYZER = new KeywordAnalyzer();
+
     // flag to determine whether to concat to old indices or recreate all from scratch
     public static final boolean EMPTY_INDICES = true;
 
     // Flag to denote if indexing is to be done or query on old indices
-    public static final boolean INDEX_AGAIN = false;
+    public static final boolean INDEX_AGAIN = true;
 
     // *****************FETCH STRATEGIES ***************************************************
     // tweaking these can dramatically effect the query response time
@@ -40,10 +46,10 @@ public class Constants
     // percentage length of common (non-fuzzy) prefix in the user query you want to match, higher value
     // makes it to search over smaller data matches not on all of them. Here it means 80% of the query term
     // should contain in the result sets
-    public static final float PREFIX_LENGTH_PERCENT = 0.6F;
+    public static final float PREFIX_LENGTH_PERCENT = 0.1F;
 
     // default 50% similarity and above, lower this value to fetch even lesser similar items
-    public static final float SIMILARITY = 0.5F;
+    public static final float SIMILARITY = 0.1F;
 
     // change the value to fetch these many records
     public static final int MAX_RESULTS = 50;
@@ -52,7 +58,7 @@ public class Constants
     public static final int TOPK = 5;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "awarded";
+    public static final String SAMPLE_QUERY = "villa real";
 
     // *****************IE Engines output locations ***************************************************
 

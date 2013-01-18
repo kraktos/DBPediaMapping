@@ -94,6 +94,20 @@ body {
 	padding: 2px;
 	width: 95%
 }
+.style5 {
+	border-bottom: 4px solid orange;
+	border-bottom-left-radius: 10px;
+	border-left: 4px solid orange;
+	border-right: 0 none #FFF;
+	border-top: 4px solid orange;
+	border-top-left-radius: 10px;
+	float: left;
+	font-size: 15pt;
+	height: 32px;
+	margin-top: .1cm;
+	padding: 2px;
+	width: 92%
+}
 
 button {
 	border: 1px solid maroon;
@@ -132,6 +146,17 @@ button {
 	margin-top: 10px;
 	text-align: center !important;
 	letter-spacing: 0.6em;
+}
+.SUBHEADLINE2 {
+	font-family: "Lucida Grande", Tahoma;
+	font-size: 14px;
+	font-weight: lighter;
+	font-variant: normal;
+	text-transform: uppercase;
+	color: #666666;
+	margin-top: 20px;
+	text-align: center !important;
+	letter-spacing: 0.3em;
 }
 
 .CSSTableGenerator {
