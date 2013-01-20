@@ -16,10 +16,15 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.store.FSDirectory;
 
 import com.hp.hpl.jena.query.QuerySolution;
@@ -33,12 +38,15 @@ import com.mapper.relationMatcher.TupleProcessor;
 import com.mapper.utility.Constants;
 import com.mapper.utility.Utilities;
 
+/**
+ * This class is an API for making query over the DBPedia indices
+ * 
+ * @author Arnab Dutta
+ */
 public class QueryEngine
 {
-
+    // The top k best matching results,
     private static int TOP_K = Constants.TOPK;
-
-    private static float SIM = Constants.SIMILARITY;
 
     // Default Constructor
     public QueryEngine()
@@ -46,14 +54,10 @@ public class QueryEngine
 
     }
 
+    // setter for Top k parameter
     public static void setTopK(int topK)
     {
         TOP_K = topK;
-    }
-
-    public static void setSimilarity(float sim)
-    {
-        SIM = sim;
     }
 
     // logger
@@ -98,12 +102,26 @@ public class QueryEngine
             // create index searcher object
             searcher = new IndexSearcher(reader);
 
-            // create the fuzzy query
+            // create the boolean query to trap all possible query
+            // normal full text query
+            Query query = new TermQuery(new Term("fullContentField", userQuery));
 
-            FuzzyQuery fuzzyQuery = new FuzzyQuery(new Term("labelField", userQuery));
+            // fuzzy query for spelling mistakes or suggestive results
+            FuzzyQuery fuzzyQuery = new FuzzyQuery(new Term("labelSmallField", userQuery));
+
+            // wild card queries for incomplete query terms
+            WildcardQuery wildCardQuery = new WildcardQuery(new Term("labelSmallField", userQuery.toLowerCase() + "*"));
+
+            // Create a boolean query by combining all the above 3 types
+            BooleanQuery booleanQuery = new BooleanQuery();
+            booleanQuery.add(query, BooleanClause.Occur.SHOULD);
+            booleanQuery.add(fuzzyQuery, BooleanClause.Occur.SHOULD);
+            booleanQuery.add(wildCardQuery, BooleanClause.Occur.SHOULD);
+
+            logger.debug("Framed Query = " + booleanQuery.toString());
 
             // execute the search on top results
-            TopDocs hits = searcher.search(fuzzyQuery, null, Constants.MAX_RESULTS);
+            TopDocs hits = searcher.search(booleanQuery, null, Constants.MAX_RESULTS);
 
             if (hits.totalHits == 0)
                 throw new Exception();
@@ -112,9 +130,6 @@ public class QueryEngine
             for (ScoreDoc scoredoc : hits.scoreDocs) {
                 // Retrieve the matched document and show relevant details
                 Document doc = searcher.doc(scoredoc.doc);
-
-                // uriField = doc.getFieldable("uriField").stringValue();
-                // labelField = doc.getFieldable("labelField").stringValue();
 
                 uriField = doc.get("uriField");
                 labelField = doc.get("labelField");
@@ -191,9 +206,7 @@ public class QueryEngine
             "select ?predicates where {{<" + dbPediaSubj + "> ?predicates <" + dbPediaObj + ">} UNION {<" + dbPediaObj
                 + "> ?predicates <" + dbPediaSubj + ">}}";
 
-        // String sparqlQuery = "select ?predicates where {<" + dbPediaSubj + "> ?predicates <" + dbPediaObj + ">}";
-
-        logger.info(sparqlQuery);
+        logger.debug(sparqlQuery);
 
         // fetch the result set
         ResultSet results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);

@@ -129,11 +129,12 @@ button {
 .HEADLINE {
 	font-family: "Lucida Grande", Tahoma;;
 	font-size: 40px;
-	margin-top: 10px;
-	margin-bottom: 0px;
+	margin-top: 15px;
+	margin-bottom: 10px;
 	text-align: center;
 	font-weight: bold;
-	color: #222;
+	color: #FFFFFF;
+	letter-spacing: 0.4em;
 }
 
 .SUBHEADLINE {
@@ -144,6 +145,8 @@ button {
 	text-transform: uppercase;
 	color: #666666;
 	margin-top: 10px;
+	margin-bottom: 10px;
+	
 	text-align: center !important;
 	letter-spacing: 0.6em;
 }

@@ -4,7 +4,8 @@
 package com.mapper.utility;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.util.Version;
 
 /**
  * This class stores a set of constants required for the application
@@ -32,13 +33,13 @@ public class Constants
 
     // *****************INDEXING STRATEGIES ************************************************
     // change here to use different analyzers
-    public static final Analyzer LUCENE_ANALYZER = new KeywordAnalyzer();
+    public static final Analyzer LUCENE_ANALYZER = new StandardAnalyzer(Version.LUCENE_40);
 
     // flag to determine whether to concat to old indices or recreate all from scratch
     public static final boolean EMPTY_INDICES = true;
 
     // Flag to denote if indexing is to be done or query on old indices
-    public static final boolean INDEX_AGAIN = true;
+    public static final boolean INDEX_AGAIN = false;
 
     // *****************FETCH STRATEGIES ***************************************************
     // tweaking these can dramatically effect the query response time
@@ -55,10 +56,10 @@ public class Constants
     public static final int MAX_RESULTS = 50;
 
     // Number of top k matching elements you wish to retrieve
-    public static final int TOPK = 5;
+    public static final int TOPK = 10;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "villa real";
+    public static final String SAMPLE_QUERY = "george washing";
 
     // *****************IE Engines output locations ***************************************************
 

@@ -61,21 +61,15 @@ public class EntryServlet extends HttpServlet
 
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
 
-        // initailize with some default values
-        float score = Constants.SIMILARITY;
+        // initialize with some default values
         int topK = Constants.TOPK;
 
         try {
-            // receive the query terms over request
-            if (request.getParameter("sim") != null) {
-                score = Float.parseFloat(request.getParameter("sim"));
-            }
             if (request.getParameter("topk") != null) {
                 topK = Integer.parseInt(request.getParameter("topk"));
             }
 
             QueryEngine.setTopK(topK);
-            QueryEngine.setSimilarity(score);
 
             String subject = request.getParameter("subject");
             String predicate = request.getParameter("predicate");
@@ -87,14 +81,14 @@ public class EntryServlet extends HttpServlet
                 retListSubj = retList.get(0);
                 retListObj = retList.get(1);
             } else {
-                if (!subject.equals("Subject")) {
+                if (!subject.equals("Subject") && !subject.equals("")) {
                     retListSubj = QueryEngine.doSearch(subject);
                 }
-                if (!object.equals("Object")) {
+                if (!object.equals("Object") && !object.equals("")) {
                     retListObj = QueryEngine.doSearch(object);
                 }
             }
-            if (!predicate.equals("Predicate")) {
+            if (!predicate.equals("Predicate") && !predicate.equals("")) {
                 retListPred = QueryEngine.doSearch(predicate);
             }
 

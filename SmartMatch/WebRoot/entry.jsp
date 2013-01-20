@@ -56,9 +56,7 @@
 		<div id="header" class="container">
 			<div id="logo">
 				<h1 class=HEADLINE>
-					<a
-						href="http://lski-001.informatik.uni-mannheim.de:8080/SmartMatch/">smartMATCH
-					</a>
+					<p>smartMATCH</p>
 				</h1>
 				<h2 class=SUBHEADLINE>
 					<p>DBPedia knows it !</p>
@@ -75,49 +73,45 @@
 			<tr>
 				<td><input class="style6" title="Enter your search subject"
 					type="text" value="Subject" onClick="(this.value='')"
-					name="subject" /></td>
+					name="subject" />
+				</td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text" value="Predicate" onClick="(this.value='')"
-					name="predicate" /></td>
+					name="predicate" />
+				</td>
 				<td><input class="style6" type="text"
 					title="Enter your search object" value="Object"
-					onClick="(this.value='')" name="object" /></td>
+					onClick="(this.value='')" name="object" />
+				</td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');">
-				</td>
+					onclick="toggle4('box');"></td>
 			</tr>
 
 			<!-- Parameter Extra Fields -->
 
 
 			<tr>
-
 				<td>
 					<div id="box" style="display: none;padding: 5px;">
-
 						<table>
+							<!-- 
 							<tr>
 								<td><h4 class=SUBHEADLINE2>Similarity</h4></td>
 								<td><input class="style5" title="Set threshold similarity"
 									type="text" value="0.5" name="sim" size="40" /></td>
 							</tr>
+							 -->
 							<tr>
 
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
-								</td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
 								<td><input class="style5" title="Top K results" type="text"
-									value="5" name="topk" size="40" />
-								</td>
+									value="5" name="topk" size="40" /></td>
 							</tr>
-
 						</table>
-
 					</div></td>
-
-
 			</tr>
 			<!-- Results Feilds -->
 			<tr>
@@ -130,7 +124,7 @@
 						<c:forEach items="<%= resultSub%>" var="matchingEntries">
 							<tr>
 								<td width="85%" style="word-wrap: break-word"><a
-									style="color: #00a000" href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
+									style="color: #00a000" href=${matchingEntries.fieldURI} target="_blank">${matchingEntries.fieldURI}</a>
 								</td>
 								<td width="15%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
 							</tr>
@@ -150,7 +144,7 @@
 						<c:forEach items="<%= resultPred%>" var="matchingEntries">
 							<tr>
 								<td width="85%" style="word-wrap: break-word"><a
-									style="color: #00a000" href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
+									style="color: #00a000" target="_blank" href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
 								</td>
 								<td width="15%" align="center" style="color: #ffffff;">${matchingEntries.score}</td>
 							</tr>
@@ -171,7 +165,7 @@
 						<c:forEach items="<%= resultObj%>" var="matchingEntries">
 							<tr>
 								<td style="word-wrap: break-word" width="85%"><a
-									style="color: #00a000" href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
+									style="color: #00a000" target="_blank" href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
 								</td>
 								<td width="15%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
 							</tr>
