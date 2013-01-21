@@ -27,15 +27,12 @@ public class QueryAPIWrapper implements Callable // implements Runnable
     // the query term
     String queryTerm;
 
-    long startTime;
-
     /**
      * @param queryTerm
      */
-    public QueryAPIWrapper(String queryTerm, long start)
+    public QueryAPIWrapper(String queryTerm)
     {
         this.queryTerm = queryTerm;
-        this.startTime = start;
     }
 
     @Override
@@ -52,7 +49,6 @@ public class QueryAPIWrapper implements Callable // implements Runnable
 
             // Let the thread sleep for a while.
             Thread.sleep(500);
-            Utilities.endTimer(this.startTime, "ANSWERED IN ");
 
         } catch (InterruptedException e) {
             logger.error("Child interrupted.");

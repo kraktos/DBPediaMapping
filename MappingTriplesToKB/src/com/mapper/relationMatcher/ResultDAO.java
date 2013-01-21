@@ -19,13 +19,13 @@ public class ResultDAO
     /**
      * stores the score
      */
-    private String score;
+    private double score;
 
     /**
      * @param fieldURI
      * @param score
      */
-    public ResultDAO(String fieldURI, String score)
+    public ResultDAO(String fieldURI, double score)
     {
         this.fieldURI = fieldURI;
         this.score = score;
@@ -42,7 +42,7 @@ public class ResultDAO
     /**
      * @return the score
      */
-    public String getScore()
+    public double getScore()
     {
         return score;
     }

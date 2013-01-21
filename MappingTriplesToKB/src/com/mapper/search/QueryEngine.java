@@ -1,6 +1,7 @@
 package com.mapper.search;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.store.FSDirectory;
 
+import com.hp.hpl.jena.graph.query.Expression.Util;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
@@ -127,9 +129,6 @@ public class QueryEngine
             if (hits.totalHits == 0)
                 throw new Exception();
 
-            NumberFormat defaultFormat = NumberFormat.getPercentInstance();
-            defaultFormat.setMinimumFractionDigits(2);
-
             // iterate the results
             for (ScoreDoc scoredoc : hits.scoreDocs) {
                 // Retrieve the matched document and show relevant details
@@ -140,11 +139,10 @@ public class QueryEngine
                 double score = scoredoc.score / hits.getMaxScore();
 
                 // only add the unique entries(URI and label combination)
-                boolean isUnique = Utilities.checkUniqueness(setURI, uriField + labelField.toLowerCase());
+                boolean isUnique = Utilities.checkUniqueness(setURI, uriField);
                 if (isUnique) {
-
-                    logger.info(labelField + " => " + uriField + "   " + defaultFormat.format(score));
-                    returnList.add(new ResultDAO(uriField, defaultFormat.format(score)));
+                    logger.info(labelField + " => " + uriField + "   " + Math.round(score * 100));
+                    returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {
                         return returnList;
@@ -175,15 +173,14 @@ public class QueryEngine
         throws InterruptedException, ExecutionException
     {
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
-        long start = Utilities.startTimer();
 
         // we just need two threads to perform the search
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
         // The idea is we parallely process the two queries simultaneously and receive back the results
         // to the main thread i.e here. This is not possible with Thread class.
-        Future<List<ResultDAO>> subjTask = pool.submit(new QueryAPIWrapper(subjFromTuple, start));
-        Future<List<ResultDAO>> objTask = pool.submit(new QueryAPIWrapper(objFromTuple, start));
+        Future<List<ResultDAO>> subjTask = pool.submit(new QueryAPIWrapper(subjFromTuple));
+        Future<List<ResultDAO>> objTask = pool.submit(new QueryAPIWrapper(objFromTuple));
 
         // receive back the results from the two thread runners
         // and add them to the return collection
@@ -202,29 +199,53 @@ public class QueryEngine
      * @param object the DBPedia entity occurring as object
      * @param actualPredicate the predicate coming form IE engines
      */
-    public static void fetchPredicates(final String dbPediaSubj, final String dbPediaObj,
+    public static void fetchPredicates(final List<ResultDAO> list, final List<ResultDAO> list2,
         final String actualPredicateFromIE)
     {
-        logger.info(dbPediaSubj + " " + dbPediaObj);
 
-        String sparqlQuery =
-            "select ?predicates where {{<" + dbPediaSubj + "> ?predicates <" + dbPediaObj + ">} UNION {<" + dbPediaObj
-                + "> ?predicates <" + dbPediaSubj + ">}}";
+        List<String> possibleSubjs = new ArrayList<String>();
+        List<String> possibleObjs = new ArrayList<String>();
+        String sparqlQuery = null;
+        List<List<QuerySolution>> listResults = new ArrayList<List<QuerySolution>>();
+        ResultSet results = null;
 
-        logger.debug(sparqlQuery);
+        for (int listCounter = 0; listCounter < list.size(); listCounter++) {
+            if (list.get(listCounter).getScore() == 100) {
+                possibleSubjs.add(list.get(listCounter).getFieldURI());
+            }
+        }
 
-        // fetch the result set
-        ResultSet results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
+        for (int listCounter = 0; listCounter < list2.size(); listCounter++) {
+            if (list2.get(listCounter).getScore() == 100) {
+                possibleObjs.add(list2.get(listCounter).getFieldURI());
+            }
+        }
 
-        // store in a local collection to iterate
-        List<QuerySolution> listResults = ResultSetFormatter.toList(results);
+        // we only take all possible subjects and objects if the score is '100%' and try to see from them what possible
+        // predicates we have
+        for (String subj : possibleSubjs) {
+            for (String obj : possibleObjs) {
+
+                sparqlQuery =
+                    "select ?predicates where {{<" + subj + "> ?predicates <" + obj + ">} UNION {<" + obj
+                        + "> ?predicates <" + subj + ">}}";
+                logger.info(sparqlQuery);
+
+                // fetch the result set
+                results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
+
+                // store in a local collection to iterate
+                listResults.add(ResultSetFormatter.toList(results));
+            }
+        }
+
+        logger.info("'" + actualPredicateFromIE + "'" + " matches => ");
 
         // if we have some results proceed
-        if (listResults.size() > 0) {
+        for (List<QuerySolution> listResult : listResults) {
             List<String> listVarnames = results.getResultVars();
-            logger.info("'" + actualPredicateFromIE + "'" + " matches => ");
             // this is a possible set of matches for the given predicate
-            for (QuerySolution querySol : listResults) {
+            for (QuerySolution querySol : listResult) {
                 String matchedProp = querySol.get(listVarnames.get(0)).toString();
                 logger.info(matchedProp + "  ");
 

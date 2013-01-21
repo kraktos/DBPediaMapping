@@ -63,7 +63,7 @@ public class NellTupleProcessor implements TupleProcessor
                 List<List<ResultDAO>> retList = QueryEngine.performSearch(subject, object);
 
                 // use them to fetch the predicates they are linked with
-                //QueryEngine.fetchPredicates(retList.get(0), retList.get(1), predicate);
+                QueryEngine.fetchPredicates(retList.get(0), retList.get(1), predicate);
                 System.out.print("\n\n");
             }
             logger.info(predicateSurfaceFormsMap);
