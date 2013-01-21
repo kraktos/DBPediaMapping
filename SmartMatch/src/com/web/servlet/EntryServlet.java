@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.mapper.relationMatcher.ResultDAO;
+import com.mapper.relationMatcher.WebTupleProcessor;
 import com.mapper.search.QueryEngine;
 import com.mapper.utility.Constants;
 
@@ -20,6 +23,9 @@ import com.mapper.utility.Constants;
  */
 public class EntryServlet extends HttpServlet
 {
+
+    // define Logger
+    static Logger logger = Logger.getLogger(EntryServlet.class.getName());
 
     /**
      * 
@@ -75,36 +81,42 @@ public class EntryServlet extends HttpServlet
             String predicate = request.getParameter("predicate");
             String object = request.getParameter("object");
 
-            // fetch the answer terms
-            if (!subject.equals("Subject") && !object.equals("Object")) {
-                retList = QueryEngine.performSearch(subject, object);
-                retListSubj = retList.get(0);
-                retListObj = retList.get(1);
-            } else {
-                if (!subject.equals("Subject") && !subject.equals("")) {
-                    retListSubj = QueryEngine.doSearch(subject);
+            // This is simple search mode. just qyerying for terms
+            if (!Constants.PREDICTIVE_SEARCH_MODE) {
+                // fetch the answer terms
+                if (!subject.equals("Subject") && !object.equals("Object")) {
+                    retList = QueryEngine.performSearch(subject, object);
+                    retListSubj = retList.get(0);
+                    retListObj = retList.get(1);
+                } else {
+                    if (!subject.equals("Subject") && !subject.equals("")) {
+                        retListSubj = QueryEngine.doSearch(subject);
+                    }
+                    if (!object.equals("Object") && !object.equals("")) {
+                        retListObj = QueryEngine.doSearch(object);
+                    }
                 }
-                if (!object.equals("Object") && !object.equals("")) {
-                    retListObj = QueryEngine.doSearch(object);
+                if (!predicate.equals("Predicate") && !predicate.equals("")) {
+                    retListPred = QueryEngine.doSearch(predicate);
                 }
-            }
-            if (!predicate.equals("Predicate") && !predicate.equals("")) {
-                retListPred = QueryEngine.doSearch(predicate);
-            }
+                // set the request parameter for results display
+                if (retListSubj.size() > 0) {
+                    request.setAttribute("matchingListSubj", retListSubj);
+                }
+                if (retListObj.size() > 0) {
+                    request.setAttribute("matchingListObj", retListObj);
+                }
+                if (retListPred.size() > 0) {
+                    request.setAttribute("matchingListPred", retListPred);
+                }
+                // redirect to page
+                request.getRequestDispatcher("entry.jsp").forward(request, response);
+            } else { // This is advanced search mode. where the system tries to predict the best matches based on the
+                     // input combination
 
-            // set the request parameter for results display
-            if (retListSubj.size() > 0) {
-                request.setAttribute("matchingListSubj", retListSubj);
+                // make a call to the Engine with the required parameters
+                new WebTupleProcessor(subject, object, predicate).processTuples(null);
             }
-            if (retListObj.size() > 0) {
-                request.setAttribute("matchingListObj", retListObj);
-            }
-            if (retListPred.size() > 0) {
-                request.setAttribute("matchingListPred", retListPred);
-            }
-
-            // redirect to page
-            request.getRequestDispatcher("entry.jsp").forward(request, response);
 
         }
 

@@ -121,16 +121,21 @@
 					<%
 					    if (resultSub != null) {
 					%>
-					<table>
-						<c:forEach items="<%= resultSub%>" var="matchingEntries">
-							<tr>
-								<td width="78%" style="word-wrap: break-word"><a
-									style="color: #00a000" href=${matchingEntries.fieldURI
-									} target="_blank">${matchingEntries.fieldURI}</a></td>
-								<td width="22%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
-							</tr>
-						</c:forEach>
-					</table> <%
+					<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
+						<table>
+
+							<c:forEach items="<%= resultSub%>" var="matchingEntries">
+								<tr>
+									<td width="78%" style="word-wrap: break-word"><a
+										style="color: #00a000"
+										href=${matchingEntries.fieldURI
+									} target="_blank">${matchingEntries.fieldURI}</a>
+									</td>
+									<td width="22%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div> <%
      }
  %>
 				</td>
@@ -141,17 +146,19 @@
 					<%
 					    if (resultPred != null) {
 					%>
-					<table>
-						<c:forEach items="<%= resultPred%>" var="matchingEntries">
-							<tr>
-								<td width="78%" style="word-wrap: break-word"><a
-									style="color: #00a000" target="_blank"
-									href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
-								</td>
-								<td width="22%" align="center" style="color: #ffffff;">${matchingEntries.score}</td>
-							</tr>
-						</c:forEach>
-					</table> <%
+					<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
+						<table>
+							<c:forEach items="<%= resultPred%>" var="matchingEntries">
+								<tr>
+									<td width="78%" style="word-wrap: break-word"><a
+										style="color: #00a000" target="_blank"
+										href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
+									</td>
+									<td width="22%" align="center" style="color: #ffffff;">${matchingEntries.score}</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div> <%
      }
  %>
 				</td>
@@ -161,19 +168,21 @@
 					<%
 					    if (resultObj != null) {
 					%>
-					<table>
+					<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
 
+						<table>
+							<c:forEach items="<%= resultObj%>" var="matchingEntries">
+								<tr>
+									<td width="78%" style="word-wrap: break-word"><a
+										style="color: #00a000" target="_blank"
+										href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
+									</td>
+									<td width="22%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
+								</tr>
+							</c:forEach>
 
-						<c:forEach items="<%= resultObj%>" var="matchingEntries">
-							<tr>
-								<td width="78%" style="word-wrap: break-word"><a
-									style="color: #00a000" target="_blank"
-									href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
-								</td>
-								<td width="22%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
-							</tr>
-						</c:forEach>
-					</table> <%
+						</table>
+					</div> <%
      }
  %>
 				</td>

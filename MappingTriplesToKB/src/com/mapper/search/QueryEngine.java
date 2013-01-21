@@ -108,7 +108,7 @@ public class QueryEngine
             Query query = new TermQuery(new Term("fullContentField", userQuery));
 
             // fuzzy query for spelling mistakes or suggestive results
-            FuzzyQuery fuzzyQuery = new FuzzyQuery(new Term("labelSmallField", userQuery));
+            FuzzyQuery fuzzyQuery = new FuzzyQuery(new Term("labelSmallField", userQuery.toLowerCase()));
 
             // wild card queries for incomplete query terms
             WildcardQuery wildCardQuery = new WildcardQuery(new Term("labelSmallField", userQuery.toLowerCase() + "*"));

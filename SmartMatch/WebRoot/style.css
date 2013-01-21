@@ -6,17 +6,17 @@ Released for free under a Creative Commons Attribution 2.5 License
 table {
 	table-layout: fixed;
 	width: 100%;
-	cellpadding : 5px;
-	cellspacing : 3px;
+	cellpadding: 5px;
+	cellspacing: 3px;
 }
 
-
 body {
-	position: relative;
+	position: absolute;
 	overflow: hidden;
 	background: url('hd.jpg') no-repeat scroll;
 	background-size: 100% 100%;
-	min-height: 700px;
+	min-width: 100%;
+	min-height: 100%;
 }
 
 .front-bg {
@@ -64,20 +64,22 @@ body {
 .thumb {
 	max-width: 700px;
 	max-height: 700px;
-	width: expression(this.width >                                         100 ? 
+	width: expression(this.width >                                           100 ?
+		 
 		      
 		                    
-		           "100px" :            
+		            "100px" :             
 		 
 		          
-		               true);
-	height: expression(this.height >                                         100 ? 
+		                true);
+	height: expression(this.height >                                           100 ?
+		 
 		      
 		                    
-		           "100px" :            
+		            "100px" :             
 		 
 		          
-		               true);
+		                true);
 }
 
 .style6 {
@@ -94,6 +96,7 @@ body {
 	padding: 2px;
 	width: 95%
 }
+
 .style5 {
 	border-bottom: 4px solid orange;
 	border-bottom-left-radius: 10px;
@@ -146,10 +149,10 @@ button {
 	color: #666666;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	
 	text-align: center !important;
 	letter-spacing: 0.6em;
 }
+
 .SUBHEADLINE2 {
 	font-family: "Lucida Grande", Tahoma;
 	font-size: 14px;
@@ -166,7 +169,6 @@ button {
 	margin: 0px;
 	padding: 0px;
 	width: 50%;
-	
 	border: 1px solid #000000;
 	-moz-border-radius-bottomleft: 0px;
 	-webkit-border-bottom-left-radius: 0px;

@@ -59,7 +59,7 @@ public class Constants
     public static final int TOPK = 10;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "student";
+    public static final String SAMPLE_QUERY = "USA";
 
     // *****************IE Engines output locations ***************************************************
 
@@ -71,5 +71,11 @@ public class Constants
 
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String NELL_IE_DELIMIT = "\t";
+
+    // *****************WEB INTERFACE PARAMETES***************************************************
+
+    // If this is turned on the then the system performs a predictive search else just a simple search based on the
+    // input terms
+    public static final boolean PREDICTIVE_SEARCH_MODE = false;
 
 }

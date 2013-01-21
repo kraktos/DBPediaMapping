@@ -21,7 +21,7 @@ public interface TupleProcessor
     /**
      * Takes an input file and process them by each tuple
      * 
-     * @param dataFilePath location of the input File
+     * @param dataFilePath location of the input File. Can be {@code null}
      * @throws IOException
      * @throws ExecutionException
      * @throws InterruptedException
