@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.PatternSyntaxException;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
@@ -134,40 +135,39 @@ public class DBPediaIndexBuilder
                     String label = null;
 
                     // read comma separated file line by line
-                    while ((strLine = br.readLine()) != null && strLine.startsWith(Constants.DBPEDIA_HEADER)) {
-                        logger.debug(strLine);
-                        // break comma separated line using ","
-                        document = new Document();
-                        array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
+                    while ((strLine = br.readLine()) != null) {
 
-                        // add the URI, store it for display purpose
-                        uri = (array[0] != null) ? array[0] : "";
-                        uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
-                        document.add(uriField);
+                        if (strLine.startsWith(Constants.DBPEDIA_HEADER)) {
 
-                        // add the label, store it for display purpose
-                        label = (array[1] != null) ? array[1] : "";
-                        labelField = new StringField("labelField", label.trim(), Field.Store.YES);
-                        document.add(labelField);
+                            // break comma separated line using ","
+                            document = new Document();
+                            array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
+                            // add the URI, store it for display purpose
+                            uri = (array[0] != null) ? array[0] : "";
+                            uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
+                            document.add(uriField);
+                            // add the label, store it for display purpose
+                            label = (array[1] != null) ? array[1] : "";
+                            labelField = new StringField("labelField", label.trim(), Field.Store.YES);
+                            document.add(labelField);
+                            // add the label in small caps form, do not store it for display purpose
+                            // This is a work around since Lucene is inherently case sensitive,
+                            // hence search for "Tom", "TOM" or "TOm" won't match to the actual term "Tom" stored in the
+                            // index
+                            // list
+                            labelSmallField =
+                                new StringField("labelSmallField", label.trim().toLowerCase(), Field.Store.NO);
+                            document.add(labelSmallField);
+                            // adding the full text as well to increase recall. No need to store it
+                            fullContentField = new StringField("fullContentField", label + uri, Field.Store.NO);
+                            document.add(fullContentField);
 
-                        // add the label in small caps form, do not store it for display purpose
-                        // This is a work around since Lucene is inherently case sensitive,
-                        // hence search for "Tom", "TOM" or "TOm" won't match to the actual term "Tom" stored in the
-                        // index
-                        // list
-                        labelSmallField =
-                            new StringField("labelSmallField", label.trim().toLowerCase(), Field.Store.NO);
-                        document.add(labelSmallField);
-
-                        // adding the full text as well to increase recall. No need to store it
-                        fullContentField = new StringField("fullContentField", label + uri, Field.Store.NO);
-                        document.add(fullContentField);
-
-                        // add the document finally into the writer
-                        writer.addDocument(document);
+                            // add the document finally into the writer
+                            writer.addDocument(document);
+                        }
                     }
 
-                } catch (Exception ex) {
+                } catch (PatternSyntaxException ex) {
                     logger.error(ex.getMessage() + " while reading  " + strLine);
 
                 } finally {

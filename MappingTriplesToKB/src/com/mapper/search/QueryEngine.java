@@ -1,6 +1,7 @@
 package com.mapper.search;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,6 +127,9 @@ public class QueryEngine
             if (hits.totalHits == 0)
                 throw new Exception();
 
+            NumberFormat defaultFormat = NumberFormat.getPercentInstance();
+            defaultFormat.setMinimumFractionDigits(2);
+
             // iterate the results
             for (ScoreDoc scoredoc : hits.scoreDocs) {
                 // Retrieve the matched document and show relevant details
@@ -136,10 +140,11 @@ public class QueryEngine
                 double score = scoredoc.score / hits.getMaxScore();
 
                 // only add the unique entries(URI and label combination)
-                boolean isUnique = Utilities.checkUniqueness(setURI, uriField + labelField);
+                boolean isUnique = Utilities.checkUniqueness(setURI, uriField + labelField.toLowerCase());
                 if (isUnique) {
-                    logger.info(labelField + " => " + uriField + "   " + score);
-                    returnList.add(new ResultDAO(uriField, Math.round(score * 100.0)));
+
+                    logger.info(labelField + " => " + uriField + "   " + defaultFormat.format(score));
+                    returnList.add(new ResultDAO(uriField, defaultFormat.format(score)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {
                         return returnList;
