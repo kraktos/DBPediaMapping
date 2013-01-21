@@ -153,11 +153,11 @@ public class QueryEngine
             }
 
         } catch (Exception ex) {
-            logger.error("NO MATCHING RECORDS FOUND !! ");
+            logger.error("NO MATCHING RECORDS FOUND FOR QUERY \"" + userQuery + "\" !! ");
         } finally {
             setURI.clear();
             setURI = null;
-            Utilities.endTimer(start, "QUERY ANSWERED IN ");
+            Utilities.endTimer(start, "QUERY \"" + userQuery + "\" ANSWERED IN ");
         }
         return returnList;
     }

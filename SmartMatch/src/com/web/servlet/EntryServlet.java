@@ -84,7 +84,7 @@ public class EntryServlet extends HttpServlet
             // This is simple search mode. just qyerying for terms
             if (!Constants.PREDICTIVE_SEARCH_MODE) {
                 // fetch the answer terms
-                if (!subject.equals("Subject") && !object.equals("Object")) {
+                if (!subject.equals("Subject") && !subject.equals("") && !object.equals("Object") && !object.equals("")) {
                     retList = QueryEngine.performSearch(subject, object);
                     retListSubj = retList.get(0);
                     retListObj = retList.get(1);
@@ -109,6 +109,11 @@ public class EntryServlet extends HttpServlet
                 if (retListPred.size() > 0) {
                     request.setAttribute("matchingListPred", retListPred);
                 }
+                request.setAttribute("subject", subject);
+                request.setAttribute("predicate", predicate);
+                request.setAttribute("object", object);
+                request.setAttribute("topk", topK);
+
                 // redirect to page
                 request.getRequestDispatcher("entry.jsp").forward(request, response);
             } else { // This is advanced search mode. where the system tries to predict the best matches based on the

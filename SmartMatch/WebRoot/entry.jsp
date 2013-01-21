@@ -55,12 +55,8 @@
 	<div id="header-wrapper">
 		<div id="header" class="container">
 			<div id="logo">
-				<h1 class=HEADLINE>
-					<p>smartMATCH</p>
-				</h1>
-				<h2 class=SUBHEADLINE>
-					<p>DBPedia knows it !</p>
-				</h2>
+				<h1 class=HEADLINE>smartMATCH</h1>
+				<h2 class=SUBHEADLINE>DBPedia knows it !</h2>
 
 			</div>
 		</div>
@@ -72,20 +68,25 @@
 			<!-- Search Fields -->
 			<tr>
 				<td><input class="style6" title="Enter your search subject"
-					type="text" value="Subject" onClick="(this.value='')"
-					name="subject" /></td>
+					type="text"
+					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
+					onClick="(this.value='')" name="subject" />
+				</td>
 				<td><input class="style6" title="Enter your search predicate"
-					type="text" value="Predicate" onClick="(this.value='')"
-					name="predicate" /></td>
+					type="text"
+					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
+					onClick="(this.value='')" name="predicate" />
+				</td>
 				<td><input class="style6" type="text"
-					title="Enter your search object" value="Object"
-					onClick="(this.value='')" name="object" /></td>
+					title="Enter your search object"
+					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
+					onClick="(this.value='')" name="object" />
+				</td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');">
-				</td>
+					onclick="toggle4('box');"></td>
 			</tr>
 
 			<!-- Parameter Extra Fields -->
@@ -104,15 +105,13 @@
 							 -->
 							<tr>
 
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
-								</td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
 								<td><input class="style5" title="Top K results" type="text"
-									value="5" name="topk" size="40" />
-								</td>
+									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
+									name="topk" size="40" /></td>
 							</tr>
 						</table>
-					</div>
-				</td>
+					</div></td>
 			</tr>
 			<!-- Results Feilds -->
 			<tr>
