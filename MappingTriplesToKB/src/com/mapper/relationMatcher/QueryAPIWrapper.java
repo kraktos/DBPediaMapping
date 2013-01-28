@@ -8,8 +8,8 @@ import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
+import com.mapper.dataObjects.ResultDAO;
 import com.mapper.search.QueryEngine;
-import com.mapper.utility.Utilities;
 
 /**
  * This is a wrapper class on top of the DBPedia Indices. Enables to perform a search of the query term on the indexed
@@ -38,7 +38,6 @@ public class QueryAPIWrapper implements Callable // implements Runnable
     @Override
     public List<ResultDAO> call() throws Exception
     {
-        String topMathchedEntity = null;
         List<ResultDAO> list = null;
         try {
 

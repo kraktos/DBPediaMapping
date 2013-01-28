@@ -59,23 +59,27 @@ public class Constants
     public static final int TOPK = 10;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "yellowstone national park";
+    public static final String SAMPLE_QUERY = "Alfred Hitchcock";
 
     // *****************IE Engines output locations ***************************************************
 
     // location of the output file generated the IE Engine ReVerb
-    public static final String IE_TUPLES_PATH = "/home/arnab/Work/data/ReVerb/melGibsonOnly.csv";
+    public static final String IE_TUPLES_PATH = "/home/arnab/Work/data/NELL/short.csv";
 
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String REVERB_IE_DELIMIT = "\t";
 
     // Delimiter used to parse the ReVerb extracted tuples
-    public static final String NELL_IE_DELIMIT = "\t";
+    public static final String NELL_IE_DELIMIT = ",";
 
     // *****************WEB INTERFACE PARAMETES***************************************************
 
     // If this is turned on the then the system performs a predictive search else just a simple search based on the
     // input terms
     public static final boolean PREDICTIVE_SEARCH_MODE = false;
+
+    public static final double THRESHOLD_SCORE = 80;
+
+    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq.txt";
 
 }

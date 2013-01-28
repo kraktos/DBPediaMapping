@@ -3,6 +3,8 @@ package com.web.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.mapper.relationMatcher.ResultDAO;
+import com.mapper.dataObjects.ResultDAO;
 import com.mapper.relationMatcher.WebTupleProcessor;
 import com.mapper.search.QueryEngine;
 import com.mapper.utility.Constants;
@@ -70,6 +72,9 @@ public class EntryServlet extends HttpServlet
         // initialize with some default values
         int topK = Constants.TOPK;
 
+        // we just need two threads to perform the search
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+
         try {
             if (request.getParameter("topk") != null) {
                 topK = Integer.parseInt(request.getParameter("topk"));
@@ -85,7 +90,7 @@ public class EntryServlet extends HttpServlet
             if (!Constants.PREDICTIVE_SEARCH_MODE) {
                 // fetch the answer terms
                 if (!subject.equals("Subject") && !subject.equals("") && !object.equals("Object") && !object.equals("")) {
-                    retList = QueryEngine.performSearch(subject, object);
+                    retList = QueryEngine.performSearch(pool, subject, object);
                     retListSubj = retList.get(0);
                     retListObj = retList.get(1);
                 } else {

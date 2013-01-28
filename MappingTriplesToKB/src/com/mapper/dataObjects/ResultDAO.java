@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mapper.relationMatcher;
+package com.mapper.dataObjects;
 
 /**
  * Class for holding the result elements

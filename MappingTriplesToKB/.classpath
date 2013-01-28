@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="src/" kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/owlapi-bin.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/owlapi-src.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/apache-log4j-1.2.17/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/commons-collections-3.2.1/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/commons-lang-2.0.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/arq-2.5.0.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/jena-2.5.6.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/iri-0.5.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/icu4j-3.6.1.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/xercesImpl-2.8.0.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/javacsv-2.0.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/poi-3.9/poi-3.9-20121203.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/postgresql-9.2-1002.jdbc3.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/lucene-4.0.0/analysis/common/lucene-analyzers-common-4.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/lucene-4.0.0/core/lucene-core-4.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/arnab/Work/libs/lucene-4.0.0/queryparser/lucene-queryparser-4.0.0.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="src" />
+	<classpathentry excluding="src/" kind="src" path="" />
+	<classpathentry kind="con"
+		path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/owlapi-bin.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/owlapi-src.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/apache-log4j-1.2.17/log4j-1.2.17.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/commons-collections-3.2.1/commons-collections-3.2.1.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/commons-lang-2.0.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/arq-2.5.0.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/commons-logging-1.1.1/commons-logging-1.1.1.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/jena-2.5.6.jar" />
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/iri-0.5.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/icu4j-3.6.1.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/xercesImpl-2.8.0.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/javacsv-2.0.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/poi-3.9/poi-3.9-20121203.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/postgresql-9.2-1002.jdbc3.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/lucene-4.0.0/analysis/common/lucene-analyzers-common-4.0.0.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/lucene-4.0.0/core/lucene-core-4.0.0.jar" />
+	<classpathentry kind="lib"
+		path="/home/arnab/Work/libs/lucene-4.0.0/queryparser/lucene-queryparser-4.0.0.jar" />
+	<classpathentry kind="output" path="bin" />
 </classpath>

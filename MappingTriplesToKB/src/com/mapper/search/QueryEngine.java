@@ -1,8 +1,6 @@
 package com.mapper.search;
 
 import java.io.File;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -29,14 +26,12 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.store.FSDirectory;
 
-import com.hp.hpl.jena.graph.query.Expression.Util;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.mapper.dataObjects.ResultDAO;
 import com.mapper.indexer.DBPediaIndexBuilder;
 import com.mapper.query.SPARQLEndPointQueryAPI;
 import com.mapper.relationMatcher.QueryAPIWrapper;
-import com.mapper.relationMatcher.ResultDAO;
 import com.mapper.relationMatcher.TupleProcessor;
 import com.mapper.utility.Constants;
 import com.mapper.utility.Utilities;
@@ -141,7 +136,7 @@ public class QueryEngine
                 // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField);
                 if (isUnique) {
-                    logger.info(labelField + " => " + uriField + "   " + Math.round(score * 100));
+                    logger.debug(labelField + " => " + uriField + "   " + Math.round(score * 100));
                     returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {
@@ -163,19 +158,17 @@ public class QueryEngine
     /**
      * wrapper method to spawn the actual search operation being carried out
      * 
+     * @param pool
      * @param subjFromTuple
      * @param objFromTuple
      * @return
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public static List<List<ResultDAO>> performSearch(final String subjFromTuple, final String objFromTuple)
-        throws InterruptedException, ExecutionException
+    public static List<List<ResultDAO>> performSearch(ExecutorService pool, final String subjFromTuple,
+        final String objFromTuple) throws InterruptedException, ExecutionException
     {
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
-
-        // we just need two threads to perform the search
-        ExecutorService pool = Executors.newFixedThreadPool(2);
 
         // The idea is we parallely process the two queries simultaneously and receive back the results
         // to the main thread i.e here. This is not possible with Thread class.
@@ -190,10 +183,9 @@ public class QueryEngine
         return retList;
     }
 
-    @SuppressWarnings("unchecked")
     /**
-     * takes a subject and object from the DBPedia and tries to find all possible set of predicates connecting
-     * these two two entities (subject and object)
+     * takes a subject and object from the DBPedia and tries to find all possible set of predicates connecting these two
+     * two entities (subject and object)
      * 
      * @param subject the DBPedia entity occurring as subject
      * @param object the DBPedia entity occurring as object
@@ -206,18 +198,25 @@ public class QueryEngine
         List<String> possibleSubjs = new ArrayList<String>();
         List<String> possibleObjs = new ArrayList<String>();
         String sparqlQuery = null;
-        List<List<QuerySolution>> listResults = new ArrayList<List<QuerySolution>>();
-        ResultSet results = null;
+        List<QuerySolution> listQuerySols = new ArrayList<QuerySolution>();
 
+        ResultSet results = null;
+        String matchedProp = null;
+
+        // take into consideration only those candidates having a score more than 80%
         for (int listCounter = 0; listCounter < list.size(); listCounter++) {
-            if (list.get(listCounter).getScore() == 100) {
+            if (list.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
                 possibleSubjs.add(list.get(listCounter).getFieldURI());
+            } else {
+                break; // no need to iterate further, since the rest values are less than the desired score
             }
         }
 
         for (int listCounter = 0; listCounter < list2.size(); listCounter++) {
-            if (list2.get(listCounter).getScore() == 100) {
+            if (list2.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
                 possibleObjs.add(list2.get(listCounter).getFieldURI());
+            } else {
+                break; // no need to iterate further, since the rest values are less than the desired score
             }
         }
 
@@ -229,30 +228,28 @@ public class QueryEngine
                 sparqlQuery =
                     "select ?predicates where {{<" + subj + "> ?predicates <" + obj + ">} UNION {<" + obj
                         + "> ?predicates <" + subj + ">}}";
-                logger.info(sparqlQuery);
+                logger.debug(sparqlQuery);
 
                 // fetch the result set
                 results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
 
-                // store in a local collection to iterate
-                listResults.add(ResultSetFormatter.toList(results));
+                while (results.hasNext()) {
+                    listQuerySols.add(results.nextSolution());
+                }
             }
         }
 
         logger.info("'" + actualPredicateFromIE + "'" + " matches => ");
 
         // if we have some results proceed
-        for (List<QuerySolution> listResult : listResults) {
-            List<String> listVarnames = results.getResultVars();
-            // this is a possible set of matches for the given predicate
-            for (QuerySolution querySol : listResult) {
-                String matchedProp = querySol.get(listVarnames.get(0)).toString();
-                logger.info(matchedProp + "  ");
+        for (QuerySolution querySol : listQuerySols) {
+            matchedProp = querySol.get("predicates").toString();
+            logger.info(matchedProp + "  ");
 
-                // update the count for all such possibilities for a given predicate
-                updatePredicateMap(actualPredicateFromIE, matchedProp);
-            }
+            // update the count for all such possibilities for a given predicate
+            updatePredicateMap(actualPredicateFromIE, matchedProp);
         }
+
     }
 
     /**

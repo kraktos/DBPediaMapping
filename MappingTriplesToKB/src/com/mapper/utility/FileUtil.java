@@ -11,6 +11,7 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.csvreader.CsvWriter;
+import com.mapper.dataObjects.PredicatesDAO;
 import com.mapper.dbConnectivity.DBClient;
 
 /**
@@ -166,6 +167,24 @@ public class FileUtil
                 Thread.sleep(20);
                 finlist[n].delete();
             }
+        }
+    }
+    
+    /**
+     * flushes to the output writer object
+     * 
+     * @param bufferedWriter
+     * @param iePredicate
+     * @param predDaoArr
+     * @throws IOException
+     */
+    public static void dumpToFile(BufferedWriter bufferedWriter, String iePredicate, PredicatesDAO[] predDaoArr)
+        throws IOException
+    {
+        try {
+            bufferedWriter.write(iePredicate + "->" + predDaoArr[0].toString() + "," + predDaoArr[1].toString() + "\n");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            bufferedWriter.write(iePredicate + "->" + predDaoArr[0].toString() + "\n");
         }
     }
 }
