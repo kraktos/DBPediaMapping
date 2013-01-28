@@ -79,8 +79,6 @@ public class NellTupleProcessor implements TupleProcessor
                 QueryEngine.fetchPredicates(retList.get(0), retList.get(1), predicate);
                 System.out.print("\n\n");
             }
-            logger.info(predicateSurfaceFormsMap);
-
             findTheBestPrediction();
         }
     }
@@ -140,6 +138,7 @@ public class NellTupleProcessor implements TupleProcessor
                 // write to file
                 FileUtil.dumpToFile(bw, iePredicate, predDaoArr);
             }
+            // close the stream writer
             bw.close();
 
         } catch (IOException e) {

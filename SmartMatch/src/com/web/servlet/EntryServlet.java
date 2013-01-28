@@ -63,11 +63,13 @@ public class EntryServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
-        List<ResultDAO> retListPred = new ArrayList<ResultDAO>();
+        List<ResultDAO> retListPred1 = new ArrayList<ResultDAO>();
+        List<ResultDAO> retListPred2 = new ArrayList<ResultDAO>();
         List<ResultDAO> retListObj = new ArrayList<ResultDAO>();
         List<ResultDAO> retListSubj = new ArrayList<ResultDAO>();
 
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
+        List<ResultDAO> newList = new ArrayList<ResultDAO>();
 
         // initialize with some default values
         int topK = Constants.TOPK;
@@ -101,8 +103,18 @@ public class EntryServlet extends HttpServlet
                         retListObj = QueryEngine.doSearch(object);
                     }
                 }
+                // we will predict the predicate based on the knowledge we have learned from other IE data sets
+                // if not then we go for lexical match
                 if (!predicate.equals("Predicate") && !predicate.equals("")) {
-                    retListPred = QueryEngine.doSearch(predicate);
+                    // do lookup from learnt knowledge
+                    retListPred1 = QueryEngine.doLookUpSearch(predicate);
+                     // do lexical match
+                    retListPred2 = QueryEngine.doSearch(predicate);
+
+                    
+                    newList.addAll(retListPred1);
+                    newList.addAll(retListPred2);
+                    
                 }
                 // set the request parameter for results display
                 if (retListSubj.size() > 0) {
@@ -111,8 +123,8 @@ public class EntryServlet extends HttpServlet
                 if (retListObj.size() > 0) {
                     request.setAttribute("matchingListObj", retListObj);
                 }
-                if (retListPred.size() > 0) {
-                    request.setAttribute("matchingListPred", retListPred);
+                if (newList.size() > 0) {
+                    request.setAttribute("matchingListPred", newList);
                 }
                 request.setAttribute("subject", subject);
                 request.setAttribute("predicate", predicate);

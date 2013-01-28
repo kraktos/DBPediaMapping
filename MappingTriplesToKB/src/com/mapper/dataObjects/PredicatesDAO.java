@@ -40,7 +40,7 @@ public class PredicatesDAO implements Comparable<PredicatesDAO>
     @Override
     public String toString()
     {
-        return possiblePredicate + ":" + jaccardScore;
+        return possiblePredicate + "~" + jaccardScore;
     }
 
 }

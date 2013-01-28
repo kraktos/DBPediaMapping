@@ -64,7 +64,7 @@ public class Constants
     // *****************IE Engines output locations ***************************************************
 
     // location of the output file generated the IE Engine ReVerb
-    public static final String IE_TUPLES_PATH = "/home/arnab/Work/data/NELL/short.csv";
+    public static final String IE_TUPLES_PATH = "/home/arnab/Work/data/NELL/Nell.csv";
 
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String REVERB_IE_DELIMIT = "\t";
@@ -72,14 +72,17 @@ public class Constants
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String NELL_IE_DELIMIT = ",";
 
+    // output location of the predicate list after calculating jaccard score for each
+    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFre.txt";
+
     // *****************WEB INTERFACE PARAMETES***************************************************
 
     // If this is turned on the then the system performs a predictive search else just a simple search based on the
     // input terms
     public static final boolean PREDICTIVE_SEARCH_MODE = false;
 
+    // only those entities with a match of value higher than this will be taken into consideration for further
+    // processing
     public static final double THRESHOLD_SCORE = 80;
-
-    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq.txt";
 
 }

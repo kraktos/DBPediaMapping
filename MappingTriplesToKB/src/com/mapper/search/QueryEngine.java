@@ -1,10 +1,12 @@
 package com.mapper.search;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -226,8 +228,9 @@ public class QueryEngine
             for (String obj : possibleObjs) {
 
                 sparqlQuery =
-                    "select ?predicates where {{<" + subj + "> ?predicates <" + obj + ">} UNION {<" + obj
-                        + "> ?predicates <" + subj + ">}}";
+                    "select ?predicates where {<" + subj + "> ?predicates <" + obj + ">} " ;
+                    		/*"UNION {<" + obj
+                        + "> ?predicates <" + subj + ">}}";*/
                 logger.debug(sparqlQuery);
 
                 // fetch the result set
@@ -290,8 +293,47 @@ public class QueryEngine
         }
     }
 
+    // stand alone test point
     public static void main(String[] ar) throws Exception
     {
         doSearch(Constants.SAMPLE_QUERY);
+    }
+
+    /**
+     * fetch from file system the learnt the relationships
+     * 
+     * @param predicate
+     * @return
+     */
+    public static List<ResultDAO> doLookUpSearch(final String predicate)
+    {
+        List<ResultDAO> returnList = new ArrayList<ResultDAO>();
+        File file = new File(Constants.PREDICATE_FREQ_FILEPATH);
+        Scanner sc;
+        try {
+            sc = new Scanner(file);
+            while (sc.hasNextLine()) {
+
+                String[] parts = sc.nextLine().split("->");
+
+                if (parts[0].contains(predicate)) {
+                    String[] elem;
+                    if (parts.length > 1) {
+                        elem = parts[1].split(",");
+                    } else {
+                        elem = parts[0].split(",");
+                    }
+                    String[] match = elem[0].split("~");
+                    returnList.add(new ResultDAO(match[0], Math.round(Double.parseDouble(match[1]) * 100)));
+                    logger.info(match[0] + "   " + match[1]);
+                    break;
+                }
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            logger.error(e.getMessage());
+        }
+
+        return returnList;
     }
 }

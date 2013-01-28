@@ -18,8 +18,7 @@ import com.mapper.search.QueryEngine;
  * 
  * @author Arnab Dutta
  */
-public class QueryAPIWrapper implements Callable // implements Runnable
-    <List<ResultDAO>>
+public class QueryAPIWrapper implements Callable<List<ResultDAO>>
 {
     // define Logger
     static Logger logger = Logger.getLogger(QueryAPIWrapper.class.getName());
@@ -44,8 +43,6 @@ public class QueryAPIWrapper implements Callable // implements Runnable
             // make the search operation
             list = QueryEngine.doSearch(this.queryTerm);
 
-            // topMathchedEntity = list.get(0);
-
             // Let the thread sleep for a while.
             Thread.sleep(500);
 
@@ -53,11 +50,7 @@ public class QueryAPIWrapper implements Callable // implements Runnable
             logger.error("Child interrupted.");
         } catch (Exception e) {
             logger.error("Error while searching for the term " + this.queryTerm + ";  " + e.getMessage());
-        } finally {
-            // list.clear();
-            // list = null;
         }
-        // return topMathchedEntity;
         return list;
     }
 
