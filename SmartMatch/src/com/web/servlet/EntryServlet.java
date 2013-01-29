@@ -63,13 +63,13 @@ public class EntryServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
-        List<ResultDAO> retListPred1 = new ArrayList<ResultDAO>();
-        List<ResultDAO> retListPred2 = new ArrayList<ResultDAO>();
+        List<ResultDAO> retListPredLookUp = new ArrayList<ResultDAO>();
+        List<ResultDAO> retListPredSearch = new ArrayList<ResultDAO>();
         List<ResultDAO> retListObj = new ArrayList<ResultDAO>();
         List<ResultDAO> retListSubj = new ArrayList<ResultDAO>();
 
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
-        List<ResultDAO> newList = new ArrayList<ResultDAO>();
+        List<ResultDAO> retListPred = new ArrayList<ResultDAO>();
 
         // initialize with some default values
         int topK = Constants.TOPK;
@@ -92,7 +92,12 @@ public class EntryServlet extends HttpServlet
             if (!Constants.PREDICTIVE_SEARCH_MODE) {
                 // fetch the answer terms
                 if (!subject.equals("Subject") && !subject.equals("") && !object.equals("Object") && !object.equals("")) {
-                    retList = QueryEngine.performSearch(pool, subject, object);
+
+                    WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object, predicate);
+                    // make a call to the Engine with the required parameters
+                    webTupleProc.processTuples(null);
+                    retList = webTupleProc.getRetList();
+
                     retListSubj = retList.get(0);
                     retListObj = retList.get(1);
                 } else {
@@ -107,38 +112,54 @@ public class EntryServlet extends HttpServlet
                 // if not then we go for lexical match
                 if (!predicate.equals("Predicate") && !predicate.equals("")) {
                     // do lookup from learnt knowledge
-                    retListPred1 = QueryEngine.doLookUpSearch(predicate);
-                     // do lexical match
-                    retListPred2 = QueryEngine.doSearch(predicate);
+                    retListPredLookUp = QueryEngine.doLookUpSearch(predicate);
+                    // do lexical match
+                    retListPredSearch = QueryEngine.doSearch(predicate);
 
-                    
-                    newList.addAll(retListPred1);
-                    newList.addAll(retListPred2);
-                    
                 }
-                // set the request parameter for results display
-                if (retListSubj.size() > 0) {
-                    request.setAttribute("matchingListSubj", retListSubj);
-                }
-                if (retListObj.size() > 0) {
-                    request.setAttribute("matchingListObj", retListObj);
-                }
-                if (newList.size() > 0) {
-                    request.setAttribute("matchingListPred", newList);
-                }
-                request.setAttribute("subject", subject);
-                request.setAttribute("predicate", predicate);
-                request.setAttribute("object", object);
-                request.setAttribute("topk", topK);
 
-                // redirect to page
-                request.getRequestDispatcher("entry.jsp").forward(request, response);
             } else { // This is advanced search mode. where the system tries to predict the best matches based on the
                      // input combination
+                if (!subject.equals("Subject") && !subject.equals("") && !object.equals("Object") && !object.equals("")) {
 
-                // make a call to the Engine with the required parameters
-                new WebTupleProcessor(subject, object, predicate).processTuples(null);
+                    WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object, predicate);
+                    // make a call to the Engine with the required parameters
+                    webTupleProc.processTuples(null);
+                    // get the subjects and objects
+                    retList = webTupleProc.getRetList();
+
+                    // get the predicates
+                    retListPredLookUp = webTupleProc.getRetListPredLookUp();
+                    retListPredSearch = webTupleProc.getRetListPredSearch();
+
+                    retListSubj = retList.get(0);
+                    retListObj = retList.get(1);
+                }
+
             }
+
+            // set the request parameter for results display
+            if (retListSubj.size() > 0) {
+                request.setAttribute("matchingListSubj", retListSubj);
+            }
+            if (retListObj.size() > 0) {
+                request.setAttribute("matchingListObj", retListObj);
+            }
+            if (retListPredLookUp.size() > 0) {
+                request.setAttribute("matchingListPredLookup", retListPredLookUp);
+            }
+            if (retListPredSearch.size() > 0) {
+                request.setAttribute("matchingListPredSearch", retListPredSearch);
+            }
+
+            // for resetting the text boxes
+            request.setAttribute("subject", subject);
+            request.setAttribute("predicate", predicate);
+            request.setAttribute("object", object);
+            request.setAttribute("topk", topK);
+
+            // redirect to page
+            request.getRequestDispatcher("entry.jsp").forward(request, response);
 
         }
 

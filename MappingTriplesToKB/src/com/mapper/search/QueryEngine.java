@@ -2,6 +2,7 @@ package com.mapper.search;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,7 +71,7 @@ public class QueryEngine
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public static List<ResultDAO> doSearch(String userQuery) throws Exception
+    public static List<ResultDAO> doSearch(String userQuery) throws IOException
     {
         IndexReader reader = null;
         IndexSearcher searcher = null;
@@ -227,10 +228,10 @@ public class QueryEngine
         for (String subj : possibleSubjs) {
             for (String obj : possibleObjs) {
 
-                sparqlQuery =
-                    "select ?predicates where {<" + subj + "> ?predicates <" + obj + ">} " ;
-                    		/*"UNION {<" + obj
-                        + "> ?predicates <" + subj + ">}}";*/
+                sparqlQuery = "select ?predicates where {<" + subj + "> ?predicates <" + obj + ">} ";
+                /*
+                 * "UNION {<" + obj + "> ?predicates <" + subj + ">}}";
+                 */
                 logger.debug(sparqlQuery);
 
                 // fetch the result set
@@ -318,15 +319,23 @@ public class QueryEngine
 
                 if (parts[0].contains(predicate)) {
                     String[] elem;
+                    String[] match;
+
                     if (parts.length > 1) {
                         elem = parts[1].split(",");
                     } else {
                         elem = parts[0].split(",");
                     }
-                    String[] match = elem[0].split("~");
-                    returnList.add(new ResultDAO(match[0], Math.round(Double.parseDouble(match[1]) * 100)));
+
+                    match = elem[0].split("~");
+                    double topScore = Double.parseDouble(match[1]);
+                    returnList.add(new ResultDAO(match[0], Math.round(topScore/topScore * 100)));
                     logger.info(match[0] + "   " + match[1]);
-                    break;
+                    if (elem.length > 1) {
+                        match = elem[1].split("~");
+                        returnList.add(new ResultDAO(match[0], Math.round(Double.parseDouble(match[1])/topScore * 100)));
+                        logger.info(match[0] + "   " + match[1]);
+                    }
                 }
             }
             sc.close();

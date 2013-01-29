@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page language="java" import="com.mapper.relationMatcher.ResultDAO"%>
+<%@ page language="java" import="com.mapper.dataObjects.ResultDAO"%>
 
 
 
@@ -12,7 +12,8 @@
 
     List<ResultDAO> resultSub = null;
     List<ResultDAO> resultObj = null;
-    List<ResultDAO> resultPred = null;
+    List<ResultDAO> resultPredLookup = null;
+    List<ResultDAO> resultPredSearch = null;
 
     if (request.getAttribute("matchingListSubj") != null) {
         resultSub = (List<ResultDAO>) request.getAttribute("matchingListSubj");
@@ -20,8 +21,11 @@
     if (request.getAttribute("matchingListObj") != null) {
         resultObj = (List<ResultDAO>) request.getAttribute("matchingListObj");
     }
-    if (request.getAttribute("matchingListPred") != null) {
-        resultPred = (List<ResultDAO>) request.getAttribute("matchingListPred");
+    if (request.getAttribute("matchingListPredLookup") != null) {
+        resultPredLookup = (List<ResultDAO>) request.getAttribute("matchingListPredLookup");
+    }
+    if (request.getAttribute("matchingListPredSearch") != null) {
+        resultPredSearch = (List<ResultDAO>) request.getAttribute("matchingListPredSearch");
     }
 %>
 
@@ -70,23 +74,21 @@
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
 					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
-					onClick="(this.value='')" name="subject" />
-				</td>
+					onClick="(this.value='')" name="subject" /></td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text"
 					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
-					onClick="(this.value='')" name="predicate" />
-				</td>
+					onClick="(this.value='')" name="predicate" /></td>
 				<td><input class="style6" type="text"
 					title="Enter your search object"
 					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
-					onClick="(this.value='')" name="object" />
-				</td>
+					onClick="(this.value='')" name="object" /></td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');"></td>
+					onclick="toggle4('box');">
+				</td>
 			</tr>
 
 			<!-- Parameter Extra Fields -->
@@ -105,13 +107,16 @@
 							 -->
 							<tr>
 
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
+								</td>
 								<td><input class="style5" title="Top K results" type="text"
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
-									name="topk" size="40" /></td>
+									name="topk" size="40" />
+								</td>
 							</tr>
 						</table>
-					</div></td>
+					</div>
+				</td>
 			</tr>
 			<!-- Results Feilds -->
 			<tr>
@@ -143,24 +148,42 @@
 
 				<td>
 					<%
-					    if (resultPred != null) {
+					    if (resultPredLookup != null) {
 					%>
 					<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
 						<table>
-							<c:forEach items="<%= resultPred%>" var="matchingEntries">
+							<c:forEach items="<%= resultPredLookup%>" var="matchingEntries">
 								<tr>
 									<td width="78%" style="word-wrap: break-word"><a
-										style="color: #00a000" target="_blank"
+										style="color: #FFFFFF" target="_blank"
 										href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
 									</td>
 									<td width="22%" align="center" style="color: #ffffff;">${matchingEntries.score}</td>
 								</tr>
 							</c:forEach>
+							<%
+							    }
+							    if (resultPredSearch != null){
+							%>
+							<c:forEach items="<%= resultPredLookup%>" var="matchingEntries">
+								<tr>
+									<td width="78%" style="word-wrap: break-word"><a
+										style="color: #00A000" target="_blank"
+										href=${matchingEntries.fieldURI}>${matchingEntries.fieldURI}</a>
+									</td>
+									<td width="22%" align="center" style="color: #ffffff;">${matchingEntries.score}</td>
+								</tr>
+							</c:forEach>
+							<%
+							    }else{
+							%>
+							<tr>
+								<td width="78%" style="word-wrap: break-word">&nbsp;</td>
+								<td width="22%" align="center" style="color: #ffffff;">&nbsp;</td>
+							</tr>
+							<%} %>
 						</table>
-					</div> <%
-     }
- %>
-				</td>
+					</div></td>
 
 				<!-- object -->
 				<td>
