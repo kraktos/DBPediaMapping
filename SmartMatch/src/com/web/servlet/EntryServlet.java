@@ -100,6 +100,10 @@ public class EntryServlet extends HttpServlet
 
                     retListSubj = retList.get(0);
                     retListObj = retList.get(1);
+
+                    // get the predicates                    
+                    retListPredSearch = webTupleProc.getRetListPredSearch();
+
                 } else {
                     if (!subject.equals("Subject") && !subject.equals("")) {
                         retListSubj = QueryEngine.doSearch(subject);
@@ -107,15 +111,6 @@ public class EntryServlet extends HttpServlet
                     if (!object.equals("Object") && !object.equals("")) {
                         retListObj = QueryEngine.doSearch(object);
                     }
-                }
-                // we will predict the predicate based on the knowledge we have learned from other IE data sets
-                // if not then we go for lexical match
-                if (!predicate.equals("Predicate") && !predicate.equals("")) {
-                    // do lookup from learnt knowledge
-                    retListPredLookUp = QueryEngine.doLookUpSearch(predicate);
-                    // do lexical match
-                    retListPredSearch = QueryEngine.doSearch(predicate);
-
                 }
 
             } else { // This is advanced search mode. where the system tries to predict the best matches based on the

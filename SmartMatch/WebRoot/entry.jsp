@@ -165,7 +165,7 @@
 							    }
 							    if (resultPredSearch != null){
 							%>
-							<c:forEach items="<%= resultPredLookup%>" var="matchingEntries">
+							<c:forEach items="<%= resultPredSearch%>" var="matchingEntries">
 								<tr>
 									<td width="78%" style="word-wrap: break-word"><a
 										style="color: #00A000" target="_blank"
