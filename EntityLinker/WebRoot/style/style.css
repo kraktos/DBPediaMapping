@@ -13,7 +13,7 @@ table {
 body {
 	position: absolute;
 	overflow: hidden;
-	background: url('hd.jpg') no-repeat scroll;
+	background: url('images/hd.jpg') no-repeat scroll;
 	background-size: 100% 100%;
 	min-width: 100%;
 	min-height: 100%;
@@ -21,7 +21,7 @@ body {
 
 
 .submit {
-	background: url("search_button_green.png") no-repeat 0 0;
+	background: url("images/search_button_green.png") no-repeat 0 0;
 	border: none;
 	cursor: pointer;
 	height: 30px;
@@ -29,7 +29,7 @@ body {
 }
 
 .button {
-	background: url("configure.png") no-repeat;
+	background: url("images/configure.png") no-repeat;
 	cursor: pointer;
 	border: none;
 	height: 30px;
