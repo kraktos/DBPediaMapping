@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
+import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import com.uni.mannheim.dws.mapper.controller.WebTupleProcessor;
 import com.uni.mannheim.dws.mapper.engine.query.QueryEngine;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
+import com.uni.mannheim.dws.mapper.logic.FactSuggestion;
 
 /**
  * Servlet class to handle requests for testing the matching performance
@@ -68,6 +70,9 @@ public class EntryServlet extends HttpServlet
         List<ResultDAO> retListObj = new ArrayList<ResultDAO>();
         List<ResultDAO> retListSubj = new ArrayList<ResultDAO>();
 
+        // list for suggested fact
+        List<SuggestedFactDAO> retListSuggstFacts = new ArrayList<SuggestedFactDAO>();
+
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
 
         WebTupleProcessor webTupleProc = null;
@@ -111,7 +116,6 @@ public class EntryServlet extends HttpServlet
                 // get the predicates
                 retListPredLookUp = webTupleProc.getRetListPredLookUp();
                 retListPredSearch = webTupleProc.getRetListPredSearch();
-
             }
 
             // set the request parameter for results display
@@ -121,18 +125,19 @@ public class EntryServlet extends HttpServlet
             if (retListObj.size() > 0) {
                 request.setAttribute("matchingListObj", retListObj);
             }
-            // if (retListPredLookUp.size() > 0) {
             request.setAttribute("matchingListPredLookup", retListPredLookUp);
-            // }
-            // if (retListPredSearch.size() > 0) {
             request.setAttribute("matchingListPredSearch", retListPredSearch);
-            // }
 
             // for resetting the text boxes
             request.setAttribute("subject", subject);
             request.setAttribute("predicate", predicate);
             request.setAttribute("object", object);
             request.setAttribute("topk", topK);
+
+            retListSuggstFacts =
+                FactSuggestion.suggestFact(retListSubj, retListPredLookUp, retListPredSearch, retListObj);
+            // for setting the suggested fact that system thinks to be true
+            request.setAttribute("suggestedFactList", retListSuggstFacts);
 
             // redirect to page
             request.getRequestDispatcher("page/entry.jsp").forward(request, response);

@@ -1,7 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page language="java" import="com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO"%>
+<%@ page language="java"
+	import="com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO"%>
+<%@ page language="java"
+	import="com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO"%>
 
 
 
@@ -15,6 +18,9 @@
     List<ResultDAO> resultPredLookup = null;
     List<ResultDAO> resultPredSearch = null;
 
+    List<SuggestedFactDAO> retListSuggstFacts = null;
+
+    
     if (request.getAttribute("matchingListSubj") != null) {
         resultSub = (List<ResultDAO>) request.getAttribute("matchingListSubj");
     }
@@ -26,6 +32,10 @@
     }
     if (request.getAttribute("matchingListPredSearch") != null) {
         resultPredSearch = (List<ResultDAO>) request.getAttribute("matchingListPredSearch");
+    }
+        
+    if (request.getAttribute("suggestedFactList") != null) {
+        retListSuggstFacts = (List<SuggestedFactDAO>) request.getAttribute("suggestedFactList");
     }
 %>
 
@@ -42,38 +52,32 @@
 			ele.style.display = "block";
 		}
 	}
-	
-	
-	function validateForm()
-{
-    var errorMsg=new Array(); 
 
+	function validateForm() {
+		var errorMsg = new Array();
 
-var sub=document.forms["myForm"]["subject"].value;
-var obj=document.forms["myForm"]["object"].value;
+		var sub = document.forms["myForm"]["subject"].value;
+		var obj = document.forms["myForm"]["object"].value;
 
+		if (sub == null || sub == "" || sub == "Subject") {
+			errorMsg[0] = "Please Enter Subject\n"
+		}
 
-if(sub==null || sub=="" || sub=="Subject"){
-        errorMsg[0] = "Please Enter Subject\n"
-}
+		if (obj == null || obj == "" || obj == "Object") {
+			errorMsg[1] = "Please Enter Object\n"
+		}
 
-if( obj==null || obj=="" || obj=="Object")  
-{
-  errorMsg[1] = "Please Enter Object\n"  
-}
-  
-  if(errorMsg!=" "){   	
-    for(var i=0;i<errorMsg.length;i++){    
-    document.getElementById("error").innerHTML+="<li >"+errorMsg[i]+"</li><br>"
-    }   
-    errorMsg=null
-      return false;
-    
-  }
-  
-  
- }
+		if (errorMsg != " ") {
+			for ( var i = 0; i < errorMsg.length; i++) {
+				document.getElementById("error").innerHTML += "<li >"
+						+ errorMsg[i] + "</li><br>"
+			}
+			errorMsg = null
+			return false;
 
+		}
+
+	}
 </script>
 
 <meta name="keywords" content="" />
@@ -83,7 +87,8 @@ if( obj==null || obj=="" || obj=="Object")
 <link
 	href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300"
 	rel="stylesheet" type="text/css" />
-<link href="style/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="style/style.css" rel="stylesheet" type="text/css"
+	media="screen" />
 </head>
 
 
@@ -108,24 +113,21 @@ if( obj==null || obj=="" || obj=="Object")
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
 					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
-					onClick="(this.value='')" name="subject" />
-				</td>
+					onClick="(this.value='')" name="subject" /></td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text"
 					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
-					onClick="(this.value='')" name="predicate" />
-				</td>
+					onClick="(this.value='')" name="predicate" /></td>
 				<td><input class="style6" type="text"
 					title="Enter your search object"
 					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
-					onClick="(this.value='')" name="object" />
+					onClick="(this.value='')" name="object" /></td>
+
+
+				<td><input type="submit" class="submit" title="Search" value="">
+					<input type="button" class="button" title="Tweak search parameters"
+					onclick="toggle4('box');">
 				</td>
-
-
-				<td>
-				<input type="submit" class="submit"	 title="Search" value=""> 
-				<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');"></td>
 			</tr>
 
 			<!-- Parameter Extra Fields -->
@@ -144,13 +146,16 @@ if( obj==null || obj=="" || obj=="Object")
 							 -->
 							<tr>
 
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
+								</td>
 								<td><input class="style5" title="Top K results" type="text"
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
-									name="topk" size="40" /></td>
+									name="topk" size="40" />
+								</td>
 							</tr>
 						</table>
-					</div></td>
+					</div>
+				</td>
 			</tr>
 			<!-- Results Feilds -->
 			<tr>
@@ -219,8 +224,7 @@ if( obj==null || obj=="" || obj=="Object")
 							    }
 							%>
 						</table>
-					</div>
-				</td>
+					</div></td>
 
 				<!-- object -->
 				<td>
@@ -248,6 +252,34 @@ if( obj==null || obj=="" || obj=="Object")
 
 			</tr>
 		</table>
+
+
+
+		<%
+		    if (retListSuggstFacts != null) {
+		%>
+
+		<h2 align="left" class=SUBHEADLINE3>Suggestions</h2>
+
+
+		<table>
+			<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
+				<tr width="70%">
+
+					<td width="1%" align="right" style="color: #ffffff"><input
+						type="checkbox" name="checkbox" id="checkbox_id" value="value" />
+					</td>
+					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
+					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.predicate}</td>
+					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
+
+				</tr>
+			</c:forEach>
+
+		</table>
+		<%
+		    }
+		%>
 
 
 

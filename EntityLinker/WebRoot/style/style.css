@@ -146,6 +146,19 @@ button {
 	letter-spacing: 0.6em;
 }
 
+.SUBHEADLINE3 {
+	font-family: "Lucida Grande", Tahoma;
+	font-size: 25px;
+	font-weight: lighter;
+	font-variant: normal;
+	text-transform: uppercase;
+	color: #66a266;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	text-align: left !important;
+	letter-spacing: 0.6em;
+}
+
 .SUBHEADLINE2 {
 	font-family: "Lucida Grande", Tahoma;
 	font-size: 14px;

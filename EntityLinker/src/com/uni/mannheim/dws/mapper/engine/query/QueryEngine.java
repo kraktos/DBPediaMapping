@@ -86,10 +86,6 @@ public class QueryEngine
 
         try {
 
-            // flag to determine if u need to recompute the indices
-            if (Constants.INDEX_AGAIN) {
-                DBPediaIndexBuilder.indexer();
-            }
             // start timer
             start = Utilities.startTimer();
 
@@ -297,6 +293,10 @@ public class QueryEngine
     // stand alone test point
     public static void main(String[] ar) throws Exception
     {
+        // flag to determine if u need to recompute the indices
+        if (Constants.INDEX_AGAIN) {
+            DBPediaIndexBuilder.indexer();
+        }
         doSearch(Constants.SAMPLE_QUERY);
     }
 
@@ -329,11 +329,12 @@ public class QueryEngine
 
                     match = elem[0].split("~");
                     double topScore = Double.parseDouble(match[1]);
-                    returnList.add(new ResultDAO(match[0], Math.round(topScore/topScore * 100)));
+                    returnList.add(new ResultDAO(match[0], Math.round(topScore / topScore * 100)));
                     logger.info(match[0] + "   " + match[1]);
                     if (elem.length > 1) {
                         match = elem[1].split("~");
-                        returnList.add(new ResultDAO(match[0], Math.round(Double.parseDouble(match[1])/topScore * 100)));
+                        returnList.add(new ResultDAO(match[0],
+                            Math.round(Double.parseDouble(match[1]) / topScore * 100)));
                         logger.info(match[0] + "   " + match[1]);
                     }
                 }

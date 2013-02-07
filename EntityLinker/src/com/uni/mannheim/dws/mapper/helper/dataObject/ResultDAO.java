@@ -47,4 +47,14 @@ public class ResultDAO
         return score;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "ResultDAO [fieldURI=" + fieldURI + "]";
+    }
+
 }
