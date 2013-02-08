@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
@@ -135,7 +136,9 @@ public class EntryServlet extends HttpServlet
             request.setAttribute("topk", topK);
 
             retListSuggstFacts =
-                FactSuggestion.suggestFact(retListSubj, retListPredLookUp, retListPredSearch, retListObj);
+                FactSuggestion.suggestFact(retListSubj, subject, retListPredLookUp, retListPredSearch, predicate,
+                    retListObj, object);
+
             // for setting the suggested fact that system thinks to be true
             request.setAttribute("suggestedFactList", retListSuggstFacts);
 

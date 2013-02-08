@@ -261,7 +261,7 @@
 
 		<h2 align="left" class=SUBHEADLINE3>Suggestions</h2>
 
-
+		<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
 		<table>
 			<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
 				<tr width="70%">
@@ -269,14 +269,15 @@
 					<td width="1%" align="right" style="color: #ffffff"><input
 						type="checkbox" name="checkbox" id="checkbox_id" value="value" />
 					</td>
-					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
+					<td width="23%" align="right" style="color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
 					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.predicate}</td>
-					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
+					<td width="23%" align="left" style="color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
 
 				</tr>
 			</c:forEach>
 
 		</table>
+		</div>
 		<%
 		    }
 		%>

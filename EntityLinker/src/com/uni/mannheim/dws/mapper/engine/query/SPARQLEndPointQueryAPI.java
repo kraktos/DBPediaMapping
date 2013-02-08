@@ -14,6 +14,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.uni.mannheim.dws.mapper.helper.util.Constants;
 
 
 /**
@@ -32,7 +33,7 @@ public class SPARQLEndPointQueryAPI
         String sparqlQueryString1 = QUERY;
 
         Query query = QueryFactory.create(sparqlQueryString1);
-        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(Constants.HTTP_DBPEDIA_ORG_SPARQL, query);
 
         // get the result set
         ResultSet results = qexec.execSelect();
@@ -58,7 +59,7 @@ public class SPARQLEndPointQueryAPI
     {
 
         Query query = QueryFactory.create(QUERY);
-        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(Constants.HTTP_DBPEDIA_ORG_SPARQL, query);
 
         // get the result set
         ResultSet results = qexec.execSelect();

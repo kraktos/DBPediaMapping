@@ -17,6 +17,9 @@ public class Constants
     public static final String DELIMIT = "\",";
 
     public static final String DELIMIT_IE_FILE = ",";
+    
+    //DBPedia End point URL
+    public static final String HTTP_DBPEDIA_ORG_SPARQL = "http://live.dbpedia.org/sparql";//"http://dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS ************************************************
     // location of all the raw CSV files dumped from DBPedia SPARQL endpoint
