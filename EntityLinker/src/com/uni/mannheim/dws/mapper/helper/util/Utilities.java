@@ -13,8 +13,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+
+import com.hp.hpl.jena.sparql.function.library.strlen;
+import com.hp.hpl.jena.sparql.pfunction.library.str;
 
 /**
  * All different kinds of utility methods are placed here
@@ -28,6 +33,9 @@ public class Utilities
     static Logger logger = Logger.getLogger(Utilities.class.getName());
 
     static Set<Long> UNIQUE_PROPERTIES = new HashSet<Long>();
+
+    // pattern for allowing english text only during indexing
+    static Pattern p = Pattern.compile(Constants.ALLOWED_ENGLISH_TEXT);
 
     /**
      * Prints a map
@@ -193,6 +201,17 @@ public class Utilities
         for (int listCounter = 0; listCounter < resultList.size(); listCounter++) {
             logger.info(resultList.get(listCounter));
         }
+    }
+
+    /**
+     * function to check if the string input contains non-English characters
+     * 
+     * @param strInput input test
+     * @return boolean value to indicate if it contains or not
+     */
+    public static boolean containsNonEnglish(String strInput)
+    {
+        return p.matcher(strInput).find();
     }
 
 }

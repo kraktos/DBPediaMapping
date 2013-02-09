@@ -54,7 +54,7 @@ public class DBPediaIndexBuilder
         logger.info("Started indexing");
 
         // get a reference to index directory file
-        indexFilePath = new File(Constants.DBPEDIA_INDEX_DIR);
+        indexFilePath = new File(Constants.DBPEDIA_ENT_INDEX_DIR);
 
         // clear any pre-existing index files
         if (Constants.EMPTY_INDICES)
@@ -140,30 +140,41 @@ public class DBPediaIndexBuilder
                         if (strLine.startsWith(Constants.DBPEDIA_HEADER)) {
 
                             // break comma separated line using ","
-                            document = new Document();
                             array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
+
                             // add the URI, store it for display purpose
                             uri = (array[0] != null) ? array[0] : "";
                             uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
-                            document.add(uriField);
+
                             // add the label, store it for display purpose
                             label = (array[1] != null) ? array[1] : "";
                             labelField = new StringField("labelField", label.trim(), Field.Store.YES);
-                            document.add(labelField);
-                            // add the label in small caps form, do not store it for display purpose
-                            // This is a work around since Lucene is inherently case sensitive,
-                            // hence search for "Tom", "TOM" or "TOm" won't match to the actual term "Tom" stored in the
-                            // index
-                            // list
-                            labelSmallField =
-                                new StringField("labelSmallField", label.trim().toLowerCase(), Field.Store.NO);
-                            document.add(labelSmallField);
-                            // adding the full text as well to increase recall. No need to store it
-                            fullContentField = new StringField("fullContentField", label + uri, Field.Store.NO);
-                            document.add(fullContentField);
 
-                            // add the document finally into the writer
-                            writer.addDocument(document);
+                            if (!Utilities.containsNonEnglish(label)) { // do not index Chinese or other such scripts
+                                //logger.info(label);
+                                // add the label in small caps form, do not store it for display purpose
+                                // This is a work around since Lucene is inherently case sensitive,
+                                // hence search for "Tom", "TOM" or "TOm" won't match to the actual term "Tom" stored in
+                                // the index list
+                                labelSmallField =
+                                    new StringField("labelSmallField", label.trim().toLowerCase(), Field.Store.NO);
+                                
+                                // adding the full text as well to increase recall. No need to store it
+                                fullContentField = new StringField("fullContentField", label + uri, Field.Store.NO);
+
+                                // add to document
+                                document = new Document();
+
+                                document.add(uriField);
+                                document.add(labelField);
+                                document.add(labelSmallField);
+                                document.add(fullContentField);
+
+                                // add the document finally into the writer
+                                writer.addDocument(document);
+                            } else {                                
+                                
+                            }
                         }
                     }
 

@@ -17,16 +17,19 @@ public class Constants
     public static final String DELIMIT = "\",";
 
     public static final String DELIMIT_IE_FILE = ",";
-    
-    //DBPedia End point URL
-    public static final String HTTP_DBPEDIA_ORG_SPARQL = "http://live.dbpedia.org/sparql";//"http://dbpedia.org/sparql";
+
+    // DBPedia End point URL
+    public static final String HTTP_DBPEDIA_ORG_SPARQL = "http://live.dbpedia.org/sparql";// "http://dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS ************************************************
     // location of all the raw CSV files dumped from DBPedia SPARQL endpoint
     public static final String DBPEDIA_DATA_DIR = "/home/arnab/Work/data/DBPedia/data";
 
-    // location of the directory where the indices are stored
-    public static final String DBPEDIA_INDEX_DIR = "/home/arnab/Work/data/DBPedia/indexFiles";
+    // location of the directory where the indices for entities are stored
+    public static final String DBPEDIA_ENT_INDEX_DIR = "/home/arnab/Work/data/DBPedia/indexFiles";
+
+    // location of the directory where the indices for predicates are stored
+    public static final String DBPEDIA_PROP_INDEX_DIR = "/home/arnab/Work/data/DBPedia/propIndexFiles";
 
     // Delimiter to separate the URI and the lable of DBPedia entries
     public static final String DBPEDIA_DATA_DELIMIT = "~!~";
@@ -35,6 +38,10 @@ public class Constants
     public static final String DBPEDIA_HEADER = "http://dbpedia.org/";
 
     // *****************INDEXING STRATEGIES ************************************************
+
+    // allowable text for indexing, do not index Chinese, Japanese, Korean, Russian etc labels
+    public static final String ALLOWED_ENGLISH_TEXT = "[^\\w_\\s()'.]";
+
     // change here to use different analyzers
     public static final Analyzer LUCENE_ANALYZER = new StandardAnalyzer(Version.LUCENE_40);
 
@@ -59,10 +66,10 @@ public class Constants
     public static final int MAX_RESULTS = 50;
 
     // Number of top k matching elements you wish to retrieve
-    public static final int TOPK = 10;
+    public static final int TOPK = 5;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "jaguar ";
+    public static final String SAMPLE_QUERY = "mercedes";
 
     // *****************IE Engines output locations ***************************************************
 

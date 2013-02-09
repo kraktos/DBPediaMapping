@@ -3,12 +3,14 @@
  */
 package com.uni.mannheim.dws.mapper.wrapper;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
+import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.engine.query.QueryEngine;
 
 /**
@@ -38,9 +40,8 @@ public class QueryAPIWrapper implements Callable<List<ResultDAO>>
     {
         List<ResultDAO> list = null;
         try {
-
             // make the search operation
-            list = QueryEngine.doSearch(this.queryTerm);
+            list = QueryEngine.doSearch(this.queryTerm, new File(Constants.DBPEDIA_ENT_INDEX_DIR));
 
             // Let the thread sleep for a while.
             Thread.sleep(500);

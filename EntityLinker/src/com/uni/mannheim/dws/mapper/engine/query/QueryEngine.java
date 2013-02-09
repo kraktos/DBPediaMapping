@@ -68,10 +68,11 @@ public class QueryEngine
      * method accepts a user query and fetches over the indexed DBPedia data
      * 
      * @param userQuery the user provided search item
+     * @param file
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public static List<ResultDAO> doSearch(String userQuery) throws IOException
+    public static List<ResultDAO> doSearch(String userQuery, File file) throws IOException
     {
         IndexReader reader = null;
         IndexSearcher searcher = null;
@@ -88,9 +89,6 @@ public class QueryEngine
 
             // start timer
             start = Utilities.startTimer();
-
-            // create File object of our index directory
-            File file = new File(Constants.DBPEDIA_INDEX_DIR);
 
             // create index reader object
             // reader = IndexReader.open(FSDirectory.open(file));
@@ -135,7 +133,7 @@ public class QueryEngine
                 // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField);
                 if (isUnique) {
-                    logger.debug(labelField + " => " + uriField + "   " + Math.round(score * 100));
+                    logger.info(labelField + " => " + uriField + "   " + Math.round(score * 100));
                     returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {
@@ -297,7 +295,10 @@ public class QueryEngine
         if (Constants.INDEX_AGAIN) {
             DBPediaIndexBuilder.indexer();
         }
-        doSearch(Constants.SAMPLE_QUERY);
+        // create File object of our index directory
+        File file = new File(Constants.DBPEDIA_ENT_INDEX_DIR);
+
+        doSearch(Constants.SAMPLE_QUERY, file);
     }
 
     /**

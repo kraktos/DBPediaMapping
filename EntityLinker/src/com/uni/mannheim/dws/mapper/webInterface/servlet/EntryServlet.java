@@ -1,5 +1,6 @@
 package com.uni.mannheim.dws.mapper.webInterface.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class EntryServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
+        // list of resultsets to be displayed back on the UI
         List<ResultDAO> retListPredLookUp = new ArrayList<ResultDAO>();
         List<ResultDAO> retListPredSearch = new ArrayList<ResultDAO>();
         List<ResultDAO> retListObj = new ArrayList<ResultDAO>();
@@ -76,7 +78,6 @@ public class EntryServlet extends HttpServlet
 
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
 
-        WebTupleProcessor webTupleProc = null;
         // initialize with some default values
         int topK = Constants.TOPK;
 
@@ -84,10 +85,10 @@ public class EntryServlet extends HttpServlet
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
         try {
+            // set topk attribute
             if (request.getParameter("topk") != null) {
                 topK = Integer.parseInt(request.getParameter("topk"));
             }
-
             QueryEngine.setTopK(topK);
 
             String subject = request.getParameter("subject").trim();
@@ -97,20 +98,26 @@ public class EntryServlet extends HttpServlet
             // This is simple search mode. just querying for terms
             if (!Constants.PREDICTIVE_SEARCH_MODE) { // not really useful..but to just play around
 
+                // create File object of our index directory
+                File file = new File(Constants.DBPEDIA_ENT_INDEX_DIR);
+
                 if (!subject.equals("Subject") && !subject.equals("")) {
-                    retListSubj = QueryEngine.doSearch(subject);
+                    retListSubj = QueryEngine.doSearch(subject, file);
                 }
                 if (!object.equals("Object") && !object.equals("")) {
-                    retListObj = QueryEngine.doSearch(object);
+                    retListObj = QueryEngine.doSearch(object, file);
                 }
             } else {// This is advanced search mode. where the system tries to predict the best matches based on
                     // the input combination
 
-                webTupleProc = new WebTupleProcessor(pool, subject, object, predicate);
+                // declare class
+                WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object, predicate);
+
                 // make a call to the Engine with the required parameters
                 webTupleProc.processTuples(null);
-                retList = webTupleProc.getRetList();
 
+                // retrieve and hold all the results
+                retList = webTupleProc.getRetList();
                 retListSubj = retList.get(0);
                 retListObj = retList.get(1);
 
@@ -135,6 +142,7 @@ public class EntryServlet extends HttpServlet
             request.setAttribute("object", object);
             request.setAttribute("topk", topK);
 
+            // return a list of possible facts suggestion from best matches
             retListSuggstFacts =
                 FactSuggestion.suggestFact(retListSubj, subject, retListPredLookUp, retListPredSearch, predicate,
                     retListObj, object);
