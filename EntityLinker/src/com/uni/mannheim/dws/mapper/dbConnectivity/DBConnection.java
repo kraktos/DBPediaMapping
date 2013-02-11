@@ -44,8 +44,9 @@ public class DBConnection
 
     /**
      * initialize the DB in the constructor
+     * @throws SQLException 
      */
-    public DBConnection()
+    public DBConnection() throws SQLException
     {
         initDB();
     }
@@ -89,23 +90,19 @@ public class DBConnection
 
     }
 
-    public Connection initDB()
+    public Connection initDB() throws SQLException
     {
-        try {
 
-            // setConnection(DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword));
-            this.connection = DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword);
+        // setConnection(DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword));
+        this.connection = DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword);
 
-            if (this.connection != null) {
-                return getConnection();
+        if (this.connection != null) {
+            return getConnection();
 
-            } else {
-                logger.info("Failed to make connection!");
-            }
-
-        } catch (SQLException e) {
-            logger.error("Connection Failed! Check output console" + e.getMessage());
+        } else {
+            logger.info("Failed to make connection!");
         }
+
         return null;
 
     }
@@ -115,9 +112,10 @@ public class DBConnection
      * @param resultSet ResultSet reference
      * @param queriedItem
      * @param startTime
+     * @throws SQLException 
      */
     public static void performDBOperation(Statement statement, ResultSet resultSet, String queriedItem,
-        final String query)
+        final String query) throws SQLException
     {
 
         Connection connection;

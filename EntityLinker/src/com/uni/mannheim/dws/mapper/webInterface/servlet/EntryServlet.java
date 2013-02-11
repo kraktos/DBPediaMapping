@@ -59,10 +59,13 @@ public class EntryServlet extends HttpServlet
         // Put your code here
     }
 
+    // DB connection instance, one per servlet
     Connection connection = null;
 
+    // prepared statement instance
     PreparedStatement pstmt = null;
 
+    // instantiate a new KB
     UncertainKB uncertainKB = new UncertainKB();
 
     /**
@@ -159,7 +162,6 @@ public class EntryServlet extends HttpServlet
                 request.setAttribute("suggestedFactList", retListSuggstFacts);
 
             } else {
-                logger.info("U R HERE...");
 
                 String[] facts = request.getParameterValues("checkbox");
                 for (String fact : facts) {
@@ -170,6 +172,7 @@ public class EntryServlet extends HttpServlet
                     // save it to the KB
                     uncertainKB.createKB(connection, pstmt, new SuggestedFactDAO(str[0], str[1], str[2], null, true));
                 }
+                facts = null;
             }
 
             // redirect to page
@@ -190,15 +193,17 @@ public class EntryServlet extends HttpServlet
      */
     public void init() throws ServletException
     {
-        DBConnection dbConnection = new DBConnection();
-
-        // retrieve the freshly created connection instance
-        connection = dbConnection.getConnection();
         try {
+            // instantiate the DB connection
+            DBConnection dbConnection = new DBConnection();
+
+            // retrieve the freshly created connection instance
+            connection = dbConnection.getConnection();
+
             // create a statement
             pstmt = connection.prepareStatement(Constants.INSERT_FACT_SQL);
         } catch (SQLException ex) {
-            logger.error(" EXception in init " + ex.getMessage());
+            logger.error("Connection Failed! Check output console" + ex.getMessage());
         }
 
     }

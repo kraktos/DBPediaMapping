@@ -4,6 +4,7 @@
 package com.uni.mannheim.dws.mapper.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -25,8 +26,9 @@ public interface ITupleProcessor
      * @throws IOException
      * @throws ExecutionException
      * @throws InterruptedException
+     * @throws SQLException 
      */
-    public void processTuples(final String dataFilePath) throws IOException, InterruptedException, ExecutionException;
+    public void processTuples(final String dataFilePath) throws IOException, InterruptedException, ExecutionException, SQLException;
 
     /**
      * Map to store the possible predicates. This looks something like this <code>

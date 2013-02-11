@@ -99,7 +99,6 @@ public class FactSuggestion
                 }
             }
         }
-        logger.info("ret list size = " + retList.size());
         return retList;
     }
 

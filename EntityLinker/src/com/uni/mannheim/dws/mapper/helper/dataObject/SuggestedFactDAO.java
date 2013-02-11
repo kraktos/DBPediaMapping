@@ -120,4 +120,15 @@ public class SuggestedFactDAO
         this.confidence = confidence;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "SuggestedFactDAO [subject=" + subject + ", predicate=" + predicate + ", object=" + object
+            + ", confidence=" + confidence + ", truthFlag=" + truthFlag + "]";
+    }
+
 }

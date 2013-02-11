@@ -133,7 +133,7 @@ public class QueryEngine
                 // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField);
                 if (isUnique) {
-                    logger.info(labelField + " => " + uriField + "   " + Math.round(score * 100));
+                    logger.debug(labelField + " => " + uriField + "   " + Math.round(score * 100));
                     returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {
@@ -331,12 +331,12 @@ public class QueryEngine
                     match = elem[0].split("~");
                     double topScore = Double.parseDouble(match[1]);
                     returnList.add(new ResultDAO(match[0], Math.round(topScore / topScore * 100)));
-                    logger.info(match[0] + "   " + match[1]);
+                    logger.debug(match[0] + "   " + match[1]);
                     if (elem.length > 1) {
                         match = elem[1].split("~");
                         returnList.add(new ResultDAO(match[0],
                             Math.round(Double.parseDouble(match[1]) / topScore * 100)));
-                        logger.info(match[0] + "   " + match[1]);
+                        logger.debug(match[0] + "   " + match[1]);
                     }
                 }
             }
