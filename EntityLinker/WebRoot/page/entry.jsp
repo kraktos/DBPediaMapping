@@ -44,6 +44,36 @@
 <html>
 <head>
 <script language="javascript">
+	var flag = false;
+
+	function ifChecked(){
+	
+		var ctr = 0;
+		for ( var i = 0; i < document.forms[0].checkbox.length; i++) {
+			if (document.forms[0].checkbox[i].checked) {
+				ctr++;				
+			}
+		}
+						
+		if (ctr == 0) {
+			flag = false;
+		} else {
+			flag = true;
+		}
+		
+		return flag;
+	}
+	
+	function toggl(showHideDiv) {
+		
+		var ele = document.getElementById(showHideDiv);
+		if (ele.style.display == "block" && !ifChecked()) {
+			ele.style.display = "none";
+		} else {
+			ele.style.display = "block";
+		}
+	}
+
 	function toggle4(showHideDiv) {
 		var ele = document.getElementById(showHideDiv);
 		if (ele.style.display == "block") {
@@ -60,19 +90,19 @@
 		var obj = document.forms["myForm"]["object"].value;
 
 		if (sub == null || sub == "" || sub == "Subject") {
-			errorMsg[0] = "Please Enter Subject\n"
+			errorMsg[0] = "Please Enter Subject\n";
 		}
 
 		if (obj == null || obj == "" || obj == "Object") {
-			errorMsg[1] = "Please Enter Object\n"
+			errorMsg[1] = "Please Enter Object\n";
 		}
 
 		if (errorMsg != " ") {
 			for ( var i = 0; i < errorMsg.length; i++) {
 				document.getElementById("error").innerHTML += "<li >"
-						+ errorMsg[i] + "</li><br>"
+						+ errorMsg[i] + "</li><br>";
 			}
-			errorMsg = null
+			errorMsg = null;
 			return false;
 
 		}
@@ -113,21 +143,23 @@
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
 					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
-					onClick="(this.value='')" name="subject" /></td>
+					onClick="(this.value='')" name="subject" />
+				</td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text"
 					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
-					onClick="(this.value='')" name="predicate" /></td>
+					onClick="(this.value='')" name="predicate" />
+				</td>
 				<td><input class="style6" type="text"
 					title="Enter your search object"
 					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
-					onClick="(this.value='')" name="object" /></td>
+					onClick="(this.value='')" name="object" />
+				</td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');">
-				</td>
+					onclick="toggle4('box');"></td>
 			</tr>
 
 			<!-- Parameter Extra Fields -->
@@ -146,16 +178,13 @@
 							 -->
 							<tr>
 
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
-								</td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
 								<td><input class="style5" title="Top K results" type="text"
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
-									name="topk" size="40" />
-								</td>
+									name="topk" size="40" /></td>
 							</tr>
 						</table>
-					</div>
-				</td>
+					</div></td>
 			</tr>
 			<!-- Results Feilds -->
 			<tr>
@@ -224,7 +253,8 @@
 							    }
 							%>
 						</table>
-					</div></td>
+					</div>
+				</td>
 
 				<!-- object -->
 				<td>
@@ -262,35 +292,29 @@
 		<h2 align="left" class=SUBHEADLINE3>Suggestions</h2>
 
 		<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
-		<table>
-			<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
-				<tr width="70%">
-
-					<td width="1%" align="right" style="color: #ffffff"><input
-						type="checkbox" name="checkbox" id="checkbox_id" value="value" />
-					</td>
-					<td width="23%" align="right" style="color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
-					<td width="23%" align="center" style="color:#00a000; font-size: 15pt;">${matchingEntries.predicate}</td>
-					<td width="23%" align="left" style="color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
-
-				</tr>
-			</c:forEach>
-
-		</table>
+			<table>
+				<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
+					<tr width="70%">
+						<td width="1%" align="right" style="color: #ffffff"><input
+							type="checkbox" name="checkbox" id="checkbox_id"
+							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}'
+							onclick="toggl('saveButtn')" /></td>
+						<td width="23%" align="right"
+							style="color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
+						<td width="23%" align="center"
+							style="color:#00a000; font-size: 15pt;">${matchingEntries.predicate}</td>
+						<td width="23%" align="left"
+							style="color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<div id="saveButtn" style="display: none;padding: 5px;">
+				<input type="submit" name="action" value="Save Facts">
+			</div>
 		</div>
 		<%
 		    }
 		%>
-
-
-
-
-
-
-
-
-
-
 	</form>
 </body>
 

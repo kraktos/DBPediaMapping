@@ -95,4 +95,9 @@ public class Constants
     // processing
     public static final double THRESHOLD_SCORE = 80;
 
+    
+ // *****************Database Parameters PARAMETES***************************************************
+    public static final String INSERT_FACT_SQL =
+        "INSERT INTO \"UNCERTAIN_KB\"(\"SUB\", \"PRED\", \"OBJ\", \"CONFIDENCE\") VALUES (?, ?, ?, ?)";;
+
 }

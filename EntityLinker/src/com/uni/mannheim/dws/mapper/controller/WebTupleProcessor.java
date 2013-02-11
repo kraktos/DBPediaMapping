@@ -98,7 +98,7 @@ public class WebTupleProcessor implements ITupleProcessor
             this.retList = QueryEngine.performSearch(this.pool, this.subject, this.object);
         }
         if (!predicate.equals("Predicate") && !predicate.equals("")) {
-            // create File object of our index directory
+            // create File object of our index directory. this is the property index directory
             file = new File(Constants.DBPEDIA_PROP_INDEX_DIR);
 
             this.retListPredLookUp = QueryEngine.doLookUpSearch(predicate);

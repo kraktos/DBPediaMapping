@@ -19,6 +19,8 @@ public class SuggestedFactDAO
     // predicate variable
     private String object;
 
+    private Double confidence;
+
     // flag to determine true or false flag
     private boolean truthFlag;
 
@@ -26,13 +28,15 @@ public class SuggestedFactDAO
      * @param subject
      * @param predicate
      * @param object
+     * @param confidence
      * @param truthFlag
      */
-    public SuggestedFactDAO(String subject, String predicate, String object, boolean truthFlag)
+    public SuggestedFactDAO(String subject, String predicate, String object, Double confidence, boolean truthFlag)
     {
         this.subject = subject;
         this.predicate = predicate;
         this.object = object;
+        this.confidence = confidence;
         this.truthFlag = truthFlag;
     }
 
@@ -98,6 +102,22 @@ public class SuggestedFactDAO
     public void setTruthFlag(boolean truthFlag)
     {
         this.truthFlag = truthFlag;
+    }
+
+    /**
+     * @return the confidence
+     */
+    public Double getConfidence()
+    {
+        return confidence;
+    }
+
+    /**
+     * @param confidence the confidence to set
+     */
+    public void setConfidence(double confidence)
+    {
+        this.confidence = confidence;
     }
 
 }

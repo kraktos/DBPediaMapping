@@ -95,7 +95,7 @@ public class FactSuggestion
         for (String pred : preds) {
             for (String sub : tSubs) {
                 for (String obj : tObjs) {
-                    retList.add(new SuggestedFactDAO(sub, pred, obj, false));
+                    retList.add(new SuggestedFactDAO(sub, pred, obj, null, false));
                 }
             }
         }
