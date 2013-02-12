@@ -69,7 +69,7 @@ public class Constants
     public static final int TOPK = 5;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "mercedes";
+    public static final String SAMPLE_QUERY = "einstein";
 
     // *****************IE Engines output locations ***************************************************
 

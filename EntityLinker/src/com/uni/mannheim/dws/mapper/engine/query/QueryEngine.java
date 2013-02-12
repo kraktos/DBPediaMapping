@@ -103,6 +103,7 @@ public class QueryEngine
 
             // fuzzy query for spelling mistakes or suggestive results
             FuzzyQuery fuzzyQuery = new FuzzyQuery(new Term("labelSmallField", userQuery.toLowerCase()));
+            FuzzyQuery uriFuzzyQuery = new FuzzyQuery(new Term("uriTextField", userQuery.toLowerCase()));
 
             // wild card queries for incomplete query terms
             WildcardQuery wildCardQuery = new WildcardQuery(new Term("labelSmallField", userQuery.toLowerCase() + "*"));
@@ -111,6 +112,7 @@ public class QueryEngine
             BooleanQuery booleanQuery = new BooleanQuery();
             booleanQuery.add(query, BooleanClause.Occur.SHOULD);
             booleanQuery.add(fuzzyQuery, BooleanClause.Occur.SHOULD);
+            booleanQuery.add(uriFuzzyQuery, BooleanClause.Occur.SHOULD);
             booleanQuery.add(wildCardQuery, BooleanClause.Occur.SHOULD);
 
             logger.debug("Framed Query = " + booleanQuery.toString());
@@ -133,7 +135,7 @@ public class QueryEngine
                 // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField);
                 if (isUnique) {
-                    logger.debug(labelField + " => " + uriField + "   " + Math.round(score * 100));
+                    logger.info(labelField + " => " + uriField + "   " + Math.round(score * 100));
                     returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {

@@ -184,7 +184,7 @@ public class Utilities
     {
         long end = System.currentTimeMillis();
         long execTime = end - start;
-        logger.debug(message + " " + String.format("%02d ms", TimeUnit.MILLISECONDS.toMillis(execTime)));
+        logger.info(message + " " + String.format("%02d ms", TimeUnit.MILLISECONDS.toMillis(execTime)));
     }
 
     /**

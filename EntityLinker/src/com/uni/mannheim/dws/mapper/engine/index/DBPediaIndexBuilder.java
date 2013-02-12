@@ -119,6 +119,7 @@ public class DBPediaIndexBuilder
                  */
 
                 Field uriField = null;
+                Field uriTextField = null;
                 Field labelField = null;
                 Field labelSmallField = null;
                 Field fullContentField = null;
@@ -132,6 +133,7 @@ public class DBPediaIndexBuilder
                     Document document = null;
                     String[] array = null;
                     String uri = null;
+                    String uriText = null;
                     String label = null;
 
                     // read comma separated file line by line
@@ -142,25 +144,30 @@ public class DBPediaIndexBuilder
                             // break comma separated line using ","
                             array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
 
-                            // add the URI, store it for display purpose
-                            uri = (array[0] != null) ? array[0] : "";
-                            uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
-
                             // add the label, store it for display purpose
                             label = (array[1] != null) ? array[1] : "";
                             labelField = new StringField("labelField", label.trim(), Field.Store.YES);
 
                             if (!Utilities.containsNonEnglish(label)) { // do not index Chinese or other such scripts
-                                //logger.info(label);
-                                // add the label in small caps form, do not store it for display purpose
-                                // This is a work around since Lucene is inherently case sensitive,
-                                // hence search for "Tom", "TOM" or "TOm" won't match to the actual term "Tom" stored in
-                                // the index list
+
+                                // add the URI, store it for display purpose
+                                uri = (array[0] != null) ? array[0] : "";
+                                uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
+
+                                // index the text of the URI, it helps to improve recall
+                                uriText =
+                                    uri.substring(uri.lastIndexOf("/") + 1, uri.length()).replaceAll("_", " ")
+                                        .replaceAll(",", "");
+                                uriTextField =
+                                    new StringField("uriTextField", uriText.trim().toLowerCase(), Field.Store.NO);
+
+                                // index the small cap-ed form of labels
                                 labelSmallField =
                                     new StringField("labelSmallField", label.trim().toLowerCase(), Field.Store.NO);
-                                
+
+
                                 // adding the full text as well to increase recall. No need to store it
-                                fullContentField = new StringField("fullContentField", label + uri, Field.Store.NO);
+                                fullContentField = new StringField("fullContentField", label + uriText, Field.Store.NO);
 
                                 // add to document
                                 document = new Document();
@@ -172,8 +179,8 @@ public class DBPediaIndexBuilder
 
                                 // add the document finally into the writer
                                 writer.addDocument(document);
-                            } else {                                
-                                
+                            } else {
+
                             }
                         }
                     }
