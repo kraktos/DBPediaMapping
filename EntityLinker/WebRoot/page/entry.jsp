@@ -143,7 +143,7 @@
 
 		<div id="error" style="color: #ff0000"></div>
 
-		<table>
+		<table align="center">
 			<!-- Search Fields -->
 			<tr>
 				<td><input class="style6" title="Enter your search subject"
@@ -303,8 +303,9 @@
 							<td><h2 class=SUBHEADLINE3>Suggestions</h2>
 							</td>
 							<td align=right>
-								<div id="saveButtn" style="display: none;padding: 5px;">									
-									<input type="submit" name="action" value="" class="save" title="save to database">
+								<div id="saveButtn" style="display: none;padding: 5px;">
+									<input type="submit" name="action" value="" class="save"
+										title="save to database">
 								</div>
 							</Td>
 						</Tr>
@@ -314,11 +315,10 @@
 			</Tr>
 		</Table>
 
+		<input type="checkbox" onClick="toggle(this)" /> <FONT
+			COLOR="#66a266"> Check All</FONT> <br />
 		<div
-			style="width:80%; height:400px; overflow-y:auto; overflow-x:hidden;">
-			<input type="checkbox" onClick="toggle(this)" /> <FONT
-				COLOR="#66a266"> Check All</FONT> <br />
-
+			style="width:80%; height:300px; overflow-y:auto; overflow-x:hidden;">
 			<table>
 				<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
 					<tr>
@@ -341,20 +341,19 @@
 		%>
 
 	</form>
+
+
 </body>
 
+<%--<div class="footer" style="position: static;">
+	<a rel="license"
+		href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img
+		alt="Creative Commons License" style="border-width:0"
+		src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /> </a> This
+	work is licensed under a <a style="color: green;" rel="license"
+		href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative
+		Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+</div>
 
-<body>
-	<div id="wrapper">
-		<div id="wrapper-bgbtm">
-
-			<!-- end #page -->
-
-			<!-- end #footer -->
-		</div>
-	</div>
-</body>
-
-
-</html>
+--%></html>
 

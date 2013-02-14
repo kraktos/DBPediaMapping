@@ -32,7 +32,7 @@ public class FactSuggestion
      * @param qPred
      * @param retListObj list of possible objects, cannot be null
      * @param qObj
-     * @return
+     * @return {@code List of SuggestedFactDAO}
      */
     public static List<SuggestedFactDAO> suggestFact(List<ResultDAO> retListSubj, String qSub,
         List<ResultDAO> retListPredLookUp, List<ResultDAO> retListPredSearch, String qPred, List<ResultDAO> retListObj,

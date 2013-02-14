@@ -31,6 +31,7 @@ public class Utilities
     public static HashSet<String> dict = new HashSet<String>();
 
     public static int countGlbl = 10;
+
     public static Set<String> set = new TreeSet<String>();
 
     // define Logger
@@ -93,16 +94,6 @@ public class Utilities
     }
 
     /**
-     * @param word
-     * @return
-     */
-    public static String extractPredicatesFromTuples(final String word)
-    {
-        String[] entities = word.split(",");
-        return entities[1];
-    }
-
-    /**
      * Takes a set of Strings and writes to the output file
      * 
      * @param SET_DBPEDIA_TERMS set of string values
@@ -124,51 +115,11 @@ public class Utilities
     }
 
     /**
-     * @param tupleFromIE
-     * @return
-     */
-    public static String extractLabel(String tupleFromIE)
-    {
-
-        String s = tupleFromIE.substring(tupleFromIE.lastIndexOf(":") + 1, tupleFromIE.length());
-        return s;
-
-    }
-
-    /**
-     * The tuples coming from the IE engine are usually noisy. Add all cleansing logic here.
-     * 
-     * @param stringArg String to Clean
-     * @return
-     */
-    public static String cleanseLabels(String stringArg)
-    {
-
-        // remove any "http://" coz it wont be helpful in calculating the score
-        if (stringArg.lastIndexOf("http://") != -1) {
-            // stringArg = stringArg.substring(stringArg.lastIndexOf("http://") + 1, stringArg.length());
-            stringArg = stringArg.replaceAll("http://", "");
-        }
-
-        if (stringArg.indexOf("en.wikipedia.org/wiki/") != -1) {
-            // stringArg = stringArg.substring(stringArg.lastIndexOf("en.wikipedia.org/wiki/") + 1, stringArg.length());
-            stringArg = stringArg.replaceAll("en.wikipedia.org/wiki/", "");
-
-        }
-
-        // extract the label
-        if (stringArg.lastIndexOf(":") != -1)
-            stringArg = stringArg.substring(stringArg.lastIndexOf(":") + 1, stringArg.length());
-
-        return stringArg;
-    }
-
-    /**
      * Method to check if a given String value exists in the given set
      * 
      * @param set The set to check
      * @param stringValue The value to check
-     * @return
+     * @return a flag stating if input is in the given set
      */
     public static boolean checkUniqueness(Set<String> set, String stringValue)
     {
@@ -221,7 +172,7 @@ public class Utilities
     public static void splitIntoBagOfWords(String string) throws FileNotFoundException
     {
         split("", string);
-        
+
         System.out.println(set.iterator().next());
     }
 
@@ -243,15 +194,15 @@ public class Utilities
                 count++;
         }
 
-        if (count < countGlbl){
-            if(set.size() > 0){
-                set.clear();                
+        if (count < countGlbl) {
+            if (set.size() > 0) {
+                set.clear();
             }
             set.add(segment);
         }
-            
 
-        if (count == 4)  System.out.println(segment + "\t" + count + " English words");
+        if (count == 4)
+            System.out.println(segment + "\t" + count + " English words");
 
         // recursive calls
         for (int i = 2; i < in.length(); i++) {

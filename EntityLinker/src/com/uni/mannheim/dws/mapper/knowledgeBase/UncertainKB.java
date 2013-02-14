@@ -37,7 +37,7 @@ public class UncertainKB implements IKnowledgeBase
         } catch (SQLException e) {
             logger.error(" record exists  !!");
         }
-        
+
     }
 
     public static void main(String[] ar) throws SQLException

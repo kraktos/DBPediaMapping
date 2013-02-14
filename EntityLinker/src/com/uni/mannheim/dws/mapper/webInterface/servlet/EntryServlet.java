@@ -185,14 +185,14 @@ public class EntryServlet extends HttpServlet
                 facts = null;
             }
 
-            // redirect to page
-            request.getRequestDispatcher("page/entry.jsp").forward(request, response);
-
         }
 
         catch (Throwable theException) {
             logger.error(theException.getMessage());
         }
+
+        // redirect to page
+        request.getRequestDispatcher("page/entry.jsp").forward(request, response);
 
     }
 

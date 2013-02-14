@@ -27,7 +27,7 @@ import com.uni.mannheim.dws.mapper.logic.FactSuggestion;
 
 /**
  * This class tries to parse the tuples generated from NELL IE engine and processes them by each tuple see
- * {@link TupleProcessor}
+ * {@link ITupleProcessor}
  * 
  * @author Arnab Dutta
  */

@@ -192,11 +192,11 @@ public class QueryEngine
      * takes a list of subject and object from the DBPedia and tries to find all possible set of predicates connecting
      * these two two entities (subject and object)
      * 
-     * @param subject the DBPedia entity occurring as subject
-     * @param object the DBPedia entity occurring as object
-     * @param actualPredicate the predicate coming form IE engines
+     * @param subList argument 1 of {@link List } of {@link ResultDAO}
+     * @param objList argument 2 of {@link List } of {@link ResultDAO}
+     * @param actualPredicateFromIE
      */
-    public static void fetchPredicates(final List<ResultDAO> list, final List<ResultDAO> list2,
+    public static void fetchPredicates(final List<ResultDAO> subList, final List<ResultDAO> objList,
         final String actualPredicateFromIE)
     {
 
@@ -209,17 +209,17 @@ public class QueryEngine
         String matchedProp = null;
 
         // take into consideration only those candidates having a score more than 80%
-        for (int listCounter = 0; listCounter < list.size(); listCounter++) {
-            if (list.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
-                possibleSubjs.add(list.get(listCounter).getFieldURI());
+        for (int listCounter = 0; listCounter < subList.size(); listCounter++) {
+            if (subList.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
+                possibleSubjs.add(subList.get(listCounter).getFieldURI());
             } else {
                 break; // no need to iterate further, since the rest values are less than the desired score
             }
         }
 
-        for (int listCounter = 0; listCounter < list2.size(); listCounter++) {
-            if (list2.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
-                possibleObjs.add(list2.get(listCounter).getFieldURI());
+        for (int listCounter = 0; listCounter < objList.size(); listCounter++) {
+            if (objList.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
+                possibleObjs.add(objList.get(listCounter).getFieldURI());
             } else {
                 break; // no need to iterate further, since the rest values are less than the desired score
             }

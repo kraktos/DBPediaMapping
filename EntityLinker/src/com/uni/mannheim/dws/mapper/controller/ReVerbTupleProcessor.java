@@ -16,7 +16,7 @@ import com.uni.mannheim.dws.mapper.helper.util.Constants;
 
 /**
  * This class tries to parse the tuples generated from ReVerb IE engine and processes them by each tuple. See
- * {@link TupleProcessor}
+ * {@link ITupleProcessor}
  * 
  * @author Arnab Dutta
  */
@@ -63,10 +63,10 @@ public class ReVerbTupleProcessor implements ITupleProcessor
 
                 logger.info(subject + " | " + predicate + " | " + object);
                 // fetch the equivalent DBPedia entities
-                //List<String> retList = QueryEngine.performSearch(subject, object);
+                // List<String> retList = QueryEngine.performSearch(subject, object);
 
                 // use them to fetch the predicates they are linked with
-                //QueryEngine.fetchPredicates(retList.get(0), retList.get(1), predicate);
+                // QueryEngine.fetchPredicates(retList.get(0), retList.get(1), predicate);
                 System.out.print("\n\n");
             }
 

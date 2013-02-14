@@ -3,6 +3,33 @@ Design by Free CSS Templates
 http://www.freecsstemplates.org
 Released for free under a Creative Commons Attribution 2.5 License
 */
+* {
+	margin: 0;
+}
+
+html,body {
+	height: 100%;
+}
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -142px;
+	/* the bottom margin is the negative value of the footer's height */
+}
+
+
+.footer {
+	background-color: transparent;
+	color: white;
+	font-size: 100%;
+	position: absolute;
+	z-index: 10;
+	text-align: right;
+	line-height: 1em;
+}
+
 table {
 	table-layout: fixed;
 	width: 100%;
@@ -25,7 +52,6 @@ body {
 	cursor: pointer;
 	height: 48px;
 	width: 48px;
-	
 }
 
 .submit {
@@ -65,22 +91,24 @@ body {
 .thumb {
 	max-width: 700px;
 	max-height: 700px;
-	width: expression(this.width >                                           100 ?
+	width: expression(this.width >                                              
+		100 ?  
 		 
 		      
 		                    
-		            "100px" :             
+		              "100px" :               
 		 
 		          
-		                true);
-	height: expression(this.height >                                           100 ?
+		                  true);
+	height: expression(this.height >                                              
+		100 ?  
 		 
 		      
 		                    
-		            "100px" :             
+		              "100px" :               
 		 
 		          
-		                true);
+		                  true);
 }
 
 .style6 {
@@ -132,9 +160,9 @@ button {
 
 .HEADLINE {
 	font-family: "Lucida Grande", Tahoma;;
-	font-size: 40px;
-	margin-top: 15px;
-	margin-bottom: 10px;
+	font-size: 70px;
+	margin-top: 55px;
+	margin-bottom: 20px;
 	text-align: center;
 	font-weight: bold;
 	color: #FFFFFF;
@@ -149,7 +177,7 @@ button {
 	text-transform: uppercase;
 	color: #666666;
 	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 40px;
 	text-align: center !important;
 	letter-spacing: 0.6em;
 }
