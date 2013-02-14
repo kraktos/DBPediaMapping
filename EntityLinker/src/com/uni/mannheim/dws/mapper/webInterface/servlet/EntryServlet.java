@@ -98,10 +98,10 @@ public class EntryServlet extends HttpServlet
         // we just need two threads to perform the search
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
-        String action = (request.getParameter("action") != null) ? request.getParameter("action") : "sss";
-
+        String action = (request.getParameter("action") != null) ? request.getParameter("action") : "none";
+        logger.info("|" + action + "|");
         try {
-            if (!"Save Facts".equals(action)) {
+            if (!"".equals(action)) {
 
                 // set topk attribute
                 if (request.getParameter("topk") != null) {
@@ -156,6 +156,7 @@ public class EntryServlet extends HttpServlet
                 }
                 request.setAttribute("matchingListPredLookup", retListPredLookUp);
                 request.setAttribute("matchingListPredSearch", retListPredSearch);
+
                 // for resetting the text boxes
                 request.setAttribute("subject", subject);
                 request.setAttribute("predicate", predicate);

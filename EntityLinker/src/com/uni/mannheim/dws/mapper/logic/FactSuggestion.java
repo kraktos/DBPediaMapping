@@ -39,16 +39,10 @@ public class FactSuggestion
         String qObj, double minsim)
     {
 
-        List<SuggestedFactDAO> retList = new ArrayList<SuggestedFactDAO>();
-
         // take all the top candidates
         List<String> subs = new ArrayList<String>();
         List<String> preds = new ArrayList<String>();
         List<String> objs = new ArrayList<String>();
-
-        List<String> tSubs = new ArrayList<String>();
-        List<String> tPreds = new ArrayList<String>();
-        List<String> tObjs = new ArrayList<String>();
 
         // check if minimum similarity is 0
         minsim = (minsim != 0) ? minsim : Constants.SIMILARITY;
@@ -57,32 +51,27 @@ public class FactSuggestion
         for (ResultDAO dao : retListSubj) {
             if (dao.getScore() >= minsim) {
                 subs.add(dao.getFieldURI());
-            } else {
-                // break;
-            }
+            } else
+                break;
         }
 
         for (ResultDAO dao : retListObj) {
             if (dao.getScore() >= minsim) {
                 objs.add(dao.getFieldURI());
-            } else {
-                // break;
-            }
+            } else
+                break;
         }
 
         for (ResultDAO dao : retListPredSearch) {
             if (dao.getScore() >= minsim) {
                 preds.add(dao.getFieldURI());
-            } else {
-                // break;
-            }
+            } else
+                break;
         }
 
         for (ResultDAO dao : retListPredLookUp) {
-            if (dao.getScore() == 100.00) {
+            if (dao.getScore() >= minsim) {
                 preds.add(dao.getFieldURI());
-            } else {
-                break;
             }
         }
 

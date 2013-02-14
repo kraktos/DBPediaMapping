@@ -46,8 +46,14 @@
 <script language="javascript">
 	var flag = false;
 
-	function ifChecked() {
+	function toggle(source) {
+		for ( var i = 0; i < document.forms[0].checkbox.length; i++) {
+			document.forms[0].checkbox[i].checked = source.checked;
+		}
+		toggl();
+	}
 
+	function ifChecked() {
 		var ctr = 0;
 		for ( var i = 0; i < document.forms[0].checkbox.length; i++) {
 			if (document.forms[0].checkbox[i].checked) {
@@ -64,9 +70,9 @@
 		return flag;
 	}
 
-	function toggl(showHideDiv) {
+	function toggl() {
 
-		var ele = document.getElementById(showHideDiv);
+		var ele = document.getElementById('saveButtn');
 		if (ele.style.display == "block" && !ifChecked()) {
 			ele.style.display = "none";
 		} else {
@@ -169,22 +175,13 @@
 				<td>
 					<div id="box" style="display: none;padding: 5px;">
 						<table>
-							<!-- 
 							<tr>
-								<td><h4 class=SUBHEADLINE2>Similarity</h4></td>
-								<td><input class="style5" title="Set threshold similarity"
-									type="text" value="0.5" name="sim" size="40" /></td>
-							</tr>
-							 -->
-							<tr>
-
 								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
 								<td><input class="style5" title="Top K results" type="text"
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
 									name="topk" size="40" /></td>
 							</tr>
 							<tr>
-
 								<td><h4 class=SUBHEADLINE2>Similarity (%)</h4></td>
 								<td><input class="style5" title="Similarity of atleast"
 									type="text"
@@ -281,41 +278,60 @@
 									<td width="22%" align="center" style="color: #ffffff">${matchingEntries.score}</td>
 								</tr>
 							</c:forEach>
-
 						</table>
 					</div> <%
      }
  %>
 				</td>
-
 			</tr>
 		</table>
 
 
 
+
+		<!-- FACT SUGGESTION -->
 		<%
 		    if (retListSuggstFacts != null) {
 		%>
 
-		<h2 align="left" class=SUBHEADLINE3>Suggestions</h2>
-		
-		<div id="saveButtn" style="display: none;padding: 5px;">
-			<input type="submit" name="action" value="Save Facts">
-		</div>
-		<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
-			<table width="50%" border="2" bordercolor="white">
+
+		<Table>
+			<Tr>
+				<td width=25%>
+					<Table width=20%>
+						<Tr>
+							<td><h2 class=SUBHEADLINE3>Suggestions</h2>
+							</td>
+							<td align=right>
+								<div id="saveButtn" style="display: none;padding: 5px;">									
+									<input type="submit" name="action" value="" class="save" title="save to database">
+								</div>
+							</Td>
+						</Tr>
+					</Table>
+				</Td>
+				<td></td>
+			</Tr>
+		</Table>
+
+		<div
+			style="width:80%; height:400px; overflow-y:auto; overflow-x:hidden;">
+			<input type="checkbox" onClick="toggle(this)" /> <FONT
+				COLOR="#66a266"> Check All</FONT> <br />
+
+			<table>
 				<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
-					<tr width="100%">
-						<td width="1%" align="right" style="color: #ffffff"><input
+					<tr>
+						<td width="5%" align="center" style="color: #ffffff"><input
 							type="checkbox" name="checkbox" id="checkbox_id"
 							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}'
-							onclick="toggl('saveButtn')" /></td>
+							onclick="toggl()" /></td>
 						<td width="23%" align="right"
-							style="color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
+							style="word-wrap: break-word; color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
 						<td width="23%" align="center"
-							style="color:#00a000; font-size: 15pt;">${matchingEntries.predicate}</td>
+							style="word-wrap: break-word; color:#00a000; font-size: 15pt;">${matchingEntries.predicate}</td>
 						<td width="23%" align="left"
-							style="color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
+							style="word-wrap: break-word; color:#00a000; font-size: 15pt;">${matchingEntries.object}</td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -323,6 +339,7 @@
 		<%
 		    }
 		%>
+
 	</form>
 </body>
 
