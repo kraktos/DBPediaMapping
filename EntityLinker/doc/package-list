@@ -1,0 +1,12 @@
+com.uni.mannheim.dws.mapper.controller
+com.uni.mannheim.dws.mapper.dbConnectivity
+com.uni.mannheim.dws.mapper.engine.index
+com.uni.mannheim.dws.mapper.engine.query
+com.uni.mannheim.dws.mapper.helper.dataObject
+com.uni.mannheim.dws.mapper.helper.util
+com.uni.mannheim.dws.mapper.knowledgeBase
+com.uni.mannheim.dws.mapper.logic
+com.uni.mannheim.dws.mapper.message
+com.uni.mannheim.dws.mapper.preProcess
+com.uni.mannheim.dws.mapper.webInterface.servlet
+com.uni.mannheim.dws.mapper.wrapper
