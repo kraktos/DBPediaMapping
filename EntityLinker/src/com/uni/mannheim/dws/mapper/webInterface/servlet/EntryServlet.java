@@ -93,6 +93,7 @@ public class EntryServlet extends HttpServlet
 
         // initialize with some default values
         int topK = Constants.TOPK;
+        double sim = Constants.SIMILARITY;
 
         // we just need two threads to perform the search
         ExecutorService pool = Executors.newFixedThreadPool(2);
@@ -107,6 +108,12 @@ public class EntryServlet extends HttpServlet
                     topK = Integer.parseInt(request.getParameter("topk"));
                 }
                 QueryEngine.setTopK(topK);
+
+                // set minimum similarity attribute
+                if (request.getParameter("sim") != null) {
+                    sim = Double.parseDouble(request.getParameter("sim"));
+                }
+
                 String subject = request.getParameter("subject").trim();
                 String predicate = request.getParameter("predicate").trim();
                 String object = request.getParameter("object").trim();
@@ -154,10 +161,12 @@ public class EntryServlet extends HttpServlet
                 request.setAttribute("predicate", predicate);
                 request.setAttribute("object", object);
                 request.setAttribute("topk", topK);
+                request.setAttribute("sim", sim);
+
                 // return a list of possible facts suggestion from best matches
                 retListSuggstFacts =
                     FactSuggestion.suggestFact(retListSubj, subject, retListPredLookUp, retListPredSearch, predicate,
-                        retListObj, object);
+                        retListObj, object, sim);
                 // for setting the suggested fact that system thinks to be true
                 request.setAttribute("suggestedFactList", retListSuggstFacts);
 
@@ -181,7 +190,7 @@ public class EntryServlet extends HttpServlet
         }
 
         catch (Throwable theException) {
-            System.out.println(theException);
+            logger.error(theException.getMessage());
         }
 
     }

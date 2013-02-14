@@ -13,6 +13,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
 import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
+import com.uni.mannheim.dws.mapper.helper.util.Constants;
 
 /**
  * @author Arnab Dutta
@@ -35,7 +36,7 @@ public class FactSuggestion
      */
     public static List<SuggestedFactDAO> suggestFact(List<ResultDAO> retListSubj, String qSub,
         List<ResultDAO> retListPredLookUp, List<ResultDAO> retListPredSearch, String qPred, List<ResultDAO> retListObj,
-        String qObj)
+        String qObj, double minsim)
     {
 
         List<SuggestedFactDAO> retList = new ArrayList<SuggestedFactDAO>();
@@ -49,28 +50,31 @@ public class FactSuggestion
         List<String> tPreds = new ArrayList<String>();
         List<String> tObjs = new ArrayList<String>();
 
+        // check if minimum similarity is 0
+        minsim = (minsim != 0) ? minsim : Constants.SIMILARITY;
+
         // iterate the results to fetch the top scoring matches to generate a possible set of facts
         for (ResultDAO dao : retListSubj) {
-            if (dao.getScore() == 100.00) {
+            if (dao.getScore() >= minsim) {
                 subs.add(dao.getFieldURI());
             } else {
-                break;
+                // break;
             }
         }
 
         for (ResultDAO dao : retListObj) {
-            if (dao.getScore() == 100.00) {
+            if (dao.getScore() >= minsim) {
                 objs.add(dao.getFieldURI());
             } else {
-                break;
+                // break;
             }
         }
 
         for (ResultDAO dao : retListPredSearch) {
-            if (dao.getScore() == 100.00) {
+            if (dao.getScore() >= minsim) {
                 preds.add(dao.getFieldURI());
             } else {
-                break;
+                // break;
             }
         }
 
@@ -82,9 +86,9 @@ public class FactSuggestion
             }
         }
 
-        /*tSubs = createPossibleSubs(preds, objs, qSub);
-        tObjs = createPossibleObs(subs, preds, qObj);
-*/
+        /*
+         * tSubs = createPossibleSubs(preds, objs, qSub); tObjs = createPossibleObs(subs, preds, qObj);
+         */
         return frameFacts(subs, preds, objs);
     }
 

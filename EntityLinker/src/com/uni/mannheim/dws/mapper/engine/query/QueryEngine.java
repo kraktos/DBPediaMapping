@@ -46,6 +46,12 @@ import com.uni.mannheim.dws.mapper.helper.util.Utilities;
  */
 public class QueryEngine
 {
+    /*
+     * static { Scanner filescan = null; try { filescan = new Scanner(new File("/home/arnab/Work/data/NELL/Dict.txt"));
+     * } catch (FileNotFoundException e) { // TODO Auto-generated catch block e.printStackTrace(); } while
+     * (filescan.hasNext()) { Utilities.dict.add(filescan.nextLine()); } }
+     */
+
     // The top k best matching results,
     private static int TOP_K = Constants.TOPK;
 
@@ -135,7 +141,7 @@ public class QueryEngine
                 // only add the unique entries(URI and label combination)
                 boolean isUnique = Utilities.checkUniqueness(setURI, uriField);
                 if (isUnique) {
-                    logger.info(labelField + " => " + uriField + "   " + Math.round(score * 100));
+                    logger.debug(labelField + " => " + uriField + "   " + Math.round(score * 100));
                     returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
                     // we are interested in only the top k results
                     if (setURI.size() == TOP_K) {
@@ -145,7 +151,7 @@ public class QueryEngine
             }
 
         } catch (Exception ex) {
-            logger.error("NO MATCHING RECORDS FOUND FOR QUERY \"" + userQuery + "\" !! ");
+            logger.debug("NO MATCHING RECORDS FOUND FOR QUERY \"" + userQuery + "\" !! ");
         } finally {
             setURI.clear();
             setURI = null;
@@ -183,8 +189,8 @@ public class QueryEngine
     }
 
     /**
-     * takes a subject and object from the DBPedia and tries to find all possible set of predicates connecting these two
-     * two entities (subject and object)
+     * takes a list of subject and object from the DBPedia and tries to find all possible set of predicates connecting
+     * these two two entities (subject and object)
      * 
      * @param subject the DBPedia entity occurring as subject
      * @param object the DBPedia entity occurring as object
@@ -219,7 +225,8 @@ public class QueryEngine
             }
         }
 
-        // we only take all possible subjects and objects if the score is '100%' and try to see from them what possible
+        // we only take all possible subjects and objects if the score is more than te treshold and try to see from them
+        // what possible
         // predicates we have
         for (String subj : possibleSubjs) {
             for (String obj : possibleObjs) {
@@ -239,12 +246,12 @@ public class QueryEngine
             }
         }
 
-        logger.info("'" + actualPredicateFromIE + "'" + " matches => ");
+        logger.debug("'" + actualPredicateFromIE + "'" + " matches => ");
 
         // if we have some results proceed
         for (QuerySolution querySol : listQuerySols) {
             matchedProp = querySol.get("predicates").toString();
-            logger.info(matchedProp + "  ");
+            logger.debug(matchedProp + "  ");
 
             // update the count for all such possibilities for a given predicate
             updatePredicateMap(actualPredicateFromIE, matchedProp);
@@ -300,7 +307,8 @@ public class QueryEngine
         // create File object of our index directory
         File file = new File(Constants.DBPEDIA_ENT_INDEX_DIR);
 
-        doSearch(Constants.SAMPLE_QUERY, file);
+        // doSearch(Constants.SAMPLE_QUERY, file);
+        // doLookUpSearch("agentcontributedtocreativework");
     }
 
     /**
@@ -316,8 +324,8 @@ public class QueryEngine
         Scanner sc;
         try {
             sc = new Scanner(file);
-            while (sc.hasNextLine()) {
 
+            while (sc.hasNextLine()) {
                 String[] parts = sc.nextLine().split("->");
 
                 if (parts[0].contains(predicate)) {

@@ -40,7 +40,7 @@ public class ProcessNell
     {
 
         try {
-            new ProcessNell().processTuples(Constants.IE_TUPLES_PATH);
+            new ProcessNell().processTuples(Constants.NELL_DATA_PATH);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
 
@@ -75,20 +75,20 @@ public class ProcessNell
                 // confidence
 
                 // extract the subject, predicate and object out of each tuple
-                subject = (strTokens[0] != null) ? strTokens[0] : "";
-                predicate = (strTokens[1] != null) ? strTokens[1] : "";
+                subject = (strTokens[1] != null) ? strTokens[1] : "";
+                predicate = (strTokens[2] != null) ? strTokens[2] : "";
                 object =
-                    (strTokens[2] != null & strTokens[2].length() > 0) ? strTokens[2] : ((strTokens[3] != null)
-                        ? strTokens[3] : "");
+                    (strTokens[3] != null & strTokens[3].length() > 0) ? strTokens[3] : ((strTokens[4] != null)
+                        ? strTokens[4] : "");
 
-                logger.info(subject + " | " + predicate + " | " + object);
+
+                logger.info("\n\n"+subject + " | " + predicate + " | " + object);
 
                 // fetch the equivalent DBPedia entities
                 List<List<ResultDAO>> retList = QueryEngine.performSearch(pool, subject, object);
 
                 // use them to fetch the predicates they are linked with
                 QueryEngine.fetchPredicates(retList.get(0), retList.get(1), predicate);
-                System.out.print("\n\n");
             }
             findTheBestPrediction();
         }

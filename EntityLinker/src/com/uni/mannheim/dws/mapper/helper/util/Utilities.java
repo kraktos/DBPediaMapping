@@ -4,22 +4,22 @@
 package com.uni.mannheim.dws.mapper.helper.util;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-
-import com.hp.hpl.jena.sparql.function.library.strlen;
-import com.hp.hpl.jena.sparql.pfunction.library.str;
 
 /**
  * All different kinds of utility methods are placed here
@@ -28,6 +28,10 @@ import com.hp.hpl.jena.sparql.pfunction.library.str;
  */
 public class Utilities
 {
+    public static HashSet<String> dict = new HashSet<String>();
+
+    public static int countGlbl = 10;
+    public static Set<String> set = new TreeSet<String>();
 
     // define Logger
     static Logger logger = Logger.getLogger(Utilities.class.getName());
@@ -212,6 +216,48 @@ public class Utilities
     public static boolean containsNonEnglish(String strInput)
     {
         return p.matcher(strInput).find();
+    }
+
+    public static void splitIntoBagOfWords(String string) throws FileNotFoundException
+    {
+        split("", string);
+        
+        System.out.println(set.iterator().next());
+    }
+
+    public static void split(String head, String in)
+    {
+
+        // System.out.println(head + "  " + in);
+        // head + " " + in is a segmentation
+        String segment = head + " " + in;
+
+        // count number of dictionary words
+        int count = 0;
+        int total = 0;
+        Scanner phraseScan = new Scanner(segment);
+        while (phraseScan.hasNext()) {
+            total++;
+            String word = phraseScan.next();
+            if (dict.contains(word))
+                count++;
+        }
+
+        if (count < countGlbl){
+            if(set.size() > 0){
+                set.clear();                
+            }
+            set.add(segment);
+        }
+            
+
+        if (count == 4)  System.out.println(segment + "\t" + count + " English words");
+
+        // recursive calls
+        for (int i = 2; i < in.length(); i++) {
+            split(head + " " + in.substring(0, i), in.substring(i, in.length()));
+        }
+
     }
 
 }

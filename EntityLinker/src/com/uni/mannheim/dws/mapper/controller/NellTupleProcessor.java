@@ -119,7 +119,7 @@ public class NellTupleProcessor implements ITupleProcessor
                 // return a list of possible facts suggestion from best matches
                 List<SuggestedFactDAO> retListSuggstFacts =
                     FactSuggestion.suggestFact(retListSubj, subject, retListPredLookUp, retListPredSearch, predicate,
-                        retListObj, object);
+                        retListObj, object, 0);
 
                 for (SuggestedFactDAO fact : retListSuggstFacts) {
                     logger.debug(fact.toString());
@@ -140,7 +140,7 @@ public class NellTupleProcessor implements ITupleProcessor
     public static void main(String[] args) throws IOException, InterruptedException, ExecutionException, SQLException
     {
         // new ReVerbTupleProcessor().processTuples(Constants.IE_TUPLES_PATH);
-        new NellTupleProcessor().processTuples(Constants.IE_TUPLES_PATH);
+        new NellTupleProcessor().processTuples(Constants.NELL_DATA_PATH);
         System.exit(1);
     }
 

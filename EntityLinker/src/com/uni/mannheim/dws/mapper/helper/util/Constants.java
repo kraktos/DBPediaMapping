@@ -60,7 +60,7 @@ public class Constants
     public static final float PREFIX_LENGTH_PERCENT = 0.1F;
 
     // default 50% similarity and above, lower this value to fetch even lesser similar items
-    public static final float SIMILARITY = 0.1F;
+    public static final double SIMILARITY = 100.00;
 
     // change the value to fetch these many records
     public static final int MAX_RESULTS = 50;
@@ -69,12 +69,12 @@ public class Constants
     public static final int TOPK = 5;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "einstein";
+    public static final String SAMPLE_QUERY = "taehwasan";
 
     // *****************IE Engines output locations ***************************************************
 
     // location of the output file generated the IE Engine ReVerb
-    public static final String IE_TUPLES_PATH = "/home/arnab/Work/data/NELL/b.csv";
+    public static final String NELL_DATA_PATH = "/home/arnab/Work/data/NELL/Nell.csv";
 
     // Delimiter used to parse the ReVerb extracted tuples
     public static final String REVERB_IE_DELIMIT = "\t";
@@ -83,7 +83,7 @@ public class Constants
     public static final String NELL_IE_DELIMIT = ",";
 
     // output location of the predicate list after calculating jaccard score for each
-    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq.txt";
+    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq_1.txt";
 
     // *****************WEB INTERFACE PARAMETES***************************************************
 

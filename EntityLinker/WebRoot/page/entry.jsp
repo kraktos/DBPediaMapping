@@ -46,26 +46,26 @@
 <script language="javascript">
 	var flag = false;
 
-	function ifChecked(){
-	
+	function ifChecked() {
+
 		var ctr = 0;
 		for ( var i = 0; i < document.forms[0].checkbox.length; i++) {
 			if (document.forms[0].checkbox[i].checked) {
-				ctr++;				
+				ctr++;
 			}
 		}
-						
+
 		if (ctr == 0) {
 			flag = false;
 		} else {
 			flag = true;
 		}
-		
+
 		return flag;
 	}
-	
+
 	function toggl(showHideDiv) {
-		
+
 		var ele = document.getElementById(showHideDiv);
 		if (ele.style.display == "block" && !ifChecked()) {
 			ele.style.display = "none";
@@ -183,6 +183,14 @@
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
 									name="topk" size="40" /></td>
 							</tr>
+							<tr>
+
+								<td><h4 class=SUBHEADLINE2>Similarity (%)</h4></td>
+								<td><input class="style5" title="Similarity of atleast"
+									type="text"
+									value="<%=(request.getAttribute("sim") != null) ? request.getAttribute("sim") : "100"%>"
+									name="sim" size="40" /></td>
+							</tr>
 						</table>
 					</div></td>
 			</tr>
@@ -290,11 +298,14 @@
 		%>
 
 		<h2 align="left" class=SUBHEADLINE3>Suggestions</h2>
-
+		
+		<div id="saveButtn" style="display: none;padding: 5px;">
+			<input type="submit" name="action" value="Save Facts">
+		</div>
 		<div style="height:400px; overflow-y:auto; overflow-x:hidden;">
-			<table>
+			<table width="50%" border="2" bordercolor="white">
 				<c:forEach items="<%= retListSuggstFacts%>" var="matchingEntries">
-					<tr width="70%">
+					<tr width="100%">
 						<td width="1%" align="right" style="color: #ffffff"><input
 							type="checkbox" name="checkbox" id="checkbox_id"
 							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}'
@@ -308,9 +319,6 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<div id="saveButtn" style="display: none;padding: 5px;">
-				<input type="submit" name="action" value="Save Facts">
-			</div>
 		</div>
 		<%
 		    }
