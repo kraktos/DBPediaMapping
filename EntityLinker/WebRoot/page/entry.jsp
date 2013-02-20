@@ -178,7 +178,7 @@
 							<tr>
 								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
 								<td><input class="style5" title="Top K results" type="text"
-									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "5"%>"
+									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "15"%>"
 									name="topk" size="40" /></td>
 							</tr>
 							<tr>

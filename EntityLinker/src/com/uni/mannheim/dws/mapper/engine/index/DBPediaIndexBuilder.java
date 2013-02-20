@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
@@ -20,7 +19,6 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import com.ibm.icu.util.StringTokenizer;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.FileUtil;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
@@ -121,13 +119,12 @@ public class DBPediaIndexBuilder
                  */
 
                 Field uriField = null;
-                Field uriTextField = null;
+                Field fullUriField = null;
                 Field uriTextField1 = null;
                 Field uriTextField2 = null;
 
                 Field labelField = null;
                 Field labelSmallField = null;
-                Field fullContentField = null;
                 Field surName = null;
                 Field firstName = null;
 
@@ -169,14 +166,11 @@ public class DBPediaIndexBuilder
                                 // fullContentField = new StringField("fullContentField", label + uriText,
                                 // Field.Store.NO);
 
-                                /*if (label.toLowerCase().indexOf("tom cruise") != -1)
-                                    logger.info(label);
-*/
+                                /*
+                                 * if (label.toLowerCase().indexOf("tom cruise") != -1) logger.info(label);
+                                 */
                                 label = Pattern.compile(Constants.LABEL_FILTER).matcher(label).replaceAll("");
 
-                               /* if (label.toLowerCase().indexOf("tom cruise") != -1)
-                                    logger.info(label);
-*/
                                 if (label.split(" ").length > 0) {
                                     String[] str = label.split(" ");
                                     if (str.length >= 2) {
@@ -209,8 +203,10 @@ public class DBPediaIndexBuilder
                                             uri1 = uriArr[0];
                                             uri2 = uri1;
                                         }
-                                        // uriTextField = new StringField("uriTextField", uriText.toLowerCase(),
-                                        // Field.Store.NO);
+
+                                        fullUriField =
+                                            new StringField("uriFullTextField", uriText.toLowerCase(), Field.Store.YES);
+
                                         uriTextField1 =
                                             new StringField("uriTextField1", uri1.toLowerCase(), Field.Store.NO);
                                         uriTextField2 =
@@ -219,16 +215,18 @@ public class DBPediaIndexBuilder
                                             new StringField("surname", name2.trim().toLowerCase(), Field.Store.NO);
                                         firstName =
                                             new StringField("firstname", name1.trim().toLowerCase(), Field.Store.NO);
+
                                         // add to document
                                         document = new Document();
                                         document.add(uriField);
+                                        document.add(fullUriField);
                                         document.add(labelField);
                                         document.add(labelSmallField);
-                                        // document.add(fullContentField);
                                         document.add(surName);
                                         document.add(firstName);
                                         document.add(uriTextField1);
                                         document.add(uriTextField2);
+
                                         // add the document finally into the writer
                                         writer.addDocument(document);
                                     }

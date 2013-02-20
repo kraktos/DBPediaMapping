@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -22,12 +21,9 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
@@ -36,13 +32,12 @@ import org.apache.lucene.store.FSDirectory;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.uni.mannheim.dws.mapper.engine.index.DBPediaIndexBuilder;
-import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
-import com.uni.mannheim.dws.mapper.wrapper.QueryAPIWrapper;
 import com.uni.mannheim.dws.mapper.controller.ITupleProcessor;
+import com.uni.mannheim.dws.mapper.engine.index.DBPediaIndexBuilder;
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
+import com.uni.mannheim.dws.mapper.wrapper.QueryAPIWrapper;
 
 /**
  * This class is an API for making query over the DBPedia indices
@@ -90,11 +85,7 @@ public class QueryEngine
 
         Set<String> setURI = new HashSet<String>();
         List<ResultDAO> returnList = new ArrayList<ResultDAO>();
-        Map<Integer, ResultDAO> resultMap = new TreeMap<Integer, ResultDAO>();
-
-        String labelField = null;
-        String uriField = null;
-        double score = 0;
+        Map<Integer, List<ResultDAO>> resultMap = new TreeMap<Integer, List<ResultDAO>>();
 
         long start = 0;
 
@@ -125,20 +116,25 @@ public class QueryEngine
             hits = searcher.search(subQuery, null, Constants.MAX_RESULTS);
             iterateResult(searcher, setURI, resultMap, hits, userQuery);
 
+            // still we have no result then perform wild card search
             if (hits.totalHits == 0) {
+
                 hits =
                     searcher.search(new WildcardQuery(new Term("labelSmallField", userQuery.toLowerCase() + "*")),
                         null, Constants.MAX_RESULTS);
 
                 iterateResult(searcher, setURI, resultMap, hits, userQuery);
+
             }
 
             for (Integer key : resultMap.keySet()) {
-                if (returnList.size() <= TOP_K) {
-                    logger.info(resultMap.get(key));
-                    returnList.add(resultMap.get(key));
-                } else
-                    return returnList;
+                for (ResultDAO dao : resultMap.get(key)) {
+                    if (returnList.size() <= TOP_K) {
+                        returnList.add(dao);
+                        logger.info(dao + "  " + key);
+                    } else
+                        return returnList;
+                }
             }
 
         } catch (Exception ex) {
@@ -152,11 +148,10 @@ public class QueryEngine
     }
 
     /**
-     * @param userQuery
-     * @param field2
-     * @param field1
-     * @param subQuery1
-     * @return
+     * @param userQuery user input term
+     * @param field1 first argument denoting the index field to match to
+     * @param field2 second argument denoting the index field to match
+     * @return a Boolean query where both the indices should be matched
      */
     public static BooleanQuery frameQuery(String userQuery, String field1, String field2)
     {
@@ -167,24 +162,27 @@ public class QueryEngine
     }
 
     /**
-     * @param searcher
-     * @param setURI
-     * @param resultMap
-     * @param hits
-     * @param userQuery
-     * @param resultMap
+     * @param searcher searcher instance
+     * @param setURI a set to identify the unique URI s
+     * @param resultMap a result map sorted by best matches
+     * @param hits document hits instance
+     * @param userQuery the user input coming from web interface or extraction engines
      * @throws IOException
      */
-    public static void iterateResult(IndexSearcher searcher, Set<String> setURI, Map<Integer, ResultDAO> resultMap,
-        TopDocs hits, String userQuery) throws IOException
+    public static void iterateResult(IndexSearcher searcher, Set<String> setURI,
+        Map<Integer, List<ResultDAO>> resultMap, TopDocs hits, String userQuery) throws IOException
     {
         String labelField;
         String uriField;
+        String uriTextField;
+
         double score;
+
         for (ScoreDoc scoredoc : hits.scoreDocs) {
             // Retrieve the matched document and show relevant details
             Document doc = searcher.doc(scoredoc.doc);
 
+            uriTextField = doc.get("uriFullTextField");
             uriField = doc.get("uriField");
             labelField = doc.get("labelField");
             score = scoredoc.score / hits.getMaxScore();
@@ -192,30 +190,19 @@ public class QueryEngine
             // only add the unique entries(URI and label combination)
             if (Utilities.checkUniqueness(setURI, uriField)) {
                 // logger.info(labelField + "  " + StringUtils.getLevenshteinDistance(userQuery, labelField));
-                // returnList.add(new ResultDAO(uriField, Math.round(score * 100)));
-                resultMap.put(StringUtils.getLevenshteinDistance(userQuery, labelField),
-                    new ResultDAO(uriField, Math.round(score * 100)));
+                Integer key =
+                    StringUtils.getLevenshteinDistance(userQuery, labelField.toLowerCase())
+                       + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
+                if (resultMap.containsKey(key)) {
+                    resultMap.get(key).add(new ResultDAO(uriField, Math.round(score * 100)));
+                } else {
+                    List<ResultDAO> list = new ArrayList<ResultDAO>();
+                    list.add(new ResultDAO(uriField, Math.round(score * 100)));
+                    resultMap.put(key, list);
+                }
             }
         }
     }
-
-    /**
-     * @param userQuery
-     * @return
-     */
-    /*
-     * public static Query frameQuery(String userQuery) { BooleanQuery booleanQuery = new BooleanQuery(); // create the
-     * boolean query to trap all possible query // normal full text query // Query query = new TermQuery(new
-     * Term("fullContentField", userQuery)); Query query = new TermQuery(new Term("surname", userQuery.toLowerCase()));
-     * // fuzzy query for spelling mistakes or suggestive results // FuzzyQuery fuzzyQuery = new FuzzyQuery(new
-     * Term("labelSmallField", userQuery.toLowerCase())); // FuzzyQuery uriFuzzyQuery = new FuzzyQuery(new
-     * Term("uriTextField", userQuery.toLowerCase())); // wild card queries for incomplete query terms // WildcardQuery
-     * wildCardQuery = new WildcardQuery(new Term("uriTextField", userQuery.toLowerCase() + "*")); // Create a boolean
-     * query by combining all the above 3 types booleanQuery.add(query, BooleanClause.Occur.SHOULD); //
-     * booleanQuery.add(fuzzyQuery, BooleanClause.Occur.SHOULD); // booleanQuery.add(uriFuzzyQuery,
-     * BooleanClause.Occur.SHOULD); // booleanQuery.add(wildCardQuery, BooleanClause.Occur.SHOULD);
-     * logger.debug("Framed Query = " + booleanQuery.toString()); return booleanQuery; }
-     */
 
     /**
      * wrapper method to spawn the actual search operation being carried out
