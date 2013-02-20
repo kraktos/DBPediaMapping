@@ -40,7 +40,7 @@ public class Utilities
     static Set<Long> UNIQUE_PROPERTIES = new HashSet<Long>();
 
     // pattern for allowing english text only during indexing
-    static Pattern p = Pattern.compile(Constants.ALLOWED_ENGLISH_TEXT);
+    static Pattern pattern = Pattern.compile(Constants.ALLOWED_ENGLISH_TEXT);
 
     /**
      * Prints a map
@@ -166,7 +166,7 @@ public class Utilities
      */
     public static boolean containsNonEnglish(String strInput)
     {
-        return p.matcher(strInput).find();
+        return pattern.matcher(strInput).find();
     }
 
     public static void splitIntoBagOfWords(String string) throws FileNotFoundException

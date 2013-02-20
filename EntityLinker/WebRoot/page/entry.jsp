@@ -149,17 +149,17 @@
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
 					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
-					onClick="(this.value='')" name="subject" />
+					name="subject" />
 				</td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text"
 					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
-					onClick="(this.value='')" name="predicate" />
+					name="predicate" />
 				</td>
 				<td><input class="style6" type="text"
 					title="Enter your search object"
 					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
-					onClick="(this.value='')" name="object" />
+					name="object" />
 				</td>
 
 
@@ -355,5 +355,6 @@
 		Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
 </div>
 
---%></html>
+--%>
+</html>
 

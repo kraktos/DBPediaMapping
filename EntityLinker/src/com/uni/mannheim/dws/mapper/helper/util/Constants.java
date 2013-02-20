@@ -40,7 +40,11 @@ public class Constants
     // *****************INDEXING STRATEGIES ************************************************
 
     // allowable text for indexing, do not index Chinese, Japanese, Korean, Russian etc labels
-    public static final String ALLOWED_ENGLISH_TEXT = "[^\\w_\\s()'.]";
+    public static final String ALLOWED_ENGLISH_TEXT = "[^\\w_\\s()'.:,]";
+
+    public static final String URI_FILTER = "[():,.\\s']";
+
+    public static final String LABEL_FILTER = "[():,']";
 
     // change here to use different analyzers
     public static final Analyzer LUCENE_ANALYZER = new StandardAnalyzer(Version.LUCENE_40);
@@ -62,14 +66,14 @@ public class Constants
     // default 50% similarity and above, lower this value to fetch even lesser similar items
     public static final double SIMILARITY = 100.00;
 
-    // change the value to fetch these many records
+    // change the value to fetch these many records, Lucene uses this to feth maximum these many matching documents
     public static final int MAX_RESULTS = 50;
 
     // Number of top k matching elements you wish to retrieve
-    public static final int TOPK = 5;
+    public static final int TOPK = 10;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "taehwasan";
+    public static final String SAMPLE_QUERY = "george";
 
     // *****************IE Engines output locations ***************************************************
 
@@ -95,8 +99,7 @@ public class Constants
     // processing
     public static final double THRESHOLD_SCORE = 80;
 
-    
- // *****************Database Parameters PARAMETES***************************************************
+    // *****************Database Parameters PARAMETES***************************************************
     public static final String INSERT_FACT_SQL =
         "INSERT INTO \"UNCERTAIN_KB\"(\"SUB\", \"PRED\", \"OBJ\", \"CONFIDENCE\") VALUES (?, ?, ?, ?)";;
 
