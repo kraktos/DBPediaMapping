@@ -3,9 +3,6 @@
  */
 package com.uni.mannheim.dws.mapper.preProcess.estimator;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.log4j.Logger;
 
 import xxl.core.math.statistics.nonparametric.kernels.GaussianKernel;
@@ -67,6 +64,27 @@ public class KernelDensityEstimator
 
     }
 
+    /**
+     * @return the maxValue
+     */
+    public Double getMaxValue()
+    {
+        return maxValue;
+    }
+
+    /**
+     * @return the minValue
+     */
+    public Double getMinValue()
+    {
+        return minValue;
+    }
+
+    /**
+     * computes the maximum and minimum value from the range of input values
+     * 
+     * @param dataArr takes the data array as input,
+     */
     private void computeMinMax(Double[] dataArr)
     {
         double maxValue = dataArr[0];
@@ -85,39 +103,14 @@ public class KernelDensityEstimator
     }
 
     /**
-     * returns the probability of the occurrence of the given value as input
+     * returns the value of the estimated density at the given value as input
      * 
      * @param value input value for which we want to estimate the the probability
      * @return the probability of occurrence
      */
-    public double getProbability(double value)
+    public double getEstimatedDensity(double value)
     {
         return this.kde.evalKDE(value);
     }
 
-    public boolean withinRange(double value)
-    {
-        double estimateValue = this.kde.evalKDE(value);
-        logger.info(this.kde.evalKDE(this.minValue) + "  <   " + estimateValue + "  >  "
-            + this.kde.evalKDE(this.maxValue));
-
-        return ((estimateValue < this.kde.evalKDE(this.maxValue)) || (estimateValue < this.kde.evalKDE(this.minValue)))
-            ? false : true;
-    }
-
-    public static void main(String[] arg)
-    {
-        Map<Integer, Double> map = new TreeMap<Integer, Double>();
-        Double[] data = new Double[5];
-        data[0] = 4.0;
-        data[1] = 5.0;
-        data[2] = 10.0;
-        data[3] = -4.0;
-        data[4] = 3.0;
-
-        KernelDensityEstimator kde = new KernelDensityEstimator(data);
-
-        logger.info(kde.withinRange(20.0));
-
-    }
 }

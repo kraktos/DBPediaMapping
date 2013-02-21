@@ -24,9 +24,16 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String HTTP_DBPEDIA_ORG_SPARQL = "http://live.dbpedia.org/sparql";// "http://dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql"; //"http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS ************************************************
+
+    /**
+     * location for storing the predicate distribution patterns based on some integer values of the subjects and objects
+     * of the instances
+     */
+    public static final String DBPEDIA_PREDICATE_DISTRIBUTION = "/home/arnab/Work/data/DBPedia/spouse";
+
     /**
      * location of all the raw CSV files dumped from DBPedia SPARQL endpoint
      */
