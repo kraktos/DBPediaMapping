@@ -131,8 +131,8 @@ public class DBPediaIndexBuilder
                 String name1 = null;
                 String name2 = null;
 
-                String uri1 = null;
-                String uri2 = null;
+                String uriFirstWord = null;
+                String uriSecondWord = null;
 
                 try {
                     fstream = new FileInputStream(file);
@@ -156,9 +156,10 @@ public class DBPediaIndexBuilder
 
                             // add the label, store it for display purpose
                             label = (array[1] != null) ? array[1] : "";
-                            labelField = new StringField("labelField", label.trim(), Field.Store.YES);
 
                             if (!Utilities.containsNonEnglish(label)) { // do not index Chinese or other such scripts
+
+                                labelField = new StringField("labelField", label.trim(), Field.Store.YES);
 
                                 // index the small cap-ed form of labels
 
@@ -180,37 +181,46 @@ public class DBPediaIndexBuilder
                                         name1 = str[0];
                                         name2 = name1;
                                     }
-
-                                    labelSmallField =
-                                        new StringField("labelSmallField", label.trim().toLowerCase(), Field.Store.NO);
+                                    // after first and last names are extracted out, join the labels to form one
+                                    // un-concatenated word
+                                    label = Pattern.compile("[\\s]").matcher(label).replaceAll("");
 
                                     // add the URI, store it for display purpose
                                     uri = (array[0] != null) ? array[0] : "";
                                     uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
-                                    // index the text of the URI, it helps to improve recall
+
                                     uri =
                                         Pattern.compile(Constants.URI_FILTER)
                                             .matcher(uri.substring(uri.lastIndexOf("/") + 1, uri.length()))
                                             .replaceAll("");
                                     uriText = Pattern.compile("[_]").matcher(uri).replaceAll(" ");
 
+                                    /*
+                                     * if (label.toLowerCase().indexOf("born") != -1) {
+                                     * logger.info(label.trim().toLowerCase() + "  " + uriText.toLowerCase()); }
+                                     */
+
                                     if (uriText.split(" ").length > 0) {
                                         String[] uriArr = uriText.split(" ");
                                         if (uriArr.length >= 2) {
-                                            uri1 = uriArr[0];
-                                            uri2 = uriArr[uriArr.length - 1];
+                                            uriFirstWord = uriArr[0];
+                                            uriSecondWord = uriArr[uriArr.length - 1];
                                         } else {
-                                            uri1 = uriArr[0];
-                                            uri2 = uri1;
+                                            uriFirstWord = uriArr[0];
+                                            uriSecondWord = uriFirstWord;
                                         }
+
+                                        labelSmallField =
+                                            new StringField("labelSmallField", label.trim().toLowerCase(),
+                                                Field.Store.NO);
 
                                         fullUriField =
                                             new StringField("uriFullTextField", uriText.toLowerCase(), Field.Store.YES);
 
                                         uriTextField1 =
-                                            new StringField("uriTextField1", uri1.toLowerCase(), Field.Store.NO);
+                                            new StringField("uriTextField1", uriFirstWord.toLowerCase(), Field.Store.NO);
                                         uriTextField2 =
-                                            new StringField("uriTextField2", uri2.toLowerCase(), Field.Store.NO);
+                                            new StringField("uriTextField2", uriSecondWord.toLowerCase(), Field.Store.NO);
                                         surName =
                                             new StringField("surname", name2.trim().toLowerCase(), Field.Store.NO);
                                         firstName =

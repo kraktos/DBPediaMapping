@@ -53,7 +53,7 @@ public class Constants
     public static final boolean EMPTY_INDICES = true;
 
     // Flag to denote if indexing is to be done or query on old indices
-    public static final boolean INDEX_AGAIN = true;
+    public static final boolean INDEX_AGAIN = false;
 
     // *****************FETCH STRATEGIES ***************************************************
     // tweaking these can dramatically effect the query response time
@@ -73,7 +73,7 @@ public class Constants
     public static final int TOPK = 20;
 
     // Sample query to test the indexed DBPedia data
-    public static final String SAMPLE_QUERY = "einstein";
+    public static final String SAMPLE_QUERY = "benny hill ";
 
     // *****************IE Engines output locations ***************************************************
 

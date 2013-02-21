@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -103,6 +104,9 @@ public class QueryEngine
             // create index searcher object
             searcher = new IndexSearcher(reader);
 
+            // remove any un-necessary punctuation marks from the query
+            userQuery = Pattern.compile("['\\s]").matcher(userQuery).replaceAll("");
+
             // frame a query on the surname field
             BooleanQuery subQuery = frameQuery(userQuery, "surname", "uriTextField2");
 
@@ -124,6 +128,7 @@ public class QueryEngine
                         null, Constants.MAX_RESULTS);
 
                 iterateResult(searcher, setURI, resultMap, hits, userQuery);
+                //TODO : Fuzzy even then
 
             }
 
@@ -192,11 +197,13 @@ public class QueryEngine
                 // logger.info(labelField + "  " + StringUtils.getLevenshteinDistance(userQuery, labelField));
                 Integer key =
                     StringUtils.getLevenshteinDistance(userQuery, labelField.toLowerCase())
-                       + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
+                        + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
                 if (resultMap.containsKey(key)) {
+                    // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
                     resultMap.get(key).add(new ResultDAO(uriField, Math.round(score * 100)));
                 } else {
                     List<ResultDAO> list = new ArrayList<ResultDAO>();
+                    // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
                     list.add(new ResultDAO(uriField, Math.round(score * 100)));
                     resultMap.put(key, list);
                 }
