@@ -8,5 +8,6 @@ com.uni.mannheim.dws.mapper.knowledgeBase
 com.uni.mannheim.dws.mapper.logic
 com.uni.mannheim.dws.mapper.message
 com.uni.mannheim.dws.mapper.preProcess
+com.uni.mannheim.dws.mapper.preProcess.estimator
 com.uni.mannheim.dws.mapper.webInterface.servlet
 com.uni.mannheim.dws.mapper.wrapper

@@ -33,7 +33,7 @@ public class DBPediaIndexBuilder
     public static Logger logger = Logger.getLogger(DBPediaIndexBuilder.class.getName());
 
     /**
-     * Creates index over the DBPedia data located in the directory mentioned in the Constants.java
+     * Creates index over the DBPedia data located in the directory mentioned in the {@link Constants}
      * 
      * @throws Exception
      */
@@ -120,16 +120,16 @@ public class DBPediaIndexBuilder
 
                 Field uriField = null;
                 Field fullUriField = null;
-                Field uriTextField1 = null;
-                Field uriTextField2 = null;
+                Field uriFirstTextField = null;
+                Field uriSecondTextField = null;
 
                 Field labelField = null;
                 Field labelSmallField = null;
                 Field surName = null;
                 Field firstName = null;
 
-                String name1 = null;
-                String name2 = null;
+                String labelFirstName = null;
+                String labelLastName = null;
 
                 String uriFirstWord = null;
                 String uriSecondWord = null;
@@ -150,36 +150,30 @@ public class DBPediaIndexBuilder
                     while ((strLine = br.readLine()) != null) {
 
                         if (strLine.startsWith(Constants.DBPEDIA_HEADER)) {
-
                             // break comma separated line using ","
                             array = strLine.split(Constants.DBPEDIA_DATA_DELIMIT);
 
                             // add the label, store it for display purpose
                             label = (array[1] != null) ? array[1] : "";
 
-                            if (!Utilities.containsNonEnglish(label)) { // do not index Chinese or other such scripts
+                            // do not index Chinese or other such scripts
+                            if (!Utilities.containsNonEnglish(label)) {
 
+                                // store the label field
                                 labelField = new StringField("labelField", label.trim(), Field.Store.YES);
 
-                                // index the small cap-ed form of labels
-
-                                // adding the full text as well to increase recall. No need to store it
-                                // fullContentField = new StringField("fullContentField", label + uriText,
-                                // Field.Store.NO);
-
-                                /*
-                                 * if (label.toLowerCase().indexOf("tom cruise") != -1) logger.info(label);
-                                 */
+                                // replace all the punctuation marks in the label
                                 label = Pattern.compile(Constants.LABEL_FILTER).matcher(label).replaceAll("");
 
+                                // extract the first and last names from the label
                                 if (label.split(" ").length > 0) {
                                     String[] str = label.split(" ");
                                     if (str.length >= 2) {
-                                        name1 = str[0];
-                                        name2 = str[str.length - 1];
+                                        labelFirstName = str[0];
+                                        labelLastName = str[str.length - 1];
                                     } else {
-                                        name1 = str[0];
-                                        name2 = name1;
+                                        labelFirstName = str[0];
+                                        labelLastName = labelFirstName;
                                     }
                                     // after first and last names are extracted out, join the labels to form one
                                     // un-concatenated word
@@ -210,6 +204,7 @@ public class DBPediaIndexBuilder
                                             uriSecondWord = uriFirstWord;
                                         }
 
+                                        // define all the fields to be indexed
                                         labelSmallField =
                                             new StringField("labelSmallField", label.trim().toLowerCase(),
                                                 Field.Store.NO);
@@ -217,14 +212,17 @@ public class DBPediaIndexBuilder
                                         fullUriField =
                                             new StringField("uriFullTextField", uriText.toLowerCase(), Field.Store.YES);
 
-                                        uriTextField1 =
+                                        uriFirstTextField =
                                             new StringField("uriTextField1", uriFirstWord.toLowerCase(), Field.Store.NO);
-                                        uriTextField2 =
-                                            new StringField("uriTextField2", uriSecondWord.toLowerCase(), Field.Store.NO);
+                                        uriSecondTextField =
+                                            new StringField("uriTextField2", uriSecondWord.toLowerCase(),
+                                                Field.Store.NO);
                                         surName =
-                                            new StringField("surname", name2.trim().toLowerCase(), Field.Store.NO);
+                                            new StringField("surname", labelLastName.trim().toLowerCase(),
+                                                Field.Store.NO);
                                         firstName =
-                                            new StringField("firstname", name1.trim().toLowerCase(), Field.Store.NO);
+                                            new StringField("firstname", labelFirstName.trim().toLowerCase(),
+                                                Field.Store.NO);
 
                                         // add to document
                                         document = new Document();
@@ -234,8 +232,8 @@ public class DBPediaIndexBuilder
                                         document.add(labelSmallField);
                                         document.add(surName);
                                         document.add(firstName);
-                                        document.add(uriTextField1);
-                                        document.add(uriTextField2);
+                                        document.add(uriFirstTextField);
+                                        document.add(uriSecondTextField);
 
                                         // add the document finally into the writer
                                         writer.addDocument(document);
@@ -251,7 +249,6 @@ public class DBPediaIndexBuilder
                 } finally {
                     // Close the input stream
                     fstream.close();
-
                 }
             }
         }

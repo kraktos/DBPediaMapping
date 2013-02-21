@@ -128,10 +128,11 @@ public class QueryEngine
                         null, Constants.MAX_RESULTS);
 
                 iterateResult(searcher, setURI, resultMap, hits, userQuery);
-                //TODO : Fuzzy even then
+                // TODO : Fuzzy even then
 
             }
 
+            // iterate the result map to construct the return list of result data access objects
             for (Integer key : resultMap.keySet()) {
                 for (ResultDAO dao : resultMap.get(key)) {
                     if (returnList.size() <= TOP_K) {
@@ -182,7 +183,9 @@ public class QueryEngine
         String uriTextField;
 
         double score;
+        List<ResultDAO> list = null;
 
+        // iterate over the results fetched after index search
         for (ScoreDoc scoredoc : hits.scoreDocs) {
             // Retrieve the matched document and show relevant details
             Document doc = searcher.doc(scoredoc.doc);
@@ -194,15 +197,20 @@ public class QueryEngine
 
             // only add the unique entries(URI and label combination)
             if (Utilities.checkUniqueness(setURI, uriField)) {
-                // logger.info(labelField + "  " + StringUtils.getLevenshteinDistance(userQuery, labelField));
+
+                // the key is the sum of the levenstein edit distances of the query with the label and the query with
+                // the URI. Obviously, the best matching record will have both these edit distances minimum and an
+                // overall minimum score.
                 Integer key =
                     StringUtils.getLevenshteinDistance(userQuery, labelField.toLowerCase())
                         + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
+
+                // Add to the result map, check for existing key, add or update the values accordingly
                 if (resultMap.containsKey(key)) {
                     // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
                     resultMap.get(key).add(new ResultDAO(uriField, Math.round(score * 100)));
                 } else {
-                    List<ResultDAO> list = new ArrayList<ResultDAO>();
+                    list = new ArrayList<ResultDAO>();
                     // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
                     list.add(new ResultDAO(uriField, Math.round(score * 100)));
                     resultMap.put(key, list);
