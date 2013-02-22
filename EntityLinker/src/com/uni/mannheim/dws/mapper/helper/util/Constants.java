@@ -32,7 +32,7 @@ public class Constants
      * location for storing the predicate distribution patterns based on some integer values of the subjects and objects
      * of the instances
      */
-    public static final String DBPEDIA_PREDICATE_DISTRIBUTION = "/home/arnab/Work/data/DBPedia/spouse";
+    public static final String DBPEDIA_PREDICATE_DISTRIBUTION = "/home/arnab/Work/data/DBPedia/property";
 
     /**
      * location of all the raw CSV files dumped from DBPedia SPARQL endpoint
@@ -107,19 +107,19 @@ public class Constants
     public static final double SIMILARITY = 100.00;
 
     /**
-     * change the value to fetch these many records, Lucene uses this to feth maximum these many matching documents
+     * change the value to fetch these many records, Lucene uses this to fetch maximum these many matching documents
      */
     public static final int MAX_RESULTS = 50;
 
     /**
      * Number of top k matching elements you wish to retrieve
      */
-    public static final int TOPK = 20;
+    public static final int TOPK = 10;
 
     /**
      * Sample query to test the indexed DBPedia data
      */
-    public static final String SAMPLE_QUERY = "albert einstein ";
+    public static final String SAMPLE_QUERY = "married";
 
     // *****************IE Engines output locations ***************************************************
 

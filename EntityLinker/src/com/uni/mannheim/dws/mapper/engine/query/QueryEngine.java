@@ -121,7 +121,7 @@ public class QueryEngine
             iterateResult(searcher, setURI, resultMap, hits, userQuery);
 
             // still we have no result then perform wild card search
-            if (hits.totalHits == 0) {
+            if (hits.totalHits == 0 || resultMap.size() < TOP_K) {
 
                 hits =
                     searcher.search(new WildcardQuery(new Term("labelSmallField", userQuery.toLowerCase() + "*")),
@@ -206,12 +206,11 @@ public class QueryEngine
                         + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
 
                 // Add to the result map, check for existing key, add or update the values accordingly
-                if (resultMap.containsKey(key)) {
-                    // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
+                if (resultMap.containsKey(key)) {                    
                     resultMap.get(key).add(new ResultDAO(uriField, Math.round(score * 100)));
                 } else {
                     list = new ArrayList<ResultDAO>();
-                    // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
+                    //logger.info(new ResultDAO(uriField, Math.round(score * 100)));
                     list.add(new ResultDAO(uriField, Math.round(score * 100)));
                     resultMap.put(key, list);
                 }

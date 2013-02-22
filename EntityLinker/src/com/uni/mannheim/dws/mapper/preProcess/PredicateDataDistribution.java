@@ -139,9 +139,10 @@ public class PredicateDataDistribution
         long start = Utilities.startTimer();
 
         KernelDensityEstimator kde = new KernelDensityEstimator(getDataArr());
-        logger.info(" Data Range is " + kde.getMinValue() + " -> " + kde.getMaxValue());
+        logger.info(" Data Range is " + kde.getMinValue() + " -> " + kde.getMaxValue() + " out of "
+            + getDataArr().length + " elements");
 
-        logger.info("Density Estimate at " + 40 + " = " + predicateDataDistribution.findDensity(kde, 40));
+        logger.info("Density Estimate at " + 80 + " = " + predicateDataDistribution.findDensity(kde, 80));
         logger.info("Density Estimate at " + 5 + " = " + predicateDataDistribution.findDensity(kde, 5));
 
         Utilities.endTimer(start, "DENSITY ESTIMATED IN ");
