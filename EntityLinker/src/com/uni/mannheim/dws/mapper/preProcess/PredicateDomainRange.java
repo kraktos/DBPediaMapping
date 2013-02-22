@@ -96,7 +96,7 @@ public class PredicateDomainRange
      */
     static PreparedStatement pstmt = null;
 
-    public static void main(String[] args) throws IOException, InterruptedException
+    public static void main(String[] args) throws Exception
     {
         FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/out.csv");
         BufferedWriter out = new BufferedWriter(fstream);
@@ -117,8 +117,10 @@ public class PredicateDomainRange
 
     /**
      * writes to the Database
+     * 
+     * @throws Exception
      */
-    private static void writeToDB()
+    private static void writeToDB() throws Exception
     {
         logger.info("Writing to DB..");
 
@@ -134,7 +136,13 @@ public class PredicateDomainRange
 
             // set autocommit to false
             connection.setAutoCommit(false);
+        } catch (SQLException ex) {
+            logger.error("DB Connection creation error" + ex.getMessage());
+            throw new Exception(ex);
+        }
 
+        try {
+            int batchCounter = 0;
             // iterate the set of results and insert in batch
             for (String str : setDomainsRanges) {
                 String[] values = str.split(LOCAL_DELIMITER);
@@ -144,8 +152,17 @@ public class PredicateDomainRange
                 pstmt.setString(3, values[2]); // set input parameter 3
 
                 pstmt.addBatch();
+
+                if (batchCounter++ % 100 == 0) { // batches of 100 are flushed at a time
+                    // execute batch update
+                    pstmt.executeBatch();
+                    connection.commit();
+
+                    logger.info("FLUSHED TO DB...");
+                }
             }
 
+            // residual updates
             // execute batch update
             pstmt.executeBatch();
 
@@ -153,7 +170,7 @@ public class PredicateDomainRange
             connection.commit();
 
         } catch (SQLException ex) {
-            logger.error("Connection Failed! Check output console" + ex.getMessage());
+            logger.error(" record exists  !!");
         } finally {
             setDomainsRanges.clear();
             setPredicates.clear();
@@ -185,6 +202,7 @@ public class PredicateDomainRange
 
             // give some pause
             Thread.sleep(500);
+
         }
     }
 
@@ -200,7 +218,9 @@ public class PredicateDomainRange
     {
         try {
             getResultSet(queryInput);
-
+            /*
+             * if (predicate.indexOf("atcSupplemental") != -1) logger.info("");
+             */
             // sometimes the domain/range are still not available,
             // unusual case where either of them is absent
             if (listResults.size() == 0) {
@@ -217,8 +237,13 @@ public class PredicateDomainRange
                 getResultSet(queryInput);
 
                 for (QuerySolution querySol : listResults) {
-                    domain = querySol.get("domain").toString();
-                    range = querySol.get("range").toString();
+                    try {
+                        domain = querySol.get("domain").toString();
+                        range = querySol.get("range").toString();
+                    } catch (Exception e) {
+                        range = "http://www.w3.org/2001/XMLSchema#string";
+                        setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                    }
 
                     if (domain.startsWith(Constants.DBPEDIA_HEADER)) {
                         // set in the collection
@@ -240,7 +265,7 @@ public class PredicateDomainRange
             }
 
         } catch (Exception e) {
-            logger.error("Skipping bad range values");
+            logger.error("Skipping bad range values for " + predicate + " " + e.getMessage());
         }
     }
 
