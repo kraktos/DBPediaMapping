@@ -6,6 +6,9 @@ package com.uni.mannheim.dws.mapper.preProcess;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +22,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 
 /**
@@ -29,6 +33,8 @@ import com.uni.mannheim.dws.mapper.helper.util.Constants;
  */
 public class PredicateDomainRange
 {
+    private static final String LOCAL_DELIMITER = "~";
+
     /**
      * logger
      */
@@ -80,6 +86,16 @@ public class PredicateDomainRange
      */
     static Set<String> setDomainsRanges = new HashSet<String>();
 
+    /**
+     * DB connection instance, one per servlet
+     */
+    static Connection connection = null;
+
+    /**
+     * prepared statement instance
+     */
+    static PreparedStatement pstmt = null;
+
     public static void main(String[] args) throws IOException, InterruptedException
     {
         FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/out.csv");
@@ -94,16 +110,57 @@ public class PredicateDomainRange
         // Use those predicates to fetch the domain and range values
         computePredicateDomainRange();
 
-        // create a file output stream
-        BufferedWriter fileOut =
-            new BufferedWriter(new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/domainRange.csv"));
+        // write to the DB
+        writeToDB();
 
-        // iterate and flush it to the file mentioned above
-        for (String str : setDomainsRanges) {
-            fileOut.write(str + "\n");
+    }
+
+    /**
+     * writes to the Database
+     */
+    private static void writeToDB()
+    {
+        logger.info("Writing to DB..");
+
+        try {
+            // instantiate the DB connection
+            DBConnection dbConnection = new DBConnection();
+
+            // retrieve the freshly created connection instance
+            connection = dbConnection.getConnection();
+
+            // create a statement
+            pstmt = connection.prepareStatement(Constants.INSERT_PROPERTY_DOMAIN_RANGE_SQL);
+
+            // set autocommit to false
+            connection.setAutoCommit(false);
+
+            // iterate the set of results and insert in batch
+            for (String str : setDomainsRanges) {
+                String[] values = str.split(LOCAL_DELIMITER);
+
+                pstmt.setString(1, values[0]);
+                pstmt.setString(2, values[1]); // set input parameter 2
+                pstmt.setString(3, values[2]); // set input parameter 3
+
+                pstmt.addBatch();
+            }
+
+            // execute batch update
+            pstmt.executeBatch();
+
+            // finally commit the transaction
+            connection.commit();
+
+        } catch (SQLException ex) {
+            logger.error("Connection Failed! Check output console" + ex.getMessage());
+        } finally {
+            setDomainsRanges.clear();
+            setPredicates.clear();
+            setDomainsRanges = null;
+            setPredicates = null;
         }
-        // close the stream
-        fileOut.close();
+
     }
 
     /**
@@ -114,7 +171,7 @@ public class PredicateDomainRange
      */
     private static void computePredicateDomainRange() throws IOException, InterruptedException
     {
-
+        logger.info("Iterating the predicates..");
         // iterate the set of predicates to find its domain and range
         for (String predicate : setPredicates) {
             // make a new query to fetch the domain and range for this predicate
@@ -124,16 +181,11 @@ public class PredicateDomainRange
                     + "> <http://www.w3.org/2000/01/rdf-schema#range> ?range. "
                     + "?smthng <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?domain.}";
 
-            //
             executeQuery(query, predicate);
 
+            // give some pause
             Thread.sleep(500);
-            /*
-             * if (count > 50) break;
-             */
         }
-
-        logger.info(setDomainsRanges.size());
     }
 
     /**
@@ -149,13 +201,11 @@ public class PredicateDomainRange
         try {
             getResultSet(queryInput);
 
-            if (predicate.indexOf("productionStartYear") != -1)
-                logger.info("");
-
             // sometimes the domain/range are still not available,
             // unusual case where either of them is absent
             if (listResults.size() == 0) {
 
+                // frame the result set
                 queryInput =
                     "select distinct ?domain (datatype(?obj) as ?range) where {?sub <"
                         + predicate
@@ -163,14 +213,17 @@ public class PredicateDomainRange
                         + "?smthng <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>. "
                         + "?smthng <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?domain}";
 
+                // re frame the result set
                 getResultSet(queryInput);
 
                 for (QuerySolution querySol : listResults) {
                     domain = querySol.get("domain").toString();
                     range = querySol.get("range").toString();
 
-                    // set in the collection
-                    setDomainsRanges.add(predicate + ":" + domain + "," + range);
+                    if (domain.startsWith(Constants.DBPEDIA_HEADER)) {
+                        // set in the collection
+                        setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                    }
                 }
 
             } else { // normal case where domain and range present
@@ -179,10 +232,10 @@ public class PredicateDomainRange
 
                     domain = querySol.get("domain").toString();
                     range = querySol.get("range").toString();
-
-                    // set in the collection
-                    setDomainsRanges.add(predicate + ":" + domain + "," + range);
-                    logger.info(domain + "," + predicate + "," + range + "\n");
+                    if (domain.startsWith(Constants.DBPEDIA_HEADER)) {
+                        // set in the collection
+                        setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                    }
                 }
             }
 

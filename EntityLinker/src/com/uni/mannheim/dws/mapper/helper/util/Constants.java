@@ -24,7 +24,7 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql"; //"http://live.dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql"; // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS ************************************************
 
@@ -159,6 +159,9 @@ public class Constants
 
     // *****************Database Parameters PARAMETES***************************************************
     public static final String INSERT_FACT_SQL =
-        "INSERT INTO \"UNCERTAIN_KB\"(\"SUB\", \"PRED\", \"OBJ\", \"CONFIDENCE\") VALUES (?, ?, ?, ?)";;
+        "INSERT INTO \"UNCERTAIN_KB\"(\"SUB\", \"PRED\", \"OBJ\", \"CONFIDENCE\") VALUES (?, ?, ?, ?)";
+
+    public static final String INSERT_PROPERTY_DOMAIN_RANGE_SQL =
+        "INSERT INTO \"PREDICATE_DOMAIN_RANGE\"(\"PREDICATE\", \"DOMAIN\", \"RANGE\") VALUES (?, ?, ?)";
 
 }
