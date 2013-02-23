@@ -55,9 +55,14 @@ public class Constants
     public static final String DBPEDIA_DATA_DELIMIT = "~!~";
 
     /**
-     * pnly the URIs with the following header will be used for indexing
+     * only the URIs with the following header will be used for indexing
      */
     public static final String DBPEDIA_HEADER = "http://dbpedia.org/";
+
+    /**
+     * Filter out the YAGO links
+     */
+    public static final String YAGO_HEADER = "http://dbpedia.org/class/yago";
 
     // *****************INDEXING STRATEGIES ************************************************
 
@@ -119,7 +124,7 @@ public class Constants
     /**
      * Sample query to test the indexed DBPedia data
      */
-    public static final String SAMPLE_QUERY = "married";
+    public static final String SAMPLE_QUERY = "director";
 
     // *****************IE Engines output locations ***************************************************
 
