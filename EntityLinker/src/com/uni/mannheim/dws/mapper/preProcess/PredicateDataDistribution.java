@@ -37,6 +37,17 @@ import com.uni.mannheim.dws.mapper.preProcess.estimator.KernelDensityEstimator;
 
 public class PredicateDataDistribution
 {
+    /*
+     * query to fetch all object type property from DBPedia
+     */
+    private static String OWL_OBJECT_TYPE_PROPERTY = "select ?prop where "
+        + "{?prop a <http://www.w3.org/2002/07/owl#ObjectProperty>} order by ?prop";
+
+    /**
+     * holds the set of predicates fetched from DBPedia
+     */
+    static Set<String> setPredicates = new HashSet<String>();
+
     /**
      * logger
      */
@@ -50,13 +61,13 @@ public class PredicateDataDistribution
 
     static Set<Double> set = new HashSet<Double>();
 
-    static String year1;
+    static String subVal;
 
-    static String year2;
+    static String objVal;
 
-    static String yr1;
+    static String sub;
 
-    static String yr2;
+    static String obj;
 
     // Array used for storing the data values used as input to the estimator
     static List<Double> dataArr = new ArrayList<Double>();
@@ -76,60 +87,78 @@ public class PredicateDataDistribution
 
     public void createPredicateDistribution() throws IOException, SQLException
     {
-        // the predicate interested in
-        String predicate = "http://dbpedia.org/ontology/commandStructure";
 
-        findDataDistribution(predicate);
+        for (String predicate : setPredicates) {
+            logger.info(" fetching " + predicate);
+            findDataDistribution(predicate);
+        }
 
     }
 
     /**
      * collect the data from DBPedia, and frame a distribution of data values for the given property
      * 
-     * @param predicate
+     * @param mainProperty the actual property whose distribution we are trying to build
      * @throws IOException
      * @throws SQLException
      */
-    public void findDataDistribution(String predicate) throws IOException, SQLException
+    public void findDataDistribution(String mainProperty) throws IOException, SQLException
     {
         int factor = 0;
 
+        String domainPredicate = null;
+
+        String rangePredicate = null;
+
         String queryString =
             "SELECT \"DOMAIN_PROP\", \"RANGE_PROP\" FROM \"PREDICATE_DOMAIN_RANGE\" " + "WHERE \"PREDICATE\" = '"
-                + predicate + "';";
+                + mainProperty + "';";
 
-        String path = predicate.substring(predicate.lastIndexOf("/"), predicate.length());
+        String path = mainProperty.substring(mainProperty.lastIndexOf("/"), mainProperty.length());
 
         DBConnection dbConnection = new DBConnection();
 
         // set the statement instance
         dbConnection.setStatement(dbConnection.getConnection().createStatement());
 
+        // fetch the result set
         resultSet = dbConnection.getResults(queryString);
 
         while (resultSet.next()) { // process results one row at a time
-            String domainPredicate = resultSet.getString(1);
-            String rangePredicate = resultSet.getString(2);
+            domainPredicate = resultSet.getString(1);
+            rangePredicate = resultSet.getString(2);
 
-            System.out.println("domainPredicate = " + domainPredicate);
-            System.out.println("rangePredicate = " + rangePredicate);
+            // System.out.println("domainPredicate = " + domainPredicate);
+            // System.out.println("rangePredicate = " + rangePredicate);
         }
-
         // close the result set
         resultSet.close();
 
-        // shutdown data base
+        // shutdown database
         dbConnection.shutDown();
 
-        /*
-         * FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv"); BufferedWriter
-         * out = new BufferedWriter(fstream); String QUERY =
-         * "select ?a ?year2 ?s ?year1 where {?a <http://dbpedia.org/ontology/spouse> ?s. ?s <http://dbpedia.org/ontology/birthDate> ?year1. "
-         * + "?a <http://dbpedia.org/ontology/birthDate> ?year2} limit 2000 offset "; try { while (true) {
-         * logger.info(QUERY + factor); queryDBPedia(QUERY + factor, out); factor = factor + 2000; Thread.sleep(4000);
-         * if (factor > 30000) break; } } catch (Exception e) { logger.info(e.getMessage()); } // Close the output
-         * stream out.close();
-         */
+        // use the predicates to form a new query
+        String QUERY =
+            "select distinct * where {?sub <" + mainProperty + "> ?obj. ?sub <" + domainPredicate + "> ?subVal. "
+                + "?obj <" + rangePredicate + "> ?objVal} ";
+
+        if (domainPredicate != null && rangePredicate != null) {
+            FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv");
+            BufferedWriter out = new BufferedWriter(fstream);
+            try {
+
+                // logger.info(QUERY + factor);
+                queryDBPedia(QUERY, out);
+                // factor = factor + 2000;
+                Thread.sleep(4000);
+
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            // close the file output stream
+            out.close();
+            logger.info("done writing to " + path + ".csv");
+        }
     }
 
     public double findDensity(KernelDensityEstimator kde, double queryValue)
@@ -164,6 +193,52 @@ public class PredicateDataDistribution
     }
 
     /**
+     * helper method to fetch the result set for a given query
+     * 
+     * @param queryInput input query
+     */
+    public static void getResultSet(String queryInput)
+    {
+        // reset the list result
+        listResults = null;
+
+        Query query = QueryFactory.create(queryInput);
+        // execute the query
+        qexec = QueryExecutionFactory.sparqlService(Constants.DBPEDIA_SPARQL_ENDPOINT, query);
+
+        // get the result set ResultSet
+        results = qexec.execSelect();
+
+        listResults = ResultSetFormatter.toList(results);
+        qexec.close();
+    }
+
+    /**
+     * Method queries against DBPedia to find the domain range values of the predicate
+     * 
+     * @param QUERY issued query to find the date/integer differences
+     * @throws IOException
+     */
+    private static void getFromDBPedia(final String QUERY) throws IOException
+    {
+        getResultSet(QUERY);
+
+        for (QuerySolution querySol : listResults) {
+
+            String predicate = querySol.get("prop").toString();
+
+            // just take only DBPedia properties, ignore others with namespace as "http://xmlns.com/foaf" or
+            // "http://sw.opencyc.org"
+            if (predicate.startsWith("http://dbpedia.org")) {
+                if (!setPredicates.contains(predicate)) {
+                    setPredicates.add(predicate);
+                }
+            }
+        }
+        qexec.close();
+    }
+
+    /**
      * @param args
      * @throws InterruptedException
      * @throws IOException
@@ -173,6 +248,10 @@ public class PredicateDataDistribution
     {
 
         PredicateDataDistribution predicateDataDistribution = new PredicateDataDistribution();
+
+        // fetch the properties from DBPedia
+        getFromDBPedia(OWL_OBJECT_TYPE_PROPERTY);
+
         predicateDataDistribution.createPredicateDistribution();
 
         /*
@@ -192,54 +271,55 @@ public class PredicateDataDistribution
      * @param out output buffer
      * @throws IOException
      */
-    public static void queryDBPedia(final String QUERY, BufferedWriter out) throws IOException
+    public static void queryDBPedia(final String QUERY, BufferedWriter out)
     {
         Calendar calendar1 = new GregorianCalendar();
         Calendar calendar2 = new GregorianCalendar();
         double difference;
 
-        Query query = QueryFactory.create(QUERY);
+        try {
+            Query query = QueryFactory.create(QUERY);
 
-        // get the result set ResultSet
-        QueryExecution qexec = QueryExecutionFactory.sparqlService(Constants.DBPEDIA_SPARQL_ENDPOINT, query);
+            // get the result set ResultSet
+            QueryExecution qexec = QueryExecutionFactory.sparqlService(Constants.DBPEDIA_SPARQL_ENDPOINT, query);
 
-        results = qexec.execSelect();
+            results = qexec.execSelect();
 
-        List<QuerySolution> listResults = ResultSetFormatter.toList(results);
+            List<QuerySolution> listResults = ResultSetFormatter.toList(results);
 
-        for (QuerySolution querySol : listResults) {
-            year1 = querySol.get("year1").toString();
-            year2 = querySol.get("year2").toString();
-            // yr1 = querySol.get("s").toString();
-            // yr2 = querySol.get("a").toString();
+            for (QuerySolution querySol : listResults) {
+                subVal = querySol.get("subVal").toString();
+                objVal = querySol.get("objVal").toString();
+                sub = querySol.get("sub").toString();
+                obj = querySol.get("obj").toString();
 
-            /*
-             * if(yr1.indexOf("Henry_IV_of_France") != -1){ logger.info(year1); }
-             */
-            year1 = removeDataDefinition(year1);
-            year2 = removeDataDefinition(year2);
-
-            try {
-                Date year1Date = new SimpleDateFormat("yyyy-dd-mm", Locale.ENGLISH).parse(year1);
-                Date year2Date = new SimpleDateFormat("yyyy-dd-mm", Locale.ENGLISH).parse(year2);
-                calendar1.setTime(year1Date);
-                calendar2.setTime(year2Date);
-
-                // calculate the difference of years
-                difference = Math.abs(calendar1.get(Calendar.YEAR) - calendar2.get(Calendar.YEAR));
                 /*
-                 * if (difference > 400) { logger.info(yr1 + "  " + calendar1.get(Calendar.YEAR) + "  " +
-                 * calendar2.get(Calendar.YEAR) + " " + yr2); }
+                 * if(yr1.indexOf("Henry_IV_of_France") != -1){ logger.info(year1); }
                  */
+                subVal = removeDataDefinition(subVal);
+                objVal = removeDataDefinition(objVal);
 
-                // flush it to the file
-                out.write(difference + "\n");
+                try {
+                    Date year1Date = new SimpleDateFormat("yyyy-dd-mm", Locale.ENGLISH).parse(subVal);
+                    Date year2Date = new SimpleDateFormat("yyyy-dd-mm", Locale.ENGLISH).parse(objVal);
+                    calendar1.setTime(year1Date);
+                    calendar2.setTime(year2Date);
 
-            } catch (ParseException e) {
-                continue;
+                    // calculate the difference of years
+                    difference = Math.abs(calendar1.get(Calendar.YEAR) - calendar2.get(Calendar.YEAR));
+
+                    // logger.info(sub + " " + subVal + " " + difference + " " + objVal + "  " + obj);
+                    // flush it to the file
+                    out.write(difference + "\n");
+
+                } catch (ParseException e) {
+                    continue;
+                }
             }
+            qexec.close();
+        } catch (IOException e) {
+            logger.error(" Error in executing query " + e.getMessage());
         }
-        qexec.close();
     }
 
     /**
