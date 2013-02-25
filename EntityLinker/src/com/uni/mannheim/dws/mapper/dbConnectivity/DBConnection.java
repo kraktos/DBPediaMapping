@@ -44,7 +44,8 @@ public class DBConnection
 
     /**
      * initialize the DB in the constructor
-     * @throws SQLException 
+     * 
+     * @throws SQLException
      */
     public DBConnection() throws SQLException
     {
@@ -92,8 +93,6 @@ public class DBConnection
 
     public Connection initDB() throws SQLException
     {
-
-        // setConnection(DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword));
         this.connection = DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword);
 
         if (this.connection != null) {
@@ -107,23 +106,50 @@ public class DBConnection
 
     }
 
-    
-
     /**
-	 * 
-	 */
+     * register the driver
+     */
     public static void registerDriver()
     {
         try {
-
             Class.forName("org.postgresql.Driver");
-
         } catch (ClassNotFoundException e) {
-
-            System.out.println("Where is your PostgreSQL JDBC Driver? " + "Include in your library path!");
-            e.printStackTrace();
+            logger.error("Where is your PostgreSQL JDBC Driver? " + "Include in your library path!");
             return;
 
         }
+    }
+
+    /**
+     * performs the query execution
+     * 
+     * @param queryString input select query to be executed
+     * @return a result set, can be null
+     */
+    public ResultSet getResults(String queryString)
+    {
+        try {
+            return this.statement.executeQuery(queryString);
+        } catch (SQLException e) {
+            logger.error("Exception while selecting " + queryString + "  " + e.getMessage());
+        }
+        return null;
+
+    }
+
+    /**
+     * Closes the database
+     */
+    public void shutDown()
+    {
+
+        try {           
+            this.statement.close();
+            this.connection.close();
+
+        } catch (SQLException e) {
+            logger.error("DB Closing failed...");
+        }
+
     }
 }

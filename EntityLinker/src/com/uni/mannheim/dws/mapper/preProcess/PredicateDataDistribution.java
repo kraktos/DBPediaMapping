@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 import com.uni.mannheim.dws.mapper.preProcess.estimator.KernelDensityEstimator;
@@ -36,10 +41,6 @@ public class PredicateDataDistribution
      * logger
      */
     static Logger logger = Logger.getLogger(PredicateDataDistribution.class.getName());
-
-    private static String QUERY =
-        "select ?a ?year2 ?s ?year1 where {?a <http://dbpedia.org/ontology/spouse> ?s. ?s <http://dbpedia.org/ontology/birthDate> ?year1. "
-            + "?a <http://dbpedia.org/ontology/birthDate> ?year2} limit 2000 offset ";
 
     static List<QuerySolution> listResults;
 
@@ -61,6 +62,11 @@ public class PredicateDataDistribution
     static List<Double> dataArr = new ArrayList<Double>();
 
     /**
+     * statement instance
+     */
+    static java.sql.ResultSet resultSet = null;
+
+    /**
      * @return the dataArr
      */
     public static Double[] getDataArr()
@@ -68,30 +74,62 @@ public class PredicateDataDistribution
         return dataArr.toArray(new Double[dataArr.size()]);
     }
 
+    public void createPredicateDistribution() throws IOException, SQLException
+    {
+        // the predicate interested in
+        String predicate = "http://dbpedia.org/ontology/commandStructure";
+
+        findDataDistribution(predicate);
+
+    }
+
     /**
      * collect the data from DBPedia, and frame a distribution of data values for the given property
      * 
+     * @param predicate
      * @throws IOException
+     * @throws SQLException
      */
-    public void createDistribution() throws IOException
+    public void findDataDistribution(String predicate) throws IOException, SQLException
     {
-        FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/out.csv");
-        BufferedWriter out = new BufferedWriter(fstream);
         int factor = 0;
-        try {
-            while (true) {
-                logger.info(QUERY + factor);
-                queryDBPedia(QUERY + factor, out);
-                factor = factor + 2000;
-                Thread.sleep(4000);
-                if (factor > 30000)
-                    break;
-            }
-        } catch (Exception e) {
-            logger.info(e.getMessage());
+
+        String queryString =
+            "SELECT \"DOMAIN_PROP\", \"RANGE_PROP\" FROM \"PREDICATE_DOMAIN_RANGE\" " + "WHERE \"PREDICATE\" = '"
+                + predicate + "';";
+
+        String path = predicate.substring(predicate.lastIndexOf("/"), predicate.length());
+
+        DBConnection dbConnection = new DBConnection();
+
+        // set the statement instance
+        dbConnection.setStatement(dbConnection.getConnection().createStatement());
+
+        resultSet = dbConnection.getResults(queryString);
+
+        while (resultSet.next()) { // process results one row at a time
+            String domainPredicate = resultSet.getString(1);
+            String rangePredicate = resultSet.getString(2);
+
+            System.out.println("domainPredicate = " + domainPredicate);
+            System.out.println("rangePredicate = " + rangePredicate);
         }
-        // Close the output stream
-        out.close();
+
+        // close the result set
+        resultSet.close();
+
+        // shutdown data base
+        dbConnection.shutDown();
+
+        /*
+         * FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv"); BufferedWriter
+         * out = new BufferedWriter(fstream); String QUERY =
+         * "select ?a ?year2 ?s ?year1 where {?a <http://dbpedia.org/ontology/spouse> ?s. ?s <http://dbpedia.org/ontology/birthDate> ?year1. "
+         * + "?a <http://dbpedia.org/ontology/birthDate> ?year2} limit 2000 offset "; try { while (true) {
+         * logger.info(QUERY + factor); queryDBPedia(QUERY + factor, out); factor = factor + 2000; Thread.sleep(4000);
+         * if (factor > 30000) break; } } catch (Exception e) { logger.info(e.getMessage()); } // Close the output
+         * stream out.close();
+         */
     }
 
     public double findDensity(KernelDensityEstimator kde, double queryValue)
@@ -129,24 +167,21 @@ public class PredicateDataDistribution
      * @param args
      * @throws InterruptedException
      * @throws IOException
+     * @throws SQLException
      */
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, SQLException
     {
 
         PredicateDataDistribution predicateDataDistribution = new PredicateDataDistribution();
-        // predicateDataDistribution.createDistribution();
-        predicateDataDistribution.frameDataArray();
-        long start = Utilities.startTimer();
+        predicateDataDistribution.createPredicateDistribution();
 
-        KernelDensityEstimator kde = new KernelDensityEstimator(getDataArr());
-        logger.info(" Data Range is " + kde.getMinValue() + " -> " + kde.getMaxValue() + " out of "
-            + getDataArr().length + " elements");
-
-        logger.info("Density Estimate at " + 80 + " = " + predicateDataDistribution.findDensity(kde, 80));
-        logger.info("Density Estimate at " + 5 + " = " + predicateDataDistribution.findDensity(kde, 5));
-
-        Utilities.endTimer(start, "DENSITY ESTIMATED IN ");
-
+        /*
+         * predicateDataDistribution.frameDataArray(); long start = Utilities.startTimer(); KernelDensityEstimator kde =
+         * new KernelDensityEstimator(getDataArr()); logger.info(" Data Range is " + kde.getMinValue() + " -> " +
+         * kde.getMaxValue() + " out of " + getDataArr().length + " elements"); logger.info("Density Estimate at " + 80
+         * + " = " + predicateDataDistribution.findDensity(kde, 80)); logger.info("Density Estimate at " + 5 + " = " +
+         * predicateDataDistribution.findDensity(kde, 5)); Utilities.endTimer(start, "DENSITY ESTIMATED IN ");
+         */
     }
 
     /**

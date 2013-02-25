@@ -169,4 +169,9 @@ public class Constants
     public static final String INSERT_PROPERTY_DOMAIN_RANGE_SQL =
         "INSERT INTO \"PREDICATE_DOMAIN_RANGE\"(\"PREDICATE\", \"DOMAIN\", \"RANGE\") VALUES (?, ?, ?)";
 
+    /**
+     * defines the batch size for the Data base operations
+     */
+    public static final int BATCH_SIZE = 100;
+
 }

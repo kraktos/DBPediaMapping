@@ -3,8 +3,6 @@
  */
 package com.uni.mannheim.dws.mapper.preProcess;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,8 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-
-import arq.query;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -112,14 +108,8 @@ public class PredicateDomainRange
 
     public static void main(String[] args) throws Exception
     {
-        FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/out.csv");
-        BufferedWriter out = new BufferedWriter(fstream);
-
         // fetch the properties from DBPedia
-        queryDBPedia(OWL_OBJECT_TYPE_PROPERTY, out);
-
-        // close output stream after file writing
-        out.close();
+        queryDBPedia(OWL_OBJECT_TYPE_PROPERTY);
 
         // Use those predicates to fetch the domain and range values
         computePredicateDomainRange();
@@ -137,10 +127,11 @@ public class PredicateDomainRange
     private static void writeToDB() throws Exception
     {
         logger.info("Writing to DB..");
+        DBConnection dbConnection = null;
 
         try {
             // instantiate the DB connection
-            DBConnection dbConnection = new DBConnection();
+            dbConnection = new DBConnection();
 
             // retrieve the freshly created connection instance
             connection = dbConnection.getConnection();
@@ -167,7 +158,7 @@ public class PredicateDomainRange
 
                 pstmt.addBatch();
 
-                if (batchCounter++ % 100 == 0) { // batches of 100 are flushed at a time
+                if (batchCounter++ % Constants.BATCH_SIZE == 0) { // batches of 100 are flushed at a time
                     // execute batch update
                     pstmt.executeBatch();
                     connection.commit();
@@ -183,9 +174,14 @@ public class PredicateDomainRange
             // finally commit the transaction
             connection.commit();
 
+            // close the database finally
+            dbConnection.shutDown();
+
         } catch (SQLException ex) {
             logger.error(" record exists  !!");
         } finally {
+
+            // clear up the locally used collections
             setDomainsRanges.clear();
             setPredicates.clear();
             setDomainsRanges = null;
@@ -202,20 +198,36 @@ public class PredicateDomainRange
      */
     private static void computePredicateDomainRange() throws IOException, InterruptedException
     {
+        String instanceCount = null;
+
         logger.info("Iterating the predicates..");
         // iterate the set of predicates to find its domain and range
         for (String predicate : setPredicates) {
-            // make a new query to fetch the domain and range for this predicate
-            String query =
-                "select distinct ?domain ?range where {<" + predicate
-                    + "> <http://www.w3.org/2000/01/rdf-schema#domain> ?domain. <" + predicate
-                    + "> <http://www.w3.org/2000/01/rdf-schema#range> ?range. }";
-                    //+ "?smthng <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?domain.}";
 
-            executeQuery(query, predicate);
+            // first check if at all there are any predicate instances. DBPedia has several such cases. No point moving
+            // further if we have actually no entities linked by the predicate
+            // query to select if instances exist
+            String countInstances = "select (count(*) as ?num) where {?sub <" + predicate + "> ?obj. }";
 
-            // give some pause
-            Thread.sleep(500);
+            getResultSet(countInstances);
+
+            for (QuerySolution querySol : listResults) {
+                instanceCount = querySol.get("num").toString();
+                instanceCount = instanceCount.substring(0, instanceCount.indexOf("^^"));
+            }
+
+            if (!instanceCount.equals("0")) {
+                // make a new query to fetch the domain and range for this predicate
+                String query =
+                    "select distinct ?domain ?range where {<" + predicate
+                        + "> <http://www.w3.org/2000/01/rdf-schema#domain> ?domain. <" + predicate
+                        + "> <http://www.w3.org/2000/01/rdf-schema#range> ?range. }";
+
+                executeQuery(query, predicate);
+
+                // give some pause
+                Thread.sleep(500);
+            }
 
         }
     }
@@ -237,7 +249,7 @@ public class PredicateDomainRange
             getResultSet(queryInput);
 
             // Debug break point, remove later
-            if (predicate.indexOf("http://dbpedia.org/ontology/team") != -1)
+            if (predicate.indexOf("http://dbpedia.org/ontology/thumbnail") != -1)
                 logger.info("");
 
             // sometimes the domain/range are still not available,
@@ -259,17 +271,15 @@ public class PredicateDomainRange
                             domain = querySol.get("domain").toString();
                             range = querySol.get("range").toString();
                         } catch (Exception e) {
-                            range = "http://www.w3.org/2001/XMLSchema#string"; // setting them to string
+                            range = "http://www.w3.org/2001/XMLSchema#string";
+                            // setting them to string
                             setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
                         }
-
-                        if (domain.startsWith(Constants.DBPEDIA_HEADER)) {
-                            // set in the collection
+                        if (domain.startsWith(Constants.DBPEDIA_HEADER)) { // set in the collection
                             setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
                         }
                     }
                 } else { // These are object properties with either of the domain/range missing
-
                     logger.info("Processing " + predicate);
 
                     // temporary variables
@@ -280,83 +290,77 @@ public class PredicateDomainRange
                         "SELECT ?domain ?range WHERE { OPTIONAL {<" + predicate
                             + "> <http://www.w3.org/2000/01/rdf-schema#domain> ?domain } . " + "OPTIONAL{<" + predicate
                             + "> <http://www.w3.org/2000/01/rdf-schema#range> ?range} }";
-
                     getResultSet(queryInput);
 
-                    for (QuerySolution querySol : listResults) {
-                        try {
-                            // check if domain is available
-                            domain = querySol.get("domain").toString();
-                        } catch (Exception e) {
+                    if (listResults.size() > 1) {
+                        for (QuerySolution querySol : listResults) {
+                            try { // check if domain available
+                                domain = querySol.get("domain").toString();
+                            } catch (Exception e) {
+                            }
                             // domain missing...try other way
-
                             // figure out the domain from the instance level information
                             queryInput =
                                 "select distinct ?domain where {?sub <" + predicate
                                     + ">  ?obj. ?sub <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?smthng. "
                                     + "?smthng <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?domain}";
-
                             getResultSet(queryInput);
-
                             // keep the possible set of domains
                             domainResults = listResults; // may be a more than one domains
+
+                            try { // check if range is available
+                                range = querySol.get("range").toString();
+                            } catch (Exception e) {
+                                // range missing...try other way // figure out the range from the instance level
+                                // information
+                                queryInput =
+                                    "select distinct ?range where {?sub <" + predicate
+                                        + ">  ?obj. ?obj <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?smthng. "
+                                        + "?smthng <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?range. }";
+                                getResultSet(queryInput);
+                                // keep the possible set of ranges
+                                rangeResults = listResults;
+                            }
                         }
-                        try {
-                            // check if range is available
-                            range = querySol.get("range").toString();
-                        } catch (Exception e) {
-                            // range missing...try other way
-                            // figure out the range from the instance level information
-                            queryInput =
-                                "select distinct ?range where {?sub <" + predicate
-                                    + ">  ?obj. ?obj <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?smthng. "
-                                    + "?smthng <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?range. }";
-                            getResultSet(queryInput);
 
-                            // keep the possible set of ranges
-                            rangeResults = listResults;
+                        // Now let's see what domain, range information we collected
+                        if (rangeResults != null) {
+                            for (QuerySolution ranges : rangeResults) {
+                                range = ranges.get("range").toString();
+                                if (domain.startsWith(Constants.DBPEDIA_HEADER)
+                                    && !domain.startsWith(Constants.YAGO_HEADER)
+                                    && range.startsWith(Constants.DBPEDIA_HEADER)
+                                    && !range.startsWith(Constants.YAGO_HEADER)) {
+                                    // set in the collection
+                                    setDomainsRanges
+                                        .add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                                    logger.info(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                                }
+                            }
                         }
-                    }
-
-                    // Now let's see what domain, range information we collected
-                    if (rangeResults != null) {
-                        for (QuerySolution ranges : rangeResults) {
-                            range = ranges.get("range").toString();
-
-                            if (domain.startsWith(Constants.DBPEDIA_HEADER)
-                                && !domain.startsWith(Constants.YAGO_HEADER)
-                                && range.startsWith(Constants.DBPEDIA_HEADER)
-                                && !range.startsWith(Constants.YAGO_HEADER)) {
-                                // set in the collection
-                                setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
-                                logger.info(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                        if (domainResults != null) {
+                            for (QuerySolution domains : domainResults) {
+                                domain = domains.get("domain").toString();
+                                if (domain.startsWith(Constants.DBPEDIA_HEADER)
+                                    && !domain.startsWith(Constants.YAGO_HEADER)
+                                    && range.startsWith(Constants.DBPEDIA_HEADER)
+                                    && !range.startsWith(Constants.YAGO_HEADER)) { // set
+                                                                                   // in
+                                                                                   // the
+                                                                                   // collection
+                                    setDomainsRanges
+                                        .add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                                    logger.info(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
+                                }
                             }
                         }
                     }
-
-                    if (domainResults != null) {
-                        for (QuerySolution domains : domainResults) {
-                            domain = domains.get("domain").toString();
-
-                            if (domain.startsWith(Constants.DBPEDIA_HEADER)
-                                && !domain.startsWith(Constants.YAGO_HEADER)
-                                && range.startsWith(Constants.DBPEDIA_HEADER)
-                                && !range.startsWith(Constants.YAGO_HEADER)) {
-                                // set in the collection
-                                setDomainsRanges.add(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
-                                logger.info(predicate + LOCAL_DELIMITER + domain + LOCAL_DELIMITER + range);
-
-                            }
-                        }
-                    }
-
-                    // There may be also some predicates, who have no instances at all. (For e.g
-                    // /ontology/giniCoefficientCategory)
-                    // Those cases are taken care of and the algorithm runs normally
+                    // There may be also some predicates, who have no instances at all. (For e.g //
+                    // /ontology/giniCoefficientCategory) // Those cases are taken care of and the algorithm runs
+                    // normally }
 
                 }
-
-            } else { // normal case where both domain and range present, straight forward, not much hassel here
+            } else { // normal case where both domain and range present, straight forward, not much hassle here
 
                 for (QuerySolution querySol : listResults) {
                     domain = querySol.get("domain").toString();
@@ -381,6 +385,9 @@ public class PredicateDomainRange
      */
     public static void getResultSet(String queryInput)
     {
+        // reset the list result
+        listResults = null;
+
         Query query = QueryFactory.create(queryInput);
         // execute the query
         qexec = QueryExecutionFactory.sparqlService(Constants.DBPEDIA_SPARQL_ENDPOINT, query);
@@ -396,10 +403,9 @@ public class PredicateDomainRange
      * Method queries against DBPedia to find the domain range values of the predicate
      * 
      * @param QUERY issued query to find the date/integer differences
-     * @param out output buffer where data is flushed to
      * @throws IOException
      */
-    private static void queryDBPedia(final String QUERY, BufferedWriter out) throws IOException
+    private static void queryDBPedia(final String QUERY) throws IOException
     {
         getResultSet(QUERY);
 
@@ -412,13 +418,9 @@ public class PredicateDomainRange
             if (predicate.startsWith("http://dbpedia.org")) {
                 if (!setPredicates.contains(predicate)) {
                     setPredicates.add(predicate);
-                    out.write(predicate + "\n");
                 }
             }
         }
-        // Close the output stream
-        out.close();
-
         qexec.close();
     }
 
