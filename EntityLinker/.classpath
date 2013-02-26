@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/apache-log4j-1.2.17/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/lucene-4.0.0/analysis/common/lucene-analyzers-common-4.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/lucene-4.0.0/queryparser/lucene-queryparser-4.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/lucene-4.0.0/core/lucene-core-4.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/xercesImpl-2.8.0.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/icu4j-3.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/commons-lang-2.0.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/postgresql-9.2-1002.jdbc3.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Workspaces/SchemaMapping/hi.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/xxl-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/iri-0.7.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/jena-2.6.4.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/slf4j-1.7.2/slf4j-log4j12-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/slf4j-1.7.2/slf4j-api-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/home/arnab/Work/libs/arq-2.8.8.jar"/>
+	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
+</classpath>
