@@ -46,12 +46,7 @@ import com.uni.mannheim.dws.mapper.wrapper.QueryAPIWrapper;
  * @author Arnab Dutta
  */
 public class QueryEngine
-{
-    /*
-     * static { Scanner filescan = null; try { filescan = new Scanner(new File("/home/arnab/Work/data/NELL/Dict.txt"));
-     * } catch (FileNotFoundException e) { // TODO Auto-generated catch block e.printStackTrace(); } while
-     * (filescan.hasNext()) { Utilities.dict.add(filescan.nextLine()); } }
-     */
+{   
 
     // The top k best matching results,
     private static int TOP_K = Constants.TOPK;

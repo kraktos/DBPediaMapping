@@ -14,6 +14,7 @@ import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
 import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
+import com.uni.mannheim.dws.mapper.preProcess.estimator.PredicateLikelihoodEstimate;
 
 /**
  * @author Arnab Dutta
@@ -75,9 +76,6 @@ public class FactSuggestion
             }
         }
 
-        /*
-         * tSubs = createPossibleSubs(preds, objs, qSub); tObjs = createPossibleObs(subs, preds, qObj);
-         */
         return frameFacts(subs, preds, objs);
     }
 
@@ -92,6 +90,10 @@ public class FactSuggestion
                 }
             }
         }
+
+        // Call engine to make an intelligent choice based on density estimation
+        retList = PredicateLikelihoodEstimate.rankFacts(retList);
+
         return retList;
     }
 
