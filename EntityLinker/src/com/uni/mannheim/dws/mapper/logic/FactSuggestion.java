@@ -5,6 +5,8 @@ package com.uni.mannheim.dws.mapper.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -92,83 +94,20 @@ public class FactSuggestion
         }
 
         // Call engine to make an intelligent choice based on density estimation
-        retList = PredicateLikelihoodEstimate.rankFacts(retList);
+        Map<Double, Set<SuggestedFactDAO>> mapReturn = PredicateLikelihoodEstimate.rankFacts(retList);
+
+        retList.clear();
+
+        for (Map.Entry<Double, Set<SuggestedFactDAO>> entry : mapReturn.entrySet()) {
+            Set<SuggestedFactDAO> value = entry.getValue();
+
+            for (SuggestedFactDAO dao : value) {
+                retList.add(dao);
+                logger.info(entry.getKey() + "  " + dao.toString());
+            }
+        }
 
         return retList;
-    }
-
-    private static List<String> createPossibleObs(List<String> listArg1, List<String> listArg2, String qObj)
-    {
-        String sparqlQuery = null;
-        ResultSet results = null;
-
-        List<String> possibleObs = new ArrayList<String>();
-        int globalScore = Integer.MAX_VALUE;
-
-        for (String firstArg : listArg1) {
-            for (String secondArg : listArg2) {
-                sparqlQuery = "select ?arg where {<" + firstArg + "> <" + secondArg + "> ?arg}";
-                logger.debug(sparqlQuery);
-
-                results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
-
-                while (results.hasNext()) {
-                    String obj = results.nextSolution().get("arg").toString();
-                    String tempObj = obj.substring(obj.lastIndexOf("/") + 1, obj.length());
-
-                    int levenScore = StringUtils.getLevenshteinDistance(tempObj.toLowerCase(), qObj.toLowerCase());
-
-                    if (levenScore < globalScore) {
-                        globalScore = levenScore;
-                        logger.info("adding obj = " + obj);
-                        if (possibleObs.size() > 0)
-                            possibleObs.clear();
-
-                        possibleObs.add(obj);
-                    }
-                }
-            }
-        }
-
-        return possibleObs;
-    }
-
-    private static List<String> createPossibleSubs(List<String> arg1, List<String> arg2, String qSub)
-    {
-        String sparqlQuery = null;
-        ResultSet results = null;
-
-        List<String> possibleSubs = new ArrayList<String>();
-        int globalScore = Integer.MAX_VALUE;
-
-        for (String pred : arg1) {
-            for (String obj : arg2) {
-                sparqlQuery = "select ?arg where {?arg <" + pred + "> <" + obj + ">}";
-                logger.debug(sparqlQuery);
-
-                results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
-
-                while (results.hasNext()) {
-                    String sub = results.nextSolution().get("arg").toString();
-                    String tempSub = sub.substring(sub.lastIndexOf("/") + 1, sub.length());
-
-                    // int localScore = tempSub.toLowerCase().indexOf(qSub.toLowerCase());
-                    int levenScore = StringUtils.getLevenshteinDistance(tempSub.toLowerCase(), qSub.toLowerCase());
-
-                    if (levenScore < globalScore) {
-                        globalScore = levenScore;
-                        logger.info("adding sub = " + sub);
-                        if (possibleSubs.size() > 0)
-                            possibleSubs.clear();
-
-                        possibleSubs.add(sub);
-                    }
-
-                }
-            }
-        }
-
-        return possibleSubs;
     }
 
 }

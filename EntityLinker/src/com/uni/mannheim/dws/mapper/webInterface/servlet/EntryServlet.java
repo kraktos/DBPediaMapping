@@ -187,7 +187,7 @@ public class EntryServlet extends HttpServlet
 
         }
 
-        catch (Throwable theException) {
+        catch (Exception theException) {
             logger.error(theException.getMessage());
         }
 

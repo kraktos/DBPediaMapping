@@ -132,9 +132,8 @@ public class DBConnection
             return this.statement.executeQuery(queryString);
         } catch (SQLException e) {
             logger.error("Exception while selecting " + queryString + "  " + e.getMessage());
+            return null;
         }
-        return null;
-
     }
 
     /**
@@ -143,7 +142,7 @@ public class DBConnection
     public void shutDown()
     {
 
-        try {           
+        try {
             this.statement.close();
             this.connection.close();
 
