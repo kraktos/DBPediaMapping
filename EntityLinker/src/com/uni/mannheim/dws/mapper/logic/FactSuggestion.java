@@ -4,17 +4,12 @@
 package com.uni.mannheim.dws.mapper.logic;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.hp.hpl.jena.query.ResultSet;
-import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
 import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
@@ -30,18 +25,16 @@ public class FactSuggestion
     static Logger logger = Logger.getLogger(FactSuggestion.class.getName());
 
     /**
+     * suggest facts based on kernel density estimation
+     * 
      * @param retListSubj list of possible subjects, cannot be null
-     * @param qSub
      * @param retListPredLookUp list of possible predicates from file lookup, can be null
      * @param retListPredSearch list of possible predicates from index lookup, cannot be null
-     * @param qPred
      * @param retListObj list of possible objects, cannot be null
-     * @param qObj
      * @return {@code List of SuggestedFactDAO}
      */
-    public static List<SuggestedFactDAO> suggestFact(List<ResultDAO> retListSubj, String qSub,
-        List<ResultDAO> retListPredLookUp, List<ResultDAO> retListPredSearch, String qPred, List<ResultDAO> retListObj,
-        String qObj, double minsim)
+    public static List<SuggestedFactDAO> suggestFact(List<ResultDAO> retListSubj, List<ResultDAO> retListPredLookUp,
+        List<ResultDAO> retListPredSearch, List<ResultDAO> retListObj, double minsim)
     {
 
         // take all the top candidates
@@ -87,6 +80,12 @@ public class FactSuggestion
         return frameFacts(subs, preds, objs);
     }
 
+    /**
+     * @param tSubs
+     * @param preds
+     * @param tObjs
+     * @return
+     */
     private static List<SuggestedFactDAO> frameFacts(List<String> tSubs, List<String> preds, List<String> tObjs)
     {
         List<SuggestedFactDAO> retList = new ArrayList<SuggestedFactDAO>();
@@ -99,19 +98,17 @@ public class FactSuggestion
             }
         }
 
-        logger.info(retList.size());
-
         // Call engine to make an intelligent choice based on density estimation
         Map<Double, Set<SuggestedFactDAO>> mapReturn = PredicateLikelihoodEstimate.rankFacts(retList);
 
+        // clear the list
         retList.clear();
 
+        // iterate the returned results map
         for (Map.Entry<Double, Set<SuggestedFactDAO>> entry : mapReturn.entrySet()) {
             Set<SuggestedFactDAO> value = entry.getValue();
-
             for (SuggestedFactDAO dao : value) {
                 retList.add(dao);
-                logger.info(entry.getKey() + "  " + dao.toString());
             }
         }
 

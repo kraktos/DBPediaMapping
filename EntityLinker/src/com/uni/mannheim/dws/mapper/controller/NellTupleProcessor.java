@@ -118,8 +118,7 @@ public class NellTupleProcessor implements ITupleProcessor
 
                 // return a list of possible facts suggestion from best matches
                 List<SuggestedFactDAO> retListSuggstFacts =
-                    FactSuggestion.suggestFact(retListSubj, subject, retListPredLookUp, retListPredSearch, predicate,
-                        retListObj, object, 0);
+                    FactSuggestion.suggestFact(retListSubj, retListPredLookUp, retListPredSearch, retListObj, 0);
 
                 for (SuggestedFactDAO fact : retListSuggstFacts) {
                     logger.debug(fact.toString());

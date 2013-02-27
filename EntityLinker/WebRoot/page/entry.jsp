@@ -114,6 +114,11 @@
 		}
 
 	}
+	
+	function doPageSubmit(){	
+		document.getElementById('mode').value = 'advice';
+		document.forms["myForm"].submit();
+	}
 </script>
 
 <meta name="keywords" content="" />
@@ -165,7 +170,13 @@
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');"></td>
+					onclick="toggle4('box');"> <input type="submit"
+					class="suggest" title="Suggest" value="" name="action"
+					onclick="doPageSubmit();"> 
+					<input type="hidden" id="mode" name="action" value="smthng">
+					
+					</td>
+
 			</tr>
 
 			<!-- Parameter Extra Fields -->
@@ -307,7 +318,7 @@
 									<input type="submit" name="action" value="" class="save"
 										title="save to database">
 								</div>
-							</Td>
+							</td>
 						</Tr>
 					</Table>
 				</Td>

@@ -254,7 +254,6 @@ public class PredicateDataDistribution
 
         predicateDataDistribution.createPredicateDistribution();
 
-        
     }
 
     /**
@@ -287,9 +286,6 @@ public class PredicateDataDistribution
                 sub = querySol.get("sub").toString();
                 obj = querySol.get("obj").toString();
 
-                /*
-                 * if(yr1.indexOf("Henry_IV_of_France") != -1){ logger.info(year1); }
-                 */
                 subVal = removeDataDefinition(subVal);
                 objVal = removeDataDefinition(objVal);
 

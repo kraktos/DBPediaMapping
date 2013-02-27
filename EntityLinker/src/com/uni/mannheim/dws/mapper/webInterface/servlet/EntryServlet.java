@@ -42,6 +42,15 @@ public class EntryServlet extends HttpServlet
      */
     private static final long serialVersionUID = 1L;
 
+    // list of resultsets to be displayed back on the UI
+    List<ResultDAO> retListPredLookUp = new ArrayList<ResultDAO>();
+
+    List<ResultDAO> retListPredSearch = new ArrayList<ResultDAO>();
+
+    List<ResultDAO> retListObj = new ArrayList<ResultDAO>();
+
+    List<ResultDAO> retListSubj = new ArrayList<ResultDAO>();
+
     /**
      * Constructor of the object.
      */
@@ -80,12 +89,6 @@ public class EntryServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
-        // list of resultsets to be displayed back on the UI
-        List<ResultDAO> retListPredLookUp = new ArrayList<ResultDAO>();
-        List<ResultDAO> retListPredSearch = new ArrayList<ResultDAO>();
-        List<ResultDAO> retListObj = new ArrayList<ResultDAO>();
-        List<ResultDAO> retListSubj = new ArrayList<ResultDAO>();
-
         // list for suggested fact
         List<SuggestedFactDAO> retListSuggstFacts = new ArrayList<SuggestedFactDAO>();
 
@@ -100,7 +103,9 @@ public class EntryServlet extends HttpServlet
 
         String action = (request.getParameter("action") != null) ? request.getParameter("action") : "none";
         logger.info("|" + action + "|");
+
         try {
+
             if (!"".equals(action)) {
 
                 // set topk attribute
@@ -129,6 +134,13 @@ public class EntryServlet extends HttpServlet
                     if (!object.equals("Object") && !object.equals("")) {
                         retListObj = QueryEngine.doSearch(object, file);
                     }
+                } else if ("advice".equals(action)) {
+                    // return a list of possible facts suggestion from best matches
+                    retListSuggstFacts =
+                        FactSuggestion.suggestFact(retListSubj, retListPredLookUp, retListPredSearch, retListObj, sim);
+
+                    request.setAttribute("suggestedFactList", retListSuggstFacts);
+
                 } else {// This is advanced search mode. where the system tries to predict the best matches based on
                         // the input combination
 
@@ -163,13 +175,6 @@ public class EntryServlet extends HttpServlet
                 request.setAttribute("object", object);
                 request.setAttribute("topk", topK);
                 request.setAttribute("sim", sim);
-
-                // return a list of possible facts suggestion from best matches
-                retListSuggstFacts =
-                    FactSuggestion.suggestFact(retListSubj, subject, retListPredLookUp, retListPredSearch, predicate,
-                        retListObj, object, sim);
-                // for setting the suggested fact that system thinks to be true
-                request.setAttribute("suggestedFactList", retListSuggstFacts);
 
             } else {
 
