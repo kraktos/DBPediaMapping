@@ -2,6 +2,7 @@ package com.uni.mannheim.dws.mapper.preProcess;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -90,7 +91,7 @@ public class PredicateDataDistribution
     {
 
         for (String predicate : setPredicates) {
-            // logger.info(" fetching " + predicate);
+            logger.info(" fetching " + predicate);
             findDataDistribution(predicate);
         }
 
@@ -110,79 +111,81 @@ public class PredicateDataDistribution
 
         String rangePredicate = null;
 
-        String queryString =
+        String dbQueryString =
             "SELECT \"DOMAIN_PROP\", \"RANGE_PROP\" FROM \"PREDICATE_DOMAIN_RANGE\" " + "WHERE \"PREDICATE\" = '"
                 + mainProperty + "';";
 
         String path = mainProperty.substring(mainProperty.lastIndexOf("/"), mainProperty.length());
 
-        DBConnection dbConnection = new DBConnection();
+        // check if property file exists already
+        if (mainProperty.equals("http://dbpedia.org/ontology/almaMater")) {
+            logger.info("");
+        }
 
+        DBConnection dbConnection = new DBConnection();
         // set the statement instance
         dbConnection.setStatement(dbConnection.getConnection().createStatement());
-
         // fetch the result set
-        resultSet = dbConnection.getResults(queryString);
+        resultSet = dbConnection.getResults(dbQueryString);
 
         while (resultSet.next()) { // process results one row at a time
             domainPredicate = resultSet.getString(1);
             rangePredicate = resultSet.getString(2);
-
         }
+
         // close the result set
         resultSet.close();
-
         // shutdown database
         dbConnection.shutDown();
 
-        // use the predicates to form a new query
-        String QUERY =
-            "select distinct * where {?sub <" + mainProperty + "> ?obj. ?sub <" + domainPredicate + "> ?subVal. "
-                + "?obj <" + rangePredicate + "> ?objVal} ";
-
-        // count and populate
-
         if (domainPredicate != null && rangePredicate != null) {
-            FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv");
-            BufferedWriter out = new BufferedWriter(fstream);
-            try {
 
-                // logger.info(QUERY + factor);
-                queryDBPedia(QUERY, out);
-                // factor = factor + 2000;
-                Thread.sleep(4000);
-
-            } catch (Exception e) {
-                logger.error(e.getMessage() + " for " + QUERY);
-
-                String countQuery = "select (count(*) as ?num) where {?inst1 <" + mainProperty + "> ?inst2 } ";
-                getResultSet(countQuery);
-                String count = null;
-                for (QuerySolution querySol : listResults) {
-                    count = querySol.get("num").toString();
-                }
-
-                String pagedQuery =
+            if (!new File(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv").exists()) {
+                // use the predicates to form a new query
+                String QUERY =
                     "select distinct * where {?sub <" + mainProperty + "> ?obj. ?sub <" + domainPredicate
-                        + "> ?subVal. " + "?obj <" + rangePredicate + "> ?objVal} limit 3000 offset ";
+                        + "> ?subVal. " + "?obj <" + rangePredicate + "> ?objVal} ";
 
-                int factor = 0;
-                long limit = Long.parseLong(count.substring(0, count.indexOf("^^")));
-                while (factor <= limit) {
-                    logger.info(pagedQuery + factor);
-                    queryDBPedia(pagedQuery + factor, out);
-                    factor = factor + 3000;
-                    try {
-                        Thread.sleep(6000);
-                    } catch (InterruptedException e1) {
-                        logger.error(e1.getMessage());
+                BufferedWriter out =
+                    new BufferedWriter(new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv"));
+
+                try {
+                    queryDBPedia(QUERY, out);
+                    Thread.sleep(4000);
+                } catch (Exception e) {
+                    
+                    logger.error(e.getMessage() + " for " + QUERY);
+
+                    String countQuery = "select (count(*) as ?num) where {?inst1 <" + mainProperty + "> ?inst2 } ";
+                    getResultSet(countQuery);
+                    String count = null;
+                    for (QuerySolution querySol : listResults) {
+                        count = querySol.get("num").toString();
+                    }
+
+                    String pagedQuery =
+                        "select distinct * where {?sub <" + mainProperty + "> ?obj. ?sub <" + domainPredicate
+                            + "> ?subVal. " + "?obj <" + rangePredicate + "> ?objVal} limit 3000 offset ";
+
+                    int factor = 0;
+                    long limit = Long.parseLong(count.substring(0, count.indexOf("^^")));
+                    while (factor <= limit) {
+                        logger.info(pagedQuery + factor);
+                        queryDBPedia(pagedQuery + factor, out);
+                        factor = factor + 3000;
+                        try {
+                            Thread.sleep(6000);
+                        } catch (InterruptedException e1) {
+                            logger.error(e1.getMessage());
+                        }
                     }
                 }
+                // close the file output stream
+                out.close();
+                logger.info("done writing to " + path + ".csv");
             }
-            // close the file output stream
-            out.close();
-            logger.info("done writing to " + path + ".csv");
         }
+
     }
 
     public double findDensity(KernelDensityEstimator kde, double queryValue)
