@@ -154,28 +154,23 @@
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
 					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
-					name="subject" />
-				</td>
+					name="subject" /></td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text"
 					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
-					name="predicate" />
-				</td>
+					name="predicate" /></td>
 				<td><input class="style6" type="text"
 					title="Enter your search object"
 					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
-					name="object" />
-				</td>
+					name="object" /></td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
 					onclick="toggle4('box');"> <input type="submit"
 					class="suggest" title="Suggest" value="" name="action"
-					onclick="doPageSubmit();"> 
-					<input type="hidden" id="mode" name="action" value="smthng">
-					
-					</td>
+					onclick="doPageSubmit();"> <input type="hidden" id="mode"
+					name="action" value="smthng"></td>
 
 			</tr>
 
@@ -187,20 +182,25 @@
 					<div id="box" style="display: none;padding: 5px;">
 						<table>
 							<tr>
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
+								</td>
 								<td><input class="style5" title="Top K results" type="text"
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "3"%>"
-									name="topk" size="40" /></td>
+									name="topk" size="40" />
+								</td>
 							</tr>
 							<tr>
-								<td><h4 class=SUBHEADLINE2>Similarity (%)</h4></td>
+								<td><h4 class=SUBHEADLINE2>Similarity (%)</h4>
+								</td>
 								<td><input class="style5" title="Similarity of atleast"
 									type="text"
 									value="<%=(request.getAttribute("sim") != null) ? request.getAttribute("sim") : "100"%>"
-									name="sim" size="40" /></td>
+									name="sim" size="40" />
+								</td>
 							</tr>
 						</table>
-					</div></td>
+					</div>
+				</td>
 			</tr>
 			<!-- Results Feilds -->
 			<tr>
@@ -269,8 +269,7 @@
 							    }
 							%>
 						</table>
-					</div>
-				</td>
+					</div></td>
 
 				<!-- object -->
 				<td>
@@ -311,17 +310,14 @@
 				<td width=25%>
 					<Table width=20%>
 						<Tr>
-							<td><h2 class=SUBHEADLINE3>Suggestions</h2>
-							</td>
+							<td><h2 class=SUBHEADLINE3>Suggestions</h2></td>
 							<td align=right>
 								<div id="saveButtn" style="display: none;padding: 5px;">
 									<input type="submit" name="action" value="" class="save"
 										title="save to database">
-								</div>
-							</td>
+								</div></td>
 						</Tr>
-					</Table>
-				</Td>
+					</Table></Td>
 				<td></td>
 			</Tr>
 		</Table>
@@ -336,7 +332,8 @@
 						<td width="5%" align="center" style="color: #ffffff"><input
 							type="checkbox" name="checkbox" id="checkbox_id"
 							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}'
-							onclick="toggl()" /></td>
+							onclick="toggl()" />
+						</td>
 						<td width="23%" align="right"
 							style="word-wrap: break-word; color:#00a000; font-size: 15pt;">${matchingEntries.subject}</td>
 						<td width="23%" align="center"

@@ -19,7 +19,6 @@ html,body {
 	/* the bottom margin is the negative value of the footer's height */
 }
 
-
 .footer {
 	background-color: transparent;
 	color: white;
@@ -99,24 +98,24 @@ body {
 .thumb {
 	max-width: 700px;
 	max-height: 700px;
-	width: expression(this.width >                                              
-		100 ?  
+	width: expression(this.width >                                               
+		 100 ?   
 		 
 		      
 		                    
-		              "100px" :               
+		               "100px" :                
 		 
 		          
-		                  true);
-	height: expression(this.height >                                              
-		100 ?  
+		                   true);
+	height: expression(this.height >                                               
+		 100 ?   
 		 
 		      
 		                    
-		              "100px" :               
+		               "100px" :                
 		 
 		          
-		                  true);
+		                   true);
 }
 
 .style6 {
