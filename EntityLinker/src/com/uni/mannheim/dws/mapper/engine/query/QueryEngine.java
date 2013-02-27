@@ -164,7 +164,7 @@ public class QueryEngine
                 }
             }
         }
-        return null;
+        return returnList;
     }
 
     /**

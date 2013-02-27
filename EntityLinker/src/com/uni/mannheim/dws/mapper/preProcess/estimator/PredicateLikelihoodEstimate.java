@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +59,15 @@ public class PredicateLikelihoodEstimate
 
     private static Double difference;
 
+    private static Connection connectn;
+
+    /**
+     * 
+     * @param sub 
+     * @param mainProperty
+     * @param obj
+     * @return
+     */
     private static Double estimateDensity(String sub, String mainProperty, String obj)
     {
         String domainPredicate = null;
@@ -72,6 +82,9 @@ public class PredicateLikelihoodEstimate
         try {
             DBConnection dbConnection = new DBConnection();
 
+            connectn = dbConnection.getConnection();
+            //stmnt = connectn.prepareStatement(sql);
+            
             // set the statement instance
             dbConnection.setStatement(dbConnection.getConnection().createStatement());
 
@@ -226,10 +239,8 @@ public class PredicateLikelihoodEstimate
         Map<Double, Set<SuggestedFactDAO>> mapReturn =
             new TreeMap<Double, Set<SuggestedFactDAO>>(new Comparator<Double>()
             {
-
                 public int compare(Double first, Double second)
                 {
-
                     return second.compareTo(first);
                 }
             });
