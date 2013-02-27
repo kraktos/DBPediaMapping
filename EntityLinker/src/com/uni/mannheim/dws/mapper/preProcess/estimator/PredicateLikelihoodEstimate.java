@@ -7,9 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +30,6 @@ import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
 import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
-import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 
 /**
  * This class is responsible for taking a predicate as input and fetching its density estimate, by referring the backend
@@ -55,18 +52,20 @@ public class PredicateLikelihoodEstimate
     /**
      * instance of {@link KernelDensityEstimator}
      */
-    private static KernelDensityEstimator kde;
-
-    private static Double difference;
-
-    private static Connection connectn;
+    static KernelDensityEstimator kde;
 
     /**
+     * attribute difference value
+     */
+    static Double difference;
+
+    /**
+     * estimate the density for the combination
      * 
-     * @param sub 
-     * @param mainProperty
-     * @param obj
-     * @return
+     * @param sub Subject
+     * @param mainProperty Predicate
+     * @param obj Object
+     * @return estimated density of this triple
      */
     private static Double estimateDensity(String sub, String mainProperty, String obj)
     {
@@ -82,9 +81,6 @@ public class PredicateLikelihoodEstimate
         try {
             DBConnection dbConnection = new DBConnection();
 
-            connectn = dbConnection.getConnection();
-            //stmnt = connectn.prepareStatement(sql);
-            
             // set the statement instance
             dbConnection.setStatement(dbConnection.getConnection().createStatement());
 
@@ -117,9 +113,6 @@ public class PredicateLikelihoodEstimate
                     // only now we can initialize the estimator
                     kde = new KernelDensityEstimator(getDataArr());
 
-                    // logger.info(" Data Range is " + kde.getMinValue() + " -> " + kde.getMaxValue() + " out of "+
-                    // getDataArr().length + " elements");
-
                     return kde.getEstimatedDensity(difference);
                 }
             }
@@ -133,11 +126,11 @@ public class PredicateLikelihoodEstimate
     }
 
     /**
-     * @param sub
-     * @param obj
-     * @param domainPredicate
-     * @param rangePredicate
-     * @return
+     * @param sub subject instance
+     * @param obj object instance
+     * @param domainPredicate the attribute of the subject on which we want to figure out the difference with object
+     * @param rangePredicate the attribute of the object on which we want to figure out the difference with subject
+     * @return {@link Double} value of the difference in attribute
      */
     public static Double calculateAttributeDiff(String sub, String obj, String domainPredicate, String rangePredicate)
     {
@@ -193,13 +186,15 @@ public class PredicateLikelihoodEstimate
      * 
      * @return the dataArr in an array
      */
-    public static Double[] getDataArr()
+    private static Double[] getDataArr()
     {
         return dataArr.toArray(new Double[dataArr.size()]);
     }
 
     /**
      * read the data file and frame an array of data objects This serves as the input for the density estimator
+     * 
+     * @param predicate
      */
     public static void fetchDataDistribution(String predicate)
     {
@@ -209,7 +204,7 @@ public class PredicateLikelihoodEstimate
             buffReader =
                 new BufferedReader(new FileReader(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/" + predicate + ".csv"));
 
-            // clear off all pre existing any elements
+            // clear off all pre-existing any elements
             dataArr.clear();
 
             while ((line = buffReader.readLine()) != null) {
@@ -228,15 +223,27 @@ public class PredicateLikelihoodEstimate
         }
     }
 
-    public static Map<Double, Set<SuggestedFactDAO>> rankFacts(List<SuggestedFactDAO> retList)
+    /**
+     * this method takes a collection of possible facts and ranks them according to validity, using the underlying
+     * kernel density estimator
+     * 
+     * @param listFacts {@link List} of {@link SuggestedFactDAO}
+     * @return map of facts ranked on the density estimates
+     */
+    public static Map<Double, Set<SuggestedFactDAO>> rankFacts(List<SuggestedFactDAO> listFacts)
     {
+        // local variables
         String sub = null;
         String pred = null;
         String obj = null;
 
+        // the estimated density value
         Double densityEstimate = null;
 
-        Map<Double, Set<SuggestedFactDAO>> mapReturn =
+        // define a map to store the ranked facts on a descending order of densities, the one with the highest density
+        // is the most likely one
+        // and so a custom comparator needs to be constructed which reverses the natural ordering of the TreeMap
+        Map<Double, Set<SuggestedFactDAO>> mapRankedResults =
             new TreeMap<Double, Set<SuggestedFactDAO>>(new Comparator<Double>()
             {
                 public int compare(Double first, Double second)
@@ -245,7 +252,8 @@ public class PredicateLikelihoodEstimate
                 }
             });
 
-        for (SuggestedFactDAO factTriple : retList) {
+        // iterate the return list of SuggestedFactDAO s
+        for (SuggestedFactDAO factTriple : listFacts) {
             sub = factTriple.getSubject();
             pred = factTriple.getPredicate();
             obj = factTriple.getObject();
@@ -253,25 +261,25 @@ public class PredicateLikelihoodEstimate
             // use the triples to extract the density estimate for this fact to be valid
             densityEstimate = estimateDensity(sub, pred, obj);
 
+            // if we have a proper density we add it to the list of possible suggestion facts
             if (densityEstimate != null) {
-                if (mapReturn.containsKey(densityEstimate)) {
+                if (mapRankedResults.containsKey(densityEstimate)) {
                     try {
-                        mapReturn.get(densityEstimate).add(factTriple);
+                        mapRankedResults.get(densityEstimate).add(factTriple);
                     } catch (Exception ex) {
                         continue;
                     }
                 } else {
                     Set<SuggestedFactDAO> list = new TreeSet<SuggestedFactDAO>();
                     list.add(factTriple);
-                    mapReturn.put(densityEstimate, list);
+                    mapRankedResults.put(densityEstimate, list);
                 }
             } else {
+                // reset the value
                 difference = null;
-                continue;
             }
         }
-
-        return mapReturn;
+        return mapRankedResults;
     }
 
 }
