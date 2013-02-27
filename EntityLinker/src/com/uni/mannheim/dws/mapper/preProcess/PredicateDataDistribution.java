@@ -31,6 +31,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
+import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 import com.uni.mannheim.dws.mapper.preProcess.estimator.KernelDensityEstimator;
@@ -89,7 +90,7 @@ public class PredicateDataDistribution
     {
 
         for (String predicate : setPredicates) {
-            logger.info(" fetching " + predicate);
+            // logger.info(" fetching " + predicate);
             findDataDistribution(predicate);
         }
 
@@ -104,7 +105,6 @@ public class PredicateDataDistribution
      */
     public void findDataDistribution(String mainProperty) throws IOException, SQLException
     {
-        int factor = 0;
 
         String domainPredicate = null;
 
@@ -128,8 +128,6 @@ public class PredicateDataDistribution
             domainPredicate = resultSet.getString(1);
             rangePredicate = resultSet.getString(2);
 
-            // System.out.println("domainPredicate = " + domainPredicate);
-            // System.out.println("rangePredicate = " + rangePredicate);
         }
         // close the result set
         resultSet.close();
@@ -142,6 +140,8 @@ public class PredicateDataDistribution
             "select distinct * where {?sub <" + mainProperty + "> ?obj. ?sub <" + domainPredicate + "> ?subVal. "
                 + "?obj <" + rangePredicate + "> ?objVal} ";
 
+        // count and populate
+
         if (domainPredicate != null && rangePredicate != null) {
             FileWriter fstream = new FileWriter(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + path + ".csv");
             BufferedWriter out = new BufferedWriter(fstream);
@@ -153,7 +153,31 @@ public class PredicateDataDistribution
                 Thread.sleep(4000);
 
             } catch (Exception e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage() + " for " + QUERY);
+
+                String countQuery = "select (count(*) as ?num) where {?inst1 <" + mainProperty + "> ?inst2 } ";
+                getResultSet(countQuery);
+                String count = null;
+                for (QuerySolution querySol : listResults) {
+                    count = querySol.get("num").toString();
+                }
+
+                String pagedQuery =
+                    "select distinct * where {?sub <" + mainProperty + "> ?obj. ?sub <" + domainPredicate
+                        + "> ?subVal. " + "?obj <" + rangePredicate + "> ?objVal} limit 3000 offset ";
+
+                int factor = 0;
+                long limit = Long.parseLong(count.substring(0, count.indexOf("^^")));
+                while (factor <= limit) {
+                    logger.info(pagedQuery + factor);
+                    queryDBPedia(pagedQuery + factor, out);
+                    factor = factor + 3000;
+                    try {
+                        Thread.sleep(6000);
+                    } catch (InterruptedException e1) {
+                        logger.error(e1.getMessage());
+                    }
+                }
             }
             // close the file output stream
             out.close();
