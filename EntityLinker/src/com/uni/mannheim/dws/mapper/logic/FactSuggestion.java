@@ -4,9 +4,11 @@
 package com.uni.mannheim.dws.mapper.logic;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -67,14 +69,18 @@ public class FactSuggestion
 
         for (ResultDAO dao : retListPredSearch) {
             if (dao.getScore() >= minsim) {
-                preds.add(dao.getFieldURI());
+                if (!preds.contains(dao.getFieldURI())) {
+                    preds.add(dao.getFieldURI());
+                }
             } else
                 break;
         }
 
         for (ResultDAO dao : retListPredLookUp) {
             if (dao.getScore() >= minsim) {
-                preds.add(dao.getFieldURI());
+                if (!preds.contains(dao.getFieldURI())) {
+                    preds.add(dao.getFieldURI());
+                }
             }
         }
 
@@ -92,6 +98,8 @@ public class FactSuggestion
                 }
             }
         }
+
+        logger.info(retList.size());
 
         // Call engine to make an intelligent choice based on density estimation
         Map<Double, Set<SuggestedFactDAO>> mapReturn = PredicateLikelihoodEstimate.rankFacts(retList);

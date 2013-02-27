@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -132,7 +133,6 @@ public class PredicateLikelihoodEstimate
 
         String QUERY2 = "select ?val where{ <" + obj + "> <" + rangePredicate + "> ?val} ";
 
-        String[] val = new String[2];
         String subVal = null;
         String objVal = null;
 
@@ -175,37 +175,6 @@ public class PredicateLikelihoodEstimate
 
     }
 
-    /**
-     * @param args
-     */
-    /*
-     * public static void main(String[] args) { long start = Utilities.startTimer();
-     * fetchDataDistribution("doctoralAdvisor"); // initiate estimator KernelDensityEstimator kde = new
-     * KernelDensityEstimator(getDataArr()); logger.info(" Data Range is " + kde.getMinValue() + " -> " +
-     * kde.getMaxValue() + " out of " + getDataArr().length + " elements"); String domainPredicate = null; String
-     * rangePredicate = null; String mainProperty = "http://dbpedia.org/ontology/spouse"; String queryString =
-     * "SELECT \"DOMAIN_PROP\", \"RANGE_PROP\" FROM \"PREDICATE_DOMAIN_RANGE\" " + "WHERE \"PREDICATE\" = '" +
-     * mainProperty + "'"; try { DBConnection dbConnection = new DBConnection(); // set the statement instance
-     * dbConnection.setStatement(dbConnection.getConnection().createStatement()); // fetch the result set
-     * java.sql.ResultSet resultSet = dbConnection.getResults(queryString); if (resultSet != null) { while
-     * (resultSet.next()) { // process results one row at a time domainPredicate = resultSet.getString(1);
-     * rangePredicate = resultSet.getString(2); } // close the result set resultSet.close(); } // shutdown database
-     * dbConnection.shutDown(); } catch (SQLException e) { logger.error("Error finding domain range attributes for " +
-     * mainProperty + "  " + e.getMessage()); } String sub = "http://dbpedia.org/resource/Eleanor_Powell"; String obj =
-     * "http://dbpedia.org/resource/Glenn_Ford";// "http://dbpedia.org/resource/Lord_Byron"; // 0.01281693147388699 //
-     * use the predicates to form a new query String QUERY = "select distinct * where {<" + sub + "> <" +
-     * domainPredicate + "> ?subVal. " + "<" + obj + "> <" + rangePredicate + "> ?objVal} "; String subVal; String
-     * objVal; Calendar calendar1 = new GregorianCalendar(); Calendar calendar2 = new GregorianCalendar(); double
-     * difference; ResultSet results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(QUERY); List<QuerySolution>
-     * listResults = ResultSetFormatter.toList(results); for (QuerySolution querySol : listResults) { subVal =
-     * querySol.get("subVal").toString(); objVal = querySol.get("objVal").toString(); subVal = subVal.substring(0,
-     * subVal.indexOf("^^")); objVal = objVal.substring(0, objVal.indexOf("^^")); try { Date year1Date = new
-     * SimpleDateFormat("yyyy-dd-mm", Locale.ENGLISH).parse(subVal); Date year2Date = new SimpleDateFormat("yyyy-dd-mm",
-     * Locale.ENGLISH).parse(objVal); calendar1.setTime(year1Date); calendar2.setTime(year2Date); // calculate the
-     * difference of years difference = Math.abs(calendar1.get(Calendar.YEAR) - calendar2.get(Calendar.YEAR));
-     * logger.info("Density Estimate at " + difference + " = " + kde.getEstimatedDensity(difference)); } catch
-     * (ParseException e) { continue; } } Utilities.endTimer(start, "DENSITY ESTIMATED IN "); }
-     */
     /**
      * converts the {@link List} of data points to an {@link Double} array
      * 
@@ -254,14 +223,21 @@ public class PredicateLikelihoodEstimate
 
         Double densityEstimate = null;
 
-        Map<Double, Set<SuggestedFactDAO>> mapReturn = new TreeMap<Double, Set<SuggestedFactDAO>>();
+        Map<Double, Set<SuggestedFactDAO>> mapReturn =
+            new TreeMap<Double, Set<SuggestedFactDAO>>(new Comparator<Double>()
+            {
+
+                public int compare(Double first, Double second)
+                {
+
+                    return second.compareTo(first);
+                }
+            });
 
         for (SuggestedFactDAO factTriple : retList) {
             sub = factTriple.getSubject();
             pred = factTriple.getPredicate();
             obj = factTriple.getObject();
-
-            // logger.info(sub + " " + pred + " " + obj);
 
             // use the triples to extract the density estimate for this fact to be valid
             densityEstimate = estimateDensity(sub, pred, obj);

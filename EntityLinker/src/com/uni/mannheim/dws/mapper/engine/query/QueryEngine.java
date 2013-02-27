@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
@@ -36,6 +37,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.uni.mannheim.dws.mapper.controller.ITupleProcessor;
 import com.uni.mannheim.dws.mapper.engine.index.DBPediaIndexBuilder;
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
+import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 import com.uni.mannheim.dws.mapper.wrapper.QueryAPIWrapper;
@@ -46,7 +48,7 @@ import com.uni.mannheim.dws.mapper.wrapper.QueryAPIWrapper;
  * @author Arnab Dutta
  */
 public class QueryEngine
-{   
+{
 
     // The top k best matching results,
     private static int TOP_K = Constants.TOPK;
@@ -127,16 +129,7 @@ public class QueryEngine
 
             }
 
-            // iterate the result map to construct the return list of result data access objects
-            for (Integer key : resultMap.keySet()) {
-                for (ResultDAO dao : resultMap.get(key)) {
-                    if (returnList.size() <= TOP_K) {
-                        returnList.add(dao);
-                        logger.info(dao + "  " + key);
-                    } else
-                        return returnList;
-                }
-            }
+            returnList = filterTopKResults(userQuery, returnList, resultMap);
 
         } catch (Exception ex) {
             logger.debug("NO MATCHING RECORDS FOUND FOR QUERY \"" + userQuery + "\" !! ");
@@ -146,6 +139,32 @@ public class QueryEngine
             Utilities.endTimer(start, "QUERY \"" + userQuery + "\" ANSWERED IN ");
         }
         return returnList;
+    }
+
+    /**
+     * @param userQuery
+     * @param returnList
+     * @param resultMap
+     * @return
+     */
+    public static List<ResultDAO> filterTopKResults(String userQuery, List<ResultDAO> returnList,
+        Map<Integer, List<ResultDAO>> resultMap)
+    {
+        // iterate the result map to construct the return list of result data access objects
+        for (Entry<Integer, List<ResultDAO>> entry : resultMap.entrySet()) {
+            List<ResultDAO> value = entry.getValue();
+            Integer key = entry.getKey();
+
+            for (ResultDAO dao : value) {
+                if (returnList.size() != TOP_K) {
+                    returnList.add(dao);
+                    logger.info(dao + "  " + key);
+                } else {
+                    return returnList;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -201,11 +220,11 @@ public class QueryEngine
                         + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
 
                 // Add to the result map, check for existing key, add or update the values accordingly
-                if (resultMap.containsKey(key)) {                    
+                if (resultMap.containsKey(key)) {
                     resultMap.get(key).add(new ResultDAO(uriField, Math.round(score * 100)));
                 } else {
                     list = new ArrayList<ResultDAO>();
-                    //logger.info(new ResultDAO(uriField, Math.round(score * 100)));
+                    // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
                     list.add(new ResultDAO(uriField, Math.round(score * 100)));
                     resultMap.put(key, list);
                 }
