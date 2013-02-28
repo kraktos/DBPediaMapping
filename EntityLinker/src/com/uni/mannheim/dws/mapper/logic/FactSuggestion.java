@@ -27,10 +27,10 @@ public class FactSuggestion
     /**
      * suggest facts based on kernel density estimation
      * 
-     * @param retListSubj list of possible subjects, cannot be null
-     * @param retListPredLookUp list of possible predicates from file lookup, can be null
-     * @param retListPredSearch list of possible predicates from index lookup, cannot be null
-     * @param retListObj list of possible objects, cannot be null
+     * @param retListSubj array of possible subjects, cannot be null
+     * @param retListPredLookUp array of possible predicates from file lookup, can be null
+     * @param retListPredSearch array of possible predicates from index lookup, cannot be null
+     * @param retListObj array of possible objects, cannot be null
      * @return {@code List of SuggestedFactDAO}
      */
     public static List<SuggestedFactDAO> suggestFact(String[] retListSubj, String[] retListPredLookUp,
@@ -54,12 +54,16 @@ public class FactSuggestion
             objs.add(dao);
         }
 
-        for (String dao : retListPredSearch) {
-            preds.add(dao);
+        if (retListPredSearch != null) {
+            for (String dao : retListPredSearch) {
+                preds.add(dao);
+            }
         }
 
-        for (String dao : retListPredSearch) {
-            preds.add(dao);
+        if (retListPredLookUp != null) {
+            for (String dao : retListPredLookUp) {
+                preds.add(dao);
+            }
         }
 
         return frameFacts(subs, preds, objs);
