@@ -33,6 +33,47 @@ public class FactSuggestion
      * @param retListObj list of possible objects, cannot be null
      * @return {@code List of SuggestedFactDAO}
      */
+    public static List<SuggestedFactDAO> suggestFact(String[] retListSubj, String[] retListPredLookUp,
+        String[] retListPredSearch, String[] retListObj, double minsim)
+    {
+
+        // take all the top candidates
+        List<String> subs = new ArrayList<String>();
+        List<String> preds = new ArrayList<String>();
+        List<String> objs = new ArrayList<String>();
+
+        // check if minimum similarity is 0
+        minsim = (minsim != 0) ? minsim : Constants.SIMILARITY;
+
+        // iterate the results to fetch the top scoring matches to generate a possible set of facts
+        for (String dao : retListSubj) {
+            subs.add(dao);
+        }
+
+        for (String dao : retListObj) {
+            objs.add(dao);
+        }
+
+        for (String dao : retListPredSearch) {
+            preds.add(dao);
+        }
+
+        for (String dao : retListPredSearch) {
+            preds.add(dao);
+        }
+
+        return frameFacts(subs, preds, objs);
+    }
+
+    /**
+     * suggest facts based on kernel density estimation
+     * 
+     * @param retListSubj list of possible subjects, cannot be null
+     * @param retListPredLookUp list of possible predicates from file lookup, can be null
+     * @param retListPredSearch list of possible predicates from index lookup, cannot be null
+     * @param retListObj list of possible objects, cannot be null
+     * @return {@code List of SuggestedFactDAO}
+     */
     public static List<SuggestedFactDAO> suggestFact(List<ResultDAO> retListSubj, List<ResultDAO> retListPredLookUp,
         List<ResultDAO> retListPredSearch, List<ResultDAO> retListObj, double minsim)
     {

@@ -134,10 +134,17 @@ public class EntryServlet extends HttpServlet
                     if (!object.equals("Object") && !object.equals("")) {
                         retListObj = QueryEngine.doSearch(object, file);
                     }
-                } else if ("advice".equals(action)) {
+                } else if ("suggest".equals(action)) {
+
+                    String[] candidateSubjs = request.getParameterValues("checkboxSubjs");
+                    String[] candidatePredLkUp = request.getParameterValues("checkboxPredLookup");
+                    String[] candidatePredSearch = request.getParameterValues("checkboxPredSearch");
+                    String[] candidateObjs = request.getParameterValues("checkboxObjs");
+
                     // return a list of possible facts suggestion from best matches
                     retListSuggstFacts =
-                        FactSuggestion.suggestFact(retListSubj, retListPredLookUp, retListPredSearch, retListObj, sim);
+                        FactSuggestion.suggestFact(candidateSubjs, candidatePredLkUp, candidatePredSearch,
+                            candidateObjs, sim);
 
                     request.setAttribute("suggestedFactList", retListSuggstFacts);
 

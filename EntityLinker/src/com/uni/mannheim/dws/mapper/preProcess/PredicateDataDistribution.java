@@ -1,16 +1,10 @@
 package com.uni.mannheim.dws.mapper.preProcess;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,10 +26,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
-import com.uni.mannheim.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
-import com.uni.mannheim.dws.mapper.helper.util.Utilities;
-import com.uni.mannheim.dws.mapper.preProcess.estimator.KernelDensityEstimator;
 
 public class PredicateDataDistribution
 {
@@ -152,8 +143,10 @@ public class PredicateDataDistribution
                 try {
                     queryDBPedia(QUERY, out);
                     Thread.sleep(4000);
-                } catch (Exception e) {
-                    
+
+                } catch (Exception e) { // sometimes a huge bulk of data is retrieved which needs to be paginated and
+                                        // fetched
+
                     logger.error(e.getMessage() + " for " + QUERY);
 
                     String countQuery = "select (count(*) as ?num) where {?inst1 <" + mainProperty + "> ?inst2 } ";
@@ -186,37 +179,6 @@ public class PredicateDataDistribution
             }
         }
 
-    }
-
-    public double findDensity(KernelDensityEstimator kde, double queryValue)
-    {
-        return kde.getEstimatedDensity(queryValue);
-    }
-
-    /**
-     * read the data file and frame an array of data objects This serves as the input for the density estimator
-     */
-    public void frameDataArray()
-    {
-        BufferedReader br = null;
-        String line;
-        try {
-            br = new BufferedReader(new FileReader(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/out.csv"));
-
-            while ((line = br.readLine()) != null) {
-                dataArr.add(Double.parseDouble(line));
-            }
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        } finally {
-            try {
-                br.close();
-            } catch (IOException e) {
-                logger.error(e.getMessage());
-            }
-        }
     }
 
     /**
