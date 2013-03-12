@@ -22,6 +22,42 @@ public class ResultDAO
     private double score;
 
     /**
+     * stores the label
+     */
+    private String label;
+
+    /**
+     * stores the high frequency
+     */
+    private String isHighFreq;
+
+    /**
+     * @param fieldURI
+     * @param score
+     * @param label
+     * @param isHighFreq
+     */
+    public ResultDAO(String fieldURI, String label, String isHighFreq, double score)
+    {
+        this.fieldURI = fieldURI;
+        this.score = score;
+        this.label = label;
+        this.isHighFreq = isHighFreq;
+    }
+
+    /**
+     * @param fieldURI
+     * @param score
+     * @param label
+     */
+    public ResultDAO(String fieldURI, String label, double score)
+    {
+        this.fieldURI = fieldURI;
+        this.score = score;
+        this.label = label;
+    }
+
+    /**
      * @param fieldURI
      * @param score
      */
@@ -45,6 +81,22 @@ public class ResultDAO
     public double getScore()
     {
         return score;
+    }
+
+    /**
+     * @return the label
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+    /**
+     * @return the isHighFreq
+     */
+    public String getIsHighFreq()
+    {
+        return isHighFreq;
     }
 
     /*

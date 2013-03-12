@@ -6,8 +6,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -19,6 +25,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.FileUtil;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
@@ -31,6 +38,12 @@ import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 public class DBPediaIndexBuilder
 {
     public static Logger logger = Logger.getLogger(DBPediaIndexBuilder.class.getName());
+
+    // DB connection instance, one per servlet
+    static Connection connection = null;
+
+    // prepared statement instance
+    static PreparedStatement pstmt = null;
 
     /**
      * Creates index over the DBPedia data located in the directory mentioned in the {@link Constants}
@@ -111,11 +124,11 @@ public class DBPediaIndexBuilder
             } else {
 
                 logger.info("Indexing " + file.getAbsolutePath());
-                String strLine = "";
+                String strLine = null;
                 FileInputStream fstream = null;
 
                 /**
-                 * Lucene indexes on particular fields. We crerate two fields for the URI and one for the labels
+                 * Lucene indexes on particular fields. We create two fields for the URI and one for the labels
                  */
 
                 Field uriField = null;
@@ -128,11 +141,15 @@ public class DBPediaIndexBuilder
                 Field surName = null;
                 Field firstName = null;
 
+                //Field highFrequency = null;
+
                 String labelFirstName = null;
                 String labelLastName = null;
 
                 String uriFirstWord = null;
                 String uriSecondWord = null;
+
+                //int isFrequent = 0;
 
                 try {
                     fstream = new FileInputStream(file);
@@ -183,16 +200,15 @@ public class DBPediaIndexBuilder
                                     uri = (array[0] != null) ? array[0] : "";
                                     uriField = new StringField("uriField", uri.trim(), Field.Store.YES);
 
+                                    if (uri.indexOf("Michelsen") != -1) {
+                                        logger.info("");
+                                    }
+
                                     uri =
                                         Pattern.compile(Constants.URI_FILTER)
                                             .matcher(uri.substring(uri.lastIndexOf("/") + 1, uri.length()))
                                             .replaceAll("");
                                     uriText = Pattern.compile("[_]").matcher(uri).replaceAll(" ");
-
-                                    /*
-                                     * if (label.toLowerCase().indexOf("born") != -1) {
-                                     * logger.info(label.trim().toLowerCase() + "  " + uriText.toLowerCase()); }
-                                     */
 
                                     if (uriText.split(" ").length > 0) {
                                         String[] uriArr = uriText.split(" ");
@@ -203,6 +219,13 @@ public class DBPediaIndexBuilder
                                             uriFirstWord = uriArr[0];
                                             uriSecondWord = uriFirstWord;
                                         }
+                                        uriText = Pattern.compile("[\\s]").matcher(uriText).replaceAll("");
+
+                                        /*isFrequent =
+                                            calculateFrequency(label, Pattern.compile("[\\s]").matcher(uriText)
+                                                .replaceAll("_"), labelFirstName.trim().toLowerCase(), labelLastName
+                                                .trim().toLowerCase(), uriFirstWord.toLowerCase(),
+                                                uriSecondWord.toLowerCase());*/
 
                                         // define all the fields to be indexed
                                         labelSmallField =
@@ -224,6 +247,18 @@ public class DBPediaIndexBuilder
                                             new StringField("firstname", labelFirstName.trim().toLowerCase(),
                                                 Field.Store.NO);
 
+                                        /*highFrequency =
+                                            new StringField("isHighFreq", String.valueOf(isFrequent), Field.Store.YES);
+*/
+                                        /*
+                                         * logger.info("\nuriTextField1 " + uriFirstWord.toLowerCase() +
+                                         * "\nuriTextField2 " + uriSecondWord.toLowerCase() + "\nuriFullTextField " +
+                                         * uriText.toLowerCase() + "\nfirstname  " + labelFirstName.trim().toLowerCase()
+                                         * + "\nsurname " + labelLastName.trim().toLowerCase() + "\nlabelSmallField " +
+                                         * label.trim().toLowerCase());
+                                         */
+                                        // uriText = Pattern.compile("[\\s]").matcher(uriText).replaceAll("_");
+
                                         // add to document
                                         document = new Document();
                                         document.add(uriField);
@@ -234,6 +269,7 @@ public class DBPediaIndexBuilder
                                         document.add(firstName);
                                         document.add(uriFirstTextField);
                                         document.add(uriSecondTextField);
+                                        //document.add(highFrequency);
 
                                         // add the document finally into the writer
                                         writer.addDocument(document);
@@ -254,4 +290,73 @@ public class DBPediaIndexBuilder
         }
     }
 
+    private static int calculateFrequency(String label, String uri, String labelFirst, String labelSecond,
+        String uriFirst, String uriSecond)
+    {
+        List<String> dbResults = new ArrayList<String>();
+
+        try {
+            // instantiate the DB connection
+            DBConnection dbConnection = new DBConnection();
+
+            // retrieve the freshly created connection instance
+            connection = dbConnection.getConnection();
+
+            // create a statement
+            pstmt = connection.prepareStatement(Constants.GET_WIKI_STAT);
+
+            logger.info(uri); // labelFirst + " " + labelSecond + " " + uriFirst + " " + uriSecond);
+            dbResults = computeWikiStats(labelFirst, dbResults, pstmt);
+            dbResults = computeWikiStats(labelSecond, dbResults, pstmt);
+            dbResults = computeWikiStats(uriFirst, dbResults, pstmt);
+            dbResults = computeWikiStats(uriSecond, dbResults, pstmt);
+
+            for (String result : dbResults) {
+                int score = StringUtils.getLevenshteinDistance(result.toLowerCase(), uri.toLowerCase());
+                if (score < 2) {
+                    return score;
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(" Exception while computing wiki stats " + e.getMessage());
+        } finally {
+            try {
+                pstmt.clearParameters();
+                pstmt.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                logger.error(" Exception while closing DB " + e.getMessage());
+            }
+        }
+        return -1;
+
+    }
+
+    private static List<String> computeWikiStats(String userQuery, List<String> dbResults, PreparedStatement pstmt)
+        throws SQLException
+    {
+        java.sql.ResultSet rs = null;
+        try {
+            pstmt.setString(1, userQuery);
+            pstmt.setString(2, userQuery);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String entity = rs.getString("entity");
+                String count = rs.getString("cnt");
+                if (!dbResults.contains(entity)) {
+                    dbResults.add(entity);
+                    // logger.info(entity + "  " + count);
+                }
+
+            }
+        } catch (SQLException e) {
+            logger.error(" Exception while computing wiki stats " + e.getMessage());
+        } finally {
+            rs.close();
+        }
+
+        return dbResults;
+    }
 }

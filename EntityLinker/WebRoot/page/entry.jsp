@@ -193,7 +193,7 @@
 							<tr>
 								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
 								<td><input class="style5" title="Top K results" type="text"
-									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "3"%>"
+									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "10"%>"
 									name="topk" size="40" /></td>
 							</tr>
 							<tr>
@@ -351,11 +351,11 @@
 							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}'
 							onclick="saveSuggestions()" /></td>
 						<td width="23%" align="right"
-							style="word-wrap: break-word; color:#00a000; font-size: 12pt;">${matchingEntries.subject}</td>
+							style="word-wrap: break-word; color:#00f000; font-size: 12pt;">${matchingEntries.subject}</td>
 						<td width="23%" align="center"
-							style="word-wrap: break-word; color:#00a000; font-size: 12pt;">${matchingEntries.predicate}</td>
+							style="word-wrap: break-word; color:#00f000; font-size: 12pt;">${matchingEntries.predicate}</td>
 						<td width="23%" align="left"
-							style="word-wrap: break-word; color:#00a000; font-size: 12pt;">${matchingEntries.object}</td>
+							style="word-wrap: break-word; color:#00f000; font-size: 12pt;">${matchingEntries.object}</td>
 					</tr>
 				</c:forEach>
 			</table>

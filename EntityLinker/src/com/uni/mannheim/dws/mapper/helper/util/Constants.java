@@ -24,7 +24,9 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql"; // "http://live.dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql";// "http://dbpedia.org/sparql";
+                                                                                          // //
+                                                                                          // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS ************************************************
 
@@ -74,7 +76,7 @@ public class Constants
     /**
      * Filter to remove certain punctuations from the uri
      */
-    public static final String URI_FILTER = "[():,.\\s']";
+    public static final String URI_FILTER = "[():,.\\s'-]";
 
     /**
      * Filter to remove certain punctuations from the labels
@@ -119,12 +121,12 @@ public class Constants
     /**
      * Number of top k matching elements you wish to retrieve
      */
-    public static final int TOPK = 10;
+    public static final int TOPK = 5;
 
     /**
      * Sample query to test the indexed DBPedia data
      */
-    public static final String SAMPLE_QUERY = "director";
+    public static final String SAMPLE_QUERY = "einstein";
 
     // *****************IE Engines output locations ***************************************************
 
@@ -169,9 +171,14 @@ public class Constants
     public static final String INSERT_PROPERTY_DOMAIN_RANGE_SQL =
         "INSERT INTO \"PREDICATE_DOMAIN_RANGE\"(\"PREDICATE\", \"DOMAIN\", \"RANGE\") VALUES (?, ?, ?)";
 
+    public static final String GET_WIKI_STAT = "select distinct entity from stats where anchor=?";
+
     /**
      * defines the batch size for the Data base operations
      */
     public static final int BATCH_SIZE = 100;
+
+    // *****************OWL PARAMETES***************************************************
+    public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/dbpediaTBox.owl";
 
 }

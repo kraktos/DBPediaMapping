@@ -3,12 +3,17 @@ package com.uni.mannheim.dws.mapper.engine.query;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
@@ -25,6 +30,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
@@ -35,9 +41,9 @@ import org.apache.lucene.store.FSDirectory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.uni.mannheim.dws.mapper.controller.ITupleProcessor;
+import com.uni.mannheim.dws.mapper.dbConnectivity.DBConnection;
 import com.uni.mannheim.dws.mapper.engine.index.DBPediaIndexBuilder;
 import com.uni.mannheim.dws.mapper.helper.dataObject.ResultDAO;
-import com.uni.mannheim.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import com.uni.mannheim.dws.mapper.helper.util.Constants;
 import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 import com.uni.mannheim.dws.mapper.wrapper.QueryAPIWrapper;
@@ -68,6 +74,12 @@ public class QueryEngine
     // logger
     public static Logger logger = Logger.getLogger(QueryEngine.class.getName());
 
+    // DB connection instance, one per servlet
+    static Connection connection = null;
+
+    // prepared statement instance
+    static PreparedStatement pstmt = null;
+
     /**
      * method accepts a user query and fetches over the indexed DBPedia data
      * 
@@ -83,6 +95,7 @@ public class QueryEngine
 
         Set<String> setURI = new HashSet<String>();
         List<ResultDAO> returnList = new ArrayList<ResultDAO>();
+        // allows for natural ordering on the ascending value of key
         Map<Integer, List<ResultDAO>> resultMap = new TreeMap<Integer, List<ResultDAO>>();
 
         long start = 0;
@@ -102,7 +115,7 @@ public class QueryEngine
             searcher = new IndexSearcher(reader);
 
             // remove any un-necessary punctuation marks from the query
-            userQuery = Pattern.compile("['\\s]").matcher(userQuery).replaceAll("");
+            userQuery = Pattern.compile("['_\\s]").matcher(userQuery).replaceAll("");
 
             // frame a query on the surname field
             BooleanQuery subQuery = frameQuery(userQuery, "surname", "uriTextField2");
@@ -125,10 +138,18 @@ public class QueryEngine
                         null, Constants.MAX_RESULTS);
 
                 iterateResult(searcher, setURI, resultMap, hits, userQuery);
-                // TODO : Fuzzy even then
 
+                // Fuzzy even then
+                if (hits.totalHits == 0) {
+                    hits =
+                        searcher.search(new FuzzyQuery(new Term("uriFullTextField", userQuery.toLowerCase())), null,
+                            Constants.MAX_RESULTS);
+
+                    iterateResult(searcher, setURI, resultMap, hits, userQuery);
+                }
             }
 
+            // process the results so far collected from index matches to incorporate Wikipedia statistics
             returnList = filterTopKResults(userQuery, returnList, resultMap);
 
         } catch (Exception ex) {
@@ -142,6 +163,9 @@ public class QueryEngine
     }
 
     /**
+     * this is important since, querying for "einstein" should place "Albert Einstein" higher than any other
+     * "einsteins". This is achieved by adding some pre-computed statistical data into the search results
+     * 
      * @param userQuery
      * @param returnList
      * @param resultMap
@@ -150,21 +174,132 @@ public class QueryEngine
     public static List<ResultDAO> filterTopKResults(String userQuery, List<ResultDAO> returnList,
         Map<Integer, List<ResultDAO>> resultMap)
     {
+
+        List<ResultDAO> retList = new ArrayList<ResultDAO>();
+        List<ResultDAO> listResultDao = null;
+        Integer key = null;
+
+        // find stats for the user query, This fetches the top 3 meaning of the queried terms
+        // based on the number of outgoing links in wikipedia.
+        List<String> dbResults = computeWikiStats(userQuery);
+
         // iterate the result map to construct the return list of result data access objects
         for (Entry<Integer, List<ResultDAO>> entry : resultMap.entrySet()) {
-            List<ResultDAO> value = entry.getValue();
-            Integer key = entry.getKey();
+            listResultDao = entry.getValue();
+            key = entry.getKey();
 
-            for (ResultDAO dao : value) {
-                if (returnList.size() != TOP_K) {
-                    returnList.add(dao);
-                    logger.info(dao + "  " + key);
-                } else {
-                    return returnList;
+            // iterate over the master set of index matched result
+            for (ResultDAO dao : listResultDao) {
+                // if not already in the collection add it
+                if (!returnList.contains(dao)) {
+                    // make an intelligent addition, by checking against the high frequency term list
+                    returnList = improveRanks(returnList, dao, dbResults);
                 }
             }
         }
+
+        // return the top k ones after the filtering is done
+        for (int index = 0; index < TOP_K; index++) {
+            if (index < returnList.size()) {
+                logger.info(returnList.get(index));
+                retList.add(returnList.get(index));
+            }
+        }
+
+        logger.info(retList.size());
+        return retList;
+    }
+
+    /**
+     * method improves the ranking of a matched result if the matching entity is indeed a highly used/referred to term
+     * 
+     * @param returnList return list of {@link ResultDAO}
+     * @param dao {@link ResultDAO} instance to be checked
+     * @param dbResults high frequency entities returned from DB
+     * @return list of {@link ResultDAO} of re ordered entities
+     */
+    private static List<ResultDAO> improveRanks(List<ResultDAO> returnList, ResultDAO dao, List<String> dbResults)
+    {
+        // return the position of high frequency. will be 0,1 or 2 since only top 3 high frequency terms are fetched
+        int position = checkIfHighFreq(dbResults, dao);
+
+        // add them to the return list accordingly
+        if (position != -1) {
+            if (position < returnList.size()) {
+                returnList.add(position, dao);
+            } else {
+                returnList.add(dao);
+            }
+        } else {
+            returnList.add(dao);
+        }
         return returnList;
+    }
+
+    /**
+     * checks if the fetched result is indeed occurring in the high frequency list of entities
+     * 
+     * @param dbResults db results of top 3 highly used terms
+     * @param dao {@link ResultDAO} instance
+     * @return position of occurrence of the matching term (if any) in the result set fetched from DB
+     */
+    private static int checkIfHighFreq(List<String> dbResults, ResultDAO dao)
+    {
+        String uri = dao.getFieldURI();
+
+        // just take the actual value, prun off the DBPedia header information
+        uri = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
+
+        // iterate the reuslts form DB and measure the similarity for the
+        for (String dbString : dbResults) {
+            // check to see if the entities being compared are really similar
+            int score = StringUtils.getLevenshteinDistance(dbString, uri);
+            // this score suffices since the entity are a close enough, (within 0 or 1 edit distance, omit anything
+            // more)
+            if (score < 2) {
+                return dbResults.indexOf(dbString);
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * computes the top 3 used meaning of the results
+     * 
+     * @param userQuery user query coming from IE engines
+     * @return {@link List} of top 3 entities fetched from DB
+     */
+    private static List<String> computeWikiStats(String userQuery)
+    {
+        List<String> dbResults = new ArrayList<String>();
+        String entity = null;
+
+        try {
+            // instantiate the DB connection
+            DBConnection dbConnection = new DBConnection();
+
+            // retrieve the freshly created connection instance
+            connection = dbConnection.getConnection();
+
+            // create a statement
+            pstmt = connection.prepareStatement(Constants.GET_WIKI_STAT);
+
+            // set parameters
+            pstmt.setString(1, userQuery);
+
+            // retrieve the result set
+            java.sql.ResultSet rs = pstmt.executeQuery();
+
+            // iterate result set
+            while (rs.next()) {
+                entity = rs.getString("entity");
+                dbResults.add(entity);
+            }
+        } catch (SQLException e) {
+            logger.error(" Exception while computing wiki stats " + e.getMessage());
+        }
+
+        return dbResults;
     }
 
     /**
@@ -195,6 +330,7 @@ public class QueryEngine
         String labelField;
         String uriField;
         String uriTextField;
+        // String isHighFreq;
 
         double score;
         List<ResultDAO> list = null;
@@ -207,6 +343,8 @@ public class QueryEngine
             uriTextField = doc.get("uriFullTextField");
             uriField = doc.get("uriField");
             labelField = doc.get("labelField");
+            // isHighFreq = doc.get("isHighFreq");
+
             score = scoredoc.score / hits.getMaxScore();
 
             // only add the unique entries(URI and label combination)
@@ -221,11 +359,13 @@ public class QueryEngine
 
                 // Add to the result map, check for existing key, add or update the values accordingly
                 if (resultMap.containsKey(key)) {
-                    resultMap.get(key).add(new ResultDAO(uriField, Math.round(score * 100)));
+                    resultMap.get(key).add(new ResultDAO(uriField, labelField, Math.round(score * 100)));
+                    // resultMap.get(key).add(new ResultDAO(uriField, labelField, isHighFreq, Math.round(score * 100)));
                 } else {
                     list = new ArrayList<ResultDAO>();
                     // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
-                    list.add(new ResultDAO(uriField, Math.round(score * 100)));
+                    list.add(new ResultDAO(uriField, labelField, Math.round(score * 100)));
+                    // list.add(new ResultDAO(uriField, labelField, isHighFreq, Math.round(score * 100)));
                     resultMap.put(key, list);
                 }
             }

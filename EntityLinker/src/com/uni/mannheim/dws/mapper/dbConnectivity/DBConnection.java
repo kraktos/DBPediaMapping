@@ -5,14 +5,12 @@ package com.uni.mannheim.dws.mapper.dbConnectivity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
-import com.uni.mannheim.dws.mapper.helper.util.Utilities;
 import com.uni.mannheim.dws.mapper.message.Messages;
 
 /**
@@ -29,6 +27,9 @@ public class DBConnection
 
     // Statement
     Statement statement = null;
+
+    // DB Driver name
+    public static String driverName = Messages.getString("DRIVER_NAME");
 
     // Url to conenct to the Database
     public static String connectionURL = Messages.getString("CONNECTION_URL");
@@ -87,7 +88,7 @@ public class DBConnection
     static {
         registerDriver();
 
-        logger.info("PostgreSQL JDBC Driver Registered!\n");
+        logger.info(driverName + " Registered!\n");
 
     }
 
@@ -112,7 +113,7 @@ public class DBConnection
     public static void registerDriver()
     {
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(driverName);
         } catch (ClassNotFoundException e) {
             logger.error("Where is your PostgreSQL JDBC Driver? " + "Include in your library path!");
             return;
