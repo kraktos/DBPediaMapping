@@ -88,12 +88,6 @@
         <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
         <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
     </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-5.0</reasoner:confidence>
@@ -101,6 +95,12 @@
         <owl:targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
         <owl:assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
     </rdf:Description>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
     
 
 
@@ -125,6 +125,12 @@
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
         <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
         <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
@@ -136,12 +142,6 @@
         <owl:targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
         <owl:assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
     </rdf:Description>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
-    </owl:Axiom>
     
 
 

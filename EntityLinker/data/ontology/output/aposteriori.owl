@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.w3.org/2002/07/owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:elog="http://elog#"
+     xmlns:FactOntology="http://www.semanticweb.org/ontologies/FactOntology/"
+     xmlns:reasoner="http://reasoner#">
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <AnnotationProperty rdf:about="http://reasoner#confidence"/>
+    <AnnotationProperty rdf:about="http://elog#probability"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPspouse -->
+
+    <ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse">
+        <equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </ObjectProperty>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9934134134134134</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Nellspouse -->
+
+    <ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9934134134134134</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </Axiom>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein">
+        <FactOntology:DBPspouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9937437437437437</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9947447447447447</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</elog:probability>
+        <sourceIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPMileva -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9941641641641642</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/NellEinstein -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein">
+        <FactOntology:Nellspouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9933433433433433</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9947447447447447</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</elog:probability>
+        <sourceIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/NellMileva -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9941641641641642</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.4.1806) http://owlapi.sourceforge.net -->
+
