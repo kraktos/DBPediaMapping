@@ -126,7 +126,7 @@ public class Constants
     /**
      * Sample query to test the indexed DBPedia data
      */
-    public static final String SAMPLE_QUERY = "einstein";
+    public static final String SAMPLE_QUERY = "acm";
 
     // *****************IE Engines output locations ***************************************************
 
@@ -180,5 +180,15 @@ public class Constants
 
     // *****************OWL PARAMETES***************************************************
     public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/dbpediaTBox.owl";
+
+    /**
+     * defines the confidence value namespace for the owl files
+     */
+    public static final String CONFIDENCE_VALUE_DEFINITION = "http://reasoner#confidence";
+
+    /**
+     * place where generated owl files are dumped. This file contains all the axioms on which reasoner runs
+     */
+    public static final String OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH = "data/ontology/output/assertions.owl";
 
 }

@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/FactOntology/"
+     xml:base="http://www.semanticweb.org/ontologies/FactOntology/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:FactOntology="http://www.semanticweb.org/ontologies/FactOntology/"
+     xmlns:reasoner="http://reasoner#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/FactOntology/"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://reasoner#confidence -->
+
+    <owl:AnnotationProperty rdf:about="http://reasoner#confidence"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPspouse -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse">
+        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </owl:ObjectProperty>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Nellspouse -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </owl:Axiom>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein">
+        <DBPspouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-5.0</reasoner:confidence>
+        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPMileva -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/NellEinstein -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein">
+        <Nellspouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-5.0</reasoner:confidence>
+        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </rdf:Description>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/NellMileva -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.3) http://owlapi.sourceforge.net -->
+
