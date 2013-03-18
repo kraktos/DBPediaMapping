@@ -187,6 +187,7 @@ public class Inference {
 
                     double jointProbability = subConf * predConf * objConf;
 
+                    // can have some custom data structure.. TODO
                     listTriples = new ArrayList<Set<OWLEntity>>();
                     listTriples.add(sub);
                     listTriples.add(pred);
@@ -222,26 +223,28 @@ public class Inference {
                 setEntity = axiom.getSignature();
                 tempSetEntity = setEntity;
 
-                boolean flag = false;
                 // iterate and extract the named individuals
                 for (OWLEntity entity : setEntity) {
 
+                    // remove the entries in the set which are not the named
+                    // individuals
                     if (!entity.getIRI().toString().startsWith(ontologyNS)) {
                         tempSetEntity.remove(entity);
                     }
+                    // if it is the matching individual, then remove it too and
+                    // add the rest to the map.
+                    // basically you end up adding the matching candidate
                     if (entity.toString().equals(termQuery.toString())) {
-                        flag = true;
+                        tempSetEntity.remove(entity);
+                        map.put(getConfidenceValue(axiom), tempSetEntity);
                     }
-                }
-                if (flag) {
-                    map.put(getConfidenceValue(axiom), tempSetEntity);
                 }
             }
         }
 
-        // display the top ranked mathces for this term
+        // display the top ranked mathces for this term.
         for (Entry<Double, Set<OWLEntity>> entry : map.entrySet()) {
-            //logger.info(entry.getKey() + " = " + entry.getValue());
+            logger.debug(entry.getKey() + " = " + entry.getValue());
         }
 
         return map;
