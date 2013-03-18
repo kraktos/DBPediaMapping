@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package de.dws.mapper.helper.util;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -17,7 +18,8 @@ public class Constants
     public static final String DELIMIT = "\",";
 
     /**
-     * delimiter for the the CSV file coming as input from extraction engines' output
+     * delimiter for the the CSV file coming as input from extraction engines'
+     * output
      */
     public static final String DELIMIT_IE_FILE = ",";
 
@@ -28,11 +30,12 @@ public class Constants
                                                                                           // //
                                                                                           // "http://live.dbpedia.org/sparql";
 
-    // *****************DIRECTORY LOCATIONS ************************************************
+    // *****************DIRECTORY LOCATIONS
+    // ************************************************
 
     /**
-     * location for storing the predicate distribution patterns based on some integer values of the subjects and objects
-     * of the instances
+     * location for storing the predicate distribution patterns based on some
+     * integer values of the subjects and objects of the instances
      */
     public static final String DBPEDIA_PREDICATE_DISTRIBUTION = "/home/arnab/Work/data/DBPedia/property";
 
@@ -66,10 +69,12 @@ public class Constants
      */
     public static final String YAGO_HEADER = "http://dbpedia.org/class/yago";
 
-    // *****************INDEXING STRATEGIES ************************************************
+    // *****************INDEXING STRATEGIES
+    // ************************************************
 
     /**
-     * allowable text for indexing, do not index Chinese, Japanese, Korean, Russian etc labels
+     * allowable text for indexing, do not index Chinese, Japanese, Korean,
+     * Russian etc labels
      */
     public static final String ALLOWED_ENGLISH_TEXT = "[^\\w_\\s()'.:,]";
 
@@ -89,7 +94,8 @@ public class Constants
     public static final Analyzer LUCENE_ANALYZER = new StandardAnalyzer(Version.LUCENE_40);
 
     /**
-     * flag to determine whether to concat to old indices or recreate all from scratch
+     * flag to determine whether to concat to old indices or recreate all from
+     * scratch
      */
     public static final boolean EMPTY_INDICES = true;
 
@@ -98,23 +104,27 @@ public class Constants
      */
     public static final boolean INDEX_AGAIN = false;
 
-    // *****************FETCH STRATEGIES ***************************************************
+    // *****************FETCH STRATEGIES
+    // ***************************************************
     // tweaking these can dramatically effect the query response time
 
     /**
-     * percentage length of common (non-fuzzy) prefix in the user query you want to match, higher value makes it to
-     * search over smaller data matches not on all of them. Here it means 80% of the query term should contain in the
+     * percentage length of common (non-fuzzy) prefix in the user query you want
+     * to match, higher value makes it to search over smaller data matches not
+     * on all of them. Here it means 80% of the query term should contain in the
      * result sets
      */
     public static final float PREFIX_LENGTH_PERCENT = 0.1F;
 
     /**
-     * default 50% similarity and above, lower this value to fetch even lesser similar items
+     * default 50% similarity and above, lower this value to fetch even lesser
+     * similar items
      */
     public static final double SIMILARITY = 100.00;
 
     /**
-     * change the value to fetch these many records, Lucene uses this to fetch maximum these many matching documents
+     * change the value to fetch these many records, Lucene uses this to fetch
+     * maximum these many matching documents
      */
     public static final int MAX_RESULTS = 50;
 
@@ -128,7 +138,8 @@ public class Constants
      */
     public static final String SAMPLE_QUERY = "acm";
 
-    // *****************IE Engines output locations ***************************************************
+    // *****************IE Engines output locations
+    // ***************************************************
 
     /**
      * location of the output file generated the IE Engine ReVerb
@@ -146,30 +157,33 @@ public class Constants
     public static final String NELL_IE_DELIMIT = ",";
 
     /**
-     * output location of the predicate list after calculating jaccard score for each
+     * output location of the predicate list after calculating jaccard score for
+     * each
      */
     public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq_1.txt";
 
-    // *****************WEB INTERFACE PARAMETES***************************************************
+    // *****************WEB INTERFACE
+    // PARAMETES***************************************************
 
     /**
-     * If this is turned on the then the system performs a predictive search else just a simple search based on the
-     * input terms
+     * If this is turned on the then the system performs a predictive search
+     * else just a simple search based on the input terms
      */
     public static final boolean PREDICTIVE_SEARCH_MODE = true;
 
     /**
-     * only those entities with a match of value higher than this will be taken into consideration for further
-     * processing
+     * only those entities with a match of value higher than this will be taken
+     * into consideration for further processing
      */
     public static final double THRESHOLD_SCORE = 80;
 
-    // *****************Database Parameters PARAMETES***************************************************
+    // *****************Database Parameters
+    // PARAMETES***************************************************
     public static final String INSERT_FACT_SQL =
-        "INSERT INTO \"UNCERTAIN_KB\"(\"SUB\", \"PRED\", \"OBJ\", \"CONFIDENCE\") VALUES (?, ?, ?, ?)";
+            "INSERT INTO \"UNCERTAIN_KB\"(\"SUB\", \"PRED\", \"OBJ\", \"CONFIDENCE\") VALUES (?, ?, ?, ?)";
 
     public static final String INSERT_PROPERTY_DOMAIN_RANGE_SQL =
-        "INSERT INTO \"PREDICATE_DOMAIN_RANGE\"(\"PREDICATE\", \"DOMAIN\", \"RANGE\") VALUES (?, ?, ?)";
+            "INSERT INTO \"PREDICATE_DOMAIN_RANGE\"(\"PREDICATE\", \"DOMAIN\", \"RANGE\") VALUES (?, ?, ?)";
 
     public static final String GET_WIKI_STAT = "select distinct entity from stats where anchor=?";
 
@@ -178,7 +192,8 @@ public class Constants
      */
     public static final int BATCH_SIZE = 100;
 
-    // *****************OWL PARAMETES***************************************************
+    // *****************OWL
+    // PARAMETES***************************************************
     public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/dbpediaTBox.owl";
 
     /**
@@ -187,20 +202,30 @@ public class Constants
     public static final String CONFIDENCE_VALUE_DEFINITION = "http://reasoner#confidence";
 
     /**
-     * place where generated owl files are dumped. This file contains all the axioms on which reasoner runs
+     * place where generated owl files are dumped. This file contains all the
+     * axioms on which reasoner runs
      */
     public static final String OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH =
-        "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
+            "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
 
     /**
-     * Max weight an Axiom can have, basically recomputing the weights, w from probability, p using the formula [p =
-     * (exp(w))/1+(exp(w))]. Assuming maximum probability an axiom to be 0.999999999
+     * place where generated owl files are dumped. This file contains all the
+     * axioms on which reasoner runs
+     */
+    public static final String OWLFILE_CREATED_FROM_ELOG_REASONER_OUTPUT_PATH =
+            "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/aposteriori.owl";
+
+    /**
+     * Max weight an Axiom can have, basically recomputing the weights, w from
+     * probability, p using the formula [p = (exp(w))/1+(exp(w))]. Assuming
+     * maximum probability an axiom to be 0.999999999
      */
     public static final double AXIOM_MAX_WEIGHT = 20.7232;
 
     /**
-     * Min weight an Axiom can have, basically recomputing the weights, w from probability, p using the formula [p =
-     * (exp(w))/1+(exp(w))]. Assuming minimum probability an axiom to be 0.000000001
+     * Min weight an Axiom can have, basically recomputing the weights, w from
+     * probability, p using the formula [p = (exp(w))/1+(exp(w))]. Assuming
+     * minimum probability an axiom to be 0.000000001
      */
     public static final double AXIOM_MIN_WEIGHT = -20.7232;
 
