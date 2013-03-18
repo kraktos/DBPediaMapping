@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package de.dws.mapper.preProcess.estimator;
 
 import java.io.BufferedReader;
@@ -32,8 +33,8 @@ import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
 
 /**
- * This class is responsible for taking a predicate as input and fetching its density estimate, by referring the backend
- * list of its distribution
+ * This class is responsible for taking a predicate as input and fetching its
+ * density estimate, by referring the back end list of its distribution
  * 
  * @author Arnab Dutta
  */
@@ -74,10 +75,12 @@ public class PredicateLikelihoodEstimate
 
         // frame the query to fetch the domain and range attributes to be used
         String queryString =
-            "SELECT \"DOMAIN_PROP\", \"RANGE_PROP\" FROM \"PREDICATE_DOMAIN_RANGE\" " + "WHERE \"PREDICATE\" = '"
-                + mainProperty + "'";
+                "SELECT \"DOMAIN_PROP\", \"RANGE_PROP\" FROM \"PREDICATE_DOMAIN_RANGE\" "
+                        + "WHERE \"PREDICATE\" = '"
+                        + mainProperty + "'";
 
-        // Try connecting to back end DB to fetch the domain and range predicate attributes to query upon from DBPEdia
+        // Try connecting to back end DB to fetch the domain and range predicate
+        // attributes to query upon from DBPEdia
         try {
             DBConnection dbConnection = new DBConnection();
 
@@ -100,13 +103,16 @@ public class PredicateLikelihoodEstimate
             // shutdown database
             dbConnection.shutDown();
 
-            // fetch data points if only we have some valid attributes for the domain and range
+            // fetch data points if only we have some valid attributes for the
+            // domain and range
             if (domainPredicate != null && rangePredicate != null) {
 
                 // for the given property, create the data points distribution
-                fetchDataDistribution(mainProperty.substring(mainProperty.lastIndexOf("/") + 1, mainProperty.length()));
+                fetchDataDistribution(mainProperty.substring(mainProperty.lastIndexOf("/") + 1,
+                        mainProperty.length()));
 
-                // use the predicates, the subject and object to fetch the integral value of difference on the predicate
+                // use the predicates, the subject and object to fetch the
+                // integral value of difference on the predicate
                 calculateAttributeDiff(sub, obj, domainPredicate, rangePredicate);
 
                 if (difference != null) {
@@ -118,7 +124,8 @@ public class PredicateLikelihoodEstimate
             }
 
         } catch (SQLException e) {
-            logger.error("Error finding domain range attributes for " + mainProperty + "  " + e.getMessage());
+            logger.error("Error finding domain range attributes for " + mainProperty + "  "
+                    + e.getMessage());
         }
 
         return null;
@@ -128,11 +135,14 @@ public class PredicateLikelihoodEstimate
     /**
      * @param sub subject instance
      * @param obj object instance
-     * @param domainPredicate the attribute of the subject on which we want to figure out the difference with object
-     * @param rangePredicate the attribute of the object on which we want to figure out the difference with subject
+     * @param domainPredicate the attribute of the subject on which we want to
+     *            figure out the difference with object
+     * @param rangePredicate the attribute of the object on which we want to
+     *            figure out the difference with subject
      * @return {@link Double} value of the difference in attribute
      */
-    public static Double calculateAttributeDiff(String sub, String obj, String domainPredicate, String rangePredicate)
+    public static Double calculateAttributeDiff(String sub, String obj, String domainPredicate,
+            String rangePredicate)
     {
         // use the predicates to form a new query
         String QUERY = "select ?val where{  <" + sub + "> <" + domainPredicate + "> ?val}  ";
@@ -169,7 +179,8 @@ public class PredicateLikelihoodEstimate
             calendar2.setTime(year2Date);
 
             // calculate the difference of years
-            difference = new Double(Math.abs(calendar1.get(Calendar.YEAR) - calendar2.get(Calendar.YEAR)));
+            difference = new Double(Math.abs(calendar1.get(Calendar.YEAR)
+                    - calendar2.get(Calendar.YEAR)));
 
             // compute the density estimate
             return difference;
@@ -192,7 +203,8 @@ public class PredicateLikelihoodEstimate
     }
 
     /**
-     * read the data file and frame an array of data objects This serves as the input for the density estimator
+     * read the data file and frame an array of data objects This serves as the
+     * input for the density estimator
      * 
      * @param predicate
      */
@@ -202,7 +214,8 @@ public class PredicateLikelihoodEstimate
         String line;
         try {
             buffReader =
-                new BufferedReader(new FileReader(Constants.DBPEDIA_PREDICATE_DISTRIBUTION + "/" + predicate + ".csv"));
+                    new BufferedReader(new FileReader(Constants.DBPEDIA_PREDICATE_DISTRIBUTION
+                            + "/" + predicate + ".csv"));
 
             // clear off all pre-existing any elements
             dataArr.clear();
@@ -224,8 +237,8 @@ public class PredicateLikelihoodEstimate
     }
 
     /**
-     * this method takes a collection of possible facts and ranks them according to validity, using the underlying
-     * kernel density estimator
+     * this method takes a collection of possible facts and ranks them according
+     * to validity, using the underlying kernel density estimator
      * 
      * @param listFacts {@link List} of {@link SuggestedFactDAO}
      * @return map of facts ranked on the density estimates
@@ -240,17 +253,19 @@ public class PredicateLikelihoodEstimate
         // the estimated density value
         Double densityEstimate = null;
 
-        // define a map to store the ranked facts on a descending order of densities, the one with the highest density
+        // define a map to store the ranked facts on a descending order of
+        // densities, the one with the highest density
         // is the most likely one
-        // and so a custom comparator needs to be constructed which reverses the natural ordering of the TreeMap
+        // and so a custom comparator needs to be constructed which reverses the
+        // natural ordering of the TreeMap
         Map<Double, Set<SuggestedFactDAO>> mapRankedResults =
-            new TreeMap<Double, Set<SuggestedFactDAO>>(new Comparator<Double>()
-            {
-                public int compare(Double first, Double second)
+                new TreeMap<Double, Set<SuggestedFactDAO>>(new Comparator<Double>()
                 {
-                    return second.compareTo(first);
-                }
-            });
+                    public int compare(Double first, Double second)
+                    {
+                        return second.compareTo(first);
+                    }
+                });
 
         // iterate the return list of SuggestedFactDAO s
         for (SuggestedFactDAO factTriple : listFacts) {
@@ -258,10 +273,12 @@ public class PredicateLikelihoodEstimate
             pred = factTriple.getPredicate();
             obj = factTriple.getObject();
 
-            // use the triples to extract the density estimate for this fact to be valid
+            // use the triples to extract the density estimate for this fact to
+            // be valid
             densityEstimate = estimateDensity(sub, pred, obj);
 
-            // if we have a proper density we add it to the list of possible suggestion facts
+            // if we have a proper density we add it to the list of possible
+            // suggestion facts
             if (densityEstimate != null) {
                 if (mapRankedResults.containsKey(densityEstimate)) {
                     try {
@@ -271,6 +288,8 @@ public class PredicateLikelihoodEstimate
                     }
                 } else {
                     Set<SuggestedFactDAO> list = new TreeSet<SuggestedFactDAO>();
+                    // update the confidence for the fact and add it back
+                    factTriple.setConfidence(densityEstimate);
                     list.add(factTriple);
                     mapRankedResults.put(densityEstimate, list);
                 }

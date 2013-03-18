@@ -122,6 +122,62 @@ public class SuggestedFactDAO
 
     /*
      * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((confidence == null) ? 0 : confidence.hashCode());
+        result = prime * result + ((object == null) ? 0 : object.hashCode());
+        result = prime * result + ((predicate == null) ? 0 : predicate.hashCode());
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + (truthFlag ? 1231 : 1237);
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof SuggestedFactDAO))
+            return false;
+        SuggestedFactDAO other = (SuggestedFactDAO) obj;
+        if (confidence == null) {
+            if (other.confidence != null)
+                return false;
+        } else if (!confidence.equals(other.confidence))
+            return false;
+        if (object == null) {
+            if (other.object != null)
+                return false;
+        } else if (!object.equals(other.object))
+            return false;
+        if (predicate == null) {
+            if (other.predicate != null)
+                return false;
+        } else if (!predicate.equals(other.predicate))
+            return false;
+        if (subject == null) {
+            if (other.subject != null)
+                return false;
+        } else if (!subject.equals(other.subject))
+            return false;
+        if (truthFlag != other.truthFlag)
+            return false;
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override

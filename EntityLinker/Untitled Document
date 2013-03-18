@@ -1,0 +1,43 @@
+        
+SELECT t.title as entity, COUNT(t.title)/(SELECT COUNT(*) FROM  wikiStat.link_anchors WHERE anchor='pauli') as cnt 
+FROM  wikiStat.link_anchors as la,  wikiStat.title_2_id as t 
+WHERE la.target=t.id AND la.anchor='pauli'  
+GROUP BY t.title ORDER BY  cnt desc limit 5;
+        
+
+SELECT ti.title as entity, COUNT(ti.title)/(SELECT COUNT(*) FROM  wikiStat.link_anchors WHERE anchor in ()) as cnt 
+FROM  wikiStat.link_anchors as la,  wikiStat.title_2_id as ti 
+WHERE la.target=t.id AND la.anchor='pauli'  
+GROUP BY ti.title ORDER BY  cnt desc limit 5;
+
+
+select distinct anc, entity, cnt from wikiStat.link_anchors as l JOIN (
+SELECT la.anchor as anc, t.title as entity, COUNT(t.title)/(SELECT COUNT(*) FROM  wikiStat.link_anchors 
+WHERE anchor='germany') as cnt 
+FROM  wikiStat.link_anchors as la,  wikiStat.title_2_id as t 
+WHERE la.target=t.id AND la.anchor='germany'  
+GROUP BY t.title ORDER BY  cnt desc limit 3) sub
+ON l.anchor = sub.anc
+
+
+INSERT INTO `wikiStat`.`stats` (anchor, entity, freq)
+SELECT la.anchor, t.title as entity, COUNT(t.title)/(SELECT COUNT(*) FROM  wikiStat.link_anchors WHERE anchor='einstein') as cnt 
+FROM  wikiStat.link_anchors as la,  wikiStat.title_2_id as t 
+WHERE la.target=t.id AND la.anchor='einstein'  
+GROUP BY t.title ORDER BY  cnt desc limit 3;
+
+
+
+INSERT INTO `wikiStat`.`stats` (anchor, entity, freq)
+SELECT la.anchor, t.title as entity, COUNT(t.title)/(SELECT COUNT(*) FROM  wikiStat.link_anchors JOIN (select * from wikiStat.link_anchors) all ON all.anchor = anchor) as cnt 
+FROM  wikiStat.link_anchors as la,  wikiStat.title_2_id as t 
+WHERE la.target=t.id AND la.anchor='einstein'  
+GROUP BY t.title ORDER BY  cnt desc limit 3;
+
+
+SELECT la.anchor, t.title as entity, COUNT(t.title)/(SELECT COUNT(*) FROM  wikiStat.link_anchors JOIN (select * from wikiStat.link_anchors as ll limit 2) A ON A.anchor = link_anchors.anchor limit 5) as cnt 
+FROM  wikiStat.link_anchors as la,  wikiStat.title_2_id as t 
+WHERE la.target=t.id limit 3;
+
+
+

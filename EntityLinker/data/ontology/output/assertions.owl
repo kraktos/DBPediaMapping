@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/FactOntology/"
-     xml:base="http://www.semanticweb.org/ontologies/FactOntology/"
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/FactOntology/DbPedia/"
+     xml:base="http://www.semanticweb.org/ontologies/FactOntology/DbPedia/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:FactOntology="http://www.semanticweb.org/ontologies/FactOntology/"
-     xmlns:reasoner="http://reasoner#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/FactOntology/"/>
+     xmlns:reasoner="http://reasoner#"
+     xmlns:Extract="http://www.semanticweb.org/ontologies/FactOntology/Extract#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DbPedia/"/>
     
 
 
@@ -39,27 +39,27 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPspouse -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse">
-        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse">
+        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
     </owl:ObjectProperty>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Nellspouse -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
     
@@ -76,84 +76,191 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein">
-        <DBPspouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
-        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4054651081081642</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4054651081081642</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein">
+        <Extract:spouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9924301646902063</reasoner:confidence>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
     <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-5.0</reasoner:confidence>
-        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
-        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
-        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPspouse"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill"/>
+        </owl:distinctMembers>
     </rdf:Description>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/DBPMileva -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-    </owl:NamedIndividual>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/NellEinstein -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein">
-        <Nellspouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-    </owl:NamedIndividual>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPEinstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
     <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NegativePropertyAssertion"/>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-5.0</reasoner:confidence>
-        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellEinstein"/>
-        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Nellspouse"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
+        </owl:distinctMembers>
     </rdf:Description>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/NellMileva -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.0</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/DBPMileva"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/NellMileva"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
 </rdf:RDF>
 
 

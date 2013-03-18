@@ -189,6 +189,19 @@ public class Constants
     /**
      * place where generated owl files are dumped. This file contains all the axioms on which reasoner runs
      */
-    public static final String OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH = "data/ontology/output/assertions.owl";
+    public static final String OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH =
+        "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
+
+    /**
+     * Max weight an Axiom can have, basically recomputing the weights, w from probability, p using the formula [p =
+     * (exp(w))/1+(exp(w))]. Assuming maximum probability an axiom to be 0.999999999
+     */
+    public static final double AXIOM_MAX_WEIGHT = 20.7232;
+
+    /**
+     * Min weight an Axiom can have, basically recomputing the weights, w from probability, p using the formula [p =
+     * (exp(w))/1+(exp(w))]. Assuming minimum probability an axiom to be 0.000000001
+     */
+    public static final double AXIOM_MIN_WEIGHT = -20.7232;
 
 }

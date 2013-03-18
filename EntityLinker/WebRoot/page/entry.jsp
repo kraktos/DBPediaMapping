@@ -348,7 +348,7 @@
 					<tr>
 						<td width="5%" align="center" style="color: #ffffff"><input
 							type="checkbox" name="checkbox" id="checkbox_id"
-							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}'
+							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}~${matchingEntries.confidence}'
 							onclick="saveSuggestions()" /></td>
 						<td width="23%" align="right"
 							style="word-wrap: break-word; color:#00f000; font-size: 12pt;">${matchingEntries.subject}</td>

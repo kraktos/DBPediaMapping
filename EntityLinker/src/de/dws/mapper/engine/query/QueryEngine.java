@@ -169,7 +169,7 @@ public class QueryEngine
      * @param userQuery
      * @param returnList
      * @param resultMap
-     * @return
+     * @return list of {@link ResultDAO}
      */
     public static List<ResultDAO> filterTopKResults(String userQuery, List<ResultDAO> returnList,
         Map<Integer, List<ResultDAO>> resultMap)
@@ -378,7 +378,7 @@ public class QueryEngine
      * @param pool
      * @param subjFromTuple
      * @param objFromTuple
-     * @return
+     * @return list of list of {@link ResultDAO}
      * @throws ExecutionException
      * @throws InterruptedException
      */
@@ -528,7 +528,7 @@ public class QueryEngine
      * fetch from file system the learnt the relationships
      * 
      * @param predicate
-     * @return
+     * @return list of {@link ResultDAO}
      */
     public static List<ResultDAO> doLookUpSearch(final String predicate)
     {

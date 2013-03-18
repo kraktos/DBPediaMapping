@@ -1,3 +1,4 @@
+
 package de.dws.mapper.webInterface.servlet;
 
 import java.io.File;
@@ -7,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,8 +26,10 @@ import de.dws.mapper.engine.query.QueryEngine;
 import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
+import de.dws.mapper.helper.util.Utilities;
 import de.dws.mapper.knowledgeBase.UncertainKB;
 import de.dws.mapper.logic.FactSuggestion;
+import de.dws.reasoner.axioms.AxiomCreator;
 
 /**
  * Servlet class to handle requests for testing the matching performance
@@ -79,15 +84,23 @@ public class EntryServlet extends HttpServlet
 
     /**
      * The doPost method of the servlet. <br>
-     * This method is called when a form has its tag value method equals to post.
+     * This method is called when a form has its tag value method equals to
+     * post.
      * 
      * @param request the request send by the client to the server
      * @param response the response send by the server to the client
      * @throws ServletException if an error occurred
      * @throws IOException if an error occurred
      */
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
     {
+
+        // instance of Axiom Creator
+        AxiomCreator axiomCreator = null;
+
+        // instance of fact coming as NELL/Freeverb input
+        SuggestedFactDAO uncertainFact = null;
 
         // list for suggested fact
         List<SuggestedFactDAO> retListSuggstFacts = new ArrayList<SuggestedFactDAO>();
@@ -101,7 +114,8 @@ public class EntryServlet extends HttpServlet
         // we just need two threads to perform the search
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
-        String action = (request.getParameter("action") != null) ? request.getParameter("action") : "none";
+        String action = (request.getParameter("action") != null) ? request.getParameter("action")
+                : "none";
         logger.info("|" + action + "|");
 
         try {
@@ -123,7 +137,9 @@ public class EntryServlet extends HttpServlet
                 String predicate = request.getParameter("predicate").trim();
                 String object = request.getParameter("object").trim();
                 // This is simple search mode. just querying for terms
-                if (!Constants.PREDICTIVE_SEARCH_MODE) { // not really useful..but to just play around
+                if (!Constants.PREDICTIVE_SEARCH_MODE) { // not really
+                                                         // useful..but to just
+                                                         // play around
 
                     // create File object of our index directory
                     File file = new File(Constants.DBPEDIA_ENT_INDEX_DIR);
@@ -141,18 +157,35 @@ public class EntryServlet extends HttpServlet
                     String[] candidatePredSearch = request.getParameterValues("checkboxPredSearch");
                     String[] candidateObjs = request.getParameterValues("checkboxObjs");
 
-                    // return a list of possible facts suggestion from best matches
+                    // return a list of possible facts suggestion from best
+                    // matches
                     retListSuggstFacts =
-                        FactSuggestion.suggestFact(candidateSubjs, candidatePredLkUp, candidatePredSearch,
-                            candidateObjs, sim);
+                            FactSuggestion.suggestFact(candidateSubjs, candidatePredLkUp,
+                                    candidatePredSearch,
+                                    candidateObjs, sim);
 
                     request.setAttribute("suggestedFactList", retListSuggstFacts);
 
-                } else {// This is advanced search mode. where the system tries to predict the best matches based on
+                    // we want to validate that the ranking given by kernel
+                    // density estimator are in tandem
+                    // with the ranking provided by Elog reasoner. Here we feed
+                    // the possible candidate matches to the reasoner
+
+                    // send the suggestions to the reasoner module and create
+                    // axioms
+                    uncertainFact = new SuggestedFactDAO(subject, predicate, object, .88, true);
+
+                    axiomCreator = new AxiomCreator();
+                    axiomCreator.createOwlFromFacts(candidateSubjs, candidatePredSearch,
+                            candidateObjs, uncertainFact);
+
+                } else {// This is advanced search mode. where the system tries
+                        // to predict the best matches based on
                         // the input combination
 
                     // declare class
-                    WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object, predicate);
+                    WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object,
+                            predicate);
 
                     // make a call to the Engine with the required parameters
                     webTupleProc.processTuples(null);
@@ -185,15 +218,46 @@ public class EntryServlet extends HttpServlet
 
             } else {
 
+                List<SuggestedFactDAO> listFacts = new ArrayList<SuggestedFactDAO>();
+
+                // instance of the suggested DBPedia fact
+                SuggestedFactDAO suggestedFact = null;
+
                 String[] facts = request.getParameterValues("checkbox");
+
                 for (String fact : facts) {
                     logger.info(fact);
 
                     String[] str = fact.split("~");
 
+                    suggestedFact =
+                            new SuggestedFactDAO(Utilities.prun(str[0]), Utilities.prun(str[1]),
+                                    Utilities.prun(str[2]),
+                                    Double.valueOf(str[3]), true);
+
                     // save it to the KB
-                    uncertainKB.createKB(connection, pstmt, new SuggestedFactDAO(str[0], str[1], str[2], null, true));
+                    // uncertainKB.createKB(connection, pstmt, suggestedFact);
+
+                    // add to the set of suggested facts
+                    listFacts.add(suggestedFact);
                 }
+
+                // retrieve the subject, predicate and predicates
+                // this is the original text in natural language
+                String subject = request.getParameter("subject").trim();
+                String predicate = request.getParameter("predicate").trim();
+                String object = request.getParameter("object").trim();
+
+                uncertainFact = new SuggestedFactDAO(subject, predicate, object, .8, true);
+
+                logger.info(subject + "  " + predicate + " " + object);
+
+                // send the suggestions to the reasoner module and create axioms
+                if (listFacts != null && listFacts.size() > 0) {
+                    axiomCreator = new AxiomCreator();
+                    axiomCreator.createOwlFromFacts(listFacts, uncertainFact);
+                }
+
                 facts = null;
             }
 
@@ -227,7 +291,5 @@ public class EntryServlet extends HttpServlet
         } catch (SQLException ex) {
             logger.error("Connection Failed! Check output console" + ex.getMessage());
         }
-
     }
-
 }

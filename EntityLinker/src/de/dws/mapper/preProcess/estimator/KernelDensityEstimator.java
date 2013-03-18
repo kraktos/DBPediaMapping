@@ -48,7 +48,6 @@ public class KernelDensityEstimator
      * Default constructor, Initializing the kernel
      * 
      * @param dataArr array of data values
-     * @param bandWidth the bin size of the kernel functions
      */
     public KernelDensityEstimator(Double[] dataArr)
     {

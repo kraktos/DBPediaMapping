@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package de.dws.mapper.helper.util;
 
 import java.io.BufferedWriter;
@@ -47,10 +48,10 @@ public class Utilities
      * 
      * @param map
      */
-    public static void printMap(Map< ? , ? > map)
+    public static void printMap(Map<?, ?> map)
     {
-        for (Iterator< ? > it = map.entrySet().iterator(); it.hasNext();) {
-            Map.Entry< ? , ? > entry = (Entry< ? , ? >) it.next();
+        for (Iterator<?> it = map.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<?, ?> entry = (Entry<?, ?>) it.next();
             Object key = entry.getKey();
             Object value = entry.getValue();
             logger.info(key + "  " + value);
@@ -85,9 +86,9 @@ public class Utilities
      * 
      * @param set
      */
-    public static void printSet(final Set< ? > set)
+    public static void printSet(final Set<?> set)
     {
-        Iterator< ? > it = set.iterator();
+        Iterator<?> it = set.iterator();
         while (it.hasNext()) {
             logger.info(it.next());
         }
@@ -100,13 +101,14 @@ public class Utilities
      * @param targetFilePath putput file location
      * @throws IOException
      */
-    public static void writeSetToFile(Set<String> SET_DBPEDIA_TERMS, String targetFilePath) throws IOException
+    public static void writeSetToFile(Set<String> SET_DBPEDIA_TERMS, String targetFilePath)
+            throws IOException
     {
 
         FileWriter fstream = new FileWriter(targetFilePath);
         BufferedWriter out = new BufferedWriter(fstream);
 
-        Iterator< ? > it = SET_DBPEDIA_TERMS.iterator();
+        Iterator<?> it = SET_DBPEDIA_TERMS.iterator();
         while (it.hasNext()) {
             FileUtil.writeToFlatFile(out, it.next() + "\n");
         }
@@ -139,7 +141,8 @@ public class Utilities
     {
         long end = System.currentTimeMillis();
         long execTime = end - start;
-        logger.info(message + " " + String.format("%02d ms", TimeUnit.MILLISECONDS.toMillis(execTime)));
+        logger.info(message + " "
+                + String.format("%02d ms", TimeUnit.MILLISECONDS.toMillis(execTime)));
     }
 
     /**
@@ -151,7 +154,7 @@ public class Utilities
         return start;
     }
 
-    public static void printList(List< ? > resultList)
+    public static void printList(List<?> resultList)
     {
         for (int listCounter = 0; listCounter < resultList.size(); listCounter++) {
             logger.info(resultList.get(listCounter));
@@ -209,6 +212,11 @@ public class Utilities
             split(head + " " + in.substring(0, i), in.substring(i, in.length()));
         }
 
+    }
+
+    public static String prun(String uri)
+    {
+        return uri.substring(uri.lastIndexOf("/") + 1, uri.length());
     }
 
 }
