@@ -126,16 +126,26 @@ public class Inference {
      */
     public static void main(String[] args) {
 
+        findRanking(args[0], args[1], args[2]);
+
+    }
+
+    /**
+     * @param prop
+     * @param obj
+     * @param subj
+     */
+    public static void findRanking(String subj, String prop, String obj) {
         Map<Double, Set<OWLEntity>> mapSubjects = new
                 Inference().getRankedMatches(factory.getOWLNamedIndividual(
-                        "churchill", prefixIE));
+                        subj, prefixIE));
         Map<Double, Set<OWLEntity>> mapObjects = new
                 Inference().getRankedMatches(factory.getOWLNamedIndividual(
-                        "einstein", prefixIE));
+                        obj, prefixIE));
 
         Map<Double, Set<OWLEntity>> mapProps = new Inference().getRankedMatches(factory
                 .getOWLNamedIndividual(
-                        "spouse", prefixIE));
+                        prop, prefixIE));
 
         Map<Double, List<Set<OWLEntity>>> m = new Inference().getRankedTriples(mapSubjects,
                 mapProps, mapObjects);
@@ -144,7 +154,6 @@ public class Inference {
         for (Entry<Double, List<Set<OWLEntity>>> entry : m.entrySet()) {
             logger.info(entry.getKey() + " = " + entry.getValue());
         }
-
     }
 
     /**

@@ -218,7 +218,7 @@ public class AxiomCreator
             setIndividuals.add(dbCandidateValue);
         }
 
-        //add the bunch of distinct individual to the axiom
+        // add the bunch of distinct individual to the axiom
         OWLDifferentIndividualsAxiom diffInds = factory
                 .getOWLDifferentIndividualsAxiom(setIndividuals);
 
@@ -243,7 +243,8 @@ public class AxiomCreator
             OWLObjectProperty dbProperty = factory.getOWLObjectProperty(
                     Utilities.prun(possibleCandidate),
                     prefixDBPedia);
-            OWLObjectProperty ieProperty = factory.getOWLObjectProperty(predicate, prefixIE);
+            OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
+                    predicate, prefixIE);
 
             // create a same as/ is equivalent link between properties
             OWLEquivalentObjectPropertiesAxiom equivPropertyAxiom =
@@ -275,14 +276,16 @@ public class AxiomCreator
             OWLNamedIndividual dbValue = factory.getOWLNamedIndividual(
                     Utilities.prun(possibleCandidate),
                     prefixDBPedia);
-            OWLNamedIndividual ieValue = factory.getOWLNamedIndividual(extractedValue, prefixIE);
+            OWLNamedIndividual ieValue = factory.getOWLNamedIndividual(
+                    extractedValue, prefixIE);
 
             // create a same as link between subjects
             OWLSameIndividualAxiom sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
                     dbValue, ieValue);
 
             // add it to list of soft constraints
-            listAxioms.add(new Axiom(sameAsIndividualAxiom, convertProbabilityToWeight(1.0 + count))); // TODO
+            listAxioms
+                    .add(new Axiom(sameAsIndividualAxiom, convertProbabilityToWeight(1.0 + count))); // TODO
         }
     }
 
@@ -407,6 +410,10 @@ public class AxiomCreator
             manager.saveOntology(ontology, IRI.create(file.toURI()));
         } catch (OWLOntologyStorageException e) {
             e.printStackTrace();
+        } finally {
+            logger.info("Axiom file created at : "
+                    + Constants.OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH);
+
         }
     }
 
@@ -426,7 +433,7 @@ public class AxiomCreator
 
         for (Axiom axiom : listAxioms) {
 
-            logger.info("Annotating axiom " + axiom.toString());
+            logger.info("Annotating " + axiom.toString());
 
             // create an annotation
             OWLAnnotation owlAnnotation =

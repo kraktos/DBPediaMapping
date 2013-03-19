@@ -30,6 +30,8 @@ import de.dws.mapper.helper.util.Utilities;
 import de.dws.mapper.knowledgeBase.UncertainKB;
 import de.dws.mapper.logic.FactSuggestion;
 import de.dws.reasoner.axioms.AxiomCreator;
+import de.dws.reasoner.inference.Inference;
+import de.elog.Application;
 
 /**
  * Servlet class to handle requests for testing the matching performance
@@ -157,15 +159,19 @@ public class EntryServlet extends HttpServlet
                     String[] candidatePredSearch = request.getParameterValues("checkboxPredSearch");
                     String[] candidateObjs = request.getParameterValues("checkboxObjs");
 
+                    // ************** kernel density estimation process
+                    // ************************************************************************************
                     // return a list of possible facts suggestion from best
                     // matches
-                    retListSuggstFacts =
+                    
+                    /*retListSuggstFacts =
                             FactSuggestion.suggestFact(candidateSubjs, candidatePredLkUp,
                                     candidatePredSearch,
                                     candidateObjs, sim);
+*/
+                    //request.setAttribute("suggestedFactList", retListSuggstFacts);
 
-                    request.setAttribute("suggestedFactList", retListSuggstFacts);
-
+                    // *************************************************************************************
                     // we want to validate that the ranking given by kernel
                     // density estimator are in tandem
                     // with the ranking provided by Elog reasoner. Here we feed
@@ -173,11 +179,39 @@ public class EntryServlet extends HttpServlet
 
                     // send the suggestions to the reasoner module and create
                     // axioms
-                    uncertainFact = new SuggestedFactDAO(subject, predicate, object, .88, true);
+                    uncertainFact = new SuggestedFactDAO(subject.replaceAll("\\s", ""),
+                            predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), .88,
+                            true);
+
+                    // *************** create axioms
+                    // **********************************************************************************
+
+                    logger.info(" STARTING AXIOM CREATION ... ");
 
                     axiomCreator = new AxiomCreator();
                     axiomCreator.createOwlFromFacts(candidateSubjs, candidatePredSearch,
                             candidateObjs, uncertainFact);
+
+                    // **************** reason with Elog
+                    // ************************************************************************************
+                    String[] args = new String[4];
+                    args[0] = "-sm";
+                    args[1] = "-s1000000";
+                    args[2] = "-i40";
+                    args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
+
+                    logger.info(" \nSTARTING ELOG REASONER ... ");
+                    Application.main(args);
+
+                    // **************** run inference
+                    // ************************************************************************************
+
+                    logger.info(" STARTING INFERENCE BASED ON SAMPLED PROBABILITIES ... ");
+                    args[0] = uncertainFact.getSubject();
+                    args[1] = uncertainFact.getPredicate();
+                    args[2] = uncertainFact.getObject();
+
+                    Inference.main(args);
 
                 } else {// This is advanced search mode. where the system tries
                         // to predict the best matches based on

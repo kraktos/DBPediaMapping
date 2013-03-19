@@ -6,5 +6,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LIB"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ELog"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ELOG_LIBS"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

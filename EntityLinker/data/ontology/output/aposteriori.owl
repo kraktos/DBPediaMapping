@@ -47,27 +47,27 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring -->
 
-    <ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse">
-        <equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
+    <ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring">
+        <equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
     </ObjectProperty>
     <Axiom>
         <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#starring -->
 
-    <ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
+    <ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
     <Axiom>
         <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#spouse"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </Axiom>
     
@@ -84,13 +84,41 @@
     
 
 
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.32165316531653165</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5306530653065307</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
     <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein -->
 
     <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein">
         <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3049154915491549</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2015801580158016</elog:probability>
         <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
         <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
@@ -104,7 +132,7 @@
         <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.23772677267726772</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15533953395339534</elog:probability>
         <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
         <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
@@ -118,7 +146,7 @@
         <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3863886388638864</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2525142514251425</elog:probability>
         <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
         <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
@@ -126,87 +154,15 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner -->
 
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.19915491549154915</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill -->
-
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-    </NamedIndividual>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.25697369736973696</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill -->
-
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-    </NamedIndividual>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15673967396739674</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill -->
-
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-    </NamedIndividual>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.31855085508550857</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill -->
-
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.25697369736973696</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.31855085508550857</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.19915491549154915</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15673967396739674</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3926282628262826</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     
@@ -215,30 +171,54 @@
     <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein -->
 
     <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein">
-        <Extract:spouse rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
+        <Extract:starring rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3049154915491549</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.32165316531653165</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2015801580158016</elog:probability>
         <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
         <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     <Axiom>
         <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.88</elog:probability>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#churchill"/>
         <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
-        <annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#spouse"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+        <annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
     </Axiom>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3863886388638864</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15533953395339534</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
         <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.23772677267726772</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2525142514251425</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
         <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner -->
+
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3926282628262826</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5306530653065307</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     
@@ -255,18 +235,17 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner"/>
         </distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Clive_Churchill"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Emma_Churchill"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Frank_Churchill"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Zach_Churchill"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
         </distinctMembers>
     </rdf:Description>
 </rdf:RDF>
