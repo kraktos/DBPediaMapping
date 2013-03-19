@@ -225,7 +225,7 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff"><input
 										type="checkbox" name="checkboxSubjs" id="checkbox_id"
-										value='${matchingEntries.fieldURI}' onclick="" /></td>
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" /></td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -250,7 +250,7 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff;"><input
 										type="checkbox" name="checkboxPredLookup" id="checkbox_id"
-										value='${matchingEntries.fieldURI}' onclick="" />
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -266,7 +266,7 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff;"><input
 										type="checkbox" name="checkboxPredSearch" id="checkbox_id"
-										value='${matchingEntries.fieldURI}' onclick="" />
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" />
 									</td>
 								</tr>
 							</c:forEach>
@@ -300,7 +300,7 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff"><input
 										type="checkbox" name="checkboxObjs" id="checkbox_id"
-										value='${matchingEntries.fieldURI}' onclick="" /></td>
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" /></td>
 								</tr>
 							</c:forEach>
 						</table>

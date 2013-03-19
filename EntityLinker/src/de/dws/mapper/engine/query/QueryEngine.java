@@ -359,12 +359,12 @@ public class QueryEngine
 
                 // Add to the result map, check for existing key, add or update the values accordingly
                 if (resultMap.containsKey(key)) {
-                    resultMap.get(key).add(new ResultDAO(uriField, labelField, Math.round(score * 100)));
+                    resultMap.get(key).add(new ResultDAO(uriField, labelField, Math.round(score)));
                     // resultMap.get(key).add(new ResultDAO(uriField, labelField, isHighFreq, Math.round(score * 100)));
                 } else {
                     list = new ArrayList<ResultDAO>();
                     // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
-                    list.add(new ResultDAO(uriField, labelField, Math.round(score * 100)));
+                    list.add(new ResultDAO(uriField, labelField, Math.round(score)));
                     // list.add(new ResultDAO(uriField, labelField, isHighFreq, Math.round(score * 100)));
                     resultMap.put(key, list);
                 }

@@ -154,22 +154,30 @@ public class EntryServlet extends HttpServlet
                     }
                 } else if ("suggest".equals(action)) {
 
+                    // these inclused both the uris and the scores.
                     String[] candidateSubjs = request.getParameterValues("checkboxSubjs");
                     String[] candidatePredLkUp = request.getParameterValues("checkboxPredLookup");
                     String[] candidatePredSearch = request.getParameterValues("checkboxPredSearch");
                     String[] candidateObjs = request.getParameterValues("checkboxObjs");
 
+                    // need to create a list of ResultDAO from the
+                    List<ResultDAO> subDaos = getResultDaos(candidateSubjs);
+                    List<ResultDAO> predDaos = getResultDaos(candidatePredSearch);
+                    List<ResultDAO> objDaos = getResultDaos(candidateObjs);
+
                     // ************** kernel density estimation process
                     // ************************************************************************************
                     // return a list of possible facts suggestion from best
                     // matches
-                    
-                    /*retListSuggstFacts =
-                            FactSuggestion.suggestFact(candidateSubjs, candidatePredLkUp,
-                                    candidatePredSearch,
-                                    candidateObjs, sim);
-*/
-                    //request.setAttribute("suggestedFactList", retListSuggstFacts);
+
+                    /*
+                     * retListSuggstFacts =
+                     * FactSuggestion.suggestFact(candidateSubjs,
+                     * candidatePredLkUp, candidatePredSearch, candidateObjs,
+                     * sim);
+                     */
+                    // request.setAttribute("suggestedFactList",
+                    // retListSuggstFacts);
 
                     // *************************************************************************************
                     // we want to validate that the ranking given by kernel
@@ -189,8 +197,8 @@ public class EntryServlet extends HttpServlet
                     logger.info(" STARTING AXIOM CREATION ... ");
 
                     axiomCreator = new AxiomCreator();
-                    axiomCreator.createOwlFromFacts(candidateSubjs, candidatePredSearch,
-                            candidateObjs, uncertainFact);
+                    axiomCreator.createOwlFromFacts(subDaos, predDaos,
+                            objDaos, uncertainFact);
 
                     // **************** reason with Elog
                     // ************************************************************************************
@@ -201,6 +209,7 @@ public class EntryServlet extends HttpServlet
                     args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
 
                     logger.info(" \nSTARTING ELOG REASONER ... ");
+
                     Application.main(args);
 
                     // **************** run inference
@@ -287,10 +296,10 @@ public class EntryServlet extends HttpServlet
                 logger.info(subject + "  " + predicate + " " + object);
 
                 // send the suggestions to the reasoner module and create axioms
-                if (listFacts != null && listFacts.size() > 0) {
+                /*if (listFacts != null && listFacts.size() > 0) {
                     axiomCreator = new AxiomCreator();
                     axiomCreator.createOwlFromFacts(listFacts, uncertainFact);
-                }
+                }*/
 
                 facts = null;
             }
@@ -304,6 +313,16 @@ public class EntryServlet extends HttpServlet
         // redirect to page
         request.getRequestDispatcher("page/entry.jsp").forward(request, response);
 
+    }
+
+    private List<ResultDAO> getResultDaos(String[] candidateSubjs) {
+        List<ResultDAO> retList = new ArrayList<ResultDAO>();
+
+        for (String value : candidateSubjs) {
+            String[] arg = value.split("~");
+            retList.add(new ResultDAO(arg[0], Double.valueOf(arg[1])));
+        }
+        return retList;
     }
 
     /**

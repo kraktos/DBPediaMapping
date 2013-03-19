@@ -5,6 +5,7 @@
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:Thal="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,"
      xmlns:Dbp="http://www.semanticweb.org/ontologies/FactOntology/Dbp#"
      xmlns:reasoner="http://reasoner#"
      xmlns:Extract="http://www.semanticweb.org/ontologies/FactOntology/Extract#">
@@ -46,27 +47,27 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring">
-        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace">
+        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
     </owl:ObjectProperty>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#starring -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#starring"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
     
@@ -83,141 +84,121 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4054651081081642</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger">
+        <Extract:birthplace rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
     </owl:NamedIndividual>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein">
-        <Extract:starring rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
-    </owl:NamedIndividual>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4054651081081642</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9924301646902063</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#einstein"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
-        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#starring"/>
+        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#thal -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.3862943611198908</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.1972245773362196</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#kleiner"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
@@ -234,17 +215,16 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Alfred_Kleiner"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Sergio_Kleiner"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
         </owl:distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Albert_Einstein"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arik_Einstein"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Baby_Einstein"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Bob_Einstein"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
         </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>

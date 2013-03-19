@@ -32,6 +32,7 @@ import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
+import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
 import de.dws.mapper.helper.util.Utilities;
@@ -117,45 +118,7 @@ public class AxiomCreator
 
     }
 
-    /**
-     * method takes a Set of {@link SuggestedFactDAO} and also the actual fact
-     * from Extraction engine and creates all possible axioms out of those
-     * Object assertions, sameAs axioms etc
-     * 
-     * @param listFacts Set of {@link SuggestedFactDAO}
-     * @param ieFactDAo fact from Extraction engine
-     * @throws OWLOntologyCreationException
-     */
-    public void createOwlFromFacts(List<SuggestedFactDAO> dbPediaFacts, SuggestedFactDAO ieFact)
-            throws OWLOntologyCreationException
-    {
-
-        // create an ontology
-        OWLOntology ontology = manager.createOntology(ontologyIRI);
-
-        // creates the object property assertion from the matched IE fact
-        createObjectPropertyAssertions(ieFact, prefixIE);
-
-        // iterate for each suggested fact, create assertions
-        for (SuggestedFactDAO dbPediaFact : dbPediaFacts) {
-
-            logger.info(" Processing " + dbPediaFact.toString());
-
-            // creates all assertions from the matched DBPedia fact
-            createObjectPropertyAssertions(dbPediaFact,
-                    prefixDBPedia);
-
-            // creates all individual fact assertions by saying subjects from
-            // two facts are same
-            createSameAsAssertions(dbPediaFact, ieFact, ontology);
-
-        }
-        // annotate the axioms
-        annotateAxioms(ontology);
-
-        // output to a file
-        createOutput(ontology);
-    }
+    
 
     /**
      * Overloaded function
@@ -166,8 +129,8 @@ public class AxiomCreator
      * @param uncertainFact Uncertain Extraction engine fact
      * @throws OWLOntologyCreationException
      */
-    public void createOwlFromFacts(String[] candidateSubjs, String[] candidatePreds,
-            String[] candidateObjs, SuggestedFactDAO uncertainFact)
+    public void createOwlFromFacts(List<ResultDAO> candidateSubjs, List<ResultDAO> candidatePreds,
+            List<ResultDAO> candidateObjs, SuggestedFactDAO uncertainFact)
             throws OWLOntologyCreationException {
 
         // create an ontology
@@ -196,6 +159,15 @@ public class AxiomCreator
         // output to a file
         createOutput(ontology);
 
+        // pause few seconds for the output axiom files to be
+        // created
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -203,15 +175,15 @@ public class AxiomCreator
      * 
      * @param candidateSubjs collection of possible candidates
      */
-    private void createDifferentFromAssertions(String[] candidates) {
+    private void createDifferentFromAssertions(List<ResultDAO> candidates) {
 
         Set<OWLNamedIndividual> setIndividuals = new TreeSet<OWLNamedIndividual>();
 
-        for (String candidate : candidates) {
+        for (ResultDAO candidate : candidates) {
 
             // create the owl individual
             OWLNamedIndividual dbCandidateValue = factory.getOWLNamedIndividual(
-                    Utilities.prun(candidate),
+                    Utilities.prun(candidate.getFieldURI()),
                     prefixDBPedia);
 
             // add to a set
@@ -222,7 +194,7 @@ public class AxiomCreator
         OWLDifferentIndividualsAxiom diffInds = factory
                 .getOWLDifferentIndividualsAxiom(setIndividuals);
 
-        // add it to list of soft constraints
+        // add it to list of soft constraints with high probability
         listAxioms.add(new Axiom(diffInds, convertProbabilityToWeight(1.0)));
     }
 
@@ -233,15 +205,15 @@ public class AxiomCreator
      * @param candidatePreds possible predicates
      * @param predicate extracted predicate
      */
-    private void createPropEquivAssertions(String[] candidatePreds, String predicate) {
+    private void createPropEquivAssertions(List<ResultDAO> candidatePreds, String predicate) {
 
         // iterate through the possible list of candidates and as many
         // equivalent property links
-        for (String possibleCandidate : candidatePreds) {
+        for (ResultDAO possibleCandidate : candidatePreds) {
 
             // fetch the properties
             OWLObjectProperty dbProperty = factory.getOWLObjectProperty(
-                    Utilities.prun(possibleCandidate),
+                    Utilities.prun(possibleCandidate.getFieldURI()),
                     prefixDBPedia);
             OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
                     predicate, prefixIE);
@@ -251,7 +223,8 @@ public class AxiomCreator
                     factory.getOWLEquivalentObjectPropertiesAxiom(dbProperty, ieProperty);
 
             // add it to list of soft constraints
-            listAxioms.add(new Axiom(equivPropertyAxiom, convertProbabilityToWeight(1.0)));// TODO
+            listAxioms.add(new Axiom(equivPropertyAxiom,
+                    convertProbabilityToWeight(possibleCandidate.getScore())));
 
         }
     }
@@ -264,17 +237,15 @@ public class AxiomCreator
      * @param candidates collection of possible matches
      * @param extractedValue extracted value from Nell or freeverb etc
      */
-    private void createSameAsAssertions(String[] candidates, String extractedValue) {
+    private void createSameAsAssertions(List<ResultDAO> candidates, String extractedValue) {
 
         // iterate through the possible list of candidates and as many same as
         // links between them
-        double count = 0;
-        for (String possibleCandidate : candidates) {
+        for (ResultDAO possibleCandidate : candidates) {
 
-            count = count - 0.1;
             // fetch the individual subjects
             OWLNamedIndividual dbValue = factory.getOWLNamedIndividual(
-                    Utilities.prun(possibleCandidate),
+                    Utilities.prun(possibleCandidate.getFieldURI()),
                     prefixDBPedia);
             OWLNamedIndividual ieValue = factory.getOWLNamedIndividual(
                     extractedValue, prefixIE);
@@ -285,7 +256,8 @@ public class AxiomCreator
 
             // add it to list of soft constraints
             listAxioms
-                    .add(new Axiom(sameAsIndividualAxiom, convertProbabilityToWeight(1.0 + count))); // TODO
+                    .add(new Axiom(sameAsIndividualAxiom,
+                            convertProbabilityToWeight(possibleCandidate.getScore())));
         }
     }
 
