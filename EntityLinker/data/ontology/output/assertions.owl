@@ -5,7 +5,6 @@
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:Thal="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,"
      xmlns:Dbp="http://www.semanticweb.org/ontologies/FactOntology/Dbp#"
      xmlns:reasoner="http://reasoner#"
      xmlns:Extract="http://www.semanticweb.org/ontologies/FactOntology/Extract#">
@@ -84,121 +83,141 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger">
-        <Extract:birthplace rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer">
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9924301646902063</reasoner:confidence>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer">
+        <Extract:birthplace rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
         <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
     </owl:Axiom>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#thal -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#boston -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak"/>
+        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
@@ -215,16 +234,17 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer"/>
         </owl:distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock"/>
         </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>

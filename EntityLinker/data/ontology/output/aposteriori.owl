@@ -2,10 +2,11 @@
 <rdf:RDF xmlns="http://www.w3.org/2002/07/owl#"
      xml:base="http://www.w3.org/2002/07/owl"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:Washington="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Washington,"
+     xmlns:Elma="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Elma,"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:Thal="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,"
      xmlns:Dbp="http://www.semanticweb.org/ontologies/FactOntology/Dbp#"
      xmlns:elog="http://elog#"
      xmlns:reasoner="http://reasoner#"
@@ -85,121 +86,81 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Elma,_Washington -->
 
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Elma,_Washington">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4973397339733973</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.49867286728672866</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Elma,_Washington"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Mike_Lincoln -->
 
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Mike_Lincoln">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#MikeLincoln"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.49742674267426745</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Mike_Lincoln"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#MikeLincoln"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Washington,_Iowa -->
 
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Washington,_Iowa">
+        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3329162916291629</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4963126312631263</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Washington,_Iowa"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#MikeLincoln -->
 
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#MikeLincoln">
+        <Extract:birthplace rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
     </NamedIndividual>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3306910691069107</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum -->
-
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum">
-        <sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
-    </NamedIndividual>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3331103110311031</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger -->
-
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger">
-        <Extract:birthplace rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
-    </NamedIndividual>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.49742674267426745</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Mike_Lincoln"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#MikeLincoln"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4973397339733973</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.88</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9998779296875</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#MikeLincoln"/>
         <annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#schwarzenegger"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
     </Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#thal -->
+    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#washington -->
 
-    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+    <NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3306910691069107</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.49867286728672866</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Elma,_Washington"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3331103110311031</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
-        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </Axiom>
-    <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3329162916291629</elog:probability>
-        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
-        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#thal"/>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4963126312631263</elog:probability>
+        <annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Washington,_Iowa"/>
+        <annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#washington"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </Axiom>
     
@@ -216,16 +177,14 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal,_Styria"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thal_Desert"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Thalictrum"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Elma,_Washington"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Washington,_Iowa"/>
         </distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Arnold_Schwarzenegger"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Gustav_Schwarzenegger"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Mike_Lincoln"/>
         </distinctMembers>
     </rdf:Description>
 </rdf:RDF>

@@ -2,12 +2,15 @@
 package de.dws.mapper.webInterface.servlet;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
@@ -84,6 +87,9 @@ public class EntryServlet extends HttpServlet
     // instantiate a new KB
     UncertainKB uncertainKB = new UncertainKB();
 
+    
+    double conf = 0;
+    
     /**
      * The doPost method of the servlet. <br>
      * This method is called when a form has its tag value method equals to
@@ -138,23 +144,10 @@ public class EntryServlet extends HttpServlet
                 String subject = request.getParameter("subject").trim();
                 String predicate = request.getParameter("predicate").trim();
                 String object = request.getParameter("object").trim();
-                // This is simple search mode. just querying for terms
-                if (!Constants.PREDICTIVE_SEARCH_MODE) { // not really
-                                                         // useful..but to just
-                                                         // play around
 
-                    // create File object of our index directory
-                    File file = new File(Constants.DBPEDIA_ENT_INDEX_DIR);
+                if ("suggest".equals(action)) {
 
-                    if (!subject.equals("Subject") && !subject.equals("")) {
-                        retListSubj = QueryEngine.doSearch(subject, file);
-                    }
-                    if (!object.equals("Object") && !object.equals("")) {
-                        retListObj = QueryEngine.doSearch(object, file);
-                    }
-                } else if ("suggest".equals(action)) {
-
-                    // these inclused both the uris and the scores.
+                    // these includes both the uris and the scores.
                     String[] candidateSubjs = request.getParameterValues("checkboxSubjs");
                     String[] candidatePredLkUp = request.getParameterValues("checkboxPredLookup");
                     String[] candidatePredSearch = request.getParameterValues("checkboxPredSearch");
@@ -187,8 +180,11 @@ public class EntryServlet extends HttpServlet
 
                     // send the suggestions to the reasoner module and create
                     // axioms
+
+                    logger.info(conf + " second");
+                    
                     uncertainFact = new SuggestedFactDAO(subject.replaceAll("\\s", ""),
-                            predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), .88,
+                            predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), conf ,
                             true);
 
                     // *************** create axioms
@@ -222,10 +218,14 @@ public class EntryServlet extends HttpServlet
 
                     Inference.main(args);
 
-                } else {// This is advanced search mode. where the system tries
-                        // to predict the best matches based on
-                        // the input combination
+                } else {
+                    String triple = getARandomTriple();
+                    subject = triple.split(",")[1];
+                    predicate = "birth place";
+                    object = triple.split(",")[3];
+                    conf = Double.valueOf(triple.split(",")[0]);
 
+                    logger.info(conf + " first");
                     // declare class
                     WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object,
                             predicate);
@@ -296,10 +296,11 @@ public class EntryServlet extends HttpServlet
                 logger.info(subject + "  " + predicate + " " + object);
 
                 // send the suggestions to the reasoner module and create axioms
-                /*if (listFacts != null && listFacts.size() > 0) {
-                    axiomCreator = new AxiomCreator();
-                    axiomCreator.createOwlFromFacts(listFacts, uncertainFact);
-                }*/
+                /*
+                 * if (listFacts != null && listFacts.size() > 0) { axiomCreator
+                 * = new AxiomCreator();
+                 * axiomCreator.createOwlFromFacts(listFacts, uncertainFact); }
+                 */
 
                 facts = null;
             }
@@ -312,6 +313,24 @@ public class EntryServlet extends HttpServlet
 
         // redirect to page
         request.getRequestDispatcher("page/entry.jsp").forward(request, response);
+
+    }
+
+    private String getARandomTriple() throws FileNotFoundException {
+        File f = new File("/home/arnab/Work/data/NELL/writerwasbornincity.csv");
+        String result = null;
+        Random rand = new Random();
+        int n = 0;
+        for (Scanner sc = new Scanner(f); sc.hasNext();)
+        {
+            ++n;
+            String line = sc.nextLine();
+            if (rand.nextInt(n) == 0)
+                result = line;
+        }
+
+        // logger.info(result);
+        return result;
 
     }
 

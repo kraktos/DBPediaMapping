@@ -4,6 +4,8 @@
 
 package de.dws.reasoner.inference;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,6 +13,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -121,12 +125,35 @@ public class Inference {
 
     }
 
+    
+    private static String getARandomTriple() throws FileNotFoundException {
+        File f = new File("/home/arnab/Work/data/NELL/writerwasbornincity.csv");
+        String result = null;
+        Random rand = new Random();
+        int n = 0;
+        for (Scanner sc = new Scanner(f); sc.hasNext();)
+        {
+            ++n;
+            String line = sc.nextLine();
+            if (rand.nextInt(n) == 0)
+                result = line;
+        }
+
+        logger.info(result);
+        return result;
+
+    }
     /**
      * @param args
+     * @throws FileNotFoundException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        
+        //findRanking("stalin" , "birth place" , "gori");
 
         findRanking(args[0], args[1], args[2]);
+        
+        //getARandomTriple();
 
     }
 
