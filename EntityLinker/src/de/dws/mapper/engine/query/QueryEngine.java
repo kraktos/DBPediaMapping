@@ -1,3 +1,4 @@
+
 package de.dws.mapper.engine.query;
 
 import java.io.File;
@@ -134,22 +135,27 @@ public class QueryEngine
             if (hits.totalHits == 0 || resultMap.size() < TOP_K) {
 
                 hits =
-                    searcher.search(new WildcardQuery(new Term("labelSmallField", userQuery.toLowerCase() + "*")),
-                        null, Constants.MAX_RESULTS);
+                        searcher.search(
+                                new WildcardQuery(new Term("labelSmallField", userQuery
+                                        .toLowerCase() + "*")),
+                                null, Constants.MAX_RESULTS);
 
                 iterateResult(searcher, setURI, resultMap, hits, userQuery);
 
                 // Fuzzy even then
                 if (hits.totalHits == 0) {
                     hits =
-                        searcher.search(new FuzzyQuery(new Term("uriFullTextField", userQuery.toLowerCase())), null,
-                            Constants.MAX_RESULTS);
+                            searcher.search(
+                                    new FuzzyQuery(new Term("uriFullTextField", userQuery
+                                            .toLowerCase())), null,
+                                    Constants.MAX_RESULTS);
 
                     iterateResult(searcher, setURI, resultMap, hits, userQuery);
                 }
             }
 
-            // process the results so far collected from index matches to incorporate Wikipedia statistics
+            // process the results so far collected from index matches to
+            // incorporate Wikipedia statistics
             returnList = filterTopKResults(userQuery, returnList, resultMap);
 
         } catch (Exception ex) {
@@ -163,8 +169,9 @@ public class QueryEngine
     }
 
     /**
-     * this is important since, querying for "einstein" should place "Albert Einstein" higher than any other
-     * "einsteins". This is achieved by adding some pre-computed statistical data into the search results
+     * this is important since, querying for "einstein" should place
+     * "Albert Einstein" higher than any other "einsteins". This is achieved by
+     * adding some pre-computed statistical data into the search results
      * 
      * @param userQuery
      * @param returnList
@@ -172,18 +179,20 @@ public class QueryEngine
      * @return list of {@link ResultDAO}
      */
     public static List<ResultDAO> filterTopKResults(String userQuery, List<ResultDAO> returnList,
-        Map<Integer, List<ResultDAO>> resultMap)
+            Map<Integer, List<ResultDAO>> resultMap)
     {
 
         List<ResultDAO> retList = new ArrayList<ResultDAO>();
         List<ResultDAO> listResultDao = null;
         Integer key = null;
 
-        // find stats for the user query, This fetches the top 3 meaning of the queried terms
+        // find stats for the user query, This fetches the top 3 meaning of the
+        // queried terms
         // based on the number of outgoing links in wikipedia.
         List<String> dbResults = computeWikiStats(userQuery);
 
-        // iterate the result map to construct the return list of result data access objects
+        // iterate the result map to construct the return list of result data
+        // access objects
         for (Entry<Integer, List<ResultDAO>> entry : resultMap.entrySet()) {
             listResultDao = entry.getValue();
             key = entry.getKey();
@@ -192,7 +201,8 @@ public class QueryEngine
             for (ResultDAO dao : listResultDao) {
                 // if not already in the collection add it
                 if (!returnList.contains(dao)) {
-                    // make an intelligent addition, by checking against the high frequency term list
+                    // make an intelligent addition, by checking against the
+                    // high frequency term list
                     returnList = improveRanks(returnList, dao, dbResults);
                 }
             }
@@ -211,16 +221,19 @@ public class QueryEngine
     }
 
     /**
-     * method improves the ranking of a matched result if the matching entity is indeed a highly used/referred to term
+     * method improves the ranking of a matched result if the matching entity is
+     * indeed a highly used/referred to term
      * 
      * @param returnList return list of {@link ResultDAO}
      * @param dao {@link ResultDAO} instance to be checked
      * @param dbResults high frequency entities returned from DB
      * @return list of {@link ResultDAO} of re ordered entities
      */
-    private static List<ResultDAO> improveRanks(List<ResultDAO> returnList, ResultDAO dao, List<String> dbResults)
+    private static List<ResultDAO> improveRanks(List<ResultDAO> returnList, ResultDAO dao,
+            List<String> dbResults)
     {
-        // return the position of high frequency. will be 0,1 or 2 since only top 3 high frequency terms are fetched
+        // return the position of high frequency. will be 0,1 or 2 since only
+        // top 3 high frequency terms are fetched
         int position = checkIfHighFreq(dbResults, dao);
 
         // add them to the return list accordingly
@@ -237,11 +250,13 @@ public class QueryEngine
     }
 
     /**
-     * checks if the fetched result is indeed occurring in the high frequency list of entities
+     * checks if the fetched result is indeed occurring in the high frequency
+     * list of entities
      * 
      * @param dbResults db results of top 3 highly used terms
      * @param dao {@link ResultDAO} instance
-     * @return position of occurrence of the matching term (if any) in the result set fetched from DB
+     * @return position of occurrence of the matching term (if any) in the
+     *         result set fetched from DB
      */
     private static int checkIfHighFreq(List<String> dbResults, ResultDAO dao)
     {
@@ -254,7 +269,8 @@ public class QueryEngine
         for (String dbString : dbResults) {
             // check to see if the entities being compared are really similar
             int score = StringUtils.getLevenshteinDistance(dbString, uri);
-            // this score suffices since the entity are a close enough, (within 0 or 1 edit distance, omit anything
+            // this score suffices since the entity are a close enough, (within
+            // 0 or 1 edit distance, omit anything
             // more)
             if (score < 2) {
                 return dbResults.indexOf(dbString);
@@ -311,8 +327,10 @@ public class QueryEngine
     public static BooleanQuery frameQuery(String userQuery, String field1, String field2)
     {
         BooleanQuery subQuery = new BooleanQuery();
-        subQuery.add(new TermQuery(new Term(field1, userQuery.toLowerCase())), BooleanClause.Occur.MUST);
-        subQuery.add(new TermQuery(new Term(field2, userQuery.toLowerCase())), BooleanClause.Occur.MUST);
+        subQuery.add(new TermQuery(new Term(field1, userQuery.toLowerCase())),
+                BooleanClause.Occur.MUST);
+        subQuery.add(new TermQuery(new Term(field2, userQuery.toLowerCase())),
+                BooleanClause.Occur.MUST);
         return subQuery;
     }
 
@@ -321,11 +339,13 @@ public class QueryEngine
      * @param setURI a set to identify the unique URI s
      * @param resultMap a result map sorted by best matches
      * @param hits document hits instance
-     * @param userQuery the user input coming from web interface or extraction engines
+     * @param userQuery the user input coming from web interface or extraction
+     *            engines
      * @throws IOException
      */
     public static void iterateResult(IndexSearcher searcher, Set<String> setURI,
-        Map<Integer, List<ResultDAO>> resultMap, TopDocs hits, String userQuery) throws IOException
+            Map<Integer, List<ResultDAO>> resultMap, TopDocs hits, String userQuery)
+            throws IOException
     {
         String labelField;
         String uriField;
@@ -350,22 +370,32 @@ public class QueryEngine
             // only add the unique entries(URI and label combination)
             if (Utilities.checkUniqueness(setURI, uriField)) {
 
-                // the key is the sum of the levenstein edit distances of the query with the label and the query with
-                // the URI. Obviously, the best matching record will have both these edit distances minimum and an
+                // the key is the sum of the levenstein edit distances of the
+                // query with the label and the query with
+                // the URI. Obviously, the best matching record will have both
+                // these edit distances minimum and an
                 // overall minimum score.
                 Integer key =
-                    StringUtils.getLevenshteinDistance(userQuery, labelField.toLowerCase())
-                        + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
+                        StringUtils.getLevenshteinDistance(userQuery, labelField.toLowerCase())
+                                + StringUtils.getLevenshteinDistance(userQuery, uriTextField);
 
-                // Add to the result map, check for existing key, add or update the values accordingly
+                double ratio = (double) (StringUtils
+                        .getLevenshteinDistance(userQuery, uriTextField)) / (double) (Math
+                        .max(userQuery.length(), uriTextField.length()));
+
+                // Add to the result map, check for existing key, add or update
+                // the values accordingly
                 if (resultMap.containsKey(key)) {
-                    resultMap.get(key).add(new ResultDAO(uriField, labelField, Math.round(score)));
-                    // resultMap.get(key).add(new ResultDAO(uriField, labelField, isHighFreq, Math.round(score * 100)));
+                    resultMap.get(key).add(new ResultDAO(uriField, labelField, 1 - ratio));
+                    // resultMap.get(key).add(new ResultDAO(uriField,
+                    // labelField, isHighFreq, Math.round(score * 100)));
                 } else {
                     list = new ArrayList<ResultDAO>();
-                    // logger.info(new ResultDAO(uriField, Math.round(score * 100)));
-                    list.add(new ResultDAO(uriField, labelField, Math.round(score)));
-                    // list.add(new ResultDAO(uriField, labelField, isHighFreq, Math.round(score * 100)));
+                    // logger.info(new ResultDAO(uriField, Math.round(score *
+                    // 100)));
+                    list.add(new ResultDAO(uriField, labelField, 1 - ratio));
+                    // list.add(new ResultDAO(uriField, labelField, isHighFreq,
+                    // Math.round(score * 100)));
                     resultMap.put(key, list);
                 }
             }
@@ -382,12 +412,14 @@ public class QueryEngine
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public static List<List<ResultDAO>> performSearch(ExecutorService pool, final String subjFromTuple,
-        final String objFromTuple) throws InterruptedException, ExecutionException
+    public static List<List<ResultDAO>> performSearch(ExecutorService pool,
+            final String subjFromTuple,
+            final String objFromTuple) throws InterruptedException, ExecutionException
     {
         List<List<ResultDAO>> retList = new ArrayList<List<ResultDAO>>();
 
-        // The idea is we parallely process the two queries simultaneously and receive back the results
+        // The idea is we parallely process the two queries simultaneously and
+        // receive back the results
         // to the main thread i.e here. This is not possible with Thread class.
         Future<List<ResultDAO>> subjTask = pool.submit(new QueryAPIWrapper(subjFromTuple));
         Future<List<ResultDAO>> objTask = pool.submit(new QueryAPIWrapper(objFromTuple));
@@ -401,15 +433,17 @@ public class QueryEngine
     }
 
     /**
-     * takes a list of subject and object from the DBPedia and tries to find all possible set of predicates connecting
-     * these two two entities (subject and object)
+     * takes a list of subject and object from the DBPedia and tries to find all
+     * possible set of predicates connecting these two two entities (subject and
+     * object)
      * 
      * @param subList argument 1 of {@link List } of {@link ResultDAO}
      * @param objList argument 2 of {@link List } of {@link ResultDAO}
      * @param actualPredicateFromIE
      */
-    public static void fetchPredicates(final List<ResultDAO> subList, final List<ResultDAO> objList,
-        final String actualPredicateFromIE)
+    public static void fetchPredicates(final List<ResultDAO> subList,
+            final List<ResultDAO> objList,
+            final String actualPredicateFromIE)
     {
 
         List<String> possibleSubjs = new ArrayList<String>();
@@ -420,12 +454,14 @@ public class QueryEngine
         ResultSet results = null;
         String matchedProp = null;
 
-        // take into consideration only those candidates having a score more than 80%
+        // take into consideration only those candidates having a score more
+        // than 80%
         for (int listCounter = 0; listCounter < subList.size(); listCounter++) {
             if (subList.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
                 possibleSubjs.add(subList.get(listCounter).getFieldURI());
             } else {
-                break; // no need to iterate further, since the rest values are less than the desired score
+                break; // no need to iterate further, since the rest values are
+                       // less than the desired score
             }
         }
 
@@ -433,17 +469,20 @@ public class QueryEngine
             if (objList.get(listCounter).getScore() > Constants.THRESHOLD_SCORE) {
                 possibleObjs.add(objList.get(listCounter).getFieldURI());
             } else {
-                break; // no need to iterate further, since the rest values are less than the desired score
+                break; // no need to iterate further, since the rest values are
+                       // less than the desired score
             }
         }
 
-        // we only take all possible subjects and objects if the score is more than te treshold and try to see from them
+        // we only take all possible subjects and objects if the score is more
+        // than te treshold and try to see from them
         // what possible
         // predicates we have
         for (String subj : possibleSubjs) {
             for (String obj : possibleObjs) {
 
-                sparqlQuery = "select ?predicates where {<" + subj + "> ?predicates <" + obj + ">} ";
+                sparqlQuery = "select ?predicates where {<" + subj + "> ?predicates <" + obj
+                        + ">} ";
                 /*
                  * "UNION {<" + obj + "> ?predicates <" + subj + ">}}";
                  */
@@ -484,19 +523,23 @@ public class QueryEngine
             int countIEPredicate = ITupleProcessor.iePredicatesCountMap.get(actualPredicateFromIE);
             ITupleProcessor.iePredicatesCountMap.put(actualPredicateFromIE, countIEPredicate + 1);
 
-            // retrieve the whole map which is the value against "actualPredicateFromIE"
-            propertyVsCountMap = ITupleProcessor.predicateSurfaceFormsMap.get(actualPredicateFromIE);
+            // retrieve the whole map which is the value against
+            // "actualPredicateFromIE"
+            propertyVsCountMap = ITupleProcessor.predicateSurfaceFormsMap
+                    .get(actualPredicateFromIE);
 
             // if the current key is occurring in this map, increment its value
             if (propertyVsCountMap.containsKey(matchedProp)) {
                 int value = propertyVsCountMap.get(matchedProp);
                 propertyVsCountMap.put(matchedProp, value + 1);
 
-                // add also keep a global count of the occurrence of this "matchedProp"
+                // add also keep a global count of the occurrence of this
+                // "matchedProp"
                 int dbPediaPropCount = ITupleProcessor.dbPediaPredicatesCountMap.get(matchedProp);
                 ITupleProcessor.dbPediaPredicatesCountMap.put(matchedProp, dbPediaPropCount + 1);
 
-            } else { // add this new key as a possible prediction of the surface form
+            } else { // add this new key as a possible prediction of the surface
+                     // form
                 propertyVsCountMap.put(matchedProp, 1);
                 ITupleProcessor.dbPediaPredicatesCountMap.put(matchedProp, 1);
             }
@@ -558,7 +601,7 @@ public class QueryEngine
                     if (elem.length > 1) {
                         match = elem[1].split("~");
                         returnList.add(new ResultDAO(match[0],
-                            Math.round(Double.parseDouble(match[1]) / topScore * 100)));
+                                Math.round(Double.parseDouble(match[1]) / topScore * 100)));
                         logger.debug(match[0] + "   " + match[1]);
                     }
                 }
