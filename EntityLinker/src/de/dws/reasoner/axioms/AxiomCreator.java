@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -18,12 +19,15 @@ import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -42,7 +46,7 @@ import de.dws.mapper.helper.util.Utilities;
  * file. This step is important since, we want to apply a reasoner on top of
  * these axioms. We use OWL API for the purpose. A detailed documentation for
  * the API can be found at {@link http
- * ://owlapi.sourceforge.net/documentation.html}. This allows to create asioms
+ * ://owlapi.sourceforge.net/documentation.html}. This allows to create axioms
  * with weights(soft constraints) and also unweighted (hard constraints)
  * 
  * @author Arnab Dutta
@@ -54,15 +58,6 @@ public class AxiomCreator
      * logger
      */
     public Logger logger = Logger.getLogger(AxiomCreator.class.getName());
-
-    // Ontology namespace
-    private static String ontologyNS = "http://www.semanticweb.org/ontologies/FactOntology/DbPedia/";
-
-    // DBPedia namespace
-    private static String DBPediaNS = "http://www.semanticweb.org/ontologies/FactOntology/Dbp#";
-
-    // extraction engine namespace
-    private static String extractionEngineNS = "http://www.semanticweb.org/ontologies/FactOntology/Extract#";
 
     /**
      * OWLOntologyManager instance
@@ -107,18 +102,16 @@ public class AxiomCreator
         manager = OWLManager.createOWLOntologyManager();
 
         // create Iri
-        ontologyIRI = IRI.create(ontologyNS);
+        ontologyIRI = IRI.create(Constants.ONTOLOGY_NAMESPACE);
 
         // Get hold of a data factory from the manager and
         factory = manager.getOWLDataFactory();
 
         // set up a prefix manager to make things easier
-        prefixDBPedia = new DefaultPrefixManager(IRI.create(DBPediaNS).toString());
-        prefixIE = new DefaultPrefixManager(IRI.create(extractionEngineNS).toString());
+        prefixDBPedia = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_DBP_NS).toString());
+        prefixIE = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_EXTRACTION_NS).toString());
 
     }
-
-    
 
     /**
      * Overloaded function
@@ -127,10 +120,12 @@ public class AxiomCreator
      * @param candidatePreds Candidate list for possible predicates
      * @param candidateObjs Candidate list for possible objects
      * @param uncertainFact Uncertain Extraction engine fact
+     * @param entityTypesMap Map containing the entity type information
      * @throws OWLOntologyCreationException
      */
     public void createOwlFromFacts(List<ResultDAO> candidateSubjs, List<ResultDAO> candidatePreds,
-            List<ResultDAO> candidateObjs, SuggestedFactDAO uncertainFact)
+            List<ResultDAO> candidateObjs, SuggestedFactDAO uncertainFact,
+            Map<String, List<String>> entityTypesMap)
             throws OWLOntologyCreationException {
 
         // create an ontology
@@ -138,20 +133,26 @@ public class AxiomCreator
 
         // create same as links with the extraction engine extract and the
         // candidate subjects and objects
-        createSameAsAssertions(candidateSubjs, uncertainFact.getSubject());
-        createSameAsAssertions(candidateObjs, uncertainFact.getObject());
+        createSameAsAssertions(ontology, candidateSubjs, uncertainFact.getSubject(), entityTypesMap);
+        createSameAsAssertions(ontology, candidateObjs, uncertainFact.getObject(), entityTypesMap);
 
         // create same as links with the extraction engine extract and the
         // candidate properties
         createPropEquivAssertions(candidatePreds, uncertainFact.getPredicate());
 
-        // creates the object property assertion from the matched IE fact
+        // creates the object property assertion from the IE fact
         createObjectPropertyAssertions(uncertainFact, prefixIE);
+
+        // create domain range restriction on the IE property
+        creatDomainRangeRestriction(ontology, uncertainFact.getPredicate());
 
         // explicitly define that all the candidates are different from each
         // other
         createDifferentFromAssertions(candidateSubjs);
         createDifferentFromAssertions(candidateObjs);
+
+        // add disjointness axiom on the top level classes
+        createTBoxAxioms(ontology);
 
         // annotate the axioms
         annotateAxioms(ontology);
@@ -162,12 +163,31 @@ public class AxiomCreator
         // pause few seconds for the output axiom files to be
         // created
         try {
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
 
+    private void creatDomainRangeRestriction(OWLOntology ontology, String predicate) {
+
+        OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
+                predicate, prefixIE);
+
+        // also add domain range restriction on the property
+        OWLClass domain = factory.getOWLClass(IRI.create(ontologyIRI + "Person"));
+        OWLClass range = factory.getOWLClass(IRI.create(ontologyIRI + "Place"));
+
+        OWLObjectPropertyDomainAxiom domainAxiom = factory.getOWLObjectPropertyDomainAxiom(
+                ieProperty,
+                domain);
+        OWLObjectPropertyRangeAxiom rangeAxiom = factory.getOWLObjectPropertyRangeAxiom(ieProperty,
+                range);
+
+        // add to the manager as hard constraints
+        manager.addAxiom(ontology, domainAxiom);
+        manager.addAxiom(ontology, rangeAxiom);
     }
 
     /**
@@ -207,6 +227,9 @@ public class AxiomCreator
      */
     private void createPropEquivAssertions(List<ResultDAO> candidatePreds, String predicate) {
 
+        OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
+                predicate, prefixIE);
+
         // iterate through the possible list of candidates and as many
         // equivalent property links
         for (ResultDAO possibleCandidate : candidatePreds) {
@@ -215,8 +238,6 @@ public class AxiomCreator
             OWLObjectProperty dbProperty = factory.getOWLObjectProperty(
                     Utilities.prun(possibleCandidate.getFieldURI()),
                     prefixDBPedia);
-            OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
-                    predicate, prefixIE);
 
             // create a same as/ is equivalent link between properties
             OWLEquivalentObjectPropertiesAxiom equivPropertyAxiom =
@@ -227,6 +248,7 @@ public class AxiomCreator
                     convertProbabilityToWeight(possibleCandidate.getScore())));
 
         }
+
     }
 
     /**
@@ -237,7 +259,9 @@ public class AxiomCreator
      * @param candidates collection of possible matches
      * @param extractedValue extracted value from Nell or freeverb etc
      */
-    private void createSameAsAssertions(List<ResultDAO> candidates, String extractedValue) {
+    private void createSameAsAssertions(OWLOntology ontology, List<ResultDAO> candidates,
+            String extractedValue,
+            Map<String, List<String>> entityTypesMap) {
 
         // iterate through the possible list of candidates and as many same as
         // links between them
@@ -254,10 +278,43 @@ public class AxiomCreator
             OWLSameIndividualAxiom sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
                     dbValue, ieValue);
 
+            // create the type of axioms. these are hard constraints
+            generateIsTypeOfAssertions(ontology, possibleCandidate, entityTypesMap);
+
             // add it to list of soft constraints
             listAxioms
                     .add(new Axiom(sameAsIndividualAxiom,
                             convertProbabilityToWeight(possibleCandidate.getScore())));
+        }
+    }
+
+    private void generateIsTypeOfAssertions(OWLOntology ontology, ResultDAO possibleCandidate,
+            Map<String, List<String>> entityTypesMap) {
+
+        try {
+            List<String> typesOfThisEntity = entityTypesMap.get(possibleCandidate.getFieldURI());
+
+            // type information may be missing for some
+
+            if (typesOfThisEntity != null && typesOfThisEntity.size() > 0) {
+                // create the individual candidate
+                OWLNamedIndividual dbValue = factory.getOWLNamedIndividual(
+                        Utilities.prun(possibleCandidate.getFieldURI()),
+                        prefixDBPedia);
+                for (String type : typesOfThisEntity) {
+                    OWLClass typeOfClass = factory.getOWLClass(IRI.create(ontologyIRI
+                            + Utilities.prun(type)));
+
+                    // create the is type of assertion
+                    OWLClassAssertionAxiom classAssertionAx = factory.getOWLClassAssertionAxiom(
+                            typeOfClass, dbValue);
+
+                    // add to the manager
+                    manager.addAxiom(ontology, classAssertionAx);
+                }
+            }
+        } catch (Exception e) {
+            logger.info("Exception in " + e.getMessage());
         }
     }
 
@@ -272,10 +329,9 @@ public class AxiomCreator
         return Math.log(prob / (1 - prob));
     }
 
-    /**
-     * create same as links between two facts (one from IE the other from
+    /*
+     * /** create same as links between two facts (one from IE the other from
      * DBPedia) for each individual subjects, pr
-     * 
      * @param fact
      * @param nellFact
      * @param ontology
@@ -385,7 +441,6 @@ public class AxiomCreator
         } finally {
             logger.info("Axiom file created at : "
                     + Constants.OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH);
-
         }
     }
 
@@ -426,12 +481,48 @@ public class AxiomCreator
         }
     }
 
-    private void createTBOxAxioms(OWLOntology ontology)
+    /**
+     * add disjointness axiom
+     * 
+     * @param ontology
+     */
+    private void createTBoxAxioms(OWLOntology ontology)
     {
-        OWLClass subClass = factory.getOWLClass(IRI.create(ontologyIRI + "#SuperSubject"));
-        OWLClass objClass = factory.getOWLClass(IRI.create(ontologyIRI + "#SuperObject"));
+        OWLClass subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Person"));
 
+        // ***************************** Disjoint with Person class
+
+        OWLClass objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Place"));
         OWLDisjointClassesAxiom disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+                objClass);
+        manager.addAxiom(ontology, disjointClassesAxiom);
+
+        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
+        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+                objClass);
+        manager.addAxiom(ontology, disjointClassesAxiom);
+
+        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "TelevisionShow"));
+        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+                objClass);
+        manager.addAxiom(ontology, disjointClassesAxiom);
+
+        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Film"));
+        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+                objClass);
+        manager.addAxiom(ontology, disjointClassesAxiom);
+
+
+        // **************************** Disjoint with Place class
+        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Place"));
+
+        subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Organisation"));
+        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+                objClass);
+        manager.addAxiom(ontology, disjointClassesAxiom);
+
+        subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
+        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
                 objClass);
         manager.addAxiom(ontology, disjointClassesAxiom);
 

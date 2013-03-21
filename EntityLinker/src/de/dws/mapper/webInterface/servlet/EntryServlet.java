@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -23,9 +25,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+
 import de.dws.mapper.controller.WebTupleProcessor;
 import de.dws.mapper.dbConnectivity.DBConnection;
 import de.dws.mapper.engine.query.QueryEngine;
+import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
@@ -61,6 +68,8 @@ public class EntryServlet extends HttpServlet
 
     List<ResultDAO> retListSubj = new ArrayList<ResultDAO>();
 
+    Map<String, List<String>> entityTypesMap = new HashMap<String, List<String>>();
+
     /**
      * Constructor of the object.
      */
@@ -87,9 +96,8 @@ public class EntryServlet extends HttpServlet
     // instantiate a new KB
     UncertainKB uncertainKB = new UncertainKB();
 
-    
     double conf = 0;
-    
+
     /**
      * The doPost method of the servlet. <br>
      * This method is called when a form has its tag value method equals to
@@ -181,10 +189,8 @@ public class EntryServlet extends HttpServlet
                     // send the suggestions to the reasoner module and create
                     // axioms
 
-                    logger.info(conf + " second");
-                    
                     uncertainFact = new SuggestedFactDAO(subject.replaceAll("\\s", ""),
-                            predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), conf ,
+                            predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), conf,
                             true);
 
                     // *************** create axioms
@@ -194,7 +200,7 @@ public class EntryServlet extends HttpServlet
 
                     axiomCreator = new AxiomCreator();
                     axiomCreator.createOwlFromFacts(subDaos, predDaos,
-                            objDaos, uncertainFact);
+                            objDaos, uncertainFact, entityTypesMap);
 
                     // **************** reason with Elog
                     // ************************************************************************************
@@ -225,7 +231,6 @@ public class EntryServlet extends HttpServlet
                     object = triple.split(",")[3];
                     conf = Double.valueOf(triple.split(",")[0]);
 
-                    logger.info(conf + " first");
                     // declare class
                     WebTupleProcessor webTupleProc = new WebTupleProcessor(pool, subject, object,
                             predicate);
@@ -334,11 +339,55 @@ public class EntryServlet extends HttpServlet
 
     }
 
-    private List<ResultDAO> getResultDaos(String[] candidateSubjs) {
+    /**
+     * takes the list of possible matches and frames a list of ResultDao out of
+     * it. Also, it creates a list of the types of the particular entity. E.g.
+     * London -> ontology/PopulatedPlace, /ontology/Place, /ontology/Settlement,
+     * /ontology/City
+     * 
+     * @param candidates
+     * @return List of {@link ResultDAO}
+     */
+    private List<ResultDAO> getResultDaos(String[] candidates) {
         List<ResultDAO> retList = new ArrayList<ResultDAO>();
 
-        for (String value : candidateSubjs) {
-            String[] arg = value.split("~");
+        ResultSet results = null;
+        List<QuerySolution> listResults = null;
+        String type = null;
+        String entityUri = null;
+        String[] arg = null;
+        List<String> listTypes = null;
+
+        // iterate the candidate array
+        for (String value : candidates) {
+            arg = value.split("~");
+            entityUri = arg[0];
+
+            // find the type of this entity
+            results = SPARQLEndPointQueryAPI
+                    .queryDBPediaEndPoint("select distinct ?val where {<" +
+                            entityUri +
+                            "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val}");
+            listResults = ResultSetFormatter.toList(results);
+
+            // for a possible entity there can be multiple types, Person,
+            // writer, agent etc
+            for (QuerySolution querySol : listResults) {
+                type = querySol.get("val").toString();
+                if (type.startsWith("http://dbpedia.org/ontology/")) {
+                    logger.info(type);
+                    // if the key exists, add it to its list of type
+                    if (entityTypesMap.containsKey(entityUri)) {
+                        entityTypesMap.get(entityUri).add(type);
+                    } else {
+                        listTypes = new ArrayList<String>();
+                        listTypes.add(type);
+                        entityTypesMap.put(entityUri, listTypes);
+                    }
+                }
+            }
+
+            //logger.info(entityTypesMap);
             retList.add(new ResultDAO(arg[0], Double.valueOf(arg[1])));
         }
         return retList;

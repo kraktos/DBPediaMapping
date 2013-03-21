@@ -26,9 +26,9 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql";// "http://dbpedia.org/sparql";
-                                                                                          // //
-                                                                                          // "http://live.dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
+    // //
+    // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS
     // ************************************************
@@ -136,7 +136,7 @@ public class Constants
     /**
      * Sample query to test the indexed DBPedia data
      */
-    public static final String SAMPLE_QUERY = "acm";
+    public static final String SAMPLE_QUERY = "shaw";
 
     // *****************IE Engines output locations
     // ***************************************************
@@ -194,6 +194,25 @@ public class Constants
 
     // *****************OWL
     // PARAMETES***************************************************
+
+    /**
+     * namespace of the ontology to be used for creation of the axiom files
+     */
+    public static String ONTOLOGY_NAMESPACE = "http://dbpedia.org/ontology/";
+
+    /**
+     * DBPedia namespace
+     */
+    public static String ONTOLOGY_DBP_NS = ONTOLOGY_NAMESPACE + "Dbp#";
+
+    /**
+     * extraction engine namespace
+     */
+    public static String ONTOLOGY_EXTRACTION_NS = ONTOLOGY_NAMESPACE + "Extract#";
+
+    /**
+     * DBPedia TBOX info file
+     */
     public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/dbpediaTBox.owl";
 
     /**

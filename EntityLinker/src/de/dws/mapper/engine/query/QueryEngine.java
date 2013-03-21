@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -201,10 +202,21 @@ public class QueryEngine
             for (ResultDAO dao : listResultDao) {
                 // if not already in the collection add it
                 if (!returnList.contains(dao)) {
-                    // make an intelligent addition, by checking against the
+                    // make an addition, by checking against the
                     // high frequency term list
                     returnList = improveRanks(returnList, dao, dbResults);
                 }
+            }
+        }
+
+        // add the most frequent word blindly to the results with the best
+        // score
+        if (dbResults.size() > 0) {
+            ResultDAO highDao = new ResultDAO("http://dbpedia.org/resource/" + dbResults.get(0),
+                    1.0);
+
+            if (!returnList.contains(highDao)) {
+                returnList.add(0, highDao);
             }
         }
 
@@ -239,6 +251,7 @@ public class QueryEngine
         // add them to the return list accordingly
         if (position != -1) {
             if (position < returnList.size()) {
+                dao.setScore(1.0);
                 returnList.add(position, dao);
             } else {
                 returnList.add(dao);
@@ -246,6 +259,7 @@ public class QueryEngine
         } else {
             returnList.add(dao);
         }
+
         return returnList;
     }
 
@@ -382,6 +396,13 @@ public class QueryEngine
                 double ratio = (double) (StringUtils
                         .getLevenshteinDistance(userQuery, uriTextField)) / (double) (Math
                         .max(userQuery.length(), uriTextField.length()));
+
+                if (ratio == 1)
+                    ratio = ratio - 0.0001;
+                
+                logger.debug(" ratio for " + userQuery + " " + StringUtils
+                        .getLevenshteinDistance(userQuery, uriTextField) + "  " + Math
+                        .max(userQuery.length(), uriTextField.length()) + "  " + ratio);
 
                 // Add to the result map, check for existing key, add or update
                 // the values accordingly

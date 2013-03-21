@@ -60,15 +60,6 @@ public class Inference {
      */
     public static Logger logger = Logger.getLogger(Inference.class.getName());
 
-    // Ontology namespace
-    private static String ontologyNS = "http://www.semanticweb.org/ontologies/FactOntology/";
-
-    // DBPedia namespace
-    private static String DBPediaNS = "http://www.semanticweb.org/ontologies/FactOntology/Dbp#";
-
-    // extraction engine namespace
-    private static String extractionEngineNS = "http://www.semanticweb.org/ontologies/FactOntology/Extract#";
-
     /**
      * OWLOntologyManager instance
      */
@@ -115,8 +106,10 @@ public class Inference {
             factory = manager.getOWLDataFactory();
 
             // set up a prefix manager to make things easier
-            prefixDBPedia = new DefaultPrefixManager(IRI.create(DBPediaNS).toString());
-            prefixIE = new DefaultPrefixManager(IRI.create(extractionEngineNS).toString());
+            prefixDBPedia = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_DBP_NS)
+                    .toString());
+            prefixIE = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_EXTRACTION_NS)
+                    .toString());
 
         } catch (OWLOntologyCreationException e) {
             logger.error(" error loading ontology file  "
@@ -125,7 +118,6 @@ public class Inference {
 
     }
 
-    
     private static String getARandomTriple() throws FileNotFoundException {
         File f = new File("/home/arnab/Work/data/NELL/writerwasbornincity.csv");
         String result = null;
@@ -143,17 +135,18 @@ public class Inference {
         return result;
 
     }
+
     /**
      * @param args
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException {
-        
-        //findRanking("stalin" , "birth place" , "gori");
+
+        // findRanking("stalin" , "birth place" , "gori");
 
         findRanking(args[0], args[1], args[2]);
-        
-        //getARandomTriple();
+
+        // getARandomTriple();
 
     }
 
@@ -264,7 +257,7 @@ public class Inference {
 
                     // remove the entries in the set which are not the named
                     // individuals
-                    if (!entity.getIRI().toString().startsWith(ontologyNS)) {
+                    if (!entity.getIRI().toString().startsWith(Constants.ONTOLOGY_NAMESPACE)) {
                         tempSetEntity.remove(entity);
                     }
                     // if it is the matching individual, then remove it too and

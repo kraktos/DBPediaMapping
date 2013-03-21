@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/FactOntology/DbPedia/"
-     xml:base="http://www.semanticweb.org/ontologies/FactOntology/DbPedia/"
+<rdf:RDF xmlns="http://dbpedia.org/ontology/"
+     xml:base="http://dbpedia.org/ontology/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:Fairview_Heights="http://dbpedia.org/ontology/Dbp#Fairview_Heights,"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:Dbp="http://www.semanticweb.org/ontologies/FactOntology/Dbp#"
+     xmlns:ontology="http://dbpedia.org/ontology/"
+     xmlns:Dbp="http://dbpedia.org/ontology/Dbp#"
      xmlns:reasoner="http://reasoner#"
-     xmlns:Extract="http://www.semanticweb.org/ontologies/FactOntology/Extract#">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/FactOntology/DbPedia/"/>
+     xmlns:Extract="http://dbpedia.org/ontology/Extract#">
+    <owl:Ontology rdf:about="http://dbpedia.org/ontology/"/>
     
 
 
@@ -46,29 +48,107 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace -->
+    <!-- http://dbpedia.org/ontology/Dbp#birthPlace -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace">
-        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/Dbp#birthPlace">
+        <owl:equivalentProperty rdf:resource="http://dbpedia.org/ontology/Extract#birthplace"/>
     </owl:ObjectProperty>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#birthPlace"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#birthplace"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace -->
+    <!-- http://dbpedia.org/ontology/Extract#birthplace -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/Extract#birthplace">
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Place"/>
+    </owl:ObjectProperty>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#birthPlace"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#birthPlace"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#birthplace"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org/ontology/Agent -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Agent"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Film -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Film">
+        <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Organisation -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Organisation">
+        <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/Place"/>
+    </owl:Class>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Person -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Person">
+        <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/Place"/>
+        <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/TelevisionShow"/>
+        <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/Work"/>
+    </owl:Class>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Place -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Place">
+        <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/Work"/>
+    </owl:Class>
+    
+
+
+    <!-- http://dbpedia.org/ontology/PopulatedPlace -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/PopulatedPlace"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Settlement -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Settlement"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/TelevisionShow -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/TelevisionShow"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Work -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Work"/>
     
 
 
@@ -83,141 +163,109 @@
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston -->
+    <!-- http://dbpedia.org/ontology/Dbp#Adler_(automobile) -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Dbp#Adler_(automobile)">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Adler_(automobile)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak -->
+    <!-- http://dbpedia.org/ontology/Dbp#Fairview_Heights,_Illinois -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_Illinois">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Place"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Settlement"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2623642644674913</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_Illinois"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock -->
+    <!-- http://dbpedia.org/ontology/Dbp#Fairview_Heights,_West_Virginia -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_West_Virginia">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Place"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Settlement"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.07410797215372172</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_West_Virginia"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer -->
+    <!-- http://dbpedia.org/ontology/Dbp#Jay_Adler -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Dbp#Jay_Adler">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
     </owl:NamedIndividual>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Jay_Adler"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer -->
+    <!-- http://dbpedia.org/ontology/Extract#Adler -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#Adler">
+        <Extract:birthplace rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
     </owl:NamedIndividual>
     <owl:Axiom>
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Adler_(automobile)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">8.31752199628717</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#birthplace"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Jay_Adler"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Adler"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
 
 
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer -->
+    <!-- http://dbpedia.org/ontology/Extract#FairviewHeights -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer">
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer">
-        <Extract:birthplace rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
-    </owl:NamedIndividual>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
-        <owl:annotatedProperty rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#birthplace"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.07410797215372172</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_West_Virginia"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#Homer"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    
-
-
-    <!-- http://www.semanticweb.org/ontologies/FactOntology/Extract#boston -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
-        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
-    </owl:Axiom>
-    <owl:Axiom>
-        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
-        <owl:annotatedSource rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak"/>
-        <owl:annotatedTarget rdf:resource="http://www.semanticweb.org/ontologies/FactOntology/Extract#boston"/>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2623642644674913</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_Illinois"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#FairviewHeights"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
     </owl:Axiom>
     
@@ -234,17 +282,15 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Homer"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Irv_Homer"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Max_Homer"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_Illinois"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Dbp#Fairview_Heights,_West_Virginia"/>
         </owl:distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
         <owl:distinctMembers rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Anime_Boston"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Peak"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/ontologies/FactOntology/Dbp#Boston_Rock"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Dbp#Adler_(automobile)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Dbp#Jay_Adler"/>
         </owl:distinctMembers>
     </rdf:Description>
 </rdf:RDF>
