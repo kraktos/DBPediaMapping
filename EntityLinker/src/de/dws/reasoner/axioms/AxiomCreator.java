@@ -129,7 +129,13 @@ public class AxiomCreator
             throws OWLOntologyCreationException {
 
         // create an ontology
-        OWLOntology ontology = manager.createOntology(ontologyIRI);
+        // OWLOntology ontology = manager.createOntology(ontologyIRI);
+
+        File file = new File(
+                "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/input/dbpediaTBox.owl");
+        // Now load the local copy
+        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
+        System.out.println("Loaded ontology: " + ontology);
 
         // create same as links with the extraction engine extract and the
         // candidate subjects and objects
@@ -144,15 +150,27 @@ public class AxiomCreator
         createObjectPropertyAssertions(uncertainFact, prefixIE);
 
         // create domain range restriction on the IE property
-        creatDomainRangeRestriction(ontology, uncertainFact.getPredicate());
+        // creatDomainRangeRestriction(ontology, uncertainFact.getPredicate());
 
         // explicitly define that all the candidates are different from each
         // other
         createDifferentFromAssertions(candidateSubjs);
         createDifferentFromAssertions(candidateObjs);
 
+        
+        // very very stupid way...but no other way as of now.
+        List<String> names = new ArrayList<String>();
+        names.add("Place");
+        names.add("Drug");
+        names.add("Award");
+        names.add("Agent");
+        names.add("Event");
+        names.add("ChemicalSubstance");
+        names.add("Film");
+        names.add("Organisation");
+        names.add("Album");
         // add disjointness axiom on the top level classes
-        createTBoxAxioms(ontology);
+        createTBoxAxioms(ontology, names);
 
         // annotate the axioms
         annotateAxioms(ontology);
@@ -481,6 +499,25 @@ public class AxiomCreator
         }
     }
 
+    private void createTBoxAxioms(OWLOntology ontology, List<String> classNames)
+    {
+        OWLClass subClass = null;
+        OWLClass objClass = null;
+        OWLDisjointClassesAxiom disjointClassesAxiom = null;
+
+        for (int i = 0; i < classNames.size(); i++) {
+            for (int j = i + 1; j < classNames.size(); j++) {
+                subClass = factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(i)));
+                objClass = factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(j)));
+                
+                disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+                        objClass);
+
+                manager.addAxiom(ontology, disjointClassesAxiom);
+            }
+        }
+    }
+
     /**
      * add disjointness axiom
      * 
@@ -489,42 +526,36 @@ public class AxiomCreator
     private void createTBoxAxioms(OWLOntology ontology)
     {
         OWLClass subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Person"));
-
-        // ***************************** Disjoint with Person class
-
-        OWLClass objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Place"));
+        OWLClass objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
         OWLDisjointClassesAxiom disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
                 objClass);
         manager.addAxiom(ontology, disjointClassesAxiom);
 
+        subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Organisation"));
         objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
         disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
                 objClass);
         manager.addAxiom(ontology, disjointClassesAxiom);
 
-        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "TelevisionShow"));
-        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                objClass);
-        manager.addAxiom(ontology, disjointClassesAxiom);
-
-        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Film"));
-        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                objClass);
-        manager.addAxiom(ontology, disjointClassesAxiom);
-
-
-        // **************************** Disjoint with Place class
-        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Place"));
-
-        subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Organisation"));
-        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                objClass);
-        manager.addAxiom(ontology, disjointClassesAxiom);
-
-        subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
-        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                objClass);
-        manager.addAxiom(ontology, disjointClassesAxiom);
+        /*
+         * objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
+         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); objClass
+         * = factory.getOWLClass(IRI.create(ontologyIRI + "TelevisionShow"));
+         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); objClass
+         * = factory.getOWLClass(IRI.create(ontologyIRI + "Film"));
+         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); //
+         * **************************** Disjoint with Place class objClass =
+         * factory.getOWLClass(IRI.create(ontologyIRI + "Place")); subClass =
+         * factory.getOWLClass(IRI.create(ontologyIRI + "Organisation"));
+         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); subClass
+         * = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
+         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+         * objClass); manager.addAxiom(ontology, disjointClassesAxiom);
+         */
 
     }
 

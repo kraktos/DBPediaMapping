@@ -203,7 +203,7 @@ public class Constants
     /**
      * DBPedia namespace
      */
-    public static String ONTOLOGY_DBP_NS = ONTOLOGY_NAMESPACE + "Dbp#";
+    public static String ONTOLOGY_DBP_NS = ONTOLOGY_NAMESPACE; // + "Dbp#";
 
     /**
      * extraction engine namespace

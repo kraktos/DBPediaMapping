@@ -589,7 +589,7 @@ public class QueryEngine
     }
 
     /**
-     * fetch from file system the learnt the relationships
+     * fetch from file system the learnt relationships
      * 
      * @param predicate
      * @return list of {@link ResultDAO}
@@ -618,7 +618,7 @@ public class QueryEngine
                     match = elem[0].split("~");
                     double topScore = Double.parseDouble(match[1]);
                     returnList.add(new ResultDAO(match[0], Math.round(topScore / topScore * 100)));
-                    logger.debug(match[0] + "   " + match[1]);
+                    
                     if (elem.length > 1) {
                         match = elem[1].split("~");
                         returnList.add(new ResultDAO(match[0],

@@ -163,7 +163,8 @@ public class EntryServlet extends HttpServlet
 
                     // need to create a list of ResultDAO from the
                     List<ResultDAO> subDaos = getResultDaos(candidateSubjs);
-                    List<ResultDAO> predDaos = getResultDaos(candidatePredSearch);
+                    List<ResultDAO> predDaos = (candidatePredSearch != null && candidatePredSearch.length > 0) ? getResultDaos(candidatePredSearch)
+                            : getResultDaos(candidatePredLkUp);
                     List<ResultDAO> objDaos = getResultDaos(candidateObjs);
 
                     // ************** kernel density estimation process
@@ -193,6 +194,7 @@ public class EntryServlet extends HttpServlet
                             predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), conf,
                             true);
 
+                    logger.info(uncertainFact.toString());
                     // *************** create axioms
                     // **********************************************************************************
 
@@ -226,9 +228,16 @@ public class EntryServlet extends HttpServlet
 
                 } else {
                     String triple = getARandomTriple();
+
                     subject = triple.split(",")[1];
-                    predicate = "birth place";
+                    predicate = triple.split(",")[2];
                     object = triple.split(",")[3];
+
+                    if (shouldFlip(predicate)) {
+                        subject = triple.split(",")[3];
+                        object = triple.split(",")[1];
+                    }
+
                     conf = Double.valueOf(triple.split(",")[0]);
 
                     // declare class
@@ -321,8 +330,28 @@ public class EntryServlet extends HttpServlet
 
     }
 
+    private boolean shouldFlip(String predicate) {
+        File file = new File(Constants.PREDICATE_FREQ_FILEPATH);
+        Scanner sc;
+        try {
+            sc = new Scanner(file);
+
+            while (sc.hasNextLine()) {
+                String[] parts = sc.nextLine().split("->");
+
+                if (parts[0].contains(predicate)) {
+                    return (parts[0].indexOf("-") != -1);
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            logger.error(e.getMessage());
+        }
+        return false;
+    }
+
     private String getARandomTriple() throws FileNotFoundException {
-        File f = new File("/home/arnab/Work/data/NELL/writerwasbornincity.csv");
+        File f = new File("/home/arnab/Work/data/NELL/actorstarredinmovie.csv");
         String result = null;
         Random rand = new Random();
         int n = 0;
@@ -387,7 +416,7 @@ public class EntryServlet extends HttpServlet
                 }
             }
 
-            //logger.info(entityTypesMap);
+            // logger.info(entityTypesMap);
             retList.add(new ResultDAO(arg[0], Double.valueOf(arg[1])));
         }
         return retList;
