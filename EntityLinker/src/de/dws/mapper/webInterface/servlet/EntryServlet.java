@@ -208,6 +208,7 @@ public class EntryServlet extends HttpServlet
                         axiomCreator = new AxiomCreator();
                         axiomCreator.createOwlFromFacts(subDaos, predDaos,
                                 objDaos, uncertainFact, entityTypesMap);
+                        
                         // **************** reason with Elog
                         // ************************************************************************************
                         String[] args = new String[4];
@@ -222,6 +223,7 @@ public class EntryServlet extends HttpServlet
                         args[1] = uncertainFact.getPredicate();
                         args[2] = uncertainFact.getObject();
                         Inference.main(args);
+                        
                     } else {
 
                         // ********** GOLD STANDARD CREATION

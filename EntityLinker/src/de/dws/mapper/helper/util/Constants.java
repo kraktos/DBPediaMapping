@@ -216,7 +216,7 @@ public class Constants
     /**
      * DBPedia TBOX info file
      */
-    public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/input/dbpediaGold.owl";
+    public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/input/dbpediaGold.owl";
 
     /**
      * defines the confidence value namespace for the owl files
@@ -256,5 +256,7 @@ public class Constants
     public static final boolean INFERENCE_MODE = false;
 
     public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/all.csv";
+
+    public static final String NELL_RANDOM_TRIPLE_DATA_SET = "/home/arnab/Work/data/NELL/randomTriples.csv";
 
 }

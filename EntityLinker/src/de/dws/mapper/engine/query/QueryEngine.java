@@ -572,6 +572,9 @@ public class QueryEngine
     public static void main(String[] ar) throws Exception
     {
 
+        File f = new File(Constants.OWL_INPUT_FILE_PATH);
+        System.out.println(f.getName());
+        
         // flag to determine if u need to recompute the indices
         if (Constants.INDEX_AGAIN) {
             DBPediaIndexBuilder.indexer();
