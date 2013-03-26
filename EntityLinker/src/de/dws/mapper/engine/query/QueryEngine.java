@@ -398,25 +398,20 @@ public class QueryEngine
                         .max(userQuery.length(), uriTextField.length()));
 
                 if (ratio == 1)
-                    ratio = ratio - 0.0001;
-                
+                    ratio = ratio - 0.1;
+
                 logger.debug(" ratio for " + userQuery + " " + StringUtils
                         .getLevenshteinDistance(userQuery, uriTextField) + "  " + Math
-                        .max(userQuery.length(), uriTextField.length()) + "  " + ratio);
+                        .max(userQuery.length(), uriTextField.length()) + "  " + (1-ratio));
 
                 // Add to the result map, check for existing key, add or update
                 // the values accordingly
                 if (resultMap.containsKey(key)) {
                     resultMap.get(key).add(new ResultDAO(uriField, labelField, 1 - ratio));
-                    // resultMap.get(key).add(new ResultDAO(uriField,
-                    // labelField, isHighFreq, Math.round(score * 100)));
                 } else {
                     list = new ArrayList<ResultDAO>();
-                    // logger.info(new ResultDAO(uriField, Math.round(score *
-                    // 100)));
                     list.add(new ResultDAO(uriField, labelField, 1 - ratio));
-                    // list.add(new ResultDAO(uriField, labelField, isHighFreq,
-                    // Math.round(score * 100)));
+
                     resultMap.put(key, list);
                 }
             }
@@ -618,7 +613,7 @@ public class QueryEngine
                     match = elem[0].split("~");
                     double topScore = Double.parseDouble(match[1]);
                     returnList.add(new ResultDAO(match[0], Math.round(topScore / topScore * 100)));
-                    
+
                     if (elem.length > 1) {
                         match = elem[1].split("~");
                         returnList.add(new ResultDAO(match[0],

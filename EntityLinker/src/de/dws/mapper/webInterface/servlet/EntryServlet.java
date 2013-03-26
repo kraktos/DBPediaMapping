@@ -195,36 +195,72 @@ public class EntryServlet extends HttpServlet
                             true);
 
                     logger.info(uncertainFact.toString());
-                    // *************** create axioms
-                    // **********************************************************************************
-
-                    logger.info(" STARTING AXIOM CREATION ... ");
-
-                    axiomCreator = new AxiomCreator();
-                    axiomCreator.createOwlFromFacts(subDaos, predDaos,
-                            objDaos, uncertainFact, entityTypesMap);
-
-                    // **************** reason with Elog
-                    // ************************************************************************************
-                    String[] args = new String[4];
-                    args[0] = "-sm";
-                    args[1] = "-s1000000";
-                    args[2] = "-i40";
-                    args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
-
-                    logger.info(" \nSTARTING ELOG REASONER ... ");
-
-                    Application.main(args);
 
                     // **************** run inference
                     // ************************************************************************************
 
-                    logger.info(" STARTING INFERENCE BASED ON SAMPLED PROBABILITIES ... ");
-                    args[0] = uncertainFact.getSubject();
-                    args[1] = uncertainFact.getPredicate();
-                    args[2] = uncertainFact.getObject();
+                    if (Constants.INFERENCE_MODE) {
 
-                    Inference.main(args);
+                        // *************** create axioms
+                        // **********************************************************************************
+
+                        logger.info(" STARTING AXIOM CREATION ... ");
+                        axiomCreator = new AxiomCreator();
+                        axiomCreator.createOwlFromFacts(subDaos, predDaos,
+                                objDaos, uncertainFact, entityTypesMap);
+                        // **************** reason with Elog
+                        // ************************************************************************************
+                        String[] args = new String[4];
+                        args[0] = "-sm";
+                        args[1] = "-s1000000";
+                        args[2] = "-i20";
+                        args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
+                        logger.info(" \nSTARTING ELOG REASONER ... ");
+                        Application.main(args);
+                        logger.info(" STARTING INFERENCE BASED ON SAMPLED PROBABILITIES ... ");
+                        args[0] = uncertainFact.getSubject();
+                        args[1] = uncertainFact.getPredicate();
+                        args[2] = uncertainFact.getObject();
+                        Inference.main(args);
+                    } else {
+
+                        // ********** GOLD STANDARD CREATION
+                        // ************************
+
+                        logger.info(subDaos);
+                        logger.info(predDaos);
+                        logger.info(objDaos);
+
+                        List<SuggestedFactDAO> listGoldFacts = new ArrayList<SuggestedFactDAO>();
+                        SuggestedFactDAO goldFact = null;
+
+                        for (ResultDAO subDao : subDaos) {
+                            for (ResultDAO predDao : predDaos) {
+                                for (ResultDAO objDao : objDaos) {
+                                    // create a gold fact
+                                    goldFact = new SuggestedFactDAO(subDao.getFieldURI(),
+                                            predDao.getFieldURI(), objDao.getFieldURI(), 1D, true);
+
+                                    // add to the list of facts
+                                    listGoldFacts.add(goldFact);
+                                }
+                            }
+                        }
+
+                        // save the list of gold facts for the particular
+                        // uncertain fact
+                        // mostly, there will be one-to-one mapping . just in
+                        // case user is not sure at all,
+                        // we can have multiple possibilities. Implementation is
+                        // done for now,
+
+                        // save it to the KB
+                        int returnType = uncertainKB.createKB(connection, pstmt, listGoldFacts,
+                                uncertainFact);
+
+                        if (returnType == 0)
+                            logger.info(uncertainFact.toString() + " inserted successfully..");
+                    }
 
                 } else {
                     String triple = getARandomTriple();
@@ -351,7 +387,7 @@ public class EntryServlet extends HttpServlet
     }
 
     private String getARandomTriple() throws FileNotFoundException {
-        File f = new File("/home/arnab/Work/data/NELL/actorstarredinmovie.csv");
+        File f = new File(Constants.NELL_DOMAIN_INPUT_FILE_PATH);
         String result = null;
         Random rand = new Random();
         int n = 0;
@@ -437,7 +473,7 @@ public class EntryServlet extends HttpServlet
             connection = dbConnection.getConnection();
 
             // create a statement
-            pstmt = connection.prepareStatement(Constants.INSERT_FACT_SQL);
+            pstmt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
         } catch (SQLException ex) {
             logger.error("Connection Failed! Check output console" + ex.getMessage());
         }

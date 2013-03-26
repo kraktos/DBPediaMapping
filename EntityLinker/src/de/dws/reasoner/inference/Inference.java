@@ -156,6 +156,9 @@ public class Inference {
      * @param subj
      */
     public static void findRanking(String subj, String prop, String obj) {
+
+        double sumProb = 0;
+
         Map<Double, Set<OWLEntity>> mapSubjects = new
                 Inference().getRankedMatches(factory.getOWLNamedIndividual(
                         subj, prefixIE));
@@ -167,12 +170,21 @@ public class Inference {
                 .getOWLNamedIndividual(
                         prop, prefixIE));
 
-        Map<Double, List<Set<OWLEntity>>> m = new Inference().getRankedTriples(mapSubjects,
+        Map<Double, List<Set<OWLEntity>>> rankedMap = new Inference().getRankedTriples(mapSubjects,
                 mapProps, mapObjects);
 
         logger.info("\n Ranked triples ..\n");
-        for (Entry<Double, List<Set<OWLEntity>>> entry : m.entrySet()) {
-            logger.info(entry.getKey() + " = " + entry.getValue());
+
+        // need to normaliz the probabilities
+        // fetch the sum of all the probabilities
+        for (Entry<Double, List<Set<OWLEntity>>> entry : rankedMap.entrySet()) {
+            sumProb = entry.getKey() + sumProb;
+        }
+
+        //logger.info(sumProb);
+        for (Entry<Double, List<Set<OWLEntity>>> entry : rankedMap.entrySet()) {
+            //logger.info(entry.getKey() + " "+  sumProb + "  " + entry.getKey() / sumProb);
+            logger.info(entry.getKey() / sumProb + " = " + entry.getValue());
         }
     }
 

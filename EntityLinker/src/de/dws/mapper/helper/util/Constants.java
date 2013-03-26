@@ -26,8 +26,8 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
-    // //
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql";
+    // //http://dbpedia.org/sparql
     // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS
@@ -160,7 +160,7 @@ public class Constants
      * output location of the predicate list after calculating jaccard score for
      * each
      */
-    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq_1.txt";
+    public static final String PREDICATE_FREQ_FILEPATH = "/home/arnab/Work/data/NELL/predFreq_2.txt";
 
     // *****************WEB INTERFACE
     // PARAMETES***************************************************
@@ -186,6 +186,9 @@ public class Constants
             "INSERT INTO \"PREDICATE_DOMAIN_RANGE\"(\"PREDICATE\", \"DOMAIN\", \"RANGE\") VALUES (?, ?, ?)";
 
     public static final String GET_WIKI_STAT = "select distinct entity from stats where anchor=?";
+
+    public static final String INSERT_GOLD_STANDARD =
+            "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, E_CONF, D_SUB, D_PRED, D_OBJ) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * defines the batch size for the Data base operations
@@ -213,7 +216,7 @@ public class Constants
     /**
      * DBPedia TBOX info file
      */
-    public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/dbpediaTBox.owl";
+    public static final String OWL_INPUT_FILE_PATH = "/home/arnab/Work/data/DBPedia/ontology/input/dbpediaGold.owl";
 
     /**
      * defines the confidence value namespace for the owl files
@@ -247,5 +250,11 @@ public class Constants
      * minimum probability an axiom to be 0.000000001
      */
     public static final double AXIOM_MIN_WEIGHT = -20.7232;
+
+    // from the UI you can run to create gold standard, as well as perform
+    // inference
+    public static final boolean INFERENCE_MODE = false;
+
+    public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/all.csv";
 
 }

@@ -131,8 +131,8 @@ public class AxiomCreator
         // create an ontology
         // OWLOntology ontology = manager.createOntology(ontologyIRI);
 
-        File file = new File(
-                "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/input/dbpediaTBox.owl");
+        File file = new File(Constants.OWL_INPUT_FILE_PATH);
+        
         // Now load the local copy
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
         System.out.println("Loaded ontology: " + ontology);
@@ -156,21 +156,6 @@ public class AxiomCreator
         // other
         createDifferentFromAssertions(candidateSubjs);
         createDifferentFromAssertions(candidateObjs);
-
-        
-        // very very stupid way...but no other way as of now.
-        List<String> names = new ArrayList<String>();
-        names.add("Place");
-        names.add("Drug");
-        names.add("Award");
-        names.add("Agent");
-        names.add("Event");
-        names.add("ChemicalSubstance");
-        names.add("Film");
-        names.add("Organisation");
-        names.add("Album");
-        // add disjointness axiom on the top level classes
-        createTBoxAxioms(ontology, names);
 
         // annotate the axioms
         annotateAxioms(ontology);
@@ -297,16 +282,16 @@ public class AxiomCreator
                     dbValue, ieValue);
 
             // create the type of axioms. these are hard constraints
-            generateIsTypeOfAssertions(ontology, possibleCandidate, entityTypesMap);
+            double score = generateIsTypeOfAssertions(ontology, possibleCandidate, entityTypesMap);
 
             // add it to list of soft constraints
             listAxioms
                     .add(new Axiom(sameAsIndividualAxiom,
-                            convertProbabilityToWeight(possibleCandidate.getScore())));
+                            convertProbabilityToWeight(score)));
         }
     }
 
-    private void generateIsTypeOfAssertions(OWLOntology ontology, ResultDAO possibleCandidate,
+    private double generateIsTypeOfAssertions(OWLOntology ontology, ResultDAO possibleCandidate,
             Map<String, List<String>> entityTypesMap) {
 
         try {
@@ -330,10 +315,12 @@ public class AxiomCreator
                     // add to the manager
                     manager.addAxiom(ontology, classAssertionAx);
                 }
+                return possibleCandidate.getScore();
             }
         } catch (Exception e) {
             logger.info("Exception in " + e.getMessage());
         }
+        return 0;
     }
 
     /**
@@ -344,7 +331,12 @@ public class AxiomCreator
         // smoothing
         if (prob >= 1)
             prob = 0.99;
-        return Math.log(prob / (1 - prob));
+        if (prob <= 0)
+            prob = 0.01;
+
+        double conf = Math.log(prob / (1 - prob));
+        logger.info(prob + " => " + conf);
+        return conf;
     }
 
     /*
@@ -509,7 +501,7 @@ public class AxiomCreator
             for (int j = i + 1; j < classNames.size(); j++) {
                 subClass = factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(i)));
                 objClass = factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(j)));
-                
+
                 disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
                         objClass);
 
@@ -536,26 +528,6 @@ public class AxiomCreator
         disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
                 objClass);
         manager.addAxiom(ontology, disjointClassesAxiom);
-
-        /*
-         * objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
-         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); objClass
-         * = factory.getOWLClass(IRI.create(ontologyIRI + "TelevisionShow"));
-         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); objClass
-         * = factory.getOWLClass(IRI.create(ontologyIRI + "Film"));
-         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); //
-         * **************************** Disjoint with Place class objClass =
-         * factory.getOWLClass(IRI.create(ontologyIRI + "Place")); subClass =
-         * factory.getOWLClass(IRI.create(ontologyIRI + "Organisation"));
-         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-         * objClass); manager.addAxiom(ontology, disjointClassesAxiom); subClass
-         * = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
-         * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-         * objClass); manager.addAxiom(ontology, disjointClassesAxiom);
-         */
 
     }
 
