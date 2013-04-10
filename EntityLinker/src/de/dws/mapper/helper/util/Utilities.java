@@ -216,7 +216,11 @@ public class Utilities
 
     public static String prun(String uri)
     {
-        return uri.substring(uri.lastIndexOf("/") + 1, uri.length());
+        String s = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
+        if (s.indexOf(":") != -1)
+            s = s.replaceAll(":", "");
+        
+            return s;
     }
 
 }

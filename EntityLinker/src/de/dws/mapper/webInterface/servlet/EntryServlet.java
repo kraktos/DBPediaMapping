@@ -402,7 +402,7 @@ public class EntryServlet extends HttpServlet
         }
 
         // logger.info(result);
-        return result;
+        return result.toLowerCase();
 
     }
 

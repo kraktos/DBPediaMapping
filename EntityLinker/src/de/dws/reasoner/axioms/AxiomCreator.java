@@ -101,6 +101,11 @@ public class AxiomCreator
         // create the manager
         manager = OWLManager.createOWLOntologyManager();
 
+        File file = new File(Constants.OWL_INPUT_FILE_PATH);
+
+        // Now load the local copy
+        ontology = manager.loadOntologyFromOntologyDocument(file);
+
         // create Iri
         ontologyIRI = IRI.create(Constants.ONTOLOGY_NAMESPACE);
 
@@ -131,11 +136,11 @@ public class AxiomCreator
         // create an ontology
         // OWLOntology ontology = manager.createOntology(ontologyIRI);
 
-        File file = new File(Constants.OWL_INPUT_FILE_PATH);
-        
+        //File file = new File(Constants.OWL_INPUT_FILE_PATH);
+
         // Now load the local copy
-        OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
-        System.out.println("Loaded ontology: " + ontology);
+        //OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
+        //System.out.println("Loaded ontology: " + ontology);
 
         // create same as links with the extraction engine extract and the
         // candidate subjects and objects
@@ -158,10 +163,10 @@ public class AxiomCreator
         createDifferentFromAssertions(candidateObjs);
 
         // annotate the axioms
-        annotateAxioms(ontology);
+        annotateAxioms();
 
         // output to a file
-        createOutput(ontology);
+        createOutput();
 
         // pause few seconds for the output axiom files to be
         // created
@@ -171,6 +176,9 @@ public class AxiomCreator
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        
+        logger.info(listAxioms.size());
     }
 
     private void creatDomainRangeRestriction(OWLOntology ontology, String predicate) {
@@ -335,7 +343,7 @@ public class AxiomCreator
             prob = 0.01;
 
         double conf = Math.log(prob / (1 - prob));
-        logger.info(prob + " => " + conf);
+        //logger.info(prob + " => " + conf);
         return conf;
     }
 
@@ -437,10 +445,8 @@ public class AxiomCreator
 
     /**
      * writes the ontology to a file
-     * 
-     * @param ontology
      */
-    private void createOutput(OWLOntology ontology)
+    public void createOutput()
     {
         // Dump the ontology to a file
         File file = new File(Constants.OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH);
@@ -456,10 +462,9 @@ public class AxiomCreator
 
     /**
      * this method annotates the axioms with the weights.
-     * 
      * @param ontology {@link OWLOntology} instance
      */
-    private void annotateAxioms(OWLOntology ontology)
+    public void annotateAxioms()
     {
         // holds a set of annotations
         HashSet<OWLAnnotation> annotationSet = new HashSet<OWLAnnotation>();

@@ -26,8 +26,7 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql";
-    // //http://dbpedia.org/sparql
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
     // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS
@@ -253,10 +252,12 @@ public class Constants
 
     // from the UI you can run to create gold standard, as well as perform
     // inference
-    public static final boolean INFERENCE_MODE = false;
+    public static final boolean INFERENCE_MODE = true;
 
     public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/all.csv";
 
     public static final String NELL_RANDOM_TRIPLE_DATA_SET = "/home/arnab/Work/data/NELL/randomTriples.csv";
+
+    public static final int RANDOM_TRIPLES_LIMIT = 3;
 
 }
