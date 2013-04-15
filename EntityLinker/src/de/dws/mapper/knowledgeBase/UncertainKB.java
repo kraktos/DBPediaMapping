@@ -28,7 +28,7 @@ public class UncertainKB implements IKnowledgeBase
     static Logger logger = Logger.getLogger(UncertainKB.class.getName());
 
     public int createKB(Connection connection, PreparedStatement pstmt,
-            List<SuggestedFactDAO> listGoldFacts, SuggestedFactDAO uncertainFact)
+            List<SuggestedFactDAO> listGoldFacts, SuggestedFactDAO uncertainFact, String remoteIP)
     {
 
         // mostly the loop will run once, since we will have one-on-one mapping
@@ -49,7 +49,8 @@ public class UncertainKB implements IKnowledgeBase
                 // set the uncertain incoming fact
                 pstmt.setString(6, goldFact.getPredicate());
                 pstmt.setString(7, goldFact.getObject());
-
+                
+                pstmt.setString(8, remoteIP);
                 // run the query finally
                 pstmt.executeUpdate();
 

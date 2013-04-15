@@ -4,6 +4,11 @@ package de.dws.mapper.webInterface.servlet;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.net.InetAddress;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -112,6 +117,13 @@ public class EntryServlet extends HttpServlet
             throws ServletException, IOException
     {
 
+        // Getting the client's hostname
+        
+        String hostName = InetAddress.getByName(request.getRemoteAddr()).getHostName(); // or
+        logger.info(hostName);
+        //..getCanonicalHostName()
+        
+
         // instance of Axiom Creator
         AxiomCreator axiomCreator = null;
 
@@ -132,6 +144,10 @@ public class EntryServlet extends HttpServlet
 
         String action = (request.getParameter("action") != null) ? request.getParameter("action")
                 : "none";
+        //TODO
+        if(action.equals("") || action.length() == 0){
+            action = "suggest";
+        }
         logger.info("|" + action + "|");
 
         try {
@@ -258,7 +274,7 @@ public class EntryServlet extends HttpServlet
 
                         // save it to the KB
                         int returnType = uncertainKB.createKB(connection, pstmt, listGoldFacts,
-                                uncertainFact);
+                                uncertainFact, hostName);
 
                         if (returnType == 0)
                             logger.info(uncertainFact.toString() + " inserted successfully..");
@@ -393,19 +409,24 @@ public class EntryServlet extends HttpServlet
     }
 
     private String getARandomTriple() throws FileNotFoundException {
-        File f = new File(Constants.NELL_DOMAIN_INPUT_FILE_PATH);
+        File file = new File(Constants.NELL_DOMAIN_INPUT_FILE_PATH);
+
         String result = null;
-        Random rand = new Random();
-        int n = 0;
-        for (Scanner sc = new Scanner(f); sc.hasNext();)
-        {
-            ++n;
-            String line = sc.nextLine();
-            if (rand.nextInt(n) == 0)
-                result = line;
+
+        if (Constants.RANDOM_READ) {
+            Random rand = new Random();
+            int n = 0;
+            for (Scanner sc = new Scanner(file); sc.hasNext();)
+            {
+                ++n;
+                String line = sc.nextLine();
+                if (rand.nextInt(n) == 0)
+                    result = line;
+            }
+        } else {
+
         }
 
-        // logger.info(result);
         return result.toLowerCase();
 
     }
@@ -458,7 +479,6 @@ public class EntryServlet extends HttpServlet
                 }
             }
 
-            // logger.info(entityTypesMap);
             retList.add(new ResultDAO(arg[0], Double.valueOf(arg[1])));
         }
         return retList;

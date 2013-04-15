@@ -187,7 +187,7 @@ public class Constants
     public static final String GET_WIKI_STAT = "select distinct entity from stats where anchor=?";
 
     public static final String INSERT_GOLD_STANDARD =
-            "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, E_CONF, D_SUB, D_PRED, D_OBJ) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, E_CONF, D_SUB, D_PRED, D_OBJ, HOST) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * defines the batch size for the Data base operations
@@ -251,7 +251,8 @@ public class Constants
     public static final double AXIOM_MIN_WEIGHT = -20.7232;
 
     // from the UI you can run to create gold standard, as well as perform
-    // inference. Setting it false will make it run as gold standard creation mode
+    // inference. Setting it false will make it run as gold standard creation
+    // mode
     public static final boolean INFERENCE_MODE = false;
 
     // ********** Experiments
@@ -267,6 +268,10 @@ public class Constants
      */
     public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/all.csv";
 
+    /**
+     * read the above file randomly or make it false to do sequential read
+     */
+    public static final boolean RANDOM_READ = true;
     /**
      * input set of random triples from NELL
      */

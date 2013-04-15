@@ -161,9 +161,6 @@
 		<table align="center">
 			<!-- Search Fields -->
 			<tr>
-				<div id="myDiv">
-					<h2>Let AJAX change this text</h2>
-				</div>
 
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
@@ -186,8 +183,7 @@
 					if(inference != null){
 					    if(inference.equals("false")){
 					    %> 					
-					<input type="submit" class="gold" title="Save" value=""
-					name="action" onclick="doPageSubmit();">
+					<input type="submit" class="gold" title="Save" value=""	name="action" onclick="doPageSubmit();">
 					
 					<%     } 
 					 else{ %>
