@@ -206,24 +206,24 @@ public class EntryServlet extends HttpServlet
 
                         logger.info(" STARTING AXIOM CREATION ... ");
                         axiomCreator = new AxiomCreator();
+
+                        logger.info(subDaos);
+                        logger.info(objDaos);
+                        logger.info(predDaos);
+
                         axiomCreator.createOwlFromFacts(subDaos, predDaos,
                                 objDaos, uncertainFact, entityTypesMap);
-                        
-                        // **************** reason with Elog
-                        // ************************************************************************************
-                        String[] args = new String[4];
-                        args[0] = "-sm";
-                        args[1] = "-s1000000";
-                        args[2] = "-i20";
-                        args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
-                        logger.info(" \nSTARTING ELOG REASONER ... ");
-                        Application.main(args);
-                        logger.info(" STARTING INFERENCE BASED ON SAMPLED PROBABILITIES ... ");
+
+                        axiomCreator.createOutput();
+
+                        // *************************** REASONING
+                        // ***************************
+                        String[] args = new String[3];
                         args[0] = uncertainFact.getSubject();
                         args[1] = uncertainFact.getPredicate();
                         args[2] = uncertainFact.getObject();
                         Inference.main(args);
-                        
+
                     } else {
 
                         // ********** GOLD STANDARD CREATION
@@ -262,6 +262,7 @@ public class EntryServlet extends HttpServlet
 
                         if (returnType == 0)
                             logger.info(uncertainFact.toString() + " inserted successfully..");
+
                     }
 
                 } else {
@@ -293,6 +294,7 @@ public class EntryServlet extends HttpServlet
                     // get the predicates
                     retListPredLookUp = webTupleProc.getRetListPredLookUp();
                     retListPredSearch = webTupleProc.getRetListPredSearch();
+
                 }
                 // set the request parameter for results display
                 if (retListSubj.size() > 0) {
@@ -310,6 +312,8 @@ public class EntryServlet extends HttpServlet
                 request.setAttribute("object", object);
                 request.setAttribute("topk", topK);
                 request.setAttribute("sim", sim);
+                // specify the page that it is gold standard creation mode
+                request.setAttribute("inference", String.valueOf(Constants.INFERENCE_MODE));
 
             } else {
 

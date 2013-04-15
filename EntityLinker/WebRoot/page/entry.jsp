@@ -20,6 +20,7 @@
 
     List<SuggestedFactDAO> retListSuggstFacts = null;
 
+    String inference = null;
     
     if (request.getAttribute("matchingListSubj") != null) {
         resultSub = (List<ResultDAO>) request.getAttribute("matchingListSubj");
@@ -36,6 +37,10 @@
         
     if (request.getAttribute("suggestedFactList") != null) {
         retListSuggstFacts = (List<SuggestedFactDAO>) request.getAttribute("suggestedFactList");
+    }
+    
+    if (request.getAttribute("inference") != null) {
+        inference = (String) request.getAttribute("inference");
     }
 %>
 
@@ -156,29 +161,42 @@
 		<table align="center">
 			<!-- Search Fields -->
 			<tr>
+				<div id="myDiv">
+					<h2>Let AJAX change this text</h2>
+				</div>
+
 				<td><input class="style6" title="Enter your search subject"
 					type="text"
 					value="<%=(request.getAttribute("subject") != null) ? request.getAttribute("subject") : "Subject"%>"
-					name="subject" />
-				</td>
+					name="subject" /></td>
 				<td><input class="style6" title="Enter your search predicate"
 					type="text"
 					value="<%=(request.getAttribute("predicate") != null) ? request.getAttribute("predicate") : "Predicate"%>"
-					name="predicate" />
-				</td>
+					name="predicate" /></td>
 				<td><input class="style6" type="text"
 					title="Enter your search object"
 					value="<%=(request.getAttribute("object") != null) ? request.getAttribute("object") : "Object"%>"
-					name="object" />
-				</td>
+					name="object" /></td>
 
 
 				<td><input type="submit" class="submit" title="Search" value="">
 					<input type="button" class="button" title="Tweak search parameters"
-					onclick="toggle4('box');"> <input type="submit"
-					class="suggest" title="Suggest" value="" name="action"
-					onclick="doPageSubmit();"> <input type="hidden" id="mode"
-					name="action" value="smthng">
+					onclick="toggle4('box');"> 
+					<%
+					if(inference != null){
+					    if(inference.equals("false")){
+					    %> 					
+					<input type="submit" class="gold" title="Save" value=""
+					name="action" onclick="doPageSubmit();">
+					
+					<%     } 
+					 else{ %>
+					     <input type="submit" class="suggest" title="Suggest" value=""
+					name="action" onclick="doPageSubmit();"> 
+					<%} }%> 
+					
+					
+  <input type="hidden" id="mode" name="action" value="smthng">
 				</td>
 
 			</tr>
@@ -191,22 +209,27 @@
 					<div id="box" style="display: none;padding: 5px;">
 						<table>
 							<tr>
-								<td><h4 class=SUBHEADLINE2>Top K Results</h4></td>
+								<td><h4 class=SUBHEADLINE2>Top K Results</h4>
+								</td>
 								<td><input class="style5" title="Top K results" type="text"
 									value="<%=(request.getAttribute("topk") != null) ? request.getAttribute("topk") : "10"%>"
-									name="topk" size="40" /></td>
+									name="topk" size="40" />
+								</td>
 							</tr>
 							<tr>
-								<td><h4 class=SUBHEADLINE2>Similarity (%)</h4></td>
+								<td><h4 class=SUBHEADLINE2>Similarity (%)</h4>
+								</td>
 								<td><input class="style5" title="Similarity of atleast"
 									type="text"
 									value="<%=(request.getAttribute("sim") != null) ? request.getAttribute("sim") : "100"%>"
-									name="sim" size="40" /></td>
+									name="sim" size="40" />
+								</td>
 							</tr>
 						</table>
-					</div></td>
+					</div>
+				</td>
 			</tr>
-			<!-- Results Feilds -->
+			<!-- Results Fields -->
 			<tr>
 				<!-- Subject -->
 				<td>
@@ -225,7 +248,9 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff"><input
 										type="checkbox" name="checkboxSubjs" id="checkbox_id"
-										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" /></td>
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}'
+										onclick="" />
+									</td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -250,13 +275,13 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff;"><input
 										type="checkbox" name="checkboxPredLookup" id="checkbox_id"
-										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" />
-									</td>
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}'
+										onclick="" /></td>
 								</tr>
 							</c:forEach>
 							<%
 							    }
-							    if (resultPredSearch != null) {
+														    if (resultPredSearch != null) {
 							%>
 							<c:forEach items="<%= resultPredSearch%>" var="matchingEntries">
 								<tr>
@@ -266,8 +291,8 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff;"><input
 										type="checkbox" name="checkboxPredSearch" id="checkbox_id"
-										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" />
-									</td>
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}'
+										onclick="" /></td>
 								</tr>
 							</c:forEach>
 							<%
@@ -281,8 +306,7 @@
 							    }
 							%>
 						</table>
-					</div>
-				</td>
+					</div></td>
 
 				<!-- object -->
 				<td>
@@ -300,7 +324,9 @@
 									</td>
 									<td width="22%" align="center" style="color: #ffffff"><input
 										type="checkbox" name="checkboxObjs" id="checkbox_id"
-										value='${matchingEntries.fieldURI}~${matchingEntries.score}' onclick="" /></td>
+										value='${matchingEntries.fieldURI}~${matchingEntries.score}'
+										onclick="" />
+									</td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -324,17 +350,14 @@
 				<td width=25%>
 					<Table width=20%>
 						<Tr>
-							<td><h2 class=SUBHEADLINE3>Suggestions</h2>
-							</td>
+							<td><h2 class=SUBHEADLINE3>Suggestions</h2></td>
 							<td align=right>
 								<div id="saveButtn" style="display: none;padding: 5px;">
 									<input type="submit" name="action" value="" class="save"
 										title="save to database" onclick="writeToDB()">
-								</div>
-							</td>
+								</div></td>
 						</Tr>
-					</Table>
-				</Td>
+					</Table></Td>
 				<td></td>
 			</Tr>
 		</Table>
@@ -349,7 +372,8 @@
 						<td width="5%" align="center" style="color: #ffffff"><input
 							type="checkbox" name="checkbox" id="checkbox_id"
 							value='${matchingEntries.subject}~${matchingEntries.predicate}~${matchingEntries.object}~${matchingEntries.confidence}'
-							onclick="saveSuggestions()" /></td>
+							onclick="saveSuggestions()" />
+						</td>
 						<td width="23%" align="right"
 							style="word-wrap: break-word; color:#00f000; font-size: 12pt;">${matchingEntries.subject}</td>
 						<td width="23%" align="center"

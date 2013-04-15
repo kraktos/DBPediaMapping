@@ -45,6 +45,7 @@ import de.dws.mapper.helper.util.Constants;
 import de.dws.mapper.helper.util.Utilities;
 import de.dws.reasoner.axioms.Axiom;
 import de.dws.reasoner.axioms.AxiomCreator;
+import de.elog.Application;
 
 /**
  * This class reads the owl file generated after reasoning to find the all
@@ -140,14 +141,26 @@ public class Inference {
      * @param args
      * @throws FileNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] argsa) throws FileNotFoundException {
 
-        // findRanking("stalin" , "birth place" , "gori");
+        // **************** reason with Elog
+        // **********************************************************
+        String[] args = new String[4];
+        args[0] = "-sm";
+        args[1] = "-s1000000";
+        args[2] = "-i40";
+        args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
+        
+        logger.info(" \nSTARTING ELOG REASONER ... ");
+        try {
+            Application.main(args);
+        } catch (Exception e) { 
+            logger.error("exception while reasoning with ELOG");
+        }
 
-        findRanking(args[0], args[1], args[2]);
-
-        // getARandomTriple();
-
+        
+        logger.info(" STARTING INFERENCE BASED ON SAMPLED PROBABILITIES ... ");
+        findRanking(argsa[0], argsa[1], argsa[2]);
     }
 
     /**
@@ -181,9 +194,10 @@ public class Inference {
             sumProb = entry.getKey() + sumProb;
         }
 
-        //logger.info(sumProb);
+        // logger.info(sumProb);
         for (Entry<Double, List<Set<OWLEntity>>> entry : rankedMap.entrySet()) {
-            //logger.info(entry.getKey() + " "+  sumProb + "  " + entry.getKey() / sumProb);
+            // logger.info(entry.getKey() + " "+ sumProb + "  " + entry.getKey()
+            // / sumProb);
             logger.info(entry.getKey() / sumProb + " = " + entry.getValue());
         }
     }

@@ -77,6 +77,14 @@ body {
 	width: 40px;
 }
 
+.gold {
+	background: url("images/document_save.png") no-repeat;
+	cursor: pointer;
+	border: none;
+	height: 40px;
+	width: 40px;
+}
+
 .styled-button-1 {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 0 0;
 	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 0 0;

@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
@@ -93,6 +94,11 @@ public class NellTupleProcessor implements ITupleProcessor
     {
         // instance of Axiom Creator
         AxiomCreator axiomCreator = null;
+        try {
+            axiomCreator = new AxiomCreator();
+        } catch (OWLOntologyCreationException e1) {
+            logger.error("Error creating axiomcreator = " + e1.getMessage());
+        }
 
         // instance of fact coming as NELL/Freeverb input
         SuggestedFactDAO uncertainFact = null;
@@ -105,6 +111,10 @@ public class NellTupleProcessor implements ITupleProcessor
         String predicate;
         String object;
 
+        // collection to store the list of subjects and objects encountered on
+        // each triple
+        List<String> listSubjsObjs = new ArrayList<String>();
+
         // we just need two threads to perform the search
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
@@ -114,8 +124,13 @@ public class NellTupleProcessor implements ITupleProcessor
          * logger.error("Error while creating ontology.." + e.getMessage()); }
          */
 
+        List<ResultDAO> retListSubj = null;
+        List<ResultDAO> retListObj = null;
+        List<ResultDAO> retListPredLookUp = null;
+
         if (tupleReader != null) {
             String tupleFromIE;
+            // read a random triple at a time
             while ((tupleFromIE = tupleReader.readLine()) != null) {
                 // process with each of these tuples
                 strTokens = tupleFromIE.split(Constants.NELL_IE_DELIMIT);
@@ -133,12 +148,15 @@ public class NellTupleProcessor implements ITupleProcessor
                                 : ((strTokens[4] != null)
                                         ? strTokens[4] : "");
 
+                // add to the collection
+                formSimilarEntityPairsAcrossTriples(listSubjsObjs, subject, object);
+
                 logger.info(subject + " | " + predicate + " | " + object + " | " + aprioriProb);
 
                 // fetch the equivalent DBPedia entities
                 List<List<ResultDAO>> retList = QueryEngine.performSearch(pool, subject, object);
-                List<ResultDAO> retListSubj = retList.get(0);
-                List<ResultDAO> retListObj = retList.get(1);
+                retListSubj = retList.get(0);
+                retListObj = retList.get(1);
 
                 // use them to fetch the predicates they are linked with
                 /*
@@ -150,52 +168,17 @@ public class NellTupleProcessor implements ITupleProcessor
                 // property index directory
                 File file = new File(Constants.DBPEDIA_PROP_INDEX_DIR);
 
-                List<ResultDAO> retListPredLookUp = QueryEngine.doLookUpSearch(predicate);
+                retListPredLookUp = QueryEngine.doLookUpSearch(predicate);
                 List<ResultDAO> retListPredSearch = QueryEngine.doSearch(predicate, file);
 
                 uncertainFact = new SuggestedFactDAO(subject.replaceAll("\\s", ""),
                         predicate.replaceAll("\\s", ""), object.replaceAll("\\s", ""), aprioriProb,
                         true);
 
-                // logger.info(retListSubj);
-                // logger.info(retListObj);
-                // logger.info(retListPredLookUp);
-
                 createTypes(retListSubj);
                 createTypes(retListPredLookUp);
                 createTypes(retListObj);
 
-                // *************** create axioms
-                // **********************************************************************************
-
-
-                logger.info(" STARTING AXIOM CREATION ... ");
-                try {
-                    axiomCreator = new AxiomCreator();
-
-                    axiomCreator.createOwlFromFacts(retListSubj, retListPredLookUp,
-                            retListObj, uncertainFact, entityTypesMap);
-                } catch (OWLOntologyCreationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                // **************** reason with Elog
-                // ************************************************************************************
-                String[] args = new String[4];
-                args[0] = "-sm";
-                args[1] = "-s1000000";
-                args[2] = "-i20";
-                args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
-                logger.info(" \nSTARTING ELOG REASONER ... ");
-                try {
-                    Application.main(args);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                
                 // return a list of possible facts suggestion from best matches
                 /*
                  * List<SuggestedFactDAO> retListSuggstFacts =
@@ -211,8 +194,66 @@ public class NellTupleProcessor implements ITupleProcessor
                  * fact.getObject(), new Double(aprioriProb), true)); }
                  */
 
-            } // end of while
+                // *************** create axioms
+                // **********************************************************************************
 
+                try {
+
+                    // logger.info(retListSubj);
+                    // logger.info(retListObj);
+                    // logger.info(retListPredLookUp);
+
+                    axiomCreator.createOwlFromFacts(retListSubj, retListPredLookUp, retListObj,
+                            uncertainFact, entityTypesMap);
+
+                } catch (OWLOntologyCreationException e) {
+                    e.printStackTrace();
+                }
+
+            } // end of while
+            
+            findNearlySimilarPairs(listSubjsObjs);
+            
+            logger.info(" STARTING AXIOM CREATION ... ");
+            axiomCreator.annotateAxioms();
+            axiomCreator.createOutput();
+
+        }
+    }
+
+    private void findNearlySimilarPairs(List<String> listSubjsObjs) {
+        
+        int outerCntr = 0;
+        int innerCntr = 0;
+        int levenshteinScore = 0;
+        
+        
+        for(;outerCntr < listSubjsObjs.size(); outerCntr++ ){
+            for(innerCntr = outerCntr; innerCntr < listSubjsObjs.size(); innerCntr++){
+                //levenshteinScore = StringUtils.getLevenshteinDistance(listSubjsObjs.g, arg1)
+            }
+        }
+        
+    }
+
+    /**
+     * here we add the subjects and objects encountered on each triples to a
+     * collection in order to figure out if there is any intersecting entities
+     * across triples.
+     * 
+     * @param listSubjsObjs
+     * @param subject
+     * @param object
+     */
+    private void formSimilarEntityPairsAcrossTriples(List<String> listSubjsObjs, String subject,
+            String object) {
+
+        // do no processing on the strings, add them as they come making, 'Tom Cruise' and 'tom cruise' different entities
+        if (!listSubjsObjs.contains(subject)) {
+            listSubjsObjs.add(subject);
+        }
+        if (!listSubjsObjs.contains(object)) {
+            listSubjsObjs.add(object);
         }
     }
 
@@ -233,24 +274,29 @@ public class NellTupleProcessor implements ITupleProcessor
                     .queryDBPediaEndPoint("select distinct ?val where {<" +
                             entityUri +
                             "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val}");
-            listResults = ResultSetFormatter.toList(results);
+            try {
+                listResults = ResultSetFormatter.toList(results);
 
-            // for a possible entity there can be multiple types, Person,
-            // writer, agent etc
-            for (QuerySolution querySol : listResults) {
-                type = querySol.get("val").toString();
-                if (type.startsWith("http://dbpedia.org/ontology/")) {
-                    // logger.info(type);
-                    // if the key exists, add it to its list of type
-                    if (entityTypesMap.containsKey(entityUri)) {
-                        entityTypesMap.get(entityUri).add(type);
-                    } else {
-                        listTypes = new ArrayList<String>();
-                        listTypes.add(type);
-                        entityTypesMap.put(entityUri, listTypes);
+                // for a possible entity there can be multiple types, Person,
+                // writer, agent etc
+                for (QuerySolution querySol : listResults) {
+                    type = querySol.get("val").toString();
+                    if (type.startsWith("http://dbpedia.org/ontology/")) {
+                        // logger.info(type);
+                        // if the key exists, add it to its list of type
+                        if (entityTypesMap.containsKey(entityUri)) {
+                            entityTypesMap.get(entityUri).add(type);
+                        } else {
+                            listTypes = new ArrayList<String>();
+                            listTypes.add(type);
+                            entityTypesMap.put(entityUri, listTypes);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                continue;
             }
+
         }
     }
 

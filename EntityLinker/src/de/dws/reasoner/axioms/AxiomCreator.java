@@ -22,7 +22,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
-import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -119,6 +118,13 @@ public class AxiomCreator
     }
 
     /**
+     * @return the ontology
+     */
+    public OWLOntology getOntology() {
+        return ontology;
+    }
+
+    /**
      * Overloaded function
      * 
      * @param candidateSubjs Candidate list for possible subjects
@@ -136,17 +142,22 @@ public class AxiomCreator
         // create an ontology
         // OWLOntology ontology = manager.createOntology(ontologyIRI);
 
-        //File file = new File(Constants.OWL_INPUT_FILE_PATH);
+        // File file = new File(Constants.OWL_INPUT_FILE_PATH);
 
         // Now load the local copy
-        //OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file);
-        //System.out.println("Loaded ontology: " + ontology);
+        // OWLOntology ontology =
+        // manager.loadOntologyFromOntologyDocument(file);
+        //System.out.println("Loaded ontology: " + getOntology());
+
+        // create domain range restriction on the IE property
+        // creatDomainRangeRestriction(ontology, uncertainFact.getPredicate());
 
         // create same as links with the extraction engine extract and the
         // candidate subjects and objects
-        createSameAsAssertions(ontology, candidateSubjs, uncertainFact.getSubject(), entityTypesMap);
-        createSameAsAssertions(ontology, candidateObjs, uncertainFact.getObject(), entityTypesMap);
-
+        createSameAsAssertions(ontology, candidateSubjs,
+                uncertainFact.getSubject(), entityTypesMap);
+        createSameAsAssertions(ontology, candidateObjs,
+                uncertainFact.getObject(), entityTypesMap);
         // create same as links with the extraction engine extract and the
         // candidate properties
         createPropEquivAssertions(candidatePreds, uncertainFact.getPredicate());
@@ -154,19 +165,16 @@ public class AxiomCreator
         // creates the object property assertion from the IE fact
         createObjectPropertyAssertions(uncertainFact, prefixIE);
 
-        // create domain range restriction on the IE property
-        // creatDomainRangeRestriction(ontology, uncertainFact.getPredicate());
-
         // explicitly define that all the candidates are different from each
         // other
         createDifferentFromAssertions(candidateSubjs);
         createDifferentFromAssertions(candidateObjs);
 
         // annotate the axioms
-        annotateAxioms();
+       // annotateAxioms();
 
         // output to a file
-        createOutput();
+        //createOutput();
 
         // pause few seconds for the output axiom files to be
         // created
@@ -176,8 +184,7 @@ public class AxiomCreator
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        
+
         logger.info(listAxioms.size());
     }
 
@@ -343,7 +350,7 @@ public class AxiomCreator
             prob = 0.01;
 
         double conf = Math.log(prob / (1 - prob));
-        //logger.info(prob + " => " + conf);
+        // logger.info(prob + " => " + conf);
         return conf;
     }
 
@@ -451,7 +458,7 @@ public class AxiomCreator
         // Dump the ontology to a file
         File file = new File(Constants.OWLFILE_CREATED_FROM_FACTS_OUTPUT_PATH);
         try {
-            manager.saveOntology(ontology, IRI.create(file.toURI()));
+            manager.saveOntology(getOntology(), IRI.create(file.toURI()));
         } catch (OWLOntologyStorageException e) {
             e.printStackTrace();
         } finally {
@@ -462,6 +469,7 @@ public class AxiomCreator
 
     /**
      * this method annotates the axioms with the weights.
+     * 
      * @param ontology {@link OWLOntology} instance
      */
     public void annotateAxioms()
@@ -489,52 +497,43 @@ public class AxiomCreator
             OWLAxiom annotatedAxiom = axiom.getAxiom().getAnnotatedAxiom(annotationSet);
 
             // add to the manager
-            manager.addAxiom(ontology, annotatedAxiom);
+            manager.addAxiom(getOntology(), annotatedAxiom);
 
             // clear the set
             annotationSet.clear();
         }
+
     }
 
-    private void createTBoxAxioms(OWLOntology ontology, List<String> classNames)
-    {
-        OWLClass subClass = null;
-        OWLClass objClass = null;
-        OWLDisjointClassesAxiom disjointClassesAxiom = null;
-
-        for (int i = 0; i < classNames.size(); i++) {
-            for (int j = i + 1; j < classNames.size(); j++) {
-                subClass = factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(i)));
-                objClass = factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(j)));
-
-                disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                        objClass);
-
-                manager.addAxiom(ontology, disjointClassesAxiom);
-            }
-        }
-    }
+    /*
+     * private void createTBoxAxioms(OWLOntology ontology, List<String>
+     * classNames) { OWLClass subClass = null; OWLClass objClass = null;
+     * OWLDisjointClassesAxiom disjointClassesAxiom = null; for (int i = 0; i <
+     * classNames.size(); i++) { for (int j = i + 1; j < classNames.size(); j++)
+     * { subClass = factory.getOWLClass(IRI.create(ontologyIRI +
+     * classNames.get(i))); objClass =
+     * factory.getOWLClass(IRI.create(ontologyIRI + classNames.get(j)));
+     * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+     * objClass); manager.addAxiom(ontology, disjointClassesAxiom); } } }
+     */
 
     /**
      * add disjointness axiom
      * 
      * @param ontology
      */
-    private void createTBoxAxioms(OWLOntology ontology)
-    {
-        OWLClass subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Person"));
-        OWLClass objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
-        OWLDisjointClassesAxiom disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                objClass);
-        manager.addAxiom(ontology, disjointClassesAxiom);
-
-        subClass = factory.getOWLClass(IRI.create(ontologyIRI + "Organisation"));
-        objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
-        disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
-                objClass);
-        manager.addAxiom(ontology, disjointClassesAxiom);
-
-    }
+    /*
+     * private void createTBoxAxioms(OWLOntology ontology) { OWLClass subClass =
+     * factory.getOWLClass(IRI.create(ontologyIRI + "Person")); OWLClass
+     * objClass = factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
+     * OWLDisjointClassesAxiom disjointClassesAxiom =
+     * factory.getOWLDisjointClassesAxiom(subClass, objClass);
+     * manager.addAxiom(ontology, disjointClassesAxiom); subClass =
+     * factory.getOWLClass(IRI.create(ontologyIRI + "Organisation")); objClass =
+     * factory.getOWLClass(IRI.create(ontologyIRI + "Work"));
+     * disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(subClass,
+     * objClass); manager.addAxiom(ontology, disjointClassesAxiom); }
+     */
 
     /**
      * stand alone entry point

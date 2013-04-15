@@ -251,13 +251,30 @@ public class Constants
     public static final double AXIOM_MIN_WEIGHT = -20.7232;
 
     // from the UI you can run to create gold standard, as well as perform
-    // inference
-    public static final boolean INFERENCE_MODE = true;
+    // inference. Setting it false will make it run as gold standard creation mode
+    public static final boolean INFERENCE_MODE = false;
 
+    // ********** Experiments
+    // *************************************************************
+    /**
+     * input set of data from NELL, with no intersection across triples
+     */
+    // public static final String NELL_DOMAIN_INPUT_FILE_PATH =
+    // "/home/arnab/Work/data/NELL/all.csv";
+
+    /**
+     * input set of data from NELL, with some intersection across triples
+     */
     public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/all.csv";
 
+    /**
+     * input set of random triples from NELL
+     */
     public static final String NELL_RANDOM_TRIPLE_DATA_SET = "/home/arnab/Work/data/NELL/randomTriples.csv";
 
-    public static final int RANDOM_TRIPLES_LIMIT = 3;
+    /**
+     * number of nell triples to be considered.
+     */
+    public static final int RANDOM_TRIPLES_LIMIT = 8;
 
 }
