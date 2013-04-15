@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+
 
 /**
  * All different kinds of utility methods are placed here
@@ -219,8 +219,10 @@ public class Utilities
         String s = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
         if (s.indexOf(":") != -1)
             s = s.replaceAll(":", "");
-        
-            return s;
+
+        return s;
     }
+
+    
 
 }

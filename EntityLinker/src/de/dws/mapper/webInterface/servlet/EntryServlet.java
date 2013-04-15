@@ -1,14 +1,8 @@
 
 package de.dws.mapper.webInterface.servlet;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.InetAddress;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.nio.channels.OverlappingFileLockException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,10 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,12 +31,11 @@ import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
+import de.dws.mapper.helper.util.FileUtil;
 import de.dws.mapper.helper.util.Utilities;
 import de.dws.mapper.knowledgeBase.UncertainKB;
-import de.dws.mapper.logic.FactSuggestion;
 import de.dws.reasoner.axioms.AxiomCreator;
 import de.dws.reasoner.inference.Inference;
-import de.elog.Application;
 
 /**
  * Servlet class to handle requests for testing the matching performance
@@ -118,11 +107,10 @@ public class EntryServlet extends HttpServlet
     {
 
         // Getting the client's hostname
-        
+
         String hostName = InetAddress.getByName(request.getRemoteAddr()).getHostName(); // or
         logger.info(hostName);
-        //..getCanonicalHostName()
-        
+        // ..getCanonicalHostName()
 
         // instance of Axiom Creator
         AxiomCreator axiomCreator = null;
@@ -144,8 +132,8 @@ public class EntryServlet extends HttpServlet
 
         String action = (request.getParameter("action") != null) ? request.getParameter("action")
                 : "none";
-        //TODO
-        if(action.equals("") || action.length() == 0){
+        // TODO
+        if (action.equals("") || action.length() == 0) {
             action = "suggest";
         }
         logger.info("|" + action + "|");
@@ -245,10 +233,6 @@ public class EntryServlet extends HttpServlet
                         // ********** GOLD STANDARD CREATION
                         // ************************
 
-                        logger.info(subDaos);
-                        logger.info(predDaos);
-                        logger.info(objDaos);
-
                         List<SuggestedFactDAO> listGoldFacts = new ArrayList<SuggestedFactDAO>();
                         SuggestedFactDAO goldFact = null;
 
@@ -282,13 +266,15 @@ public class EntryServlet extends HttpServlet
                     }
 
                 } else {
-                    String triple = getARandomTriple();
+                    // get a triple from the data file
+                    String triple = FileUtil.getATriple();
 
+                    // split them up
                     subject = triple.split(",")[1];
                     predicate = triple.split(",")[2];
                     object = triple.split(",")[3];
 
-                    if (shouldFlip(predicate)) {
+                    if (FileUtil.shouldFlip(predicate)) {
                         subject = triple.split(",")[3];
                         object = triple.split(",")[1];
                     }
@@ -385,49 +371,6 @@ public class EntryServlet extends HttpServlet
 
         // redirect to page
         request.getRequestDispatcher("page/entry.jsp").forward(request, response);
-
-    }
-
-    private boolean shouldFlip(String predicate) {
-        File file = new File(Constants.PREDICATE_FREQ_FILEPATH);
-        Scanner sc;
-        try {
-            sc = new Scanner(file);
-
-            while (sc.hasNextLine()) {
-                String[] parts = sc.nextLine().split("->");
-
-                if (parts[0].contains(predicate)) {
-                    return (parts[0].indexOf("-") != -1);
-                }
-
-            }
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage());
-        }
-        return false;
-    }
-
-    private String getARandomTriple() throws FileNotFoundException {
-        File file = new File(Constants.NELL_DOMAIN_INPUT_FILE_PATH);
-
-        String result = null;
-
-        if (Constants.RANDOM_READ) {
-            Random rand = new Random();
-            int n = 0;
-            for (Scanner sc = new Scanner(file); sc.hasNext();)
-            {
-                ++n;
-                String line = sc.nextLine();
-                if (rand.nextInt(n) == 0)
-                    result = line;
-            }
-        } else {
-
-        }
-
-        return result.toLowerCase();
 
     }
 

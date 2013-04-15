@@ -9,7 +9,9 @@ de.dws.mapper.logic
 de.dws.mapper.message
 de.dws.mapper.preProcess
 de.dws.mapper.preProcess.estimator
+de.dws.mapper.webInterface
 de.dws.mapper.webInterface.servlet
 de.dws.mapper.wrapper
 de.dws.reasoner.axioms
+de.dws.reasoner.inference
 de.dws.test

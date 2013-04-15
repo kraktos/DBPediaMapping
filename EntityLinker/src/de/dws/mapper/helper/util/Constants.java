@@ -271,7 +271,7 @@ public class Constants
     /**
      * read the above file randomly or make it false to do sequential read
      */
-    public static final boolean RANDOM_READ = true;
+    public static final boolean RANDOM_READ = false;
     /**
      * input set of random triples from NELL
      */
