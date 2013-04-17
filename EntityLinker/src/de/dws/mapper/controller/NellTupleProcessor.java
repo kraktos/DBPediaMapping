@@ -149,7 +149,7 @@ public class NellTupleProcessor implements ITupleProcessor
                                         ? strTokens[4] : "");
 
                 // add to the collection
-                formSimilarEntityPairsAcrossTriples(listSubjsObjs, subject, object);
+                formSimilarEntityPairsAcrossTriples(listSubjsObjs, subject.replaceAll("\\s", ""), object.replaceAll("\\s", ""));
 
                 logger.info(subject + " | " + predicate + " | " + object + " | " + aprioriProb);
 
@@ -198,42 +198,66 @@ public class NellTupleProcessor implements ITupleProcessor
                 // **********************************************************************************
 
                 try {
+                    logger.info(retListSubj);
+                    logger.info(retListObj);
+                    logger.info(retListPredLookUp);
 
-                    // logger.info(retListSubj);
-                    // logger.info(retListObj);
-                    // logger.info(retListPredLookUp);
-
-                    axiomCreator.createOwlFromFacts(retListSubj, retListPredLookUp, retListObj,
-                            uncertainFact, entityTypesMap);
-
+                    axiomCreator.createOwlFromFacts(retListSubj,
+                            retListPredLookUp, retListObj, uncertainFact,
+                            entityTypesMap);
                 } catch (OWLOntologyCreationException e) {
                     e.printStackTrace();
                 }
 
             } // end of while
+
+            Map<String, String> similarPairMap = findNearlySimilarPairs(listSubjsObjs);
+
+            logger.info(" STARTING AXIOM CREATION ... " + similarPairMap);
             
-            findNearlySimilarPairs(listSubjsObjs);
+            // create a set of axioms for the same as links between two extracted facts with same terms
+            axiomCreator.createAxiomsFromIntersectingFacts(similarPairMap);
             
-            logger.info(" STARTING AXIOM CREATION ... ");
             axiomCreator.annotateAxioms();
             axiomCreator.createOutput();
-
         }
     }
 
-    private void findNearlySimilarPairs(List<String> listSubjsObjs) {
-        
-        int outerCntr = 0;
-        int innerCntr = 0;
+    private Map<String, String> findNearlySimilarPairs(List<String> listSubjsObjs) {
+
         int levenshteinScore = 0;
-        
-        
-        for(;outerCntr < listSubjsObjs.size(); outerCntr++ ){
-            for(innerCntr = outerCntr; innerCntr < listSubjsObjs.size(); innerCntr++){
-                //levenshteinScore = StringUtils.getLevenshteinDistance(listSubjsObjs.g, arg1)
+
+        // variable which stores the similar pairs, if nothing is closely
+        // similar, it is not in this collection
+        Map<String, String> similarPairMap = new HashMap<String, String>();
+
+        logger.info("Computing edit distances...." + listSubjsObjs.size());
+
+        for (int outerCntr = 0; outerCntr < listSubjsObjs.size(); outerCntr++) {
+            for (int innerCntr = outerCntr; innerCntr < listSubjsObjs.size(); innerCntr++) {
+                levenshteinScore =
+                        StringUtils.getLevenshteinDistance(listSubjsObjs.get(outerCntr),
+                                listSubjsObjs.get(innerCntr));
+
+                logger.info(levenshteinScore + " " + listSubjsObjs.get(outerCntr) + " <-> "
+                        + listSubjsObjs.get(innerCntr));
+
+                // if the distance is 0, that means it is being compared with
+                // itself only
+                // so we consider scores more than that and save it for axiom
+                // creation between those nearly similar terms
+                // the trick is that, even if two triples have exactly same
+                // terms, we need not say explicitly that they are same as
+                // during the ontology
+                // creation step, they will be assigned the same URI.
+                // BIG TODO:
+                if (levenshteinScore > 0 && levenshteinScore < 3) { // TODO
+                    similarPairMap.put(listSubjsObjs.get(outerCntr), listSubjsObjs.get(innerCntr));
+                }
             }
         }
-        
+
+        return similarPairMap;
     }
 
     /**
@@ -248,13 +272,17 @@ public class NellTupleProcessor implements ITupleProcessor
     private void formSimilarEntityPairsAcrossTriples(List<String> listSubjsObjs, String subject,
             String object) {
 
-        // do no processing on the strings, add them as they come making, 'Tom Cruise' and 'tom cruise' different entities
+        // do no processing on the strings, add them as they come making, 'Tom
+        // Cruise' and 'tom cruise' different entities
         if (!listSubjsObjs.contains(subject)) {
             listSubjsObjs.add(subject);
         }
+        // match with other subjects or objects already in the collection
+
         if (!listSubjsObjs.contains(object)) {
             listSubjsObjs.add(object);
         }
+
     }
 
     private void createTypes(List<ResultDAO> retListSubj) {
@@ -310,7 +338,7 @@ public class NellTupleProcessor implements ITupleProcessor
             ExecutionException, SQLException
     {
         // new ReVerbTupleProcessor().processTuples(Constants.IE_TUPLES_PATH);
-        createRandomTriplesFile();
+        // createRandomTriplesFile();
         new NellTupleProcessor().processTuples(Constants.NELL_RANDOM_TRIPLE_DATA_SET);
         System.exit(1);
     }
@@ -339,7 +367,6 @@ public class NellTupleProcessor implements ITupleProcessor
 
         bw.close();
 
-        System.out.println("Done");
     }
 
     /**

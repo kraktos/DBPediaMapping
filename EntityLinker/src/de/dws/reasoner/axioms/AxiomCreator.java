@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -139,25 +140,13 @@ public class AxiomCreator
             Map<String, List<String>> entityTypesMap)
             throws OWLOntologyCreationException {
 
-        // create an ontology
-        // OWLOntology ontology = manager.createOntology(ontologyIRI);
-
-        // File file = new File(Constants.OWL_INPUT_FILE_PATH);
-
-        // Now load the local copy
-        // OWLOntology ontology =
-        // manager.loadOntologyFromOntologyDocument(file);
-        //System.out.println("Loaded ontology: " + getOntology());
-
-        // create domain range restriction on the IE property
-        // creatDomainRangeRestriction(ontology, uncertainFact.getPredicate());
-
         // create same as links with the extraction engine extract and the
         // candidate subjects and objects
         createSameAsAssertions(ontology, candidateSubjs,
                 uncertainFact.getSubject(), entityTypesMap);
         createSameAsAssertions(ontology, candidateObjs,
                 uncertainFact.getObject(), entityTypesMap);
+
         // create same as links with the extraction engine extract and the
         // candidate properties
         createPropEquivAssertions(candidatePreds, uncertainFact.getPredicate());
@@ -171,18 +160,17 @@ public class AxiomCreator
         createDifferentFromAssertions(candidateObjs);
 
         // annotate the axioms
-       // annotateAxioms();
+        // annotateAxioms();
 
         // output to a file
-        //createOutput();
+        // createOutput();
 
         // pause few seconds for the output axiom files to be
         // created
         try {
-            Thread.sleep(10000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Thread interrupted...");
         }
 
         logger.info(listAxioms.size());
@@ -270,6 +258,40 @@ public class AxiomCreator
     }
 
     /**
+     * this method takes a map of pair wise common/nearly common terms in two or
+     * more extracted facts
+     * 
+     * @param similarPairMap
+     */
+    public void createAxiomsFromIntersectingFacts(Map<String, String> similarPairMap) {
+
+        String pairArg1 = null;
+        String pairArg2 = null;
+
+        // iterate the mao and extract the pairs of terms
+        for (Entry<String, String> entry : similarPairMap.entrySet()) {
+            pairArg1 = entry.getKey();
+            pairArg2 = entry.getValue();
+
+            OWLNamedIndividual arg1Value = factory.getOWLNamedIndividual(
+                    pairArg1, prefixIE);
+
+            OWLNamedIndividual arg2Value = factory.getOWLNamedIndividual(
+                    pairArg2, prefixIE);
+
+            // create a same as link between subjects
+            OWLSameIndividualAxiom sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
+                    arg1Value, arg2Value);
+
+            // add it to list of soft constraints with some weight
+            listAxioms
+                    .add(new Axiom(sameAsIndividualAxiom,
+                            convertProbabilityToWeight(0.7)));
+
+        }
+    }
+
+    /**
      * overridden method. Takes a list of candidate mathces and an extracted
      * text. Creates same as links between the extracted text to the candidates
      * with a score given by the score of matching
@@ -286,7 +308,7 @@ public class AxiomCreator
         for (ResultDAO possibleCandidate : candidates) {
 
             // fetch the individual subjects
-            OWLNamedIndividual dbValue = factory.getOWLNamedIndividual(
+            OWLNamedIndividual dbpValue = factory.getOWLNamedIndividual(
                     Utilities.prun(possibleCandidate.getFieldURI()),
                     prefixDBPedia);
             OWLNamedIndividual ieValue = factory.getOWLNamedIndividual(
@@ -294,7 +316,7 @@ public class AxiomCreator
 
             // create a same as link between subjects
             OWLSameIndividualAxiom sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
-                    dbValue, ieValue);
+                    dbpValue, ieValue);
 
             // create the type of axioms. these are hard constraints
             double score = generateIsTypeOfAssertions(ontology, possibleCandidate, entityTypesMap);

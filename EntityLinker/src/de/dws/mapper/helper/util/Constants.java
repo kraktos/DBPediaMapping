@@ -27,6 +27,7 @@ public class Constants
      * DBPedia End point URL
      */
     public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
+            //"http://dbpedia.org/sparql";
     // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS
@@ -266,7 +267,7 @@ public class Constants
     /**
      * input set of data from NELL, with some intersection across triples
      */
-    public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/all.csv";
+    public static final String NELL_DOMAIN_INPUT_FILE_PATH = "/home/arnab/Work/data/NELL/portion.csv";
 
     /**
      * read the above file randomly or make it false to do sequential read
