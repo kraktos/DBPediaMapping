@@ -27,7 +27,7 @@ public class Constants
      * DBPedia End point URL
      */
     public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
-            //"http://dbpedia.org/sparql";
+    // "http://dbpedia.org/sparql";
     // "http://live.dbpedia.org/sparql";
 
     // *****************DIRECTORY LOCATIONS
@@ -190,6 +190,7 @@ public class Constants
     public static final String INSERT_GOLD_STANDARD =
             "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, E_CONF, D_SUB, D_PRED, D_OBJ, HOST) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+    public static final String INSERT_AXIOM_SQL = "INSERT INTO axioms (E_ENTITY, CANDIDATE, APRIORI, APOSTERIORI) VALUES (?, ?, ?, ?)";
     /**
      * defines the batch size for the Data base operations
      */

@@ -36,6 +36,7 @@ import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
+import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
@@ -303,6 +304,8 @@ public class AxiomCreator
             String extractedValue,
             Map<String, List<String>> entityTypesMap) {
 
+        Axiom axiom = null;
+
         // iterate through the possible list of candidates and as many same as
         // links between them
         for (ResultDAO possibleCandidate : candidates) {
@@ -321,10 +324,17 @@ public class AxiomCreator
             // create the type of axioms. these are hard constraints
             double score = generateIsTypeOfAssertions(ontology, possibleCandidate, entityTypesMap);
 
+            axiom = new Axiom(sameAsIndividualAxiom,
+                    convertProbabilityToWeight(score));
             // add it to list of soft constraints
             listAxioms
-                    .add(new Axiom(sameAsIndividualAxiom,
-                            convertProbabilityToWeight(score)));
+                    .add(axiom);
+
+            // create a DB routine to insert the set of axioms.
+            // these will be updated once again the inference runs.
+            DBWrapper.init(Constants.INSERT_AXIOM_SQL);
+            DBWrapper.saveAxiomsPrior(ieValue, dbpValue, score);
+
         }
     }
 
