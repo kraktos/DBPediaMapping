@@ -4,7 +4,6 @@
      xmlns:Software="http://dbpedia.org/ontology/Software/"
      xmlns:Astronaut="http://dbpedia.org/ontology/Astronaut/"
      xmlns:SpaceStation="http://dbpedia.org/ontology/SpaceStation/"
-     xmlns:Smith_County="http://dbpedia.org/ontology/Smith_County,"
      xmlns:Building="http://dbpedia.org/ontology/Building/"
      xmlns:Bridge="http://dbpedia.org/ontology/Bridge/"
      xmlns:Work="http://dbpedia.org/ontology/Work/"
@@ -18,6 +17,7 @@
      xmlns:PopulatedPlace="http://dbpedia.org/ontology/PopulatedPlace/"
      xmlns:Drug="http://dbpedia.org/ontology/Drug/"
      xmlns:ChemicalCompound="http://dbpedia.org/ontology/ChemicalCompound/"
+     xmlns:Tom_Cruise_All_the_World="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:SpaceShuttle="http://dbpedia.org/ontology/SpaceShuttle/"
      xmlns:Lake="http://dbpedia.org/ontology/Lake/"
@@ -25,8 +25,8 @@
      xmlns:LunarCrater="http://dbpedia.org/ontology/LunarCrater/"
      xmlns:Rocket="http://dbpedia.org/ontology/Rocket/"
      xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#"
-     xmlns:foaf="http://xmlns.com/foaf/0.1/"
      xmlns:GeopoliticalOrganisation="http://dbpedia.org/ontology/GeopoliticalOrganisation/"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
      xmlns:AutomobileEngine="http://dbpedia.org/ontology/AutomobileEngine/"
      xmlns:Automobile="http://dbpedia.org/ontology/Automobile/"
      xmlns:ontology="http://dbpedia.org/ontology/"
@@ -2251,7 +2251,14 @@
         <rdfs:label xml:lang="fr">directeur</rdfs:label>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <equivalentProperty rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
     </ObjectProperty>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7013691369136914</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/director"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </Axiom>
     
 
 
@@ -7129,7 +7136,14 @@
         <rdfs:comment xml:lang="en">the person they are married to</rdfs:comment>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <equivalentProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
     </ObjectProperty>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/spouse"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </Axiom>
     
 
 
@@ -7162,7 +7176,7 @@
         <equivalentProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
     </ObjectProperty>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5622502250225022</elog:probability>
         <annotatedSource rdf:resource="http://dbpedia.org/ontology/starring"/>
         <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
@@ -8484,9 +8498,33 @@
 
     <ObjectProperty rdf:about="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
     <Axiom>
-        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5622502250225022</elog:probability>
         <annotatedSource rdf:resource="http://dbpedia.org/ontology/starring"/>
         <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#directordirectedmovie -->
+
+    <ObjectProperty rdf:about="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7013691369136914</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/director"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#hasspouse -->
+
+    <ObjectProperty rdf:about="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/spouse"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
         <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </Axiom>
     
@@ -24711,32 +24749,1289 @@
     
 
 
-    <!-- http://dbpedia.org/ontology/Jada_Pinkett_Smith -->
+    <!-- http://dbpedia.org/ontology/A_Few_Good_Men -->
 
-    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Jada_Pinkett_Smith">
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.45071907190719074</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/A_Few_Good_Men_(play) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men_(play)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Play"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2719371937193719</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men_(play)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Angelina_Jolie -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Angelina_Jolie">
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
     </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8461538461538461</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Angelina_Jolie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
     
 
 
-    <!-- http://dbpedia.org/ontology/Smith_County,_Kansas -->
+    <!-- http://dbpedia.org/ontology/Barry_Levinson -->
 
-    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Smith_County,_Kansas">
-        <rdf:type rdf:resource="http://dbpedia.org/ontology/AdministrativeRegion"/>
-        <rdf:type rdf:resource="http://dbpedia.org/ontology/Place"/>
-        <rdf:type rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Barry_Levinson">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
     </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8461538461538461</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Barry_Levinson"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
     
 
 
-    <!-- http://dbpedia.org/ontology/Smith_EP -->
+    <!-- http://dbpedia.org/ontology/Brad_Pitt -->
 
-    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Smith_EP">
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Brad_Pitt">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6201800180018002</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Brad_Pitt_(boxer) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Brad_Pitt_(boxer)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Athlete"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Boxer"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.24366736673667366</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt_(boxer)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Chuck_Wicks -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Chuck_Wicks">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Artist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalArtist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Chuck_Wicks"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_(film) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_(film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.30606460646064604</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_(finance) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_(finance)">
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.01</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(finance)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_Defect -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_Defect">
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.01</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Defect"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_Karma -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_Karma">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4678687868786879</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Karma"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_fissure -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_fissure">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Brain"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3017891789178918</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_fissure"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Dustin_Hoffman -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Dustin_Hoffman">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8461538461538461</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Dustin_Hoffman"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Julianne_Hough -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Julianne_Hough">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Artist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalArtist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6184628462846284</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Julianne_Hough_(album) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Julianne_Hough_(album)">
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Album"/>
         <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
     </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3240874087408741</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough_(album)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Kate_Winslet -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Kate_Winslet">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8181818181818181</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Kate_Winslet"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Katie_Holmes -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Katie_Holmes">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9868036803680368</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Katie_Holmes_(historian) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Katie_Holmes_(historian)">
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.002598259825982598</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes_(historian)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_%28film%29 -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_%28film%29">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.39033903390339036</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_%28film%29"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_(2002_collection) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_(2002_collection)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3092999299929993</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(2002_collection)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_(film) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_(film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7777777777777778</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_Everybody_Runs -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs">
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.006811681168116811</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Nicole_Kidman -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Nicole_Kidman">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8333333333333334</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Nicole_Kidman"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Russell_Crowe -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Russell_Crowe">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5947584758475848</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Russell_Crowe"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Sam_Mendes -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Sam_Mendes">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7777777777777778</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Sam_Mendes"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_%28TV_series%29 -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_%28TV_series%29">
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.004391439143914391</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28TV_series%29"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_%28film%29 -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_%28film%29">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4932003200320032</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28film%29"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_(TV_series) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_(TV_series)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/TelevisionShow"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3636113611361136</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(TV_series)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_(film) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_(film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7142857142857143</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_(newspaper) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_(newspaper)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Newspaper"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/PeriodicalLiterature"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.34036703670367036</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(newspaper)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8888888888888888</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2494969496949695</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3333333333333334</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.28125</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15092509250925093</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise_Unauthorized -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3809523809523809</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.40367736773677365</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08031303130313032</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun_(1955_film) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun_(1955_film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0848944894489449</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(1955_film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun_(soundtrack) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun_(soundtrack)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Album"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.09999999999999998</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(soundtrack)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun_Anthem -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun_Anthem">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Single"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.09999999999999998</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_Anthem"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Guns -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Guns">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/TelevisionShow"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08054005400540054</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Guns"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Wag_the_Dog -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Wag_the_Dog">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5305720572057205</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6324612461246124</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Wag_the_Dog_(album) -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_(album)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Album"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.052968296829682966</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.260998099809981</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Wag_the_Dog_A_Novel -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5720422042204221</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08111211121112111</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#AFewGoodMen -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2719371937193719</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men_(play)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.45071907190719074</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#AngelinaJolie -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8461538461538461</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Angelina_Jolie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#BarryLevinson -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#BarryLevinson">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <Extract:directordirectedmovie rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5398709870987098</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8461538461538461</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Barry_Levinson"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.75</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#Bradpitt -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#Bradpitt">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6201800180018002</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.24366736673667366</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt_(boxer)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#DustinHoffman -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#DustinHoffman">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8461538461538461</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Dustin_Hoffman"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9375</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#KateWinslet -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8181818181818181</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Kate_Winslet"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#NicoleKidman -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#NicoleKidman">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8333333333333334</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Nicole_Kidman"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9990234375</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#RussellCrowe -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#RussellCrowe">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5947584758475848</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Russell_Crowe"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7248304830483049</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#SamMendes -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#SamMendes">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.984375</elog:probability>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7777777777777778</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Sam_Mendes"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#TOPGUN -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.09999999999999998</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_Anthem"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08031303130313032</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.09999999999999998</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(soundtrack)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0848944894489449</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(1955_film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08054005400540054</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Guns"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#Tomcruise -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#Tomcruise">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9999999962747097</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3809523809523809</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8888888888888888</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.875</elog:probability>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.998046875</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99609375</elog:probability>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.15092509250925093</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.2494969496949695</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7971217121712171</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6747604760476048</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#chuckwicks -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#chuckwicks">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.984375</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Chuck_Wicks"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#collateral -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#collateral"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.01</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Defect"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.01</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(finance)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.30606460646064604</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3017891789178918</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_fissure"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4678687868786879</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Karma"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#juliannehough -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3240874087408741</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough_(album)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6184628462846284</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#katieholmes -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#katieholmes">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9999999999997727</elog:probability>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.002598259825982598</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes_(historian)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9868036803680368</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#minorityreport -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.006811681168116811</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.39033903390339036</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_%28film%29"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7777777777777778</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3092999299929993</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(2002_collection)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#theinsider -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#theinsider"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3636113611361136</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(TV_series)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.7142857142857143</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(film)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.34036703670367036</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(newspaper)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4932003200320032</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28film%29"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.004391439143914391</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28TV_series%29"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#tomcruise -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#tomcruise">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.28125</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.40367736773677365</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.99</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9999999962747097</elog:probability>
+        <annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6747604760476048</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3333333333333334</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#wagtheDog -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#wagtheDog">
+        <sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </NamedIndividual>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.260998099809981</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5305720572057205</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6522702270227023</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.08111211121112111</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#wagthedog -->
+
+    <NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.052968296829682966</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5720422042204221</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6324612461246124</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
+    <Axiom>
+        <elog:probability rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6522702270227023</elog:probability>
+        <annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </Axiom>
     
 
 
@@ -24749,57 +26044,29 @@
      -->
 
     <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_(film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_(finance)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_Defect"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_Karma"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_fissure"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men_(play)"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://dbpedia.org/ontology/BasketballTeam"/>
             <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalElement"/>
             <rdf:Description rdf:about="http://dbpedia.org/ontology/Food"/>
             <rdf:Description rdf:about="http://dbpedia.org/ontology/Tunnel"/>
-        </members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalCompound"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Database"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/SpeedwayTeam"/>
-        </members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Election"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/LegalCase"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerWorldRanking"/>
-        </members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Asteroid"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/NaturalPlace"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Royalty"/>
-            <rdf:Description rdf:about="http://schema.org/Hotel"/>
-        </members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Atoll"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Locomotive"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
-            <rdf:Description rdf:about="http://schema.org/TelevisionStation"/>
-        </members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Name"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/RoadJunction"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/WrittenWork"/>
         </members>
     </rdf:Description>
     <rdf:Description>
@@ -24814,20 +26081,49 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/FootballMatch"/>
             <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/GivenName"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerChamp"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
+            <rdf:Description rdf:about="http://schema.org/Hotel"/>
         </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_%28film%29"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_(2002_collection)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_(film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs"/>
+        </distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/NaturalPlace"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Surname"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Election"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/LegalCase"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerWorldRanking"/>
         </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Brad_Pitt"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Brad_Pitt_(boxer)"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Chuck_Wicks"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Julianne_Hough"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Julianne_Hough_(album)"/>
+        </distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
@@ -24839,13 +26135,144 @@
         </members>
     </rdf:Description>
     <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun_(1955_film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun_(soundtrack)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun_Anthem"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Guns"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Asteroid"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/NaturalPlace"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Royalty"/>
             <rdf:Description rdf:about="http://schema.org/Hotel"/>
         </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Barry_Levinson"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&#39;s_a_Stage"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Russell_Crowe"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Dustin_Hoffman"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Atoll"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Locomotive"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
+            <rdf:Description rdf:about="http://schema.org/TelevisionStation"/>
+        </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Nicole_Kidman"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Katie_Holmes"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Katie_Holmes_(historian)"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/NaturalPlace"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Surname"/>
+        </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Angelina_Jolie"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Sam_Mendes"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Name"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/RoadJunction"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/WrittenWork"/>
+        </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Wag_the_Dog"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/FootballMatch"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/GivenName"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerChamp"/>
+        </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_%28TV_series%29"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_%28film%29"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_(TV_series)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_(film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_(newspaper)"/>
+        </distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalCompound"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Database"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/SpeedwayTeam"/>
+        </members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Kate_Winslet"/>
+        </distinctMembers>
     </rdf:Description>
 </rdf:RDF>
 

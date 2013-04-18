@@ -1,47 +1,12 @@
 <?xml version="1.0"?>
 <rdf:RDF xmlns="http://dbpedia.org/ontology/"
      xml:base="http://dbpedia.org/ontology/"
-     xmlns:Software="http://dbpedia.org/ontology/Software/"
-     xmlns:Astronaut="http://dbpedia.org/ontology/Astronaut/"
-     xmlns:SpaceStation="http://dbpedia.org/ontology/SpaceStation/"
-     xmlns:Smith_County="http://dbpedia.org/ontology/Smith_County,"
-     xmlns:Building="http://dbpedia.org/ontology/Building/"
-     xmlns:Bridge="http://dbpedia.org/ontology/Bridge/"
-     xmlns:Work="http://dbpedia.org/ontology/Work/"
-     xmlns:GrandPrix="http://dbpedia.org/ontology/GrandPrix/"
-     xmlns:Spacecraft="http://dbpedia.org/ontology/Spacecraft/"
-     xmlns:ChemicalSubstance="http://dbpedia.org/ontology/ChemicalSubstance/"
-     xmlns:MeanOfTransportation="http://dbpedia.org/ontology/MeanOfTransportation/"
-     xmlns:schema="http://schema.org/"
-     xmlns:Infrastructure="http://dbpedia.org/ontology/Infrastructure/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:PopulatedPlace="http://dbpedia.org/ontology/PopulatedPlace/"
-     xmlns:Drug="http://dbpedia.org/ontology/Drug/"
-     xmlns:ChemicalCompound="http://dbpedia.org/ontology/ChemicalCompound/"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:SpaceShuttle="http://dbpedia.org/ontology/SpaceShuttle/"
-     xmlns:Lake="http://dbpedia.org/ontology/Lake/"
-     xmlns:LunarCrater="http://dbpedia.org/ontology/LunarCrater/"
-     xmlns:School="http://dbpedia.org/ontology/School/"
-     xmlns:Rocket="http://dbpedia.org/ontology/Rocket/"
-     xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#"
-     xmlns:GeopoliticalOrganisation="http://dbpedia.org/ontology/GeopoliticalOrganisation/"
-     xmlns:foaf="http://xmlns.com/foaf/0.1/"
-     xmlns:AutomobileEngine="http://dbpedia.org/ontology/AutomobileEngine/"
-     xmlns:Automobile="http://dbpedia.org/ontology/Automobile/"
-     xmlns:Canal="http://dbpedia.org/ontology/Canal/"
-     xmlns:SpaceMission="http://dbpedia.org/ontology/SpaceMission/"
-     xmlns:Planet="http://dbpedia.org/ontology/Planet/"
-     xmlns:Stream="http://dbpedia.org/ontology/Stream/"
-     xmlns:bibo="http://dbpedia.org/ontology/bibo:"
-     xmlns:Weapon="http://dbpedia.org/ontology/Weapon/"
-     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:datatype="http://dbpedia.org/datatype/"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:reasoner="http://reasoner#"
-     xmlns:Person="http://dbpedia.org/ontology/Person/"
-     xmlns:Extract="http://dbpedia.org/ontology/Extract#"
-     xmlns:Mountain="http://dbpedia.org/ontology/Mountain/">
+     xmlns:Extract="http://dbpedia.org/ontology/Extract#">
     <owl:Ontology rdf:about="http://dbpedia.org/ontology/">
         <owl:versionInfo xml:lang="en">Version 3.7</owl:versionInfo>
     </owl:Ontology>
@@ -56,10 +21,30 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <owl:AnnotationProperty rdf:about="http://www.w3.org/2002/07/owl#versionInfo"/>
+    
+
+
+    <!-- http://reasoner#confidence -->
+
     <owl:AnnotationProperty rdf:about="http://reasoner#confidence"/>
-    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#label"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#comment -->
+
     <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#label -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#label"/>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#versionInfo -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2002/07/owl#versionInfo"/>
     
 
 
@@ -369,8 +354,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/affiliation">
         <rdfs:label xml:lang="en">affiliation</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Organisation"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Organisation"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Organisation"/>
     </owl:ObjectProperty>
     
 
@@ -640,8 +625,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/archipelago">
         <rdfs:label xml:lang="en">archipelago</rdfs:label>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Atoll"/>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Island"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
     </owl:ObjectProperty>
     
 
@@ -720,8 +705,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/arrondissement">
         <rdfs:label xml:lang="en">arrondissement</rdfs:label>
         <rdfs:label xml:lang="fr">arrondissement</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -798,8 +783,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/associatedAct">
         <rdfs:label xml:lang="en">associated act</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Artist"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Artist"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Artist"/>
     </owl:ObjectProperty>
     
 
@@ -883,8 +868,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/automobilePlatform">
         <rdfs:label xml:lang="en">automobile platform</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Automobile"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Automobile"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Automobile"/>
     </owl:ObjectProperty>
     
 
@@ -950,8 +935,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/basedOn">
         <rdfs:label xml:lang="el">βασισμένο σε</rdfs:label>
         <rdfs:label xml:lang="en">based on</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
     </owl:ObjectProperty>
     
 
@@ -1132,8 +1117,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/borough">
         <rdfs:label xml:lang="en">borough</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -1142,8 +1127,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/branchFrom">
         <rdfs:label xml:lang="en">branch from</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
     </owl:ObjectProperty>
     
 
@@ -1152,8 +1137,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/branchTo">
         <rdfs:label xml:lang="en">branch to</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
     </owl:ObjectProperty>
     
 
@@ -1255,8 +1240,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/canton">
         <rdfs:label xml:lang="en">canton</rdfs:label>
         <rdfs:label xml:lang="fr">canton</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Settlement"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Settlement"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Settlement"/>
     </owl:ObjectProperty>
     
 
@@ -1356,8 +1341,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/ceremonialCounty">
         <rdfs:label xml:lang="en">Ceremonial County</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -1466,8 +1451,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/child">
         <rdfs:label xml:lang="en">child</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -1476,8 +1461,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/childOrganisation">
         <rdfs:label xml:lang="en">child organisation</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Organisation"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Organisation"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Organisation"/>
     </owl:ObjectProperty>
     
 
@@ -1679,8 +1664,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/commune">
         <rdfs:label xml:lang="en">commune</rdfs:label>
         <rdfs:label xml:lang="fr">commune</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Settlement"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Settlement"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Settlement"/>
     </owl:ObjectProperty>
     
 
@@ -1701,8 +1686,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/comparable">
         <rdfs:label xml:lang="en">comparable</rdfs:label>
         <rdfs:comment xml:lang="en">similar, unrelated rockets</rdfs:comment>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Rocket"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Rocket"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Rocket"/>
     </owl:ObjectProperty>
     
 
@@ -1711,7 +1696,7 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/compiler">
         <rdfs:label xml:lang="en">compiler</rdfs:label>
-        <rdfs:comment xml:lang="en">For compilation albums: the person or entity responsible for selecting the album&#39;s track listing.</rdfs:comment>
+        <rdfs:comment xml:lang="en">For compilation albums: the person or entity responsible for selecting the album&apos;s track listing.</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Album"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
@@ -1840,8 +1825,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/councilArea">
         <rdfs:label xml:lang="en">Council area</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -2157,8 +2142,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/department">
         <rdfs:label xml:lang="en">department</rdfs:label>
         <rdfs:label xml:lang="fr">département</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -2176,8 +2161,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/derivative">
         <rdfs:label xml:lang="en">derivative</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
     </owl:ObjectProperty>
     
 
@@ -2251,7 +2236,14 @@
         <rdfs:label xml:lang="fr">directeur</rdfs:label>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:equivalentProperty rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
     </owl:ObjectProperty>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/director"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </owl:Axiom>
     
 
 
@@ -2280,8 +2272,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/distributingLabel">
         <rdfs:label xml:lang="en">distributing label</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RecordLabel"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/RecordLabel"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RecordLabel"/>
     </owl:ObjectProperty>
     
 
@@ -2358,8 +2350,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/drainsFrom">
         <rdfs:label xml:lang="en">drains from</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
     </owl:ObjectProperty>
     
 
@@ -2368,8 +2360,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/drainsTo">
         <rdfs:label xml:lang="en">drains to</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
     </owl:ObjectProperty>
     
 
@@ -2626,8 +2618,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/father">
         <rdfs:label xml:lang="en">father</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -2804,8 +2796,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/followingEvent">
         <rdfs:label xml:lang="en">following event</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Event"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Event"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Event"/>
     </owl:ObjectProperty>
     
 
@@ -2815,7 +2807,7 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/footedness">
         <rdfs:label xml:lang="en">Footedness</rdfs:label>
         <rdfs:label xml:lang="pt">habilidade com o pé</rdfs:label>
-        <rdfs:comment xml:lang="en">a preference to put one&#39;s left or right foot forward in surfing, wakeboarding, skateboarding, wakeskating, snowboarding and mountainboarding. The term is sometimes applied to the foot a footballer uses to kick.</rdfs:comment>
+        <rdfs:comment xml:lang="en">a preference to put one&apos;s left or right foot forward in surfing, wakeboarding, skateboarding, wakeskating, snowboarding and mountainboarding. The term is sometimes applied to the foot a footballer uses to kick.</rdfs:comment>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Sport"/>
     </owl:ObjectProperty>
@@ -2911,8 +2903,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/foundationOrganisation">
         <rdfs:label xml:lang="en">foundation organisation</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Organisation"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Organisation"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Organisation"/>
     </owl:ObjectProperty>
     
 
@@ -3332,8 +3324,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/hasJunctionWith">
         <rdfs:label xml:lang="el">σύνδεση</rdfs:label>
         <rdfs:label xml:lang="en">has junction with</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Canal"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Canal"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Canal"/>
     </owl:ObjectProperty>
     
 
@@ -3532,8 +3524,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/house">
         <rdfs:label xml:lang="en">house</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Legislature"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Legislature"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Legislature"/>
     </owl:ObjectProperty>
     
 
@@ -3627,8 +3619,8 @@
         <rdfs:label xml:lang="el">επηρέασε</rdfs:label>
         <rdfs:label xml:lang="en">influenced</rdfs:label>
         <rdfs:label xml:lang="fr">a influencé</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -3639,8 +3631,8 @@
         <rdfs:label xml:lang="el">επιρροές</rdfs:label>
         <rdfs:label xml:lang="en">influenced by</rdfs:label>
         <rdfs:label xml:lang="fr">influencé par</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -3730,8 +3722,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/isPartOfMilitaryConflict">
         <rdfs:label xml:lang="en">is part of military conflict</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MilitaryConflict"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MilitaryConflict"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MilitaryConflict"/>
     </owl:ObjectProperty>
     
 
@@ -3740,8 +3732,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/isPartOfWineRegion">
         <rdfs:label xml:lang="en">is part of wine region</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
     </owl:ObjectProperty>
     
 
@@ -3849,8 +3841,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/landingVehicle">
         <rdfs:label xml:lang="en">landing vehicle</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
     </owl:ObjectProperty>
     
 
@@ -3859,8 +3851,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/landingvehicle">
         <rdfs:label xml:lang="en">LandingVehicle</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
     </owl:ObjectProperty>
     
 
@@ -3918,8 +3910,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/largestCity">
         <rdfs:label xml:lang="en">largest city</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -3929,8 +3921,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/largestCountry">
         <rdfs:label xml:lang="en">largest country</rdfs:label>
         <rdfs:label xml:lang="pt">maior país</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -3949,8 +3941,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/largestSettlement">
         <rdfs:label xml:lang="en">largest settlement</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -4037,8 +4029,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/launchvehicle">
         <rdfs:label xml:lang="en">LaunchVehicle</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
     </owl:ObjectProperty>
     
 
@@ -4118,8 +4110,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/leftChild">
         <rdfs:label xml:lang="en">left child</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Island"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
     </owl:ObjectProperty>
     
 
@@ -4129,8 +4121,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/leftTributary">
         <rdfs:label xml:lang="el">αριστεροί_παραπόταμοι</rdfs:label>
         <rdfs:label xml:lang="en">left tributary</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/River"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
     </owl:ObjectProperty>
     
 
@@ -4152,8 +4144,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/lessPopulatedCountry">
         <rdfs:label xml:lang="en">less populated country</rdfs:label>
         <rdfs:label xml:lang="pt">país menos povoado</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
     </owl:ObjectProperty>
     
 
@@ -4163,8 +4155,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/lessPopulousCountry">
         <rdfs:label xml:lang="en">less populous country</rdfs:label>
         <rdfs:label xml:lang="pt">país menos populoso</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
     </owl:ObjectProperty>
     
 
@@ -4184,8 +4176,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/lieutenancyArea">
         <rdfs:label xml:lang="en">Lieutenancy area</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -4394,8 +4386,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/majorIsland">
         <rdfs:label xml:lang="en">major island</rdfs:label>
         <rdfs:label xml:lang="pt">maior ilha</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Island"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Island"/>
     </owl:ObjectProperty>
     
 
@@ -4613,8 +4605,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/mergedIntoParty">
         <rdfs:label xml:lang="de">Aufgegangen in Partei</rdfs:label>
         <rdfs:label xml:lang="en">merged into party</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PoliticalParty"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PoliticalParty"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PoliticalParty"/>
     </owl:ObjectProperty>
     
 
@@ -4623,8 +4615,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/metropolitanBorough">
         <rdfs:label xml:lang="en">metropolitan borough</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -4684,8 +4676,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/mostPopulatedCountry">
         <rdfs:label xml:lang="en">most populated country</rdfs:label>
         <rdfs:label xml:lang="pt">país mais povoado</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
     </owl:ObjectProperty>
     
 
@@ -4695,8 +4687,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/mostPopulousCountry">
         <rdfs:label xml:lang="en">most populous country</rdfs:label>
         <rdfs:label xml:lang="pt">país mais populoso</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
     </owl:ObjectProperty>
     
 
@@ -4724,8 +4716,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/mother">
         <rdfs:label xml:lang="en">mother</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -4867,8 +4859,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/musicSubgenre">
         <rdfs:label xml:lang="en">music subgenre</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
     </owl:ObjectProperty>
     
 
@@ -5008,8 +5000,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/neighboringMunicipality">
         <rdfs:label xml:lang="en">neighboring municipality</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -5028,10 +5020,10 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/network">
         <rdfs:label xml:lang="en">network</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcast"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Broadcast"/>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcaster"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcast"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Broadcaster"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcaster"/>
     </owl:ObjectProperty>
     
 
@@ -5040,8 +5032,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/nextMission">
         <rdfs:label xml:lang="en">next mission</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
     </owl:ObjectProperty>
     
 
@@ -5279,8 +5271,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/opponent">
         <rdfs:label xml:lang="en">opponent</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -5299,8 +5291,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/organSystem">
         <rdfs:label xml:lang="en">organ system</rdfs:label>
         <rdfs:comment xml:lang="en">the organ system that a anatomical structure belongs to</rdfs:comment>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
     </owl:ObjectProperty>
     
 
@@ -5371,8 +5363,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/otherAppearances">
         <rdfs:label xml:lang="en">other appearances</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
     </owl:ObjectProperty>
     
 
@@ -5461,8 +5453,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/parentOrganisation">
         <rdfs:label xml:lang="en">parent organisation</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Organisation"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Organisation"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Organisation"/>
     </owl:ObjectProperty>
     
 
@@ -5471,8 +5463,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/parish">
         <rdfs:label xml:lang="en">parish</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -5490,8 +5482,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/partOf">
         <rdfs:label xml:lang="en">part of</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MilitaryConflict"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MilitaryConflict"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MilitaryConflict"/>
     </owl:ObjectProperty>
     
 
@@ -5500,8 +5492,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/partOfWineRegion">
         <rdfs:label xml:lang="en">part of wine region</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
     </owl:ObjectProperty>
     
 
@@ -5510,8 +5502,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/partner">
         <rdfs:label xml:lang="en">partner</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -5748,7 +5740,7 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/politicalPartyInLegislature">
         <rdfs:label xml:lang="de">politische Partei in der Legislative</rdfs:label>
         <rdfs:label xml:lang="en">political party in legislature</rdfs:label>
-        <rdfs:comment xml:lang="en">Political party in the legislature (eg.: European People&#39;s Party in the European Parliament).</rdfs:comment>
+        <rdfs:comment xml:lang="en">Political party in the legislature (eg.: European People&apos;s Party in the European Parliament).</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Legislature"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PoliticalParty"/>
     </owl:ObjectProperty>
@@ -5899,8 +5891,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/previousEvent">
         <rdfs:label xml:lang="en">previous event</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Event"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Event"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Event"/>
     </owl:ObjectProperty>
     
 
@@ -5919,8 +5911,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/previousMission">
         <rdfs:label xml:lang="en">previous mission</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/SpaceMission"/>
     </owl:ObjectProperty>
     
 
@@ -5930,8 +5922,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/previousWork">
         <rdfs:label xml:lang="el">προηγούμενη δημιουργία</rdfs:label>
         <rdfs:label xml:lang="en">previous work</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Work"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Work"/>
     </owl:ObjectProperty>
     
 
@@ -5959,8 +5951,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/principalArea">
         <rdfs:label xml:lang="en">principal area</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -6218,8 +6210,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/relatedMeanOfTransportation">
         <rdfs:label xml:lang="en">related mean of transportation</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MeanOfTransportation"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/MeanOfTransportation"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MeanOfTransportation"/>
     </owl:ObjectProperty>
     
 
@@ -6238,8 +6230,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/relative">
         <rdfs:label xml:lang="en">relative</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
     </owl:ObjectProperty>
     
 
@@ -6338,8 +6330,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/richestCountry">
         <rdfs:label xml:lang="en">richest country</rdfs:label>
         <rdfs:label xml:lang="pt">país mais rico</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
     </owl:ObjectProperty>
     
 
@@ -6348,8 +6340,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/rightChild">
         <rdfs:label xml:lang="en">right child</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Island"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
     </owl:ObjectProperty>
     
 
@@ -6359,8 +6351,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/rightTributary">
         <rdfs:label xml:lang="el">δεξιοί_παραπόταμοι</rdfs:label>
         <rdfs:label xml:lang="en">right tributary</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/River"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
     </owl:ObjectProperty>
     
 
@@ -6369,8 +6361,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/rival">
         <rdfs:label xml:lang="en">rival</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/School"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/School"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/School"/>
     </owl:ObjectProperty>
     
 
@@ -6392,8 +6384,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/riverBranch">
         <rdfs:label xml:lang="el">διακλαδώσεις</rdfs:label>
         <rdfs:label xml:lang="en">branch</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/River"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/River"/>
     </owl:ObjectProperty>
     
 
@@ -6403,8 +6395,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/riverBranchOf">
         <rdfs:label xml:lang="el">διακλάδωση_του</rdfs:label>
         <rdfs:label xml:lang="en">branch of</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/River"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/River"/>
     </owl:ObjectProperty>
     
 
@@ -6448,8 +6440,8 @@
         <rdfs:label xml:lang="en">route end</rdfs:label>
         <rdfs:comment xml:lang="de">Ende des Verkehrswegs.</rdfs:comment>
         <rdfs:comment xml:lang="en">End of the route. This is where the route ends and, for U.S. roads, is either at the northern terminus or eastern terminus.</rdfs:comment>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
     </owl:ObjectProperty>
     
 
@@ -6474,8 +6466,8 @@
         <rdfs:label xml:lang="en">route junction</rdfs:label>
         <rdfs:comment xml:lang="de">Eine Abzweigung oder Kreuzung zu einem anderen Verkehrsweg.</rdfs:comment>
         <rdfs:comment xml:lang="en">A junction or cross to another route.</rdfs:comment>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
     </owl:ObjectProperty>
     
 
@@ -6487,8 +6479,8 @@
         <rdfs:label xml:lang="en">route start</rdfs:label>
         <rdfs:comment xml:lang="de">Anfang des Verkehrswegs.</rdfs:comment>
         <rdfs:comment xml:lang="en">Start of the route. This is where the route begins and, for U.S. roads, is either at the southern terminus or western terminus.</rdfs:comment>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/RouteOfTransportation"/>
     </owl:ObjectProperty>
     
 
@@ -6747,8 +6739,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sheading">
         <rdfs:label xml:lang="en">sheading</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -6847,8 +6839,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sisterCollege">
         <rdfs:label xml:lang="en">sister college</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/College"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/College"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/College"/>
     </owl:ObjectProperty>
     
 
@@ -6857,8 +6849,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sisterNewspaper">
         <rdfs:label xml:lang="en">sister newspaper</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Newspaper"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Newspaper"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Newspaper"/>
     </owl:ObjectProperty>
     
 
@@ -6867,10 +6859,10 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sisterStation">
         <rdfs:label xml:lang="en">sister station</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Broadcast"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcast"/>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcaster"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Broadcast"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Broadcaster"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Broadcaster"/>
     </owl:ObjectProperty>
     
 
@@ -6890,8 +6882,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/smallestCountry">
         <rdfs:label xml:lang="en">smallest country</rdfs:label>
         <rdfs:label xml:lang="pt">menor país</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -7129,7 +7121,14 @@
         <rdfs:comment xml:lang="en">the person they are married to</rdfs:comment>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Person"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:equivalentProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
     </owl:ObjectProperty>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/spouse"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </owl:Axiom>
     
 
 
@@ -7137,8 +7136,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/spurOf">
         <rdfs:label xml:lang="en">spur of</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Road"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Road"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Road"/>
     </owl:ObjectProperty>
     
 
@@ -7273,8 +7272,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/stylisticOrigin">
         <rdfs:label xml:lang="en">stylistic origin</rdfs:label>
         <rdfs:label xml:lang="pt">origens estilísticas</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/MusicGenre"/>
     </owl:ObjectProperty>
     
 
@@ -7293,8 +7292,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/subregion">
         <rdfs:label xml:lang="en">subregion</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/WineRegion"/>
     </owl:ObjectProperty>
     
 
@@ -7303,8 +7302,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/subsequentInfrastructure">
         <rdfs:label xml:lang="en">subsequent infrastructure</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Infrastructure"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Infrastructure"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Infrastructure"/>
     </owl:ObjectProperty>
     
 
@@ -7314,8 +7313,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/subsequentWork">
         <rdfs:label xml:lang="el">επόμενη δημιουργία</rdfs:label>
         <rdfs:label xml:lang="en">subsequent work</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Work"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Work"/>
     </owl:ObjectProperty>
     
 
@@ -7324,8 +7323,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/subsidiary">
         <rdfs:label xml:lang="en">subsidiary</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Company"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Company"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Company"/>
     </owl:ObjectProperty>
     
 
@@ -7342,8 +7341,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/summerAppearances">
         <rdfs:label xml:lang="en">summer appearances</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
     </owl:ObjectProperty>
     
 
@@ -7611,8 +7610,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/twinCountry">
         <rdfs:label xml:lang="en">twin country</rdfs:label>
-        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Country"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/ontology/Country"/>
     </owl:ObjectProperty>
     
 
@@ -7651,8 +7650,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/unitaryAuthority">
         <rdfs:label xml:lang="en">unitary authority</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
     </owl:ObjectProperty>
     
 
@@ -7740,8 +7739,8 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/vehicle">
         <rdfs:label xml:lang="en">vehicle</rdfs:label>
         <rdfs:comment xml:lang="en">vehicle that uses a specific automobile platform</rdfs:comment>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Automobile"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/Automobile"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Automobile"/>
     </owl:ObjectProperty>
     
 
@@ -8121,8 +8120,8 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/winterAppearances">
         <rdfs:label xml:lang="en">winter appearances</rdfs:label>
-        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/ontology/OlympicResult"/>
     </owl:ObjectProperty>
     
 
@@ -8428,7 +8427,7 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/ChemicalSubstance/boilingPoint">
         <rdfs:label xml:lang="en">boiling point (K)</rdfs:label>
-        <rdfs:label xml:lang="fr">point d&#39;ébullition (K)</rdfs:label>
+        <rdfs:label xml:lang="fr">point d&apos;ébullition (K)</rdfs:label>
         <rdfs:range rdf:resource="http://dbpedia.org/datatype/kelvin"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/ChemicalSubstance"/>
     </owl:ObjectProperty>
@@ -8462,7 +8461,7 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/Drug/boilingPoint">
         <rdfs:label xml:lang="en">boiling point (K)</rdfs:label>
-        <rdfs:label xml:lang="fr">point d&#39;ébullition (K)</rdfs:label>
+        <rdfs:label xml:lang="fr">point d&apos;ébullition (K)</rdfs:label>
         <rdfs:range rdf:resource="http://dbpedia.org/datatype/kelvin"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Drug"/>
     </owl:ObjectProperty>
@@ -8487,6 +8486,30 @@
         <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
         <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/starring"/>
         <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#directordirectedmovie -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/director"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#hasspouse -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/spouse"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
         <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#equivalentProperty"/>
     </owl:Axiom>
     
@@ -9335,7 +9358,7 @@
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/Work/runtime">
         <rdfs:label xml:lang="el">διάρκεια (m)</rdfs:label>
         <rdfs:label xml:lang="en">runtime (m)</rdfs:label>
-        <rdfs:label xml:lang="fr">temps d&#39;exécution (m)</rdfs:label>
+        <rdfs:label xml:lang="fr">temps d&apos;exécution (m)</rdfs:label>
         <rdfs:range rdf:resource="http://dbpedia.org/datatype/minute"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
     </owl:ObjectProperty>
@@ -10017,7 +10040,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/bicycleInformation">
         <rdfs:label xml:lang="de">Fahrradinformationen</rdfs:label>
         <rdfs:label xml:lang="en">bicycle information</rdfs:label>
-        <rdfs:comment xml:lang="en">Information on station&#39;s bicycle facilities.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Information on station&apos;s bicycle facilities.</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Station"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
@@ -10065,7 +10088,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/boilingPoint">
         <rdfs:label xml:lang="en">boiling point (C)</rdfs:label>
         <rdfs:label xml:lang="en">boiling point (K)</rdfs:label>
-        <rdfs:label xml:lang="fr">point d&#39;ébullition (K)</rdfs:label>
+        <rdfs:label xml:lang="fr">point d&apos;ébullition (K)</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -12644,7 +12667,7 @@
 
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/grayPage">
         <rdfs:label xml:lang="en">Gray page</rdfs:label>
-        <rdfs:comment xml:lang="en">Refers to the famous 1918 edition of Gray&#39;s Anatomy.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Refers to the famous 1918 edition of Gray&apos;s Anatomy.</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#positiveInteger"/>
@@ -12656,7 +12679,7 @@
 
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/graySubject">
         <rdfs:label xml:lang="en">Gray subject</rdfs:label>
-        <rdfs:comment xml:lang="en">Refers to the famous 1918 edition of Gray&#39;s Anatomy.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Refers to the famous 1918 edition of Gray&apos;s Anatomy.</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#positiveInteger"/>
@@ -14623,7 +14646,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/numberOfOffices">
         <rdfs:label xml:lang="de">Anzahl Büros</rdfs:label>
         <rdfs:label xml:lang="en">number of offices</rdfs:label>
-        <rdfs:comment xml:lang="en">Number of the company&#39;s offices.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Number of the company&apos;s offices.</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/LawFirm"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
     </owl:DatatypeProperty>
@@ -15276,7 +15299,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/parkingInformation">
         <rdfs:label xml:lang="de">Parkplatzinformationen</rdfs:label>
         <rdfs:label xml:lang="en">parking information</rdfs:label>
-        <rdfs:comment xml:lang="en">Information on station&#39;s parking facilities.</rdfs:comment>
+        <rdfs:comment xml:lang="en">Information on station&apos;s parking facilities.</rdfs:comment>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Station"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
@@ -16422,7 +16445,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/runtime">
         <rdfs:label xml:lang="el">διάρκεια (s)</rdfs:label>
         <rdfs:label xml:lang="en">runtime (s)</rdfs:label>
-        <rdfs:label xml:lang="fr">temps d&#39;exécution (s)</rdfs:label>
+        <rdfs:label xml:lang="fr">temps d&apos;exécution (s)</rdfs:label>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Work"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -16714,7 +16737,7 @@
 
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/shipDisplacement">
         <rdfs:label xml:lang="en">displacement (g)</rdfs:label>
-        <rdfs:comment xml:lang="en">A ship&#39;s displacement is its mass at any given time.</rdfs:comment>
+        <rdfs:comment xml:lang="en">A ship&apos;s displacement is its mass at any given time.</rdfs:comment>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -16725,7 +16748,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/shipDraft">
         <rdfs:label xml:lang="en">ship draft (m)</rdfs:label>
         <rdfs:label xml:lang="en">ship draft (μ)</rdfs:label>
-        <rdfs:comment xml:lang="en">The draft (or draught) of a ship&#39;s hull is the vertical distance between the waterline and the bottom of the hull (keel), with the thickness of the hull included; in the case of not being included the draft outline would be obtained.</rdfs:comment>
+        <rdfs:comment xml:lang="en">The draft (or draught) of a ship&apos;s hull is the vertical distance between the waterline and the bottom of the hull (keel), with the thickness of the hull included; in the case of not being included the draft outline would be obtained.</rdfs:comment>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -17651,7 +17674,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/wavelength">
         <rdfs:label xml:lang="en">wavelength (m)</rdfs:label>
         <rdfs:label xml:lang="en">wavelength (μ)</rdfs:label>
-        <rdfs:label xml:lang="fr">longueur d&#39;onde (μ)</rdfs:label>
+        <rdfs:label xml:lang="fr">longueur d&apos;onde (μ)</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -18079,7 +18102,7 @@
 
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/ChemicalSubstance/boilingPoint">
         <rdfs:label xml:lang="en">boiling point (K)</rdfs:label>
-        <rdfs:label xml:lang="fr">point d&#39;ébullition (K)</rdfs:label>
+        <rdfs:label xml:lang="fr">point d&apos;ébullition (K)</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -18107,7 +18130,7 @@
 
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/Drug/boilingPoint">
         <rdfs:label xml:lang="en">boiling point (K)</rdfs:label>
-        <rdfs:label xml:lang="fr">point d&#39;ébullition (K)</rdfs:label>
+        <rdfs:label xml:lang="fr">point d&apos;ébullition (K)</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -18812,7 +18835,7 @@
     <owl:DatatypeProperty rdf:about="http://dbpedia.org/ontology/Work/runtime">
         <rdfs:label xml:lang="el">διάρκεια (m)</rdfs:label>
         <rdfs:label xml:lang="en">runtime (m)</rdfs:label>
-        <rdfs:label xml:lang="fr">temps d&#39;exécution (m)</rdfs:label>
+        <rdfs:label xml:lang="fr">temps d&apos;exécution (m)</rdfs:label>
     </owl:DatatypeProperty>
     
 
@@ -19648,7 +19671,7 @@
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/AutomobileEngine">
         <rdfs:label xml:lang="en">automobile engine</rdfs:label>
-        <rdfs:label xml:lang="fr">moteur d&#39;automobile</rdfs:label>
+        <rdfs:label xml:lang="fr">moteur d&apos;automobile</rdfs:label>
         <rdfs:label xml:lang="pt">motor de automóvel</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/Device"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
@@ -19933,7 +19956,7 @@
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/BodyOfWater">
         <rdfs:label xml:lang="en">body of water</rdfs:label>
-        <rdfs:label xml:lang="fr">étendue d&#39;eau</rdfs:label>
+        <rdfs:label xml:lang="fr">étendue d&apos;eau</rdfs:label>
         <owl:equivalentClass rdf:resource="http://schema.org/BodyOfWater"/>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/NaturalPlace"/>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/Place"/>
@@ -21015,7 +21038,7 @@
     <owl:Class rdf:about="http://dbpedia.org/ontology/EducationalInstitution">
         <rdfs:label xml:lang="el">εκπαιδευτικό ίδρυμα</rdfs:label>
         <rdfs:label xml:lang="en">educational institution</rdfs:label>
-        <rdfs:label xml:lang="fr">établissement d&#39;enseignement</rdfs:label>
+        <rdfs:label xml:lang="fr">établissement d&apos;enseignement</rdfs:label>
         <owl:equivalentClass rdf:resource="http://schema.org/EducationalOrganization"/>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/Organisation"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
@@ -21179,7 +21202,7 @@
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/FieldHockeyLeague">
         <rdfs:label xml:lang="en">field hockey league</rdfs:label>
-        <rdfs:label xml:lang="fr">ligue d&#39;hockey sur gazon</rdfs:label>
+        <rdfs:label xml:lang="fr">ligue d&apos;hockey sur gazon</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/SportsLeague"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/GolfLeague"/>
@@ -21745,7 +21768,7 @@
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/IceHockeyLeague">
         <rdfs:label xml:lang="en">ice hockey league</rdfs:label>
-        <rdfs:label xml:lang="fr">ligue d&#39;hockey sur glace</rdfs:label>
+        <rdfs:label xml:lang="fr">ligue d&apos;hockey sur glace</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/SportsLeague"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/InlineHockeyLeague"/>
@@ -22299,7 +22322,7 @@
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/MixedMartialArtsEvent">
         <rdfs:label xml:lang="en">mixed martial arts event</rdfs:label>
-        <rdfs:label xml:lang="fr">évènement d&#39;arts martiaux mixtes</rdfs:label>
+        <rdfs:label xml:lang="fr">évènement d&apos;arts martiaux mixtes</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/SportsEvent"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/Olympics"/>
@@ -22314,7 +22337,7 @@
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/MixedMartialArtsLeague">
         <rdfs:label xml:lang="en">mixed martial arts league</rdfs:label>
-        <rdfs:label xml:lang="fr">ligue d&#39;arts martiaux mixtes</rdfs:label>
+        <rdfs:label xml:lang="fr">ligue d&apos;arts martiaux mixtes</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/SportsLeague"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/MotorcycleRacingLeague"/>
@@ -23594,7 +23617,7 @@
     <owl:Class rdf:about="http://dbpedia.org/ontology/SiteOfSpecialScientificInterest">
         <rdfs:label xml:lang="el">Τοποθεσία Ειδικού Επιστημονικού Ενδιαφέροντος</rdfs:label>
         <rdfs:label xml:lang="en">Site of Special Scientific Interest</rdfs:label>
-        <rdfs:label xml:lang="fr">site d&#39;intérêt scientifique particulier</rdfs:label>
+        <rdfs:label xml:lang="fr">site d&apos;intérêt scientifique particulier</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/Place"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:comment xml:lang="en">A Site of Special Scientific Interest (SSSI) is a conservation designation denoting a protected area in the United Kingdom. SSSIs are the basic building block of site-based nature conservation legislation and most other legal nature/geological conservation designations in Great Britain are based upon them, including National Nature Reserves, Ramsar Sites, Special Protection Areas, and Special Areas of Conservation.</rdfs:comment>
@@ -24309,8 +24332,8 @@
     <!-- http://dbpedia.org/ontology/WomensTennisAssociationTournament -->
 
     <owl:Class rdf:about="http://dbpedia.org/ontology/WomensTennisAssociationTournament">
-        <rdfs:label xml:lang="en">Women&#39;s Tennis Association tournament</rdfs:label>
-        <rdfs:label xml:lang="fr">Tournoi de la Women&#39;s Tennis Association</rdfs:label>
+        <rdfs:label xml:lang="en">Women&apos;s Tennis Association tournament</rdfs:label>
+        <rdfs:label xml:lang="fr">Tournoi de la Women&apos;s Tennis Association</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://dbpedia.org/ontology/SportsEvent"/>
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/WrestlingEvent"/>
@@ -24711,32 +24734,1289 @@
     
 
 
-    <!-- http://dbpedia.org/ontology/Jada_Pinkett_Smith -->
+    <!-- http://dbpedia.org/ontology/A_Few_Good_Men -->
 
-    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Jada_Pinkett_Smith">
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5596157879354227</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/A_Few_Good_Men_(play) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men_(play)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Play"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.13353139262452263</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men_(play)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Angelina_Jolie -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Angelina_Jolie">
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
     </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.7047480922384253</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Angelina_Jolie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
     
 
 
-    <!-- http://dbpedia.org/ontology/Smith_County,_Kansas -->
+    <!-- http://dbpedia.org/ontology/Barry_Levinson -->
 
-    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Smith_County,_Kansas">
-        <rdf:type rdf:resource="http://dbpedia.org/ontology/AdministrativeRegion"/>
-        <rdf:type rdf:resource="http://dbpedia.org/ontology/Place"/>
-        <rdf:type rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Barry_Levinson">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
     </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.7047480922384253</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Barry_Levinson"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
     
 
 
-    <!-- http://dbpedia.org/ontology/Smith_EP -->
+    <!-- http://dbpedia.org/ontology/Brad_Pitt -->
 
-    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Smith_EP">
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Brad_Pitt">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9459101490553132</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Brad_Pitt_(boxer) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Brad_Pitt_(boxer)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Athlete"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Boxer"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.1541506798272582</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt_(boxer)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Chuck_Wicks -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Chuck_Wicks">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Artist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalArtist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Chuck_Wicks"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_(film) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_(film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9162907318741551</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_(finance) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_(finance)">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(finance)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_Defect -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_Defect">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Defect"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_Karma -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_Karma">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6931471805599457</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Karma"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Collateral_fissure -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Collateral_fissure">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/AnatomicalStructure"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Brain"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3566749439387324</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_fissure"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Dustin_Hoffman -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Dustin_Hoffman">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.7047480922384253</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dustin_Hoffman"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Julianne_Hough -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Julianne_Hough">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Artist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalArtist"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Julianne_Hough_(album) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Julianne_Hough_(album)">
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Album"/>
         <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
         <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
     </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9555114450274362</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough_(album)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Kate_Winslet -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Kate_Winslet">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.5040773967762737</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Kate_Winslet"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Katie_Holmes -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Katie_Holmes">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Katie_Holmes_(historian) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Katie_Holmes_(historian)">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes_(historian)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_%28film%29 -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_%28film%29">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.33647223662121256</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_%28film%29"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_(2002_collection) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_(2002_collection)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(2002_collection)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_(film) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_(film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.252762968495368</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Minority_Report_Everybody_Runs -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Nicole_Kidman -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Nicole_Kidman">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.6094379124341007</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Nicole_Kidman"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Russell_Crowe -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Russell_Crowe">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.6094379124341007</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Russell_Crowe"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Sam_Mendes -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Sam_Mendes">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.252762968495368</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Sam_Mendes"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_%28TV_series%29 -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_%28TV_series%29">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28TV_series%29"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_%28film%29 -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_%28film%29">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28film%29"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_(TV_series) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_(TV_series)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/TelevisionShow"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.22314355131420993</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(TV_series)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_(film) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_(film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9162907318741551</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/The_Insider_(newspaper) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/The_Insider_(newspaper)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Newspaper"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/PeriodicalLiterature"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.10536051565782655</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(newspaper)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Person"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.0794415416798353</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.8649974374866046</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.6931471805599451</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-1.0986122886681098</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.9382696385929303</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Tom_Cruise_Unauthorized -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.48550781578170094</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.2876820724517808</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun_(1955_film) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun_(1955_film)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(1955_film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun_(soundtrack) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun_(soundtrack)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Album"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(soundtrack)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Gun_Anthem -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Gun_Anthem">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Single"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_Anthem"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Top_Guns -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Top_Guns">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/TelevisionShow"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Guns"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Wag_the_Dog -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Wag_the_Dog">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Film"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.0794415416798353</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Wag_the_Dog_(album) -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_(album)">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Album"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/MusicalWork"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5877866649021188</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.28768207245178085</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Wag_the_Dog_A_Novel -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Book"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Work"/>
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/WrittenWork"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4054651081081642</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.13353139262452257</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#AFewGoodMen -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5596157879354227</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.13353139262452263</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/A_Few_Good_Men_(play)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#AngelinaJolie -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.7047480922384253</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Angelina_Jolie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#BarryLevinson -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#BarryLevinson">
+        <Extract:directordirectedmovie rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.0986122886681096</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9459101490553132</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#directordirectedmovie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.7047480922384253</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Barry_Levinson"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#BarryLevinson"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#Bradpitt -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#Bradpitt">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9459101490553132</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.1541506798272582</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Brad_Pitt_(boxer)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AngelinaJolie"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Bradpitt"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#DustinHoffman -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#DustinHoffman">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.7047480922384253</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Dustin_Hoffman"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.70805020110221</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#DustinHoffman"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#KateWinslet -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.5040773967762737</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Kate_Winslet"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#NicoleKidman -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#NicoleKidman">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.6094379124341007</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Nicole_Kidman"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">6.930494765951626</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#NicoleKidman"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#RussellCrowe -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#RussellCrowe">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.6094379124341007</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Russell_Crowe"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.70805020110221</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#RussellCrowe"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#SamMendes -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#SamMendes">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.252762968495368</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Sam_Mendes"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.143134726391533</reasoner:confidence>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#KateWinslet"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#SamMendes"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#TOPGUN -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Guns"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(soundtrack)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_(1955_film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun_Anthem"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-2.1972245773362196</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Top_Gun"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#Tomcruise -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#Tomcruise">
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <Extract:actorstarredinmovie rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.48550781578170094</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-1.0986122886681098</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.8649974374866046</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">5.541263545158426</reasoner:confidence>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#TOPGUN"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">6.236369590203704</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.0794415416798353</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9459101490553132</reasoner:confidence>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#AFewGoodMen"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.9459101490553132</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#actorstarredinmovie"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">19.408121051953177</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#chuckwicks -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#chuckwicks">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.143134726391533</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Chuck_Wicks"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#chuckwicks"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#collateral -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#collateral"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.3566749439387324</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_fissure"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Defect"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9162907318741551</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.6931471805599457</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_Karma"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Collateral_(finance)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#collateral"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#juliannehough -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#juliannehough"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9555114450274362</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Julianne_Hough_(album)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#juliannehough"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#katieholmes -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#katieholmes">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">29.112181583517476</reasoner:confidence>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Katie_Holmes_(historian)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#minorityreport -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#minorityreport"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">1.252762968495368</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_(2002_collection)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.33647223662121256</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Minority_Report_%28film%29"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#minorityreport"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#theinsider -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#theinsider"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.22314355131420993</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(TV_series)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-4.59511985013459</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28TV_series%29"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.9162907318741551</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(film)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.10536051565782655</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_(newspaper)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.0</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/The_Insider_%28film%29"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#theinsider"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#tomcruise -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#tomcruise">
+        <Extract:hasspouse rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">19.408121051953177</reasoner:confidence>
+        <owl:annotatedProperty rdf:resource="http://dbpedia.org/ontology/Extract#hasspouse"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#katieholmes"/>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.9382696385929303</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.2876820724517808</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#Tomcruise"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">-0.6931471805599451</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#tomcruise"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#wagtheDog -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#wagtheDog">
+        <owl:sameAs rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    </owl:NamedIndividual>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.13353139262452257</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">2.0794415416798353</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.28768207245178085</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    
+
+
+    <!-- http://dbpedia.org/ontology/Extract#wagthedog -->
+
+    <owl:NamedIndividual rdf:about="http://dbpedia.org/ontology/Extract#wagthedog"/>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">4.595119850134589</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.8472978603872034</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Extract#wagtheDog"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.4054651081081642</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
+    <owl:Axiom>
+        <reasoner:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#double">0.5877866649021188</reasoner:confidence>
+        <owl:annotatedSource rdf:resource="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+        <owl:annotatedTarget rdf:resource="http://dbpedia.org/ontology/Extract#wagthedog"/>
+        <owl:annotatedProperty rdf:resource="http://www.w3.org/2002/07/owl#sameAs"/>
+    </owl:Axiom>
     
 
 
@@ -24749,6 +26029,46 @@
      -->
 
     <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Barry_Levinson"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/NaturalPlace"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Surname"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Atoll"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalSubstance"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerPlayer"/>
+            <rdf:Description rdf:about="http://schema.org/Hotel"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Brad_Pitt"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Brad_Pitt_(boxer)"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
+            <rdf:Description rdf:about="http://schema.org/Hotel"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalCompound"/>
@@ -24760,11 +26080,38 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Name"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/RoadJunction"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/WrittenWork"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/BasketballTeam"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalElement"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Food"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tunnel"/>
         </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Dustin_Hoffman"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Russell_Crowe"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Election"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/LegalCase"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerWorldRanking"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Sam_Mendes"/>
+        </owl:distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
@@ -24774,6 +26121,125 @@
             <rdf:Description rdf:about="http://dbpedia.org/ontology/Royalty"/>
             <rdf:Description rdf:about="http://schema.org/Hotel"/>
         </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Nicole_Kidman"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Play"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/PolishKing"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/WaterwayTunnel"/>
+            <rdf:Description rdf:about="http://schema.org/GovernmentOrganization"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Katie_Holmes"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Katie_Holmes_(historian)"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Wag_the_Dog"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_(album)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Wag_the_Dog_A_Novel"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Kate_Winslet"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Name"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/RoadJunction"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/WrittenWork"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise_All_the_World&apos;s_a_Stage"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise_An_Unauthorized_Biography"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tom_Cruise_Unauthorized"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Julianne_Hough"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Julianne_Hough_(album)"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_%28TV_series%29"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_%28film%29"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_(TV_series)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_(film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/The_Insider_(newspaper)"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_(film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_(finance)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_Defect"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_Karma"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Collateral_fissure"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_%28film%29"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_(2002_collection)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_(film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Minority_Report_Everybody_Runs"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Angelina_Jolie"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/A_Few_Good_Men_(play)"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun_(1955_film)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun_(soundtrack)"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Gun_Anthem"/>
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Top_Guns"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://dbpedia.org/ontology/Chuck_Wicks"/>
+        </owl:distinctMembers>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
@@ -24787,69 +26253,15 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Play"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/PolishKing"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/WaterwayTunnel"/>
-            <rdf:Description rdf:about="http://schema.org/GovernmentOrganization"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Atoll"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalSubstance"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerPlayer"/>
-            <rdf:Description rdf:about="http://schema.org/Hotel"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/BasketballTeam"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/ChemicalElement"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Food"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Tunnel"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Election"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/LegalCase"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/SnookerWorldRanking"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Gene"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
-            <rdf:Description rdf:about="http://schema.org/Hotel"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://dbpedia.org/ontology/Atoll"/>
             <rdf:Description rdf:about="http://dbpedia.org/ontology/Locomotive"/>
             <rdf:Description rdf:about="http://dbpedia.org/ontology/VolleyballPlayer"/>
             <rdf:Description rdf:about="http://schema.org/TelevisionStation"/>
         </owl:members>
     </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Instrument"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/MartialArtist"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/NaturalPlace"/>
-            <rdf:Description rdf:about="http://dbpedia.org/ontology/Surname"/>
-        </owl:members>
-    </rdf:Description>
 </rdf:RDF>
 
 
 
-<!-- Generated by the OWL API (version 3.2.4.1806) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.4.3) http://owlapi.sourceforge.net -->
 

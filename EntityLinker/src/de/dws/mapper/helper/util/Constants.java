@@ -191,6 +191,8 @@ public class Constants
             "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, E_CONF, D_SUB, D_PRED, D_OBJ, HOST) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String INSERT_AXIOM_SQL = "INSERT INTO axioms (E_ENTITY, CANDIDATE, APRIORI, APOSTERIORI) VALUES (?, ?, ?, ?)";
+
+    public static final String UPDATE_AXIOM_SQL = "UPDATE axioms SET APOSTERIORI=? WHERE  E_ENTITY=? AND CANDIDATE=?";
     /**
      * defines the batch size for the Data base operations
      */

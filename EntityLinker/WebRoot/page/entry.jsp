@@ -176,7 +176,7 @@
 					name="object" /></td>
 
 
-				<td><input type="submit" class="submit" title="Search" value="">
+				<td><input type="submit" class="submit" title="Get Triple" value="">
 					<input type="button" class="button" title="Tweak search parameters"
 					onclick="toggle4('box');"> 
 					<%

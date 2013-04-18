@@ -54,7 +54,7 @@ public class DBWrapper {
      * 
      * @param ieValue
      * @param dbpValue
-     * @param score
+     * @param score apriori probability
      */
     public static void saveAxiomsPrior(OWLNamedIndividual ieValue, OWLNamedIndividual dbpValue,
             double score) {
@@ -71,5 +71,30 @@ public class DBWrapper {
         } catch (SQLException e) {
             logger.info(" exception while inserting axioms before inference.." + e.getMessage());
         }
+    }
+
+    /**
+     * update the axioms. After inference is done
+     * 
+     * @param valueFromExtractionEngine
+     * @param valueFromDBPedia
+     * @param score aposteriori probability
+     */
+    public static void saveAxiomsPosterior(String valueFromExtractionEngine,
+            String valueFromDBPedia, double score) {
+
+        try {
+            pstmt.setDouble(1, score);
+            pstmt.setString(2, valueFromExtractionEngine);
+            pstmt.setString(3, valueFromDBPedia);
+           
+
+            // run the query finally
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.info(" exception while inserting axioms before inference.." + e.getMessage());
+        }
+
     }
 }

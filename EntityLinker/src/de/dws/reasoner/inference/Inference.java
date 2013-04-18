@@ -39,6 +39,7 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl;
 
+import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
 import de.dws.mapper.helper.util.Constants;
@@ -145,22 +146,24 @@ public class Inference {
 
         // **************** reason with Elog
         // **********************************************************
-        String[] args = new String[4];
-        args[0] = "-sm";
-        args[1] = "-s1000000";
-        args[2] = "-i40";
-        args[3] = "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl";
-        
-        logger.info(" \nSTARTING ELOG REASONER ... ");
-        try {
-            Application.main(args);
-        } catch (Exception e) { 
-            logger.error("exception while reasoning with ELOG");
-        }
+        /*
+         * String[] args = new String[4]; args[0] = "-sm"; args[1] =
+         * "-s1000000"; args[2] = "-i40"; args[3] =
+         * "/home/arnab/Workspaces/SchemaMapping/EntityLinker/data/ontology/output/assertions.owl"
+         * ; logger.info(" \nSTARTING ELOG REASONER ... "); try {
+         * Application.main(args); } catch (Exception e) {
+         * logger.error("exception while reasoning with ELOG"); }
+         */
 
-        
+        // once the aposteriories are computed, we save them to DB
+        // this makes it easy to compare readily the probabilities before and
+        // after inferencing.
+
         logger.info(" STARTING INFERENCE BASED ON SAMPLED PROBABILITIES ... ");
-        findRanking(argsa[0], argsa[1], argsa[2]);
+
+        new Inference().fetchAllAxioms();
+
+        // findRanking(argsa[0], argsa[1], argsa[2]);
     }
 
     /**
@@ -255,6 +258,51 @@ public class Inference {
         return map;
     }
 
+    private void fetchAllAxioms() {
+
+        double score = 0;
+        Set<OWLEntity> setEntity = null;
+        Set<OWLEntity> tempSetEntity = null;
+
+        String valueFromExtractionEngine = null;
+        String valueFromDBPedia = null;
+
+        // initiate the DB connection routine with the update query
+        DBWrapper.init(Constants.UPDATE_AXIOM_SQL);
+
+        // iterate over all axioms in the loaded ontology
+        HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontology.getAxioms();
+        for (OWLAxiom axiom : allAxioms) {
+
+            // take the same as links
+            if (axiom.getAxiomType() == AxiomType.SAME_INDIVIDUAL) {
+
+                // set of owlEntity
+                setEntity = axiom.getSignature();
+
+                // iterate and extract the named individuals
+                for (OWLEntity entity : setEntity) {
+
+                    // remove the entries in the set which are not the named
+                    // individuals
+                    if (entity.getIRI().toString().startsWith(Constants.ONTOLOGY_NAMESPACE)) {
+                        if (entity.toString().contains(Constants.ONTOLOGY_EXTRACTION_NS)) {
+                            valueFromExtractionEngine = entity.toString();
+                        } else {
+                            valueFromDBPedia = entity.toString();
+                        }
+                    }
+                }
+                score = getConfidenceValue(axiom);
+                logger.info(valueFromExtractionEngine + "  " + valueFromDBPedia + " "
+                        + score);
+
+                // update the axioms with the aposteriori probabilities
+                DBWrapper.saveAxiomsPosterior(valueFromExtractionEngine, valueFromDBPedia, score);
+            }
+        }
+    }
+
     /**
      * get ranked candidate matches
      * 
@@ -297,7 +345,7 @@ public class Inference {
             }
         }
 
-        // display the top ranked mathces for this term.
+        // display the top ranked matches for this term.
         for (Entry<Double, Set<OWLEntity>> entry : map.entrySet()) {
             logger.debug(entry.getKey() + " = " + entry.getValue());
         }

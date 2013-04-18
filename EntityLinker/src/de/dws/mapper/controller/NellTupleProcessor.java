@@ -118,12 +118,6 @@ public class NellTupleProcessor implements ITupleProcessor
         // we just need two threads to perform the search
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
-        /*
-         * try { axiomCreator = new AxiomCreator(); } catch
-         * (OWLOntologyCreationException e) {
-         * logger.error("Error while creating ontology.." + e.getMessage()); }
-         */
-
         List<ResultDAO> retListSubj = null;
         List<ResultDAO> retListObj = null;
         List<ResultDAO> retListPredLookUp = null;
@@ -149,7 +143,8 @@ public class NellTupleProcessor implements ITupleProcessor
                                         ? strTokens[4] : "");
 
                 // add to the collection
-                formSimilarEntityPairsAcrossTriples(listSubjsObjs, subject.replaceAll("\\s", ""), object.replaceAll("\\s", ""));
+                formSimilarEntityPairsAcrossTriples(listSubjsObjs, subject.replaceAll("\\s", ""),
+                        object.replaceAll("\\s", ""));
 
                 logger.info(subject + " | " + predicate + " | " + object + " | " + aprioriProb);
 
@@ -157,12 +152,6 @@ public class NellTupleProcessor implements ITupleProcessor
                 List<List<ResultDAO>> retList = QueryEngine.performSearch(pool, subject, object);
                 retListSubj = retList.get(0);
                 retListObj = retList.get(1);
-
-                // use them to fetch the predicates they are linked with
-                /*
-                 * QueryEngine.fetchPredicates(retList.get(0),retList.get(1),
-                 * predicate); System.out.print("\n\n");
-                 */
 
                 // create File object of our index directory. this is the
                 // property index directory
@@ -214,10 +203,11 @@ public class NellTupleProcessor implements ITupleProcessor
             Map<String, String> similarPairMap = findNearlySimilarPairs(listSubjsObjs);
 
             logger.info(" STARTING AXIOM CREATION ... " + similarPairMap);
-            
-            // create a set of axioms for the same as links between two extracted facts with same terms
+
+            // create a set of axioms for the same as links between two
+            // extracted facts with same terms
             axiomCreator.createAxiomsFromIntersectingFacts(similarPairMap);
-            
+
             axiomCreator.annotateAxioms();
             axiomCreator.createOutput();
         }
