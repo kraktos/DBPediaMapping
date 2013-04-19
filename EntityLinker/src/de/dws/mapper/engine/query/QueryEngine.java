@@ -397,8 +397,9 @@ public class QueryEngine
                         .getLevenshteinDistance(userQuery, uriTextField)) / (double) (Math
                         .max(userQuery.length(), uriTextField.length()));
 
+                // smoothing
                 if (ratio == 1)
-                    ratio = ratio - 0.1;
+                    ratio = ratio - 0.0001;
 
                 logger.debug(" ratio for " + userQuery + " " + StringUtils
                         .getLevenshteinDistance(userQuery, uriTextField) + "  " + Math

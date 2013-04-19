@@ -127,7 +127,8 @@ public class AxiomCreator
     }
 
     /**
-     * Overloaded function
+     * takes a list of possible subjects, predicates and objects and the given
+     * uncertain fact and creates a bunch of axioms
      * 
      * @param candidateSubjs Candidate list for possible subjects
      * @param candidatePreds Candidate list for possible predicates
@@ -160,19 +161,13 @@ public class AxiomCreator
         createDifferentFromAssertions(candidateSubjs);
         createDifferentFromAssertions(candidateObjs);
 
-        // annotate the axioms
-        // annotateAxioms();
-
-        // output to a file
-        // createOutput();
-
-        // pause few seconds for the output axiom files to be
+        /*// pause few seconds for the output axiom files to be
         // created
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             logger.error("Thread interrupted...");
-        }
+        }*/
 
         logger.info(listAxioms.size());
     }

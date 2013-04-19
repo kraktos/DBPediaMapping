@@ -69,7 +69,7 @@ public class DBWrapper {
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.info(" exception while inserting axioms before inference.." + e.getMessage());
+            logger.error(" exception while inserting axioms before inference.." + e.getMessage());
         }
     }
 
@@ -88,12 +88,11 @@ public class DBWrapper {
             pstmt.setString(2, valueFromExtractionEngine);
             pstmt.setString(3, valueFromDBPedia);
            
-
             // run the query finally
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.info(" exception while inserting axioms before inference.." + e.getMessage());
+            logger.error(" exception while inserting axioms after inference.." + e.getMessage());
         }
 
     }
