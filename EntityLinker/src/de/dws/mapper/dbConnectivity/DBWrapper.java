@@ -6,7 +6,10 @@ package de.dws.mapper.dbConnectivity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -87,13 +90,43 @@ public class DBWrapper {
             pstmt.setDouble(1, score);
             pstmt.setString(2, valueFromExtractionEngine);
             pstmt.setString(3, valueFromDBPedia);
-           
+
             // run the query finally
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
             logger.error(" exception while inserting axioms after inference.." + e.getMessage());
         }
+
+    }
+
+    /**
+     * queries the dB to fetch the surface forms. Look into the table structures
+     * title_2_id and link_anchors
+     * 
+     * @param arg
+     * @return
+     */
+    public static List<String> fetchSurfaceForms(String arg) {
+        ResultSet rs = null;
+        List<String> results = null;
+
+        try {
+            pstmt.setString(1, arg);
+
+            // run the query finally
+            rs = pstmt.executeQuery();
+            results = new ArrayList<String>();
+            
+            while (rs.next()) {
+                results.add(rs.getString(1));
+            }
+
+        } catch (Exception e) {
+            logger.error(" exception while fetching " + arg + " " + e.getMessage());
+        }
+
+        return results;
 
     }
 }

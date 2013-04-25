@@ -193,6 +193,9 @@ public class Constants
     public static final String INSERT_AXIOM_SQL = "INSERT INTO axioms (E_ENTITY, CANDIDATE, APRIORI, APOSTERIORI) VALUES (?, ?, ?, ?)";
 
     public static final String UPDATE_AXIOM_SQL = "UPDATE axioms SET APOSTERIORI=? WHERE  E_ENTITY=? AND CANDIDATE=?";
+
+    public static final String GET_WIKI_SURFACE_FORMS_SQL = "select distinct  l.anchor from link_anchors l, title_2_id t where t.title=? and t.id=l.target";
+
     /**
      * defines the batch size for the Data base operations
      */
@@ -285,5 +288,10 @@ public class Constants
      * number of nell triples to be considered.
      */
     public static final int RANDOM_TRIPLES_LIMIT = 8;
+    
+    
+    // **************** WIKIPEDIA PARAMS ******************************
+    
+    public static final String WIKI_PAGE_HEADER = "http://en.wikipedia.org/wiki/";
 
 }
