@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import de.dws.mapper.helper.util.Constants;
 import de.dws.nlp.dao.SentenceDao;
 import de.unimannheim.informatik.dws.pipeline.en.EnglishSentenceSplitter;
 
@@ -64,8 +65,8 @@ public class ProcessText {
             for (String possibleSubject : listSubjSurfaceForms) {
                 for (String possibleObject : listObjectSurfaceForms) {
                     // if the sentence contains the subject and object
-                    if ((sentence.indexOf(possibleSubject) != -1 && sentence
-                            .indexOf(possibleObject) != -1)) {
+
+                    if (filterSentence(sentence, possibleSubject, possibleObject)) {
                         logger.debug(sentence + "  ===>> " + possibleSubject + ", "
                                 + possibleObject);
                         listSentenceDao.add(new SentenceDao(possibleSubject, possibleObject, null,
@@ -75,5 +76,49 @@ public class ProcessText {
             }
         }
         return listSentenceDao;
+    }
+
+    /**
+     * critical function which determines if a sentence goes into a possible
+     * relationship bearing candidate sentence.
+     * 
+     * @param sentence original sentence
+     * @param possibleSubject surface form of subject
+     * @param possibleObject surface form of object
+     * @return a boolean answer
+     */
+    private boolean filterSentence(String sentence, String possibleSubject, String possibleObject) {
+
+        int wordCount = 0;
+
+        // first check if sentence contains the values
+        boolean contains = sentence.indexOf(possibleSubject) != -1 && sentence
+                .indexOf(possibleObject) != -1;
+
+        int subPos = sentence.indexOf(possibleSubject);
+        int objPos = sentence.indexOf(possibleObject);
+
+        // sometimes the subject can follow the occurrence of the object
+        if (subPos > objPos)
+        {
+            // jsut exchange the values
+            int temp = subPos;
+            subPos = objPos;
+            objPos = temp;
+        }
+
+        for (int i = subPos + possibleSubject.length(); i < objPos-1; i++)
+        {
+            if (sentence.charAt(i) == ' ')
+            {
+                wordCount++;
+            }
+        }
+
+        // omit anything more than certain distance apart..
+        boolean wordGap = (wordCount <= Constants.WORD_GAP) ? true : false;
+
+        return contains && wordGap;
+
     }
 }

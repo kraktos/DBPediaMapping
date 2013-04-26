@@ -56,13 +56,12 @@ public class StandardCreation {
             ExecutionException {
 
         // check input parameters
-        if (args.length < 1) {
-            logger.info("USAGE: java -jar runner.jar <path of file>");
+        if (args.length < 2) {
+            logger.info("USAGE: java -jar runner.jar <path of file> <number of facts>");
         } else {
             logger.info("Starting processing " + args[0]);
-            processFile(args[0]);
+            processFile(args[0], Integer.parseInt(args[1]));
         }
-
     }
 
     /**
@@ -74,7 +73,7 @@ public class StandardCreation {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    private static void processFile(String filePath) throws FileNotFoundException, IOException,
+    private static void processFile(String filePath, int dataSize) throws FileNotFoundException, IOException,
             InterruptedException, ExecutionException {
         String[] arr = null;
         boolean flag = false;
@@ -101,7 +100,7 @@ public class StandardCreation {
                             stripHeaders(arr[2]));
 
                 }
-                if (cntr == DATA_SIZE) // check point
+                if (cntr == dataSize) // check point
                     break;
 
             } // end of while
@@ -149,6 +148,8 @@ public class StandardCreation {
         List<String> subjs = DBWrapper.fetchSurfaceForms(arg1);
         List<String> objs = DBWrapper.fetchSurfaceForms(arg2);
 
+        logger.info("\n\n " + arg1 + ", " + rel + ", " + arg2);
+        
         logger.info(arg1 + " => " + subjs);
         logger.info(arg2 + " => " + objs);
 
@@ -167,6 +168,7 @@ public class StandardCreation {
 
         // end time
         tn = System.currentTimeMillis();
+        
         // update global timer
         timer = timer + (tn - t0);
 
