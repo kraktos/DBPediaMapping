@@ -14,6 +14,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import de.dws.mapper.helper.util.Constants;
+
 /**
  * Wrapper class to initiate the DB operations
  * 
@@ -113,7 +115,8 @@ public class DBWrapper {
 
         try {
             pstmt.setString(1, arg);
-
+            pstmt.setInt(2, Constants.ATLEAST_LINKS);
+            pstmt.setInt(3, Constants.TOP_ANCHORS);
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();

@@ -90,26 +90,38 @@ public class ProcessText {
     private boolean filterSentence(String sentence, String possibleSubject, String possibleObject) {
 
         int wordCount = 0;
+        int loopCtr = 0;
+
+        sentence = sentence.toLowerCase();
+        possibleObject = possibleObject.toLowerCase();
+        possibleSubject = possibleSubject.toLowerCase();
 
         // first check if sentence contains the values
-        boolean contains = sentence.indexOf(possibleSubject) != -1 && sentence
-                .indexOf(possibleObject) != -1;
+        boolean contains = sentence.indexOf(possibleSubject) != -1
+                && sentence.indexOf(possibleObject) != -1;
 
         int subPos = sentence.indexOf(possibleSubject);
         int objPos = sentence.indexOf(possibleObject);
+        if (sentence.indexOf("Kidman has been married twice:") != -1
+                && possibleSubject.indexOf("Kidman") != -1
+                && possibleObject.indexOf("CRUISE") != -1) {
+            System.out.println("");
+        }
 
+        int k;
         // sometimes the subject can follow the occurrence of the object
         if (subPos > objPos)
         {
-            // jsut exchange the values
-            int temp = subPos;
-            subPos = objPos;
-            objPos = temp;
+            loopCtr = objPos + possibleObject.length();
+            k = subPos - 1;
+        } else {
+            loopCtr = subPos + possibleSubject.length();
+            k = objPos - 1;
         }
-
-        for (int i = subPos + possibleSubject.length(); i < objPos-1; i++)
+        
+        for (; loopCtr < k; loopCtr++)
         {
-            if (sentence.charAt(i) == ' ')
+            if (sentence.charAt(loopCtr) == ' ')
             {
                 wordCount++;
             }

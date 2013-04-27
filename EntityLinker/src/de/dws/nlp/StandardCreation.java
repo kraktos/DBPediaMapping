@@ -10,16 +10,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import de.dws.mapper.dbConnectivity.DBWrapper;
-import de.dws.mapper.helper.dataObject.ResultDAO;
 import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.wrapper.QueryAPIWrapper;
 import de.dws.nlp.dao.SentenceDao;
 import de.dws.nlp.dao.WikiDao;
 
@@ -28,14 +25,14 @@ import de.dws.nlp.dao.WikiDao;
  */
 public class StandardCreation {
 
-    // number of triples to process
-    private static final long DATA_SIZE = 5;
-
     // define Logger
     static Logger logger = Logger.getLogger(StandardCreation.class.getName());
 
     // global counter
     private static long cntr = 0;
+
+    // unmatched facts counter
+    private static long unMatchedFactCnt = 0;
 
     // WikiCrawler instance
     private static WikiCrawler wikiCrawler;
@@ -55,6 +52,8 @@ public class StandardCreation {
     public static void main(String[] args) throws IOException, InterruptedException,
             ExecutionException {
 
+        PropertyConfigurator.configure(args[2]);
+
         // check input parameters
         if (args.length < 2) {
             logger.info("USAGE: java -jar runner.jar <path of file> <number of facts>");
@@ -73,7 +72,8 @@ public class StandardCreation {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    private static void processFile(String filePath, int dataSize) throws FileNotFoundException, IOException,
+    private static void processFile(String filePath, int dataSize) throws FileNotFoundException,
+            IOException,
             InterruptedException, ExecutionException {
         String[] arr = null;
         boolean flag = false;
@@ -99,6 +99,7 @@ public class StandardCreation {
                             stripHeaders(arr[1]),
                             stripHeaders(arr[2]));
 
+                    cntr++;
                 }
                 if (cntr == dataSize) // check point
                     break;
@@ -106,6 +107,8 @@ public class StandardCreation {
             } // end of while
 
             logger.info("\n Extraction performed in  .." + timer + " millisecds");
+            logger.info((double) unMatchedFactCnt / (double) cntr
+                    + " could not be matched, out of " + cntr + " records");
         }
     }
 
@@ -149,15 +152,12 @@ public class StandardCreation {
         List<String> objs = DBWrapper.fetchSurfaceForms(arg2);
 
         logger.info("\n\n " + arg1 + ", " + rel + ", " + arg2);
-        
+
+        subjs = enhanceSurfaceForms(arg1, subjs);
+        objs = enhanceSurfaceForms(arg2, objs);
+
         logger.info(arg1 + " => " + subjs);
         logger.info(arg2 + " => " + objs);
-
-        // checks number of un-mapped entities. purely quality measure !
-        // if (subjs == null || objs == null)
-        {
-            cntr++;
-        }
 
         // call routine for wikipedia operations, parsing the text, finding
         // possible triples etc.
@@ -168,10 +168,22 @@ public class StandardCreation {
 
         // end time
         tn = System.currentTimeMillis();
-        
+
         // update global timer
         timer = timer + (tn - t0);
 
+    }
+
+    private static List<String> enhanceSurfaceForms(String arg, List<String> forms) {
+        String[] arr = arg.split("_");
+        if (arr.length == 2) {
+            if (!forms.contains(arr[0]))
+                forms.add(arr[0]);
+
+            if (!forms.contains(arr[1]))
+                forms.add(arr[1]);
+        }
+        return forms;
     }
 
     /**
@@ -206,6 +218,11 @@ public class StandardCreation {
         // do something with this bunch of sentence dao
         for (SentenceDao dao : listSentenceDao) {
             logger.info(dao.toString());
+        }
+
+        // keep a track how many could not be fetched
+        if (listSentenceDao.size() == 0) {
+            unMatchedFactCnt++;
         }
     }
 
