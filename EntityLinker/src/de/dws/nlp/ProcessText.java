@@ -162,18 +162,21 @@ public class ProcessText {
         if (relationBagOfWords.indexOf(dbPediaRelation) != -1)
             return true;
 
-        String bag = runStemmer(relationBagOfWords.toString());
+        String aftrStopWords = new StopWords().removeStopWords(relationBagOfWords.toString());
+        
+        String stemmedSentnc = runStemmer(aftrStopWords);
         String rel = runStemmer(breakWords(dbPediaRelation));
 
-        // logger.info(bag + " ----  " + relationBagOfWords);
+        //logger.info(stemmedSentnc + "  ----  " + aftrStopWords  + " ----  " + relationBagOfWords);
+        logger.info("Comparing " + stemmedSentnc + "  ****  " + rel );
 
         AbstractStringMetric metric = new CosineSimilarity();
 
-        if (bag != null && rel != null && bag.length() > 0 && rel.length() > 0) {
-            float result = metric.getSimilarity(bag.toLowerCase(),
+        if (stemmedSentnc != null && rel != null && stemmedSentnc.length() > 0 && rel.length() > 0) {
+            float result = metric.getSimilarity(stemmedSentnc.toLowerCase(),
                     rel.toLowerCase());
             
-            if (result > 0.4){
+            if (result > 0.1){
                 logger.info(relationBagOfWords + " ---- " + dbPediaRelation + " -> " + result);
                 return true;
             }
