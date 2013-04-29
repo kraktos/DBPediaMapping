@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.shef.wit.simmetrics.similaritymetrics.AbstractStringMetric;
+import uk.ac.shef.wit.simmetrics.similaritymetrics.CosineSimilarity;
 import de.dws.mapper.helper.util.Constants;
 import de.dws.nlp.dao.SentenceDao;
 import de.unimannheim.informatik.dws.pipeline.en.EnglishSentenceSplitter;
@@ -35,6 +37,9 @@ public class ProcessText {
     public ProcessText(String textChunk) {
         this.textChunk = textChunk;
 
+        // alter text [3] to text
+        this.textChunk = this.textChunk.replaceAll(" *\\[\\d+\\] *", " ");
+
         splitter = EnglishSentenceSplitter.getInstance();
     }
 
@@ -48,12 +53,14 @@ public class ProcessText {
      * pair
      * 
      * @param source
+     * @param rel
      * @param sentencesInText
      * @param listSubjSurfaceForms
      * @param listObjectSurfaceForms
      * @return List of {@link SentenceDao}
      */
-    public List<SentenceDao> fetchMatchingSentences(String source, String[] sentencesInText,
+    public List<SentenceDao> fetchMatchingSentences(String source, String rel,
+            String[] sentencesInText,
             List<String> listSubjSurfaceForms,
             List<String> listObjectSurfaceForms) {
 
@@ -66,7 +73,14 @@ public class ProcessText {
                 for (String possibleObject : listObjectSurfaceForms) {
                     // if the sentence contains the subject and object
 
-                    if (filterSentence(sentence, possibleSubject, possibleObject)) {
+                    /*
+                     * if (sentence.indexOf("Cruise was born in Syracuse, Ne")
+                     * != -1 && possibleSubject.indexOf("Cruise") != -1 &&
+                     * possibleObject.indexOf("Syracuse") != -1) {
+                     * System.out.println(); }
+                     */
+
+                    if (filterSentence(sentence, rel, possibleSubject, possibleObject)) {
                         logger.debug(sentence + "  ===>> " + possibleSubject + ", "
                                 + possibleObject);
                         listSentenceDao.add(new SentenceDao(possibleSubject, possibleObject, null,
@@ -85,9 +99,14 @@ public class ProcessText {
      * @param sentence original sentence
      * @param possibleSubject surface form of subject
      * @param possibleObject surface form of object
+     * @param possibleObject2
      * @return a boolean answer
      */
-    private boolean filterSentence(String sentence, String possibleSubject, String possibleObject) {
+    private boolean filterSentence(String sentence, String relation, String possibleSubject,
+            String possibleObject) {
+
+        // holds the bunch of words defining the relationship
+        StringBuffer relDefination = new StringBuffer();
 
         int wordCount = 0;
         int loopCtr = 0;
@@ -100,37 +119,111 @@ public class ProcessText {
         boolean contains = sentence.indexOf(possibleSubject) != -1
                 && sentence.indexOf(possibleObject) != -1;
 
-        int subPos = sentence.indexOf(possibleSubject);
-        int objPos = sentence.indexOf(possibleObject);
-        if (sentence.indexOf("Kidman has been married twice:") != -1
-                && possibleSubject.indexOf("Kidman") != -1
-                && possibleObject.indexOf("CRUISE") != -1) {
-            System.out.println("");
+        // omit anything more than certain distance apart..
+        boolean wordGap = false;
+        boolean predMatch = false;
+
+        if (contains) {
+            int subPos = sentence.indexOf(possibleSubject);
+            int objPos = sentence.indexOf(possibleObject);
+
+            int k;
+            // sometimes the subject can follow the occurrence of the object
+            if (subPos > objPos)
+            {
+                loopCtr = objPos + possibleObject.length();
+                k = subPos - 1;
+            } else {
+                loopCtr = subPos + possibleSubject.length();
+                k = objPos - 1;
+            }
+            for (; loopCtr < k; loopCtr++)
+            {
+                relDefination.append(sentence.charAt(loopCtr));
+
+                if (sentence.charAt(loopCtr) == ' ')
+                    wordCount++;
+            }
+            // check if they are valid words distance apart
+            wordGap = (wordCount <= Constants.WORD_GAP) ? true : false;
+
+            // ************* property matching ****************************
+            // check if they are in a relationship as deined by the DBPedia fact
+            // very crude..need something better
+            predMatch = validPredicate(relDefination, relation);
+
         }
 
-        int k;
-        // sometimes the subject can follow the occurrence of the object
-        if (subPos > objPos)
-        {
-            loopCtr = objPos + possibleObject.length();
-            k = subPos - 1;
-        } else {
-            loopCtr = subPos + possibleSubject.length();
-            k = objPos - 1;
-        }
-        
-        for (; loopCtr < k; loopCtr++)
-        {
-            if (sentence.charAt(loopCtr) == ' ')
-            {
-                wordCount++;
+        // iff all are satisfied, this is a valid uncertain fact.
+        return contains && wordGap && predMatch;
+    }
+
+    private boolean validPredicate(StringBuffer relationBagOfWords, String dbPediaRelation) {
+        if (relationBagOfWords.indexOf(dbPediaRelation) != -1)
+            return true;
+
+        String bag = runStemmer(relationBagOfWords.toString());
+        String rel = runStemmer(breakWords(dbPediaRelation));
+
+        // logger.info(bag + " ----  " + relationBagOfWords);
+
+        AbstractStringMetric metric = new CosineSimilarity();
+
+        if (bag != null && rel != null && bag.length() > 0 && rel.length() > 0) {
+            float result = metric.getSimilarity(bag.toLowerCase(),
+                    rel.toLowerCase());
+            
+            if (result > 0.4){
+                logger.info(relationBagOfWords + " ---- " + dbPediaRelation + " -> " + result);
+                return true;
             }
         }
 
-        // omit anything more than certain distance apart..
-        boolean wordGap = (wordCount <= Constants.WORD_GAP) ? true : false;
+        return false;
+    }
 
-        return contains && wordGap;
+    private String breakWords(String string) {
+
+        String[] r = string.split("(?=\\p{Upper})");
+        StringBuffer buf = new StringBuffer();
+
+        for (String s : r) {
+            buf.append(s + " ");
+        }
+        return buf.toString();
+    }
+
+    /**
+     * @param stemmer
+     * @param input
+     * @param stemmer
+     * @return
+     */
+    public String runStemmer(String input) {
+        String val = null;
+        PorterStemmer stemmer = new PorterStemmer();
+        /*
+         * stemmer.setCurrent(input); stemmer.stem(); return
+         * stemmer.getCurrent();
+         */
+        for (int i = 0; i < input.length(); i++) {
+
+            char ch = input.charAt(i);
+
+            if (Character.isLetter((char) ch)) {
+                stemmer.add(Character.toLowerCase((char) ch));
+            }
+            else {
+                stemmer.stem();
+                val = stemmer.toString();
+                stemmer.reset();
+                if (ch < 0)
+                    break;
+
+            }
+        }
+        return val;
 
     }
+
 }

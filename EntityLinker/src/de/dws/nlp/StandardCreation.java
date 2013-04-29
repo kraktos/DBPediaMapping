@@ -174,8 +174,11 @@ public class StandardCreation {
 
     }
 
+    // for a given page title, the substrings of the title are also valid surface forms,
+    // e.g. for tom cruise page, tom and cruise are valid forms
     private static List<String> enhanceSurfaceForms(String arg, List<String> forms) {
         String[] arr = arg.split("_");
+        // doing just for two words
         if (arr.length == 2) {
             if (!forms.contains(arr[0]))
                 forms.add(arr[0]);
@@ -210,7 +213,7 @@ public class StandardCreation {
 
         // get those sentences which are having a relationship
         // between some pair of surface forms
-        listSentenceDao = textProcessor.fetchMatchingSentences(wikiDao.getPageTitle(),
+        listSentenceDao = textProcessor.fetchMatchingSentences(wikiDao.getPageTitle(), wikiDao.getPredicate(), 
                 sentencesInText,
                 wikiDao.getListSubjSurfaceForms(),
                 wikiDao.getListObjectSurfaceForms());
