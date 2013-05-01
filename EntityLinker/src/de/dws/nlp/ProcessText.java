@@ -12,7 +12,9 @@ import org.apache.log4j.Logger;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.AbstractStringMetric;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.CosineSimilarity;
 import de.dws.mapper.helper.util.Constants;
+import de.dws.nlp.dao.FreeFormFactDao;
 import de.dws.nlp.dao.SentenceDao;
+import de.dws.nlp.dao.WikiDao;
 import de.unimannheim.informatik.dws.pipeline.en.EnglishSentenceSplitter;
 
 /**
@@ -59,18 +61,17 @@ public class ProcessText {
      * @param listObjectSurfaceForms
      * @return List of {@link SentenceDao}
      */
-    public List<SentenceDao> fetchMatchingSentences(String source, String rel,
-            String[] sentencesInText,
-            List<String> listSubjSurfaceForms,
-            List<String> listObjectSurfaceForms) {
+    public List<SentenceDao> fetchMatchingSentences(WikiDao wikiDao, String[] sentencesInText
+            ) {
 
         List<SentenceDao> listSentenceDao = new ArrayList<SentenceDao>();
 
+        List<FreeFormFactDao> listExtractedFactsDao = new ArrayList<FreeFormFactDao>();
         // iterate the possible surface forms and over the sentences.
         // complexity !! :(
         for (String sentence : sentencesInText) {
-            for (String possibleSubject : listSubjSurfaceForms) {
-                for (String possibleObject : listObjectSurfaceForms) {
+            for (String possibleSubject : wikiDao.getListSubjSurfaceForms()) {
+                for (String possibleObject : wikiDao.getListObjectSurfaceForms()) {
                     // if the sentence contains the subject and object
 
                     /*
@@ -80,11 +81,16 @@ public class ProcessText {
                      * System.out.println(); }
                      */
 
-                    if (filterSentence(sentence, rel, possibleSubject, possibleObject)) {
+                    listExtractedFactsDao = filterSentence(sentence, wikiDao.getPredicate(),
+                            possibleSubject,
+                            possibleObject);
+
+                    if (listExtractedFactsDao.size() > 0) {
+
                         logger.debug(sentence + "  ===>> " + possibleSubject + ", "
                                 + possibleObject);
                         listSentenceDao.add(new SentenceDao(possibleSubject, possibleObject, null,
-                                sentence, source));
+                                sentence, wikiDao.getPageTitle()));
                     }
                 }
             }
@@ -102,8 +108,11 @@ public class ProcessText {
      * @param possibleObject2
      * @return a boolean answer
      */
-    private boolean filterSentence(String sentence, String relation, String possibleSubject,
+    private List<FreeFormFactDao> filterSentence(String sentence, String relation,
+            String possibleSubject,
             String possibleObject) {
+
+        List<FreeFormFactDao> listExtractedFactsDao = new ArrayList<FreeFormFactDao>();
 
         // holds the bunch of words defining the relationship
         StringBuffer relDefination = new StringBuffer();
@@ -148,36 +157,52 @@ public class ProcessText {
             wordGap = (wordCount <= Constants.WORD_GAP) ? true : false;
 
             // ************* property matching ****************************
-            // check if they are in a relationship as deined by the DBPedia fact
+            // check if they are in a relationship as defined by the DBPedia
+            // fact
             // very crude..need something better
             predMatch = validPredicate(relDefination, relation);
 
         }
 
         // iff all are satisfied, this is a valid uncertain fact.
-        return contains && wordGap && predMatch;
+        boolean flag = contains && wordGap && predMatch;
+
+        if (flag)
+            listExtractedFactsDao.add(new FreeFormFactDao(possibleSubject, possibleObject,
+                    relDefination.toString()));
+
+        return listExtractedFactsDao;
     }
 
+    /**
+     * checks if the bag of words represents a valid predicate as given
+     * 
+     * @param relationBagOfWords
+     * @param dbPediaRelation
+     * @return
+     */
     private boolean validPredicate(StringBuffer relationBagOfWords, String dbPediaRelation) {
         if (relationBagOfWords.indexOf(dbPediaRelation) != -1)
             return true;
 
         String aftrStopWords = new StopWords().removeStopWords(relationBagOfWords.toString());
-        
+
         String stemmedSentnc = runStemmer(aftrStopWords);
         String rel = runStemmer(breakWords(dbPediaRelation));
 
-        //logger.info(stemmedSentnc + "  ----  " + aftrStopWords  + " ----  " + relationBagOfWords);
-        logger.info("Comparing " + stemmedSentnc + "  ****  " + rel );
+        // logger.info(stemmedSentnc + "  ----  " + aftrStopWords + " ----  " +
+        // relationBagOfWords);
+        // logger.info("Comparing " + stemmedSentnc + "  ****  " + rel );
 
         AbstractStringMetric metric = new CosineSimilarity();
 
         if (stemmedSentnc != null && rel != null && stemmedSentnc.length() > 0 && rel.length() > 0) {
             float result = metric.getSimilarity(stemmedSentnc.toLowerCase(),
                     rel.toLowerCase());
-            
-            if (result > 0.1){
-                logger.info(relationBagOfWords + " ---- " + dbPediaRelation + " -> " + result);
+
+            if (result > 0.1) {
+                // logger.info(relationBagOfWords + " ---- " + dbPediaRelation +
+                // " -> " + result);
                 return true;
             }
         }

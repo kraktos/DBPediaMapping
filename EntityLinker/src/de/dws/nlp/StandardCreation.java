@@ -213,10 +213,7 @@ public class StandardCreation {
 
         // get those sentences which are having a relationship
         // between some pair of surface forms
-        listSentenceDao = textProcessor.fetchMatchingSentences(wikiDao.getPageTitle(), wikiDao.getPredicate(), 
-                sentencesInText,
-                wikiDao.getListSubjSurfaceForms(),
-                wikiDao.getListObjectSurfaceForms());
+        listSentenceDao = textProcessor.fetchMatchingSentences(wikiDao, sentencesInText);
 
         // do something with this bunch of sentence dao
         for (SentenceDao dao : listSentenceDao) {

@@ -45,9 +45,15 @@ public class Constants
     public static final String DBPEDIA_DATA_DIR = "/home/arnab/Work/data/DBPedia/data";
 
     /**
-     * location of the directory where the indices for entities are stored
+     * location of the directory where the DBPEdia indices for entities are
+     * stored
      */
     public static final String DBPEDIA_ENT_INDEX_DIR = "/home/arnab/Work/data/DBPedia/indexFiles";
+
+    /**
+     * location of the directory where the NELL indices for entities are stored
+     */
+    public static final String NELL_ENT_INDEX_DIR = "/home/arnab/Work/data/NELL/indexFiles";
 
     /**
      * location of the directory where the indices for predicates are stored
@@ -187,14 +193,19 @@ public class Constants
 
     public static final String GET_WIKI_STAT = "select distinct entity from stats where anchor=?";
 
+    public static final String GET_LINK_COUNT = "select count(*) as cnt  from link_anchors l, title_2_id t where t.title = ? and l.anchor=? and l.target = t.id";
+
     public static final String INSERT_GOLD_STANDARD =
-            "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, E_CONF, D_SUB, D_PRED, D_OBJ, HOST) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ, SUB_LINK_CNT, OBJ_LINK_CNT ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String INSERT_AXIOM_SQL = "INSERT INTO axioms (E_ENTITY, CANDIDATE, APRIORI, APOSTERIORI) VALUES (?, ?, ?, ?)";
 
     public static final String UPDATE_AXIOM_SQL = "UPDATE axioms SET APOSTERIORI=? WHERE  E_ENTITY=? AND CANDIDATE=?";
 
     public static final String GET_WIKI_SURFACE_FORMS_SQL = "select l.anchor as anchor, count(*) as cnt from link_anchors l, title_2_id t where t.title=? and t.id=l.target group by l.anchor having cnt > ? order by cnt desc limit ?";
+
+    public static final String INSERT_SURFACE_FORMS_SQL =
+            "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
 
     // "select distinct  l.anchor from link_anchors l, title_2_id t where t.title=? and t.id=l.target";
 
@@ -298,8 +309,8 @@ public class Constants
     // Top surface forms for a given wikipedia page
     public static final int TOP_ANCHORS = 4;
 
-
-    // anchors with atleast these many occurrence in wikipedia pointing to the page
+    // anchors with atleast these many occurrence in wikipedia pointing to the
+    // page
     public static final int ATLEAST_LINKS = 2;
 
     // take sentences with atmost these many words between them
