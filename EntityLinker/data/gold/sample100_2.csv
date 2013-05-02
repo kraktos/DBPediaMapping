@@ -1,0 +1,101 @@
+E_SUB;E_PRED;E_OBJ;D_SUB;D_PRED;D_OBJ;SUB_LINK_CNT;OBJ_LINK_CNT
+bridgetown;locationlocatedwithinlocation;barbados;http://dbpedia.org/resource/Bridgetown;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/Barbados;1279;7316
+eagle;generalizations;animal;http://dbpedia.org/resource/Bald_Eagle;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Animal;15;970
+gaylord;generalizations;city;http://dbpedia.org/resource/Gaylord,_Minnesota;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;85;26837
+bon jovi;musicartistgenre;rock;http://dbpedia.org/resource/Jon_Bon_Jovi;http://dbpedia.org/ontology/genre;http://dbpedia.org/resource/Hard_rock;5;24
+bradford;atlocation;pennsylvania;http://dbpedia.org/resource/Bradford_County,_Pennsylvania;http://dbpedia.org/ontology/state;http://dbpedia.org/resource/Pennsylvania;453;47707
+coffeyville;generalizations;city;http://dbpedia.org/resource/Coffeyville,_Kansas;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;101;26837
+rudyard kipling;agentcreated;just so stories;http://dbpedia.org/resource/Rudyard_Kipling;http://dbpedia.org/ontology/notableWork;http://dbpedia.org/resource/Just_So_Stories;1804;65
+east grand forks;generalizations;city;http://dbpedia.org/resource/East_Grand_Forks,_Minnesota;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;174;26837
+fort wayne;citylocatedinstate;indiana;http://dbpedia.org/resource/Fort_Wayne,_Indiana;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Indiana;1812;23178
+spanish;generalizations;language;http://dbpedia.org/resource/Spain;http://dbpedia.org/ontology/regionalLanguage;http://dbpedia.org/resource/Occitan_language;14970;2
+bradley;citylocatedinstate;arkansas;http://dbpedia.org/resource/Bradley_County,_Arkansas;http://dbpedia.org/ontology/state;http://dbpedia.org/resource/Arkansas;234;14142
+oxford;generalizations;city;http://dbpedia.org/resource/Oxford;http://dbpedia.org/ontology/governmentType;http://dbpedia.org/resource/City_status_in_the_United_Kingdom;9821;363
+miami;citylocatedincountry;usa;http://dbpedia.org/resource/Miami_County,_Ohio;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;357;134399
+minnesota;statelocatedincountry;united states;http://dbpedia.org/resource/Glenwood,_Minnesota;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;1;482343
+richmond;citylocatedinstate;kentucky;http://dbpedia.org/resource/Richmond,_Kentucky;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Kentucky;762;19905
+general electric company;companyalsoknownas;ge;http://dbpedia.org/resource/General_Electric;http://dbpedia.org/ontology/subsidiary;http://dbpedia.org/resource/GE_Aviation;196;16
+oklahoma;statelocatedincountry;united states;http://dbpedia.org/resource/Oklahoma;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;14988;482343
+clinton;generalizations;city;http://dbpedia.org/resource/Clinton,_Iowa;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;472;26837
+buffaloes;animalpreyson;animals;http://dbpedia.org/resource/Bubalus;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Animal;3;1996
+alta;generalizations;city;http://dbpedia.org/resource/Alta,_Iowa;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;43;26837
+cloverdale;generalizations;city;http://dbpedia.org/resource/Cloverdale,_Indiana;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/Town;99;218
+hanover;generalizations;city;http://dbpedia.org/resource/Hanover;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;3394;26837
+stanford university;teamplaysinleague;ncaa;http://dbpedia.org/resource/Stanford_University;http://dbpedia.org/ontology/athletics;http://dbpedia.org/resource/National_Collegiate_Athletic_Association;11419;12123
+maseru;citycapitalofcountry;lesotho;http://dbpedia.org/resource/Maseru;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/Lesotho;443;3782
+indio;subpartof;california;http://dbpedia.org/resource/Indio,_California;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/California;509;95641
+john lennon;haswife;yoko ono;http://dbpedia.org/resource/John_Lennon;http://dbpedia.org/ontology/associatedBand;http://dbpedia.org/resource/Yoko_Ono;5735;2106
+rats;animalpreyson;animals;http://dbpedia.org/resource/Rat;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Animal;916;1996
+stevens point;proxyfor;wisconsin;http://dbpedia.org/resource/Stevens_Point,_Wisconsin;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Wisconsin;555;23947
+dover;generalizations;city;http://dbpedia.org/resource/Dover,_Delaware;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/List_of_incorporated_places_in_Delaware;1422;10
+seneca;generalizations;city;http://dbpedia.org/resource/Seneca,_Kansas;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;47;26837
+joseph conrad;agentcreated;the secret agent;http://dbpedia.org/resource/Joseph_Conrad;http://dbpedia.org/ontology/notableWork;http://dbpedia.org/resource/The_Secret_Agent;966;126
+albert;citylocatedinstate;kansas;http://dbpedia.org/resource/Albert,_Kansas;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Kansas;40;14613
+swallow;generalizations;bird;http://dbpedia.org/resource/Barn_Swallow;http://dbpedia.org/ontology/class;http://dbpedia.org/resource/Bird;12;7600
+carpinteria;citylocatedinstate;california;http://dbpedia.org/resource/Carpinteria,_California;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/California;156;95641
+azalea;generalizations;plant;http://dbpedia.org/resource/Rhododendron;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Plant;4;9851
+flushing;generalizations;city;http://dbpedia.org/resource/Flushing,_Michigan;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;80;26837
+edgar rice burroughs;agentcreated;tarzan;http://dbpedia.org/resource/Edgar_Rice_Burroughs;http://dbpedia.org/ontology/notableWork;http://dbpedia.org/resource/Tarzan;1676;1150
+the hunt for red october;bookwriter;tom clancy;http://dbpedia.org/resource/The_Hunt_for_Red_October;http://dbpedia.org/ontology/author;http://dbpedia.org/resource/Tom_Clancy;180;698
+phoenix;proxyfor;arizona;http://dbpedia.org/resource/Phoenix,_Arizona;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Arizona;4739;18529
+norco;generalizations;city;http://dbpedia.org/resource/Norco,_California;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;284;26837
+hans janmaat;generalizations;politician;http://dbpedia.org/resource/Hans_Janmaat;http://dbpedia.org/ontology/occupation;http://dbpedia.org/resource/Politician;19;19187
+alexandria;citylocatedingeopoliticallocation;louisiana;http://dbpedia.org/resource/Alexandria,_Louisiana;http://dbpedia.org/ontology/state;http://dbpedia.org/resource/Louisiana;976;20296
+webster;proxyfor;massachusetts;http://dbpedia.org/resource/Daniel_Webster;http://dbpedia.org/ontology/deathPlace;http://dbpedia.org/resource/Massachusetts;259;33341
+jackson;generalizations;city;http://dbpedia.org/resource/Jackson,_Georgia;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;63;26837
+gulfport;generalizations;city;http://dbpedia.org/resource/Gulfport,_Mississippi;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;607;26837
+h.g. wells;agentcontributedtocreativework;war of the worlds;http://dbpedia.org/resource/H._G._Wells;http://dbpedia.org/ontology/notableWork;http://dbpedia.org/resource/The_War_of_the_Worlds;601;28
+lizards;animalistypeofanimal;animals;http://dbpedia.org/resource/Lizard;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Animal;1083;1996
+waterville;locationlocatedwithinlocation;maine;http://dbpedia.org/resource/Waterville,_Maine;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Maine;339;12563
+prescott;proxyfor;arizona;http://dbpedia.org/resource/Prescott,_Arizona;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Arizona;580;18529
+richfield;proxyfor;minnesota;http://dbpedia.org/resource/Richfield,_Minnesota;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Minnesota;148;24649
+nba;subpartoforganization;mavericks;http://dbpedia.org/resource/National_Basketball_Association;http://dbpedia.org/ontology/team;http://dbpedia.org/resource/Dallas_Mavericks;11478;73
+mazowieckie;locationlocatedwithinlocation;poland;http://dbpedia.org/resource/Masovian_Voivodeship;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/Voivodeships_of_Poland;48;50
+goldfinches;generalizations;bird;http://dbpedia.org/resource/American_Goldfinch;http://dbpedia.org/ontology/class;http://dbpedia.org/resource/Bird;6;7600
+ashgabat;citylocatedincountry;turkmenistan;http://dbpedia.org/resource/Ashgabat;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/Turkmenistan;740;4781
+bassett;citylocatedinstate;nebraska;http://dbpedia.org/resource/Bassett,_Nebraska;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Nebraska;49;10942
+valparaiso;atlocation;florida;http://dbpedia.org/resource/Valparaiso,_Florida;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Florida;48;43114
+logansport;generalizations;city;http://dbpedia.org/resource/Logansport,_Louisiana;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/Town;43;218
+washington;citycapitalofcountry;united states;http://dbpedia.org/resource/Washington,_New_Jersey;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;101;482343
+mooresville;generalizations;city;http://dbpedia.org/resource/Mooresville,_Indiana;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/Town;144;218
+clayton;generalizations;city;http://dbpedia.org/resource/Clayton,_Georgia;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;59;26837
+new dehli;citylocatedincountry;india;http://dbpedia.org/resource/New_Delhi;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/India;58;164556
+pembroke;generalizations;city;http://dbpedia.org/resource/Pembroke,_Georgia;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;48;26837
+lake placid;atlocation;new york;http://dbpedia.org/resource/Lake_Placid,_New_York;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/New_York;1188;86084
+goodland;generalizations;city;http://dbpedia.org/resource/Goodland,_Kansas;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;158;26837
+cortland;generalizations;city;http://dbpedia.org/resource/Cortland,_New_York;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;225;26837
+iowa;statelocatedingeopoliticallocation;u.s.;http://dbpedia.org/resource/Franklin,_Iowa;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;1;89813
+claremont;generalizations;city;http://dbpedia.org/resource/Claremont,_North_Carolina;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;42;26837
+thomas eakins;visualartistartform;paintings;http://dbpedia.org/resource/Thomas_Eakins;http://dbpedia.org/ontology/field;http://dbpedia.org/resource/Painting;413;725
+marysville;atlocation;ohio;http://dbpedia.org/resource/Marysville,_Ohio;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/Ohio;251;35790
+apia;proxyfor;samoa;http://dbpedia.org/resource/Apia;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/Samoa;925;4477
+dell;agentcollaborateswithagent;michael dell;http://dbpedia.org/resource/Dell;http://dbpedia.org/ontology/keyPerson;http://dbpedia.org/resource/Michael_Dell;1920;126
+bison;animalistypeofanimal;animals;http://dbpedia.org/resource/American_bison;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Animal;204;1996
+harrison;generalizations;city;http://dbpedia.org/resource/Harrison,_Arkansas;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;276;26837
+scranton;generalizations;city;http://dbpedia.org/resource/Scranton,_North_Dakota;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;15;26837
+sarasota;proxyfor;florida;http://dbpedia.org/resource/Sarasota_County,_Florida;http://dbpedia.org/ontology/state;http://dbpedia.org/resource/Florida;582;43114
+naperville;subpartof;illinois;http://dbpedia.org/resource/Naperville,_Illinois;http://dbpedia.org/ontology/state;http://dbpedia.org/resource/Illinois;1670;39643
+fairbury;generalizations;city;http://dbpedia.org/resource/Fairbury,_Nebraska;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;55;26837
+manet;visualartistartform;paintings;http://dbpedia.org/resource/C389douard_Manet;http://dbpedia.org/ontology/field;http://dbpedia.org/resource/Painting;188;725
+james;mountaininstate;virginia;http://dbpedia.org/resource/James_Madison;http://dbpedia.org/ontology/birthPlace;http://dbpedia.org/resource/Colony_of_Virginia;3;344
+jules verne;agentcreated;mysterious island;http://dbpedia.org/resource/Jules_Verne;http://dbpedia.org/ontology/notableWork;http://dbpedia.org/resource/The_Mysterious_Island;1582;25
+bon jovi;musicartistgenre;metal;http://dbpedia.org/resource/Jon_Bon_Jovi;http://dbpedia.org/ontology/genre;http://dbpedia.org/resource/Glam_metal;5;2
+delaware river;riveremptiesintoriver;schuylkill river;http://dbpedia.org/resource/Delaware_River;http://dbpedia.org/ontology/rightTributary;http://dbpedia.org/resource/Schuylkill_River;2053;924
+alabama;statelocatedingeopoliticallocation;u.s.;http://dbpedia.org/resource/Alabama_River;http://dbpedia.org/ontology/sourceCountry;http://dbpedia.org/resource/United_States;33;89813
+conakry;citycapitalofcountry;guinea;http://dbpedia.org/resource/Conakry;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/Guinea;1138;6630
+coyotes;animalistypeofanimal;mammals;http://dbpedia.org/resource/Coyote;http://dbpedia.org/ontology/class;http://dbpedia.org/resource/Mammal;576;3213
+seurat;visualartistartform;paintings;http://dbpedia.org/resource/Georges_Seurat;http://dbpedia.org/ontology/field;http://dbpedia.org/resource/Painting;64;725
+east peoria;citylocatedinstate;illinois;http://dbpedia.org/resource/East_Peoria,_Illinois;http://dbpedia.org/ontology/state;http://dbpedia.org/resource/Illinois;1343;39643
+memphis;citylocatedincountry;egypt;http://dbpedia.org/resource/Memphis,_Egypt;http://dbpedia.org/ontology/region;http://dbpedia.org/resource/List_of_World_Heritage_Sites_in_the_Arab_States;347;24
+snow crash;bookwriter;neal stephenson;http://dbpedia.org/resource/Snow_Crash;http://dbpedia.org/ontology/author;http://dbpedia.org/resource/Neal_Stephenson;155;545
+syracuse;generalizations;city;http://dbpedia.org/resource/Syracuse,_Missouri;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;17;26837
+beardstown;citylocatedinstate;illinois;http://dbpedia.org/resource/Beardstown,_Illinois;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/List_of_cities_in_Illinois;95;73
+litchfield;generalizations;city;http://dbpedia.org/resource/Litchfield,_Illinois;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/List_of_cities_in_Illinois;86;251
+washington;subpartof;united states;http://dbpedia.org/resource/Washington_County,_Florida;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;483;482343
+washington;subpartof;united states;http://dbpedia.org/resource/Washington,_Iowa;http://dbpedia.org/ontology/country;http://dbpedia.org/resource/United_States;77;482343
+hyena;animalistypeofanimal;animals;http://dbpedia.org/resource/Hyena;http://dbpedia.org/ontology/kingdom;http://dbpedia.org/resource/Animal;292;1996
+oceanside;atlocation;new york;http://dbpedia.org/resource/Oceanside,_New_York;http://dbpedia.org/ontology/isPartOf;http://dbpedia.org/resource/New_York;126;86084
+berea;generalizations;city;http://dbpedia.org/resource/Berea,_Ohio;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;159;26837
+davis;atlocation;california;http://dbpedia.org/resource/University_of_California,_Davis;http://dbpedia.org/ontology/affiliation;http://dbpedia.org/resource/University_of_California;131;126
+mice;specializationof;mammals;http://dbpedia.org/resource/Mouse;http://dbpedia.org/ontology/class;http://dbpedia.org/resource/Mammal;777;3213
+cape canaveral;generalizations;city;http://dbpedia.org/resource/Cape_Canaveral,_Florida;http://dbpedia.org/ontology/type;http://dbpedia.org/resource/City;97;26837
