@@ -88,15 +88,15 @@ public class EntityMatchingStandard {
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
         if (tupleReader != null) {
-            String tupleFromIE;
+            String tripleFromDBPedia;
 
             // create a DB routine to fetch the surface forms of the arguments
             DBWrapper.init(Constants.GET_WIKI_SURFACE_FORMS_SQL);
 
             // read a random triple at a time
-            while ((tupleFromIE = tupleReader.readLine()) != null) {
+            while ((tripleFromDBPedia = tupleReader.readLine()) != null) {
 
-                arr = tupleFromIE.split("\\s");
+                arr = tripleFromDBPedia.split("\\s");
 
                 flag = checkIfValidTriple(arr[0], arr[1], arr[2]);
                 if (flag) {
@@ -234,7 +234,7 @@ public class EntityMatchingStandard {
 
         for (String subj : subjSurfaceForms) {
             for (String obj : objSurfaceForms) {
-                nellTriples = NELLQueryEngine.doSearch(subj, obj);
+                nellTriples = NELLQueryEngine.doSearch(null, subj, obj);
 
                 for (FreeFormFactDao nellTriple : nellTriples) {
                     // save to DB all the values

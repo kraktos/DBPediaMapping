@@ -47,23 +47,27 @@ public class NELLIndexBuilder
     static PreparedStatement pstmt = null;
 
     public static void main(String[] args) throws Exception {
-        indexer();
+
+        indexer((args[0] == null) ? Constants.NELL_DATA_PATH : args[0],
+                (args[1] == null) ? Constants.NELL_ENT_INDEX_DIR : args[1]);
     }
 
     /**
      * Creates index over the DBPedia data located in the directory mentioned in
      * the {@link Constants}
      * 
+     * @param indexPath
+     * @param dataPath
      * @throws Exception
      */
-    public static void indexer() throws Exception
+    public static void indexer(String dataPath, String indexPath) throws Exception
     {
 
         IndexWriter writer = null;
         Analyzer analyzer = null;
         File indexFilePath = null;
 
-        final File docDir = new File(Constants.NELL_DATA_PATH);
+        final File docDir = new File(dataPath);
         if (!docDir.exists() || !docDir.canRead()) {
             System.out.println("Document directory '" + docDir.getAbsolutePath()
                     + "' does not exist or is not readable, please check the path");
@@ -73,7 +77,7 @@ public class NELLIndexBuilder
         logger.info("Started indexing");
 
         // get a reference to index directory file
-        indexFilePath = new File(Constants.NELL_ENT_INDEX_DIR);
+        indexFilePath = new File(indexPath);
 
         analyzer = Constants.LUCENE_ANALYZER;
         IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_40, analyzer);
@@ -97,6 +101,21 @@ public class NELLIndexBuilder
 
         // end timer
         Utilities.endTimer(start, "INDEXING COMPLETED IN ");
+    }
+
+    /**
+     * remove the header information. We are interested only in the concept name
+     * 
+     * @param arg full URI of the concept
+     * @return stripped concept name
+     */
+    private static String stripHeaders(String arg) {
+        arg = arg.replace("<http://dbpedia.org/resource/", "");
+        arg = arg.replace("<http://dbpedia.org/ontology/", "");
+        arg = arg.replace(">", "");
+        arg = arg.replace("%", "");
+
+        return arg;
     }
 
     /**
@@ -158,41 +177,90 @@ public class NELLIndexBuilder
                     // read comma separated file line by line
                     while ((strLine = br.readLine()) != null) {
 
-                        // break comma separated line using ","
-                        array = strLine.split(Constants.NELL_IE_DELIMIT);
+                        if (!strLine.startsWith("#")) {
+                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) {
+                                // break comma separated line using ","
+                                array = strLine.split(Constants.NELL_IE_DELIMIT);
+                                // add the label, store it for display purpose
+                                subject = (array[1] != null) ? array[1] : "";
+                                // add the label, store it for display purpose
+                                predicate = (array[2] != null) ? array[2] : "";
+                                // add the label, store it for display purpose
+                                object = (array[3] != null) ? ((array[3].length() == 0) ? array[4]
+                                        : array[3]) : "";
 
-                        // add the label, store it for display purpose
-                        subject = (array[1] != null) ? array[1] : "";
+                                // store the subject field
+                                subjField = new StringField("subjField", subject.trim()
+                                        .toLowerCase(),
+                                        Field.Store.YES);
 
-                        // store the subject field
-                        subjField = new StringField("subjField", subject.trim().toLowerCase(),
-                                Field.Store.YES);
+                                // store the subject field
+                                predField = new StringField("predField",
+                                        predicate.trim().toLowerCase(),
+                                        Field.Store.YES);
 
-                        // add the label, store it for display purpose
-                        predicate = (array[2] != null) ? array[2] : "";
+                                // store the subject field
+                                objField = new StringField("objField", object.trim().toLowerCase(),
+                                        Field.Store.YES);
 
-                        // store the subject field
-                        predField = new StringField("predField", predicate.trim().toLowerCase(),
-                                Field.Store.YES);
+                                // add to document
+                                document = new Document();
+                                document.add(subjField);
+                                document.add(predField);
+                                document.add(objField);
 
-                        // add the label, store it for display purpose
-                        object = (array[3] != null) ? ((array[3].length() == 0) ? array[4]
-                                : array[3]) : "";
+                                // add the document finally into the
+                                // writer
+                                writer.addDocument(document);
 
-                        // store the subject field
-                        objField = new StringField("objField", object.trim().toLowerCase(),
-                                Field.Store.YES);
+                            } else if (strLine.indexOf(Constants.DBPEDIA_HEADER) != -1) {
 
-                        // add to document
-                        document = new Document();
-                        document.add(subjField);
-                        document.add(predField);
-                        document.add(objField);
+                                // break comma separated line using ","
+                                array = strLine.split("\\s");
+                                
+                                boolean flag = checkIfValidTriple(array[0], array[1], array[2]);
+                                if (flag) {
 
-                        // add the document finally into the
-                        // writer
-                        writer.addDocument(document);
+                                    // add the label, store it for display
+                                    // purpose
+                                    subject = (array[0] != null) ? stripHeaders(array[0]) : "";
+                                    // add the label, store it for display
+                                    // purpose
+                                    predicate = (array[1] != null) ? stripHeaders(array[1]) : "";
+                                    // add the label, store it for display
+                                    // purpose
+                                    object = (array[2] != null) ? stripHeaders(array[2]) : "";
 
+                                    logger.info(subject + ", " + predicate + ", "+ object) ;
+                                    
+                                    // store the subject field
+                                    subjField = new StringField("subjField", subject.trim()
+                                            .toLowerCase(),
+                                            Field.Store.YES);
+
+                                    // store the subject field
+                                    predField = new StringField("predField",
+                                            predicate.trim().toLowerCase(),
+                                            Field.Store.YES);
+
+                                    // store the subject field
+                                    objField = new StringField("objField", object.trim()
+                                            .toLowerCase(),
+                                            Field.Store.YES);
+
+                                    // add to document
+                                    document = new Document();
+                                    document.add(subjField);
+                                    document.add(predField);
+                                    document.add(objField);
+
+                                    // add the document finally into the
+                                    // writer
+                                    writer.addDocument(document);
+                                }
+                            }
+
+                        }
                     }
 
                 } catch (Exception ex) {
@@ -206,77 +274,11 @@ public class NELLIndexBuilder
         }
     }
 
-    private static int calculateFrequency(String label, String uri, String labelFirst,
-            String labelSecond,
-            String uriFirst, String uriSecond)
-    {
-        List<String> dbResults = new ArrayList<String>();
-
-        try {
-            // instantiate the DB connection
-            DBConnection dbConnection = new DBConnection();
-
-            // retrieve the freshly created connection instance
-            connection = dbConnection.getConnection();
-
-            // create a statement
-            pstmt = connection.prepareStatement(Constants.GET_WIKI_STAT);
-
-            logger.info(uri); // labelFirst + " " + labelSecond + " " + uriFirst
-                              // + " " + uriSecond);
-            dbResults = computeWikiStats(labelFirst, dbResults, pstmt);
-            dbResults = computeWikiStats(labelSecond, dbResults, pstmt);
-            dbResults = computeWikiStats(uriFirst, dbResults, pstmt);
-            dbResults = computeWikiStats(uriSecond, dbResults, pstmt);
-
-            for (String result : dbResults) {
-                int score = StringUtils.getLevenshteinDistance(result.toLowerCase(),
-                        uri.toLowerCase());
-                if (score < 2) {
-                    return score;
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(" Exception while computing wiki stats " + e.getMessage());
-        } finally {
-            try {
-                pstmt.clearParameters();
-                pstmt.close();
-                connection.close();
-
-            } catch (SQLException e) {
-                logger.error(" Exception while closing DB " + e.getMessage());
-            }
-        }
-        return -1;
-
+    private static boolean checkIfValidTriple(String arg1, String rel, String arg2) {
+        if (arg1.contains(Constants.DBPEDIA_HEADER) && rel.contains(Constants.ONTOLOGY_NAMESPACE) &&
+                arg2.contains(Constants.DBPEDIA_HEADER))
+            return true;
+        return false;
     }
 
-    private static List<String> computeWikiStats(String userQuery, List<String> dbResults,
-            PreparedStatement pstmt)
-            throws SQLException
-    {
-        java.sql.ResultSet rs = null;
-        try {
-            pstmt.setString(1, userQuery);
-            pstmt.setString(2, userQuery);
-
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String entity = rs.getString("entity");
-                String count = rs.getString("cnt");
-                if (!dbResults.contains(entity)) {
-                    dbResults.add(entity);
-                    // logger.info(entity + "  " + count);
-                }
-
-            }
-        } catch (SQLException e) {
-            logger.error(" Exception while computing wiki stats " + e.getMessage());
-        } finally {
-            rs.close();
-        }
-
-        return dbResults;
-    }
 }

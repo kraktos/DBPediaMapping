@@ -87,16 +87,18 @@ public class NELLQueryEngine
      * 
      * @param subQuery the user provided search item
      * @param objQuery
+     * @param string
      * @param file
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public static List<FreeFormFactDao> doSearch(String subQuery, String objQuery)
+    public static List<FreeFormFactDao> doSearch(String indexLocation, String subQuery,
+            String objQuery)
             throws IOException
     {
 
         // create File object of our index directory
-        File file = new File(Constants.NELL_ENT_INDEX_DIR);
+        File file = new File(indexLocation);// Constants.DBPEDIA_INFO_INDEX_DIR);
 
         IndexReader reader = null;
         IndexSearcher searcher = null;
@@ -135,7 +137,7 @@ public class NELLQueryEngine
             return iterateResult(searcher, hits, subQuery);
 
         } catch (Exception ex) {
-            logger.debug("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
+            logger.info("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
         } finally {
             setURI.clear();
             setURI = null;
@@ -194,7 +196,7 @@ public class NELLQueryEngine
 
             score = scoredoc.score / hits.getMaxScore();
 
-            logger.debug(subject + "  " + predicate + "  " + object + " " + score);
+            logger.info(subject + "  " + predicate + "  " + object + " " + score);
             nellTriplesList.add(new FreeFormFactDao(subject, predicate, object));
 
         }
@@ -210,7 +212,8 @@ public class NELLQueryEngine
             DBPediaIndexBuilder.indexer();
         }
 
-        doSearch("mark", "diane");
+        ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
+        doSearch(ar[0], "Antispila_pentalitha", "Arthropod");
     }
 
 }
