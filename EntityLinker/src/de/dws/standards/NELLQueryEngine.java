@@ -182,22 +182,27 @@ public class NELLQueryEngine
         String subject = null;
         String predicate = null;
         String object = null;
+        String triple = null;
 
         double score;
-
+        String[] elems = null;
         // iterate over the results fetched after index search
         for (ScoreDoc scoredoc : hits.scoreDocs) {
             // Retrieve the matched document and show relevant details
             Document doc = searcher.doc(scoredoc.doc);
 
-            subject = doc.get("subjField");
-            predicate = doc.get("predField");
-            object = doc.get("objField");
+            /*
+             * subject = doc.get("subjField"); predicate = doc.get("predField");
+             * object = doc.get("objField");
+             */
+            triple = doc.get("tripleField");
 
             score = scoredoc.score / hits.getMaxScore();
 
-            logger.info(subject + "  " + predicate + "  " + object + " " + score);
-            nellTriplesList.add(new FreeFormFactDao(subject, predicate, object));
+            logger.debug(subject + "  " + predicate + "  " + object + " " + score);
+            logger.debug(triple);
+            elems = triple.split(Constants.NELL_IE_DELIMIT);
+            nellTriplesList.add(new FreeFormFactDao(elems[0], elems[1], elems[2]));
 
         }
         return nellTriplesList;
@@ -212,8 +217,8 @@ public class NELLQueryEngine
             DBPediaIndexBuilder.indexer();
         }
 
-        ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
-        doSearch(ar[0], "Antispila_pentalitha", "Arthropod");
+        //ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
+        doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
     }
 
 }

@@ -47,9 +47,12 @@ public class NELLIndexBuilder
     static PreparedStatement pstmt = null;
 
     public static void main(String[] args) throws Exception {
-
-        indexer((args[0] == null) ? Constants.NELL_DATA_PATH : args[0],
-                (args[1] == null) ? Constants.NELL_ENT_INDEX_DIR : args[1]);
+        if (args.length == 2) {
+            indexer(args[0],
+                    args[1]);
+        } else {
+            indexer(Constants.NELL_DATA_PATH, Constants.NELL_ENT_INDEX_DIR);
+        }
     }
 
     /**
@@ -160,6 +163,7 @@ public class NELLIndexBuilder
                 Field subjField = null;
                 Field predField = null;
                 Field objField = null;
+                Field tripleField = null;
 
                 try {
                     fstream = new FileInputStream(file);
@@ -178,46 +182,48 @@ public class NELLIndexBuilder
                     while ((strLine = br.readLine()) != null) {
 
                         if (!strLine.startsWith("#")) {
-                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) {
+                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) { // NELL TRIPLES
                                 // break comma separated line using ","
                                 array = strLine.split(Constants.NELL_IE_DELIMIT);
                                 // add the label, store it for display purpose
-                                subject = (array[1] != null) ? array[1] : "";
+                                subject = (array[0] != null) ? array[0] : "";
                                 // add the label, store it for display purpose
-                                predicate = (array[2] != null) ? array[2] : "";
+                                predicate = (array[1] != null) ? array[1] : "";
                                 // add the label, store it for display purpose
-                                object = (array[3] != null) ? ((array[3].length() == 0) ? array[4]
-                                        : array[3]) : "";
+                                object = (array[2] != null) ? array[2] : "";
 
                                 // store the subject field
-                                subjField = new StringField("subjField", subject.trim()
-                                        .toLowerCase(),
-                                        Field.Store.YES);
+                                subjField = new StringField("subjField", cleanse(subject.trim()),
+                                        Field.Store.NO);
 
                                 // store the subject field
                                 predField = new StringField("predField",
-                                        predicate.trim().toLowerCase(),
-                                        Field.Store.YES);
+                                        cleanse(predicate.trim()),
+                                        Field.Store.NO);
 
                                 // store the subject field
-                                objField = new StringField("objField", object.trim().toLowerCase(),
-                                        Field.Store.YES);
+                                objField = new StringField("objField", cleanse(object.trim()),
+                                        Field.Store.NO);
 
+                                tripleField = new StringField("tripleField", strLine,
+                                        Field.Store.YES);
+                                
                                 // add to document
                                 document = new Document();
                                 document.add(subjField);
                                 document.add(predField);
                                 document.add(objField);
+                                document.add(tripleField);
 
                                 // add the document finally into the
                                 // writer
                                 writer.addDocument(document);
 
-                            } else if (strLine.indexOf(Constants.DBPEDIA_HEADER) != -1) {
+                            } else if (strLine.indexOf(Constants.DBPEDIA_HEADER) != -1) { // DBPedia TRIPLES
 
                                 // break comma separated line using ","
                                 array = strLine.split("\\s");
-                                
+
                                 boolean flag = checkIfValidTriple(array[0], array[1], array[2]);
                                 if (flag) {
 
@@ -231,8 +237,8 @@ public class NELLIndexBuilder
                                     // purpose
                                     object = (array[2] != null) ? stripHeaders(array[2]) : "";
 
-                                    logger.info(subject + ", " + predicate + ", "+ object) ;
-                                    
+                                    logger.info(subject + ", " + predicate + ", " + object);
+
                                     // store the subject field
                                     subjField = new StringField("subjField", subject.trim()
                                             .toLowerCase(),
@@ -272,6 +278,11 @@ public class NELLIndexBuilder
                 }
             }
         }
+    }
+
+    private static String cleanse(String arg) {
+        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());
+        return arg.toLowerCase();
     }
 
     private static boolean checkIfValidTriple(String arg1, String rel, String arg2) {

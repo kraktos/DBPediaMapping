@@ -55,6 +55,8 @@ public class Constants
      */
     public static final String NELL_ENT_INDEX_DIR = "/home/arnab/Work/data/NELL/indexFiles";
 
+    public static final String DBPEDIA_INFO_INDEX_DIR = "/home/arnab/Work/data/DBPedia/infoIndex";
+    
     /**
      * location of the directory where the indices for predicates are stored
      */
@@ -202,12 +204,20 @@ public class Constants
 
     public static final String UPDATE_AXIOM_SQL = "UPDATE axioms SET APOSTERIORI=? WHERE  E_ENTITY=? AND CANDIDATE=?";
 
+    /**
+     * given a title, fetch top surface forms
+     */
     public static final String GET_WIKI_SURFACE_FORMS_SQL = "select l.anchor as anchor, count(*) as cnt from link_anchors l, title_2_id t where t.title=? and t.id=l.target group by l.anchor having cnt > ? order by cnt desc limit ?";
+
+    /**
+     * given a surface form, fetch top titles it refers to
+     */
+    public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title having cnt > ? order by cnt desc limit ?";
 
     public static final String INSERT_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
 
-    // "select distinct  l.anchor from link_anchors l, title_2_id t where t.title=? and t.id=l.target";
+
 
     /**
      * defines the batch size for the Data base operations
@@ -307,7 +317,7 @@ public class Constants
     public static final String WIKI_PAGE_HEADER = "http://en.wikipedia.org/wiki/";
 
     // Top surface forms for a given wikipedia page
-    public static final int TOP_ANCHORS = 4;
+    public static final int TOP_ANCHORS = 2;
 
     // anchors with atleast these many occurrence in wikipedia pointing to the
     // page

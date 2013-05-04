@@ -8,9 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
@@ -19,7 +17,6 @@ import org.apache.log4j.PropertyConfigurator;
 import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.mapper.helper.util.Constants;
 import de.dws.nlp.dao.FreeFormFactDao;
-import de.dws.nlp.dao.SurfaceFormDao;
 
 /**
  * @author Arnab Dutta
@@ -32,23 +29,10 @@ public class EntityMatchingStandard {
     // global counter
     private static long cntr = 0;
 
-    // unmatched facts counter
-    private static long unMatchedFactCnt = 0;
-
     // global timer
     private static long timer = 0;
 
-    private static long SINGLE_SINGLE_MATCHING = 0;
-
-    private static long SINGLE_MANY_MATCHING = 0;
-
-    private static long MANY_MANY_MATCHING = 0;
-
-    private static long NONE_MATCHING = 0;
-
     static List<FreeFormFactDao> nellTriples = null;
-
-    //static Map<FreeFormFactDao, FreeFormFactDao> map = new HashMap<FreeFormFactDao, FreeFormFactDao>();
 
     /**
      * @param args
@@ -66,7 +50,7 @@ public class EntityMatchingStandard {
             logger.info("USAGE: java -jar runner.jar <path of file> <number of facts>");
         } else {
             logger.info("Starting processing " + args[0]);
-            processFile(args[0], Integer.parseInt(args[1]));
+            processDBPediaTriple(args[0], Integer.parseInt(args[1]));
         }
     }
 
@@ -79,11 +63,12 @@ public class EntityMatchingStandard {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    private static void processFile(String filePath, int dataSize) throws FileNotFoundException,
+    private static void processDBPediaTriple(String filePath, int dataSize)
+            throws FileNotFoundException,
             IOException,
             InterruptedException, ExecutionException {
+
         String[] arr = null;
-        boolean flag = false;
 
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
@@ -98,38 +83,30 @@ public class EntityMatchingStandard {
 
                 arr = tripleFromDBPedia.split("\\s");
 
-                flag = checkIfValidTriple(arr[0], arr[1], arr[2]);
-                if (flag) {
+                if (checkIfValidTriple(arr[0], arr[1], arr[2])) {
 
                     // use this high quality ground fact to generate possible
                     // facts
                     processTriple(stripHeaders(arr[0]),
                             stripHeaders(arr[1]), stripHeaders(arr[2]));
 
-                    // findSurfaceForms2(stripHeaders(arr[0]),
-                    // stripHeaders(arr[1]), stripHeaders(arr[2]));
-
                     cntr++;
+                    double perc = ((double) cntr / (double) dataSize) * 100;
+                    if (perc % 10 == 0)
+                        logger.info(perc + " % completed in " + ((double) timer / (double) 1000)
+                                + " secds");
                 }
                 if (cntr == dataSize) // check point
                     break;
 
             } // end of while
 
-            /*for (Map.Entry<FreeFormFactDao, FreeFormFactDao> entry : map.entrySet()) {
-                FreeFormFactDao key = entry.getKey();
-                FreeFormFactDao value = entry.getValue();
-                logger.info(key.toString() + " => " + value.toString() + "\n");
-            }*/
+            DBWrapper.saveResiduals();
+            // shutdown DB
+            DBWrapper.shutDown();
 
-            logger.info("\n Extraction performed in  .." + timer + " millisecds");
-
-            logger.debug("NONE_MATCHING = " + (double) NONE_MATCHING / (double) cntr
-                    + " \nMANY_MANY_MATCHING = "
-                    + (double) MANY_MANY_MATCHING / (double) cntr + " \nSINGLE_SINGLE_MATCHING = "
-                    + (double) SINGLE_SINGLE_MATCHING / (double) cntr
-                    + " \nSINGLE_MANY_MATCHING = " + (double) SINGLE_MANY_MATCHING / (double) cntr
-                    + " \n TOTAL = " + cntr);
+            // logger.info("\n Extraction performed in  .." + timer +
+            // " millisecds");
 
         }
     }
@@ -147,31 +124,6 @@ public class EntityMatchingStandard {
         arg = arg.replace("%", "");
 
         return arg;
-    }
-
-    private static void findSurfaceForms2(String arg1, String rel, String arg2)
-            throws InterruptedException, ExecutionException, IOException {
-
-        long t0 = 0;
-        long tn = 0;
-
-        // start time
-        t0 = System.currentTimeMillis();
-
-        List<SurfaceFormDao> subjSurfaceForms = DBWrapper.fetchSurfaceFormsUri(arg1);
-        List<SurfaceFormDao> objSurfaceForms = DBWrapper.fetchSurfaceFormsUri(arg2);
-
-        logger.info("\n\n " + arg1 + ", " + rel + ", " + arg2);
-
-        DBWrapper.dbRoutine(subjSurfaceForms);
-        DBWrapper.dbRoutine(objSurfaceForms);
-
-        // end time
-        tn = System.currentTimeMillis();
-
-        // update global timer
-        timer = timer + (tn - t0);
-
     }
 
     /**
@@ -199,13 +151,15 @@ public class EntityMatchingStandard {
         List<String> subjSurfaceForms = DBWrapper.fetchSurfaceForms(arg1);
         List<String> objSurfaceForms = DBWrapper.fetchSurfaceForms(arg2);
 
-        logger.debug( arg1 + ", " + rel + ", " + arg2);
+        logger.debug(arg1 + ", " + rel + ", " + arg2);
 
-        subjSurfaceForms = enhanceSurfaceForms(arg1, subjSurfaceForms);
-        objSurfaceForms = enhanceSurfaceForms(arg2, objSurfaceForms);
+        // subjSurfaceForms = enhanceSurfaceForms(arg1, subjSurfaceForms);
+        // objSurfaceForms = enhanceSurfaceForms(arg2, objSurfaceForms);
 
-        logger.debug(arg1 + " => " + subjSurfaceForms);
-        logger.debug(arg2 + " => " + objSurfaceForms);
+        /*
+         * if (arg2.equals("Tad_Lincoln")) { logger.info(arg1 + " => " +
+         * subjSurfaceForms); logger.info(arg2 + " => " + objSurfaceForms); }
+         */
 
         findNELLMatchingTriples(arg1, rel, arg2, subjSurfaceForms, objSurfaceForms);
 
@@ -234,36 +188,15 @@ public class EntityMatchingStandard {
 
         for (String subj : subjSurfaceForms) {
             for (String obj : objSurfaceForms) {
-                nellTriples = NELLQueryEngine.doSearch(null, subj, obj);
+                nellTriples = NELLQueryEngine.doSearch(Constants.NELL_ENT_INDEX_DIR, subj, obj);
 
                 for (FreeFormFactDao nellTriple : nellTriples) {
                     // save to DB all the values
-                    
                     DBWrapper.saveGoldStandard(nellTriple, arg1, rel, arg2);
-                    //map.put(nellTriple, new FreeFormFactDao("DBP:"+arg1, "DBP:"+rel, "DBP:"+arg2));
                 }
             }
         }
-    }
 
-    /**
-     * update the statistics that how many are mapped and not
-     * 
-     * @param subjSurfaceForms list of subject surface forms
-     * @param objSurfaceForms list of object surface forms
-     */
-    private static void updateStatsCounter(List<String> subjSurfaceForms,
-            List<String> objSurfaceForms) {
-
-        if (subjSurfaceForms.size() == 0 || objSurfaceForms.size() == 0)
-            NONE_MATCHING++;
-        else if (subjSurfaceForms.size() > 1 && objSurfaceForms.size() > 1)
-            MANY_MANY_MATCHING++;
-        else if (subjSurfaceForms.size() == 1 && objSurfaceForms.size() == 1)
-            SINGLE_SINGLE_MATCHING++;
-        else if ((subjSurfaceForms.size() == 1 && objSurfaceForms.size() > 1)
-                || (subjSurfaceForms.size() > 1 && objSurfaceForms.size() == 1))
-            SINGLE_MANY_MATCHING++;
     }
 
     // for a given page title, the substrings of the title are also valid

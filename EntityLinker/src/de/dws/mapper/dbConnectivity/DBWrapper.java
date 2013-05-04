@@ -32,12 +32,17 @@ public class DBWrapper {
     // DB connection instance, one per servlet
     static Connection connection = null;
 
+    // DBCOnnection
+    static DBConnection dbConnection = null;
+
     // prepared statement instance
     static PreparedStatement pstmt = null;
 
     static PreparedStatement insertPrepstmnt = null;
 
     static PreparedStatement fetchCountsPrepstmnt = null;
+
+    static int batchCounter = 0;
 
     /**
      * initiats the connection parameters
@@ -48,7 +53,7 @@ public class DBWrapper {
 
         try {
             // instantiate the DB connection
-            DBConnection dbConnection = new DBConnection();
+            dbConnection = new DBConnection();
 
             // retrieve the freshly created connection instance
             connection = dbConnection.getConnection();
@@ -217,9 +222,10 @@ public class DBWrapper {
                 objLinksCount = rs.getInt(1);
             }
 
-            logger.info(nellTriple.getSurfaceSubj() + "  " + nellTriple.getRelationship() + " "
-                    + nellTriple.getSurfaceObj() + "  " + arg1 + " " + rel + "  " + arg2 
-                     + " " + subjLinksCount + " " + objLinksCount);
+            logger.debug("[" + nellTriple.getSurfaceSubj() + ", " + nellTriple.getRelationship()
+                    + ", "
+                    + nellTriple.getSurfaceObj() + "]  =>  [" + arg1 + ", " + rel + ", " + arg2
+                    + "] " + subjLinksCount + " " + objLinksCount);
 
             insertPrepstmnt.setString(1, nellTriple.getSurfaceSubj());
             insertPrepstmnt.setString(2, nellTriple.getRelationship());
@@ -230,12 +236,80 @@ public class DBWrapper {
             insertPrepstmnt.setInt(7, subjLinksCount);
             insertPrepstmnt.setInt(8, objLinksCount);
 
-            // run the query finally
-            insertPrepstmnt.executeUpdate();
+            // insertPrepstmnt.executeUpdate();
+            insertPrepstmnt.addBatch();
+            batchCounter++;
+            //logger.info(batchCounter % Constants.BATCH_SIZE);
+            if (batchCounter % Constants.BATCH_SIZE == 0) { // batches of 100
+                                                            // are flushed at
+                                                            // a time
+                // execute batch update
+                insertPrepstmnt.executeBatch();
+
+                logger.info("FLUSHED TO DB...");
+            }
 
         } catch (SQLException e) {
-
+            logger.error("Error with batch insertion of gold standards.." + e.getMessage());
         }
+    }
+
+    public static void saveResiduals() {
+        try {
+            if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
+                insertPrepstmnt.executeBatch();
+                logger.info("FLUSHED TO DB...");
+            }
+        } catch (SQLException e) {            
+        }
+    }
+
+    public static List<String> fetchWikiTitles(String arg) {
+        ResultSet rs = null;
+        List<String> results = null;
+
+        try {
+            pstmt.setString(1, arg);
+            pstmt.setInt(2, Constants.ATLEAST_LINKS);
+            pstmt.setInt(3, Constants.TOP_ANCHORS);
+            // run the query finally
+            rs = pstmt.executeQuery();
+            results = new ArrayList<String>();
+
+            while (rs.next()) {
+                results.add(rs.getString(1));
+            }
+
+        } catch (Exception e) {
+            logger.error(" exception while fetching " + arg + " " + e.getMessage());
+        }
+
+        return results;
+    }
+
+    public static void shutDown() {
+
+        if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (Exception excp) {
+            }
+        }
+
+        if (insertPrepstmnt != null) {
+            try {
+                insertPrepstmnt.close();
+            } catch (Exception excp) {
+            }
+        }
+
+        if (fetchCountsPrepstmnt != null) {
+            try {
+                fetchCountsPrepstmnt.close();
+            } catch (Exception excp) {
+            }
+        }
+        dbConnection.shutDown();
 
     }
 

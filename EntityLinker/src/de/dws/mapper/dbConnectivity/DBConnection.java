@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package de.dws.mapper.dbConnectivity;
 
 import java.sql.Connection;
@@ -94,7 +95,8 @@ public class DBConnection
 
     public Connection initDB() throws SQLException
     {
-        this.connection = DriverManager.getConnection(connectionURL + dbName, dbUser, dbUserPassword);
+        this.connection = DriverManager.getConnection(connectionURL + dbName, dbUser,
+                dbUserPassword);
 
         if (this.connection != null) {
             return getConnection();
@@ -144,8 +146,10 @@ public class DBConnection
     {
 
         try {
-            this.statement.close();
-            this.connection.close();
+            if (this.statement != null)
+                this.statement.close();
+            if (this.connection != null)
+                this.connection.close();
 
         } catch (SQLException e) {
             logger.error("DB Closing failed...");

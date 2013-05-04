@@ -126,7 +126,8 @@ public class BaseLine {
 
         // updateStatsCounter(subjSurfaceForms, objSurfaceForms);
 
-        nellTriples = NELLQueryEngine.doSearch(null,subjTitle, objTitle);
+        nellTriples = NELLQueryEngine.doSearch(Constants.DBPEDIA_INFO_INDEX_DIR, subjTitle,
+                objTitle);
 
         for (FreeFormFactDao nellTriple : nellTriples) {
             // save to DB all the values
