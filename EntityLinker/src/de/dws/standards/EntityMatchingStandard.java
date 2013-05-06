@@ -8,7 +8,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
@@ -33,6 +35,8 @@ public class EntityMatchingStandard {
     private static long timer = 0;
 
     static List<FreeFormFactDao> nellTriples = null;
+
+    static Map<String, List<String>> inMemorySurfForms = new HashMap<String, List<String>>();
 
     /**
      * @param args
@@ -70,6 +74,12 @@ public class EntityMatchingStandard {
 
         String[] arr = null;
 
+        // initiate timer
+        Timer timerObj = new Timer();
+
+        // initiate Lucene searcher
+        NELLQueryEngine searcher = new NELLQueryEngine(Constants.NELL_ENT_INDEX_DIR);
+
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
         if (tupleReader != null) {
@@ -87,27 +97,34 @@ public class EntityMatchingStandard {
 
                     // use this high quality ground fact to generate possible
                     // facts
-                    processTriple(stripHeaders(arr[0]),
+                    processTriple(searcher, stripHeaders(arr[0]),
                             stripHeaders(arr[1]), stripHeaders(arr[2]));
+
+                    // timer = timer + timerObj.tick("TO PROCESS " + cntr +
+                    // " INSTANCES");
+
+                    if ((cntr % 100) == 0)
+                        timer = timer + timerObj.tick();
 
                     cntr++;
                     double perc = ((double) cntr / (double) dataSize) * 100;
                     if (perc % 10 == 0)
                         logger.info(perc + " % completed in " + ((double) timer / (double) 1000)
                                 + " secds");
+
                 }
                 if (cntr == dataSize) // check point
                     break;
 
             } // end of while
 
+            // write to DB residual tuples
             DBWrapper.saveResiduals();
+
             // shutdown DB
             DBWrapper.shutDown();
 
-            // logger.info("\n Extraction performed in  .." + timer +
-            // " millisecds");
-
+            inMemorySurfForms.clear();
         }
     }
 
@@ -139,36 +156,29 @@ public class EntityMatchingStandard {
      * @throws InterruptedException
      * @throws IOException
      */
-    private static void processTriple(String arg1, String rel, String arg2)
+    private static void processTriple(NELLQueryEngine searcher, String arg1, String rel, String arg2)
             throws InterruptedException, ExecutionException, IOException {
 
-        long t0 = 0;
-        long tn = 0;
+        List<String> subjSurfaceForms = null;
+        List<String> objSurfaceForms = null;
 
-        // start time
-        t0 = System.currentTimeMillis();
+        if (inMemorySurfForms.containsKey(arg1)) {
+            subjSurfaceForms = inMemorySurfForms.get(arg1);
+        } else {
+            subjSurfaceForms = DBWrapper.fetchSurfaceForms(arg1);
+            inMemorySurfForms.put(arg1, subjSurfaceForms);
+        }
 
-        List<String> subjSurfaceForms = DBWrapper.fetchSurfaceForms(arg1);
-        List<String> objSurfaceForms = DBWrapper.fetchSurfaceForms(arg2);
+        if (inMemorySurfForms.containsKey(arg2)) {
+            objSurfaceForms = inMemorySurfForms.get(arg2);
+        } else {
+            objSurfaceForms = DBWrapper.fetchSurfaceForms(arg2);
+            inMemorySurfForms.put(arg2, objSurfaceForms);
+        }
 
         logger.debug(arg1 + ", " + rel + ", " + arg2);
 
-        // subjSurfaceForms = enhanceSurfaceForms(arg1, subjSurfaceForms);
-        // objSurfaceForms = enhanceSurfaceForms(arg2, objSurfaceForms);
-
-        /*
-         * if (arg2.equals("Tad_Lincoln")) { logger.info(arg1 + " => " +
-         * subjSurfaceForms); logger.info(arg2 + " => " + objSurfaceForms); }
-         */
-
-        findNELLMatchingTriples(arg1, rel, arg2, subjSurfaceForms, objSurfaceForms);
-
-        // end time
-        tn = System.currentTimeMillis();
-
-        // update global timer
-        timer = timer + (tn - t0);
-
+        findNELLMatchingTriples(searcher, arg1, rel, arg2, subjSurfaceForms, objSurfaceForms);
     }
 
     /**
@@ -178,19 +188,16 @@ public class EntityMatchingStandard {
      * @param objSurfaceForms list of object surface forms
      * @throws IOException
      */
-    private static void findNELLMatchingTriples(String arg1, String rel, String arg2,
+    private static void findNELLMatchingTriples(NELLQueryEngine searcher,
+            String arg1, String rel, String arg2,
             List<String> subjSurfaceForms,
             List<String> objSurfaceForms) throws IOException {
 
-        List<FreeFormFactDao> nellTriples = null;
-
-        // updateStatsCounter(subjSurfaceForms, objSurfaceForms);
-
         for (String subj : subjSurfaceForms) {
+            String subj1 = subj.replaceAll(" ", "_");
             for (String obj : objSurfaceForms) {
-                nellTriples = NELLQueryEngine.doSearch(Constants.NELL_ENT_INDEX_DIR,
-                        subj.replaceAll(" ", "_"), obj.replaceAll(" ", "_"));
-
+                String obj1 = obj.replaceAll(" ", "_");
+                nellTriples = searcher.doSearch(subj1, obj1);
                 for (FreeFormFactDao nellTriple : nellTriples) {
                     // save to DB all the values
                     // send the surface form or make the link counter case
@@ -200,22 +207,6 @@ public class EntityMatchingStandard {
             }
         }
 
-    }
-
-    // for a given page title, the substrings of the title are also valid
-    // surface forms,
-    // e.g. for tom cruise page, tom and cruise are valid forms
-    private static List<String> enhanceSurfaceForms(String arg, List<String> forms) {
-        String[] arr = arg.split("_");
-        // doing just for two words
-        if (arr.length == 2) {
-            if (!forms.contains(arr[0]))
-                forms.add(arr[0]);
-
-            if (!forms.contains(arr[1]))
-                forms.add(arr[1]);
-        }
-        return forms;
     }
 
     /**

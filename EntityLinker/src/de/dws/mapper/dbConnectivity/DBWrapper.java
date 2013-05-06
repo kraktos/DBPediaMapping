@@ -151,7 +151,6 @@ public class DBWrapper {
         }
 
         return results;
-
     }
 
     public static List<SurfaceFormDao> fetchSurfaceFormsUri(String arg) {

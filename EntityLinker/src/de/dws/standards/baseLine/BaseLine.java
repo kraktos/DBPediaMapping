@@ -5,7 +5,6 @@
 package de.dws.standards.baseLine;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +17,6 @@ import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.mapper.helper.util.Constants;
 import de.dws.mapper.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
-import de.dws.standards.EntityMatchingStandard;
 import de.dws.standards.NELLQueryEngine;
 
 /**
@@ -34,12 +32,7 @@ public class BaseLine {
     // define Logger
     static Logger logger = Logger.getLogger(BaseLine.class.getName());
 
-    // global timer
-    private static long timer = 0;
-
-    // global counter
-    private static long cntr = 0;
-
+    
     /**
      * @param args
      * @throws NumberFormatException
@@ -67,6 +60,9 @@ public class BaseLine {
 
         String[] arr = null;
 
+        // initiate Lucene searcher
+        NELLQueryEngine searcher = new NELLQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR);
+
         // create a file reader stream
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
@@ -80,11 +76,7 @@ public class BaseLine {
             while ((tripleFromIE = tupleReader.readLine()) != null) {
                 arr = tripleFromIE.split(Constants.NELL_IE_DELIMIT);
 
-                processTriple(arr[0], arr[1], arr[2]);
-
-                cntr++;
-                // if (cntr == dataSize) // check point
-                // break;
+                processTriple(searcher, arr[0], arr[1], arr[2]);
 
             }
 
@@ -97,14 +89,8 @@ public class BaseLine {
 
     }
 
-    private static void processTriple(String arg1, String rel, String arg2)
+    private static void processTriple(NELLQueryEngine searcher, String arg1, String rel, String arg2)
             throws InterruptedException, ExecutionException, IOException {
-
-        long t0 = 0;
-        long tn = 0;
-
-        // start time
-        t0 = System.currentTimeMillis();
 
         List<String> subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
                 " "));
@@ -118,22 +104,18 @@ public class BaseLine {
 
         // fetch DBPedia Infobox instances. Take the top candidate
         if (subjTitle.size() > 0 && objTitle.size() > 0)
-            findDBPediaMatchingTriples(arg1, rel, arg2, subjTitle.get(0), objTitle.get(0));
+            findDBPediaMatchingTriples(searcher, arg1, rel, arg2, subjTitle.get(0), objTitle.get(0));
 
-        // end time
-        tn = System.currentTimeMillis();
-
-        // update global timer
-        timer = timer + (tn - t0);
     }
 
-    private static void findDBPediaMatchingTriples(String arg1, String rel, String arg2,
+    private static void findDBPediaMatchingTriples(NELLQueryEngine searcher, String arg1,
+            String rel, String arg2,
             String subjTitle,
             String objTitle) throws IOException {
 
         List<FreeFormFactDao> dbPediaTriples = null;
 
-        dbPediaTriples = NELLQueryEngine.doSearch(Constants.DBPEDIA_INFO_INDEX_DIR, subjTitle,
+        dbPediaTriples = searcher.doSearch(subjTitle,
                 objTitle);
 
         for (FreeFormFactDao dbPediaTriple : dbPediaTriples) {

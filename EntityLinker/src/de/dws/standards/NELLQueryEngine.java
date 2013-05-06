@@ -58,29 +58,39 @@ import de.dws.nlp.dao.FreeFormFactDao;
 public class NELLQueryEngine
 {
 
-    // The top k best matching results,
-    private static int TOP_K = Constants.TOPK;
-
-    // Default Constructor
-    public NELLQueryEngine()
-    {
-
-    }
-
-    // setter for Top K parameter
-    public static void setTopK(int topK)
-    {
-        TOP_K = topK;
-    }
-
     // logger
     public static Logger logger = Logger.getLogger(NELLQueryEngine.class.getName());
+
+    /**
+     * searcher instance
+     */
+    private final IndexSearcher searcher;
 
     // DB connection instance, one per servlet
     static Connection connection = null;
 
     // prepared statement instance
     static PreparedStatement pstmt = null;
+
+    // Default Constructor
+    public NELLQueryEngine(String indexLocation)
+    {
+        try
+        {
+            // create File object of our index directory
+            File file = new File(indexLocation);// Constants.DBPEDIA_INFO_INDEX_DIR);
+
+            IndexReader reader =
+                    // create index reader object
+                    DirectoryReader.open(FSDirectory.open(file));
+
+            // create index searcher object
+            searcher = new IndexSearcher(reader);
+        } catch (IOException ioe)
+        {
+            throw new RuntimeException("Cannot init: " + ioe);
+        }
+    }
 
     /**
      * method accepts a user query and fetches over the indexed DBPedia data
@@ -92,42 +102,11 @@ public class NELLQueryEngine
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public static List<FreeFormFactDao> doSearch(String indexLocation, String subQuery,
-            String objQuery)
-            throws IOException
+    public List<FreeFormFactDao> doSearch(String subQuery, String objQuery) throws IOException
     {
-
-        // create File object of our index directory
-        File file = new File(indexLocation);// Constants.DBPEDIA_INFO_INDEX_DIR);
-
-        IndexReader reader = null;
-        IndexSearcher searcher = null;
-
-        Set<String> setURI = new HashSet<String>();
-        List<ResultDAO> returnList = new ArrayList<ResultDAO>();
-        // allows for natural ordering on the ascending value of key
-        Map<Integer, List<ResultDAO>> resultMap = new TreeMap<Integer, List<ResultDAO>>();
-
-        long start = 0;
-
         TopDocs hits = null;
 
         try {
-
-            // start timer
-            start = Utilities.startTimer();
-
-            // create index reader object
-            // reader = IndexReader.open(FSDirectory.open(file));
-            reader = DirectoryReader.open(FSDirectory.open(file));
-
-            // create index searcher object
-            searcher = new IndexSearcher(reader);
-
-            // remove any un-necessary punctuation marks from the query
-            // userQuery =
-            // Pattern.compile("['_\\s]").matcher(userQuery).replaceAll("");
-
             // frame a query on the surname field
             BooleanQuery query = frameQuery(subQuery, objQuery);
 
@@ -137,11 +116,7 @@ public class NELLQueryEngine
             return iterateResult(searcher, hits, subQuery);
 
         } catch (Exception ex) {
-            logger.info("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
-        } finally {
-            setURI.clear();
-            setURI = null;
-            Utilities.endTimer(start, "QUERY \"" + subQuery + "\" ANSWERED IN ");
+            logger.error("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
         }
         return null;
     }
@@ -186,6 +161,7 @@ public class NELLQueryEngine
 
         double score;
         String[] elems = null;
+
         // iterate over the results fetched after index search
         for (ScoreDoc scoredoc : hits.scoreDocs) {
             // Retrieve the matched document and show relevant details
@@ -197,11 +173,10 @@ public class NELLQueryEngine
             score = scoredoc.score / hits.getMaxScore();
 
             logger.debug(subject + "  " + predicate + "  " + object + " " + score);
-            logger.info(triple);
-            
+            logger.debug(triple);
+
             elems = triple.split(Constants.NELL_IE_DELIMIT);
-            
-            
+
             triplesList.add(new FreeFormFactDao(elems[0], elems[1], elems[2]));
         }
         return triplesList;
@@ -216,9 +191,9 @@ public class NELLQueryEngine
             DBPediaIndexBuilder.indexer();
         }
 
-        //ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
-        //doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
-        doSearch(Constants.NELL_ENT_INDEX_DIR, "tom cruise", "a few good men");
+        // ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
+        // doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
+        new NELLQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("tom cruise", "a few good men");
     }
 
 }
