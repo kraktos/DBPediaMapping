@@ -223,6 +223,11 @@ public class Utilities
         return s;
     }
 
+    public static String cleanse(String arg) {
+        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());
+        return arg.toLowerCase();
+    }
+
     
 
 }

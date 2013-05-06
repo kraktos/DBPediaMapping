@@ -188,10 +188,13 @@ public class EntityMatchingStandard {
 
         for (String subj : subjSurfaceForms) {
             for (String obj : objSurfaceForms) {
-                nellTriples = NELLQueryEngine.doSearch(Constants.NELL_ENT_INDEX_DIR, subj, obj);
+                nellTriples = NELLQueryEngine.doSearch(Constants.NELL_ENT_INDEX_DIR,
+                        subj.replaceAll(" ", "_"), obj.replaceAll(" ", "_"));
 
                 for (FreeFormFactDao nellTriple : nellTriples) {
                     // save to DB all the values
+                    // send the surface form or make the link counter case
+                    // insensitive
                     DBWrapper.saveGoldStandard(nellTriple, arg1, rel, arg2);
                 }
             }

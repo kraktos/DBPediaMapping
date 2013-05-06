@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import de.dws.mapper.helper.util.Constants;
+import de.dws.mapper.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
 import de.dws.nlp.dao.SurfaceFormDao;
 
@@ -40,6 +41,8 @@ public class DBWrapper {
 
     static PreparedStatement insertPrepstmnt = null;
 
+    static PreparedStatement insertBaseLine = null;
+
     static PreparedStatement fetchCountsPrepstmnt = null;
 
     static int batchCounter = 0;
@@ -62,6 +65,8 @@ public class DBWrapper {
             pstmt = connection.prepareStatement(sql);
 
             insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
+
+            insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE);
 
             fetchCountsPrepstmnt = connection.prepareStatement(Constants.GET_LINK_COUNT);
 
@@ -192,6 +197,46 @@ public class DBWrapper {
 
     }
 
+    public static void saveBaseLine(String nellArg1, String nellRel, String nellArg2,
+            FreeFormFactDao dbPediaTriple) {
+        ResultSet rs = null;
+
+        try {
+
+            logger.debug("[" + dbPediaTriple.getSurfaceSubj() + ", "
+                    + dbPediaTriple.getRelationship()
+                    + ", "
+                    + dbPediaTriple.getSurfaceObj() + "]  =>  [" + nellArg1 + ", " + nellRel + ", "
+                    + nellArg2
+                    + "] ");
+
+            insertBaseLine.setString(1, nellArg1);
+            insertBaseLine.setString(2, nellRel);
+            insertBaseLine.setString(3, nellArg2);
+            insertBaseLine.setString(4, dbPediaTriple.getSurfaceSubj());
+            insertBaseLine.setString(5, dbPediaTriple.getRelationship());
+            insertBaseLine.setString(6, dbPediaTriple.getSurfaceObj());
+
+            // insertPrepstmnt.executeUpdate();
+            insertBaseLine.addBatch();
+
+            batchCounter++;
+            // logger.info(batchCounter % Constants.BATCH_SIZE);
+            if (batchCounter % Constants.BATCH_SIZE == 0) { // batches of 100
+                                                            // are flushed at
+                                                            // a time
+                // execute batch update
+                insertBaseLine.executeBatch();
+
+                logger.info("FLUSHED TO baseLine...");
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error with batch insertion of base lines .." + e.getMessage());
+        }
+
+    }
+
     public static void saveGoldStandard(FreeFormFactDao nellTriple, String arg1, String rel,
             String arg2) {
 
@@ -203,7 +248,7 @@ public class DBWrapper {
         try {
 
             fetchCountsPrepstmnt.setString(1, arg1);
-            fetchCountsPrepstmnt.setString(2, nellTriple.getSurfaceSubj());
+            fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceSubj()));
 
             // run the query finally
             rs = fetchCountsPrepstmnt.executeQuery();
@@ -213,7 +258,7 @@ public class DBWrapper {
             }
 
             fetchCountsPrepstmnt.setString(1, arg2);
-            fetchCountsPrepstmnt.setString(2, nellTriple.getSurfaceObj());
+            fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceObj()));
 
             // run the query finally
             rs = fetchCountsPrepstmnt.executeQuery();
@@ -239,14 +284,14 @@ public class DBWrapper {
             // insertPrepstmnt.executeUpdate();
             insertPrepstmnt.addBatch();
             batchCounter++;
-            //logger.info(batchCounter % Constants.BATCH_SIZE);
+            // logger.info(batchCounter % Constants.BATCH_SIZE);
             if (batchCounter % Constants.BATCH_SIZE == 0) { // batches of 100
                                                             // are flushed at
                                                             // a time
                 // execute batch update
                 insertPrepstmnt.executeBatch();
 
-                logger.info("FLUSHED TO DB...");
+                logger.info("FLUSHED TO goldStandrd ..");
             }
 
         } catch (SQLException e) {
@@ -254,13 +299,23 @@ public class DBWrapper {
         }
     }
 
+    public static void saveResidualBaseLine() {
+        try {
+            if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
+                pstmt.executeBatch();
+                logger.info("FLUSHED TO baseLine DB...");
+            }
+        } catch (SQLException e) {
+        }
+    }
+
     public static void saveResiduals() {
         try {
             if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
                 insertPrepstmnt.executeBatch();
-                logger.info("FLUSHED TO DB...");
+                logger.info("FLUSHED TO goldStandard DB...");
             }
-        } catch (SQLException e) {            
+        } catch (SQLException e) {
         }
     }
 
@@ -270,8 +325,8 @@ public class DBWrapper {
 
         try {
             pstmt.setString(1, arg);
-            pstmt.setInt(2, Constants.ATLEAST_LINKS);
-            pstmt.setInt(3, Constants.TOP_ANCHORS);
+            //pstmt.setInt(2, Constants.ATLEAST_LINKS);
+            pstmt.setInt(2, Constants.TOP_ANCHORS);
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();

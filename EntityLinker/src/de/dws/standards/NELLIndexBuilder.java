@@ -182,7 +182,8 @@ public class NELLIndexBuilder
                     while ((strLine = br.readLine()) != null) {
 
                         if (!strLine.startsWith("#")) {
-                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) { // NELL TRIPLES
+                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) { // NELL
+                                                                                   // TRIPLES
                                 // break comma separated line using ","
                                 array = strLine.split(Constants.NELL_IE_DELIMIT);
                                 // add the label, store it for display purpose
@@ -193,33 +194,22 @@ public class NELLIndexBuilder
                                 object = (array[2] != null) ? array[2] : "";
 
                                 // store the subject field
-                                subjField = new StringField("subjField", cleanse(subject.trim()),
+                                subjField = new StringField("subjField", Utilities.cleanse(subject
+                                        .trim()),
                                         Field.Store.NO);
 
                                 // store the subject field
                                 predField = new StringField("predField",
-                                        cleanse(predicate.trim()),
+                                        Utilities.cleanse(predicate.trim()),
                                         Field.Store.NO);
 
                                 // store the subject field
-                                objField = new StringField("objField", cleanse(object.trim()),
+                                objField = new StringField("objField", Utilities.cleanse(object
+                                        .trim()),
                                         Field.Store.NO);
 
-                                tripleField = new StringField("tripleField", strLine,
-                                        Field.Store.YES);
-                                
-                                // add to document
-                                document = new Document();
-                                document.add(subjField);
-                                document.add(predField);
-                                document.add(objField);
-                                document.add(tripleField);
-
-                                // add the document finally into the
-                                // writer
-                                writer.addDocument(document);
-
-                            } else if (strLine.indexOf(Constants.DBPEDIA_HEADER) != -1) { // DBPedia TRIPLES
+                            } else if (strLine.indexOf(Constants.DBPEDIA_HEADER) != -1) { // DBPedia
+                                                                                          // TRIPLES
 
                                 // break comma separated line using ","
                                 array = strLine.split("\\s");
@@ -227,14 +217,8 @@ public class NELLIndexBuilder
                                 boolean flag = checkIfValidTriple(array[0], array[1], array[2]);
                                 if (flag) {
 
-                                    // add the label, store it for display
-                                    // purpose
                                     subject = (array[0] != null) ? stripHeaders(array[0]) : "";
-                                    // add the label, store it for display
-                                    // purpose
                                     predicate = (array[1] != null) ? stripHeaders(array[1]) : "";
-                                    // add the label, store it for display
-                                    // purpose
                                     object = (array[2] != null) ? stripHeaders(array[2]) : "";
 
                                     logger.info(subject + ", " + predicate + ", " + object);
@@ -242,29 +226,35 @@ public class NELLIndexBuilder
                                     // store the subject field
                                     subjField = new StringField("subjField", subject.trim()
                                             .toLowerCase(),
-                                            Field.Store.YES);
+                                            Field.Store.NO);
 
                                     // store the subject field
                                     predField = new StringField("predField",
                                             predicate.trim().toLowerCase(),
-                                            Field.Store.YES);
+                                            Field.Store.NO);
 
                                     // store the subject field
                                     objField = new StringField("objField", object.trim()
                                             .toLowerCase(),
-                                            Field.Store.YES);
+                                            Field.Store.NO);
 
-                                    // add to document
-                                    document = new Document();
-                                    document.add(subjField);
-                                    document.add(predField);
-                                    document.add(objField);
-
-                                    // add the document finally into the
-                                    // writer
-                                    writer.addDocument(document);
                                 }
                             }
+
+                            // store the entire triple as a string
+                            tripleField = new StringField("tripleField", replaceTags(strLine),
+                                    Field.Store.YES);
+
+                            // add to document
+                            document = new Document();
+                            document.add(subjField);
+                            document.add(predField);
+                            document.add(objField);
+                            document.add(tripleField);
+
+                            // add the document finally into the
+                            // writer
+                            writer.addDocument(document);
 
                         }
                     }
@@ -280,9 +270,11 @@ public class NELLIndexBuilder
         }
     }
 
-    private static String cleanse(String arg) {
-        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());
-        return arg.toLowerCase();
+    private static String replaceTags(String arg) {
+        arg = arg.replace(">", "");
+        arg = arg.replace("<", "");
+        arg = arg.replace(" ", ",");
+        return arg;
     }
 
     private static boolean checkIfValidTriple(String arg1, String rel, String arg2) {

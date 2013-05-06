@@ -200,6 +200,9 @@ public class Constants
     public static final String INSERT_GOLD_STANDARD =
             "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ, SUB_LINK_CNT, OBJ_LINK_CNT ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+    public static final String INSERT_BASE_LINE =
+            "INSERT INTO baseLine (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
+    
     public static final String INSERT_AXIOM_SQL = "INSERT INTO axioms (E_ENTITY, CANDIDATE, APRIORI, APOSTERIORI) VALUES (?, ?, ?, ?)";
 
     public static final String UPDATE_AXIOM_SQL = "UPDATE axioms SET APOSTERIORI=? WHERE  E_ENTITY=? AND CANDIDATE=?";
@@ -212,7 +215,7 @@ public class Constants
     /**
      * given a surface form, fetch top titles it refers to
      */
-    public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title having cnt > ? order by cnt desc limit ?";
+    public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
 
     public static final String INSERT_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
@@ -222,7 +225,7 @@ public class Constants
     /**
      * defines the batch size for the Data base operations
      */
-    public static final int BATCH_SIZE = 100;
+    public static final int BATCH_SIZE = 10;
 
     // *****************OWL
     // PARAMETES***************************************************
@@ -321,7 +324,7 @@ public class Constants
 
     // anchors with atleast these many occurrence in wikipedia pointing to the
     // page
-    public static final int ATLEAST_LINKS = 2;
+    public static final int ATLEAST_LINKS = 5;
 
     // take sentences with atmost these many words between them
     public static final int WORD_GAP = 5;

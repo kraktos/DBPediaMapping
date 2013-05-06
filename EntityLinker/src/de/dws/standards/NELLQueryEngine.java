@@ -177,7 +177,7 @@ public class NELLQueryEngine
             throws IOException
     {
 
-        List<FreeFormFactDao> nellTriplesList = new ArrayList<FreeFormFactDao>();
+        List<FreeFormFactDao> triplesList = new ArrayList<FreeFormFactDao>();
 
         String subject = null;
         String predicate = null;
@@ -191,21 +191,20 @@ public class NELLQueryEngine
             // Retrieve the matched document and show relevant details
             Document doc = searcher.doc(scoredoc.doc);
 
-            /*
-             * subject = doc.get("subjField"); predicate = doc.get("predField");
-             * object = doc.get("objField");
-             */
+            // retrieve the triple as a whole
             triple = doc.get("tripleField");
 
             score = scoredoc.score / hits.getMaxScore();
 
             logger.debug(subject + "  " + predicate + "  " + object + " " + score);
-            logger.debug(triple);
+            logger.info(triple);
+            
             elems = triple.split(Constants.NELL_IE_DELIMIT);
-            nellTriplesList.add(new FreeFormFactDao(elems[0], elems[1], elems[2]));
-
+            
+            
+            triplesList.add(new FreeFormFactDao(elems[0], elems[1], elems[2]));
         }
-        return nellTriplesList;
+        return triplesList;
     }
 
     // stand alone test point
@@ -218,7 +217,8 @@ public class NELLQueryEngine
         }
 
         //ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
-        doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
+        //doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
+        doSearch(Constants.NELL_ENT_INDEX_DIR, "tom cruise", "a few good men");
     }
 
 }

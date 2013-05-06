@@ -16,6 +16,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.mapper.helper.util.Constants;
+import de.dws.mapper.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
 import de.dws.standards.EntityMatchingStandard;
 import de.dws.standards.NELLQueryEngine;
@@ -79,14 +80,19 @@ public class BaseLine {
             while ((tripleFromIE = tupleReader.readLine()) != null) {
                 arr = tripleFromIE.split(Constants.NELL_IE_DELIMIT);
 
-                processTriple((arr[0]),
-                        (arr[1]), (arr[2]));
+                processTriple(arr[0], arr[1], arr[2]);
 
                 cntr++;
                 // if (cntr == dataSize) // check point
                 // break;
 
             }
+
+            // save resudual tuples
+            DBWrapper.saveResidualBaseLine();
+            // shutdown DB
+            DBWrapper.shutDown();
+
         }
 
     }
@@ -100,16 +106,19 @@ public class BaseLine {
         // start time
         t0 = System.currentTimeMillis();
 
-        List<String> subjTitle = DBWrapper.fetchWikiTitles(arg1);
-        List<String> objTitle = DBWrapper.fetchWikiTitles(arg2);
+        List<String> subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
+                " "));
+        List<String> objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg2).replaceAll("_",
+                " "));
 
-        logger.debug(arg1 + ", " + rel + ", " + arg2);
+        logger.info(arg1 + ", " + rel + ", " + arg2);
 
-        logger.info(arg1 + " => " + subjTitle);
-        logger.info(arg2 + " => " + objTitle);
+        logger.debug(arg1 + " => " + subjTitle);
+        logger.debug(arg2 + " => " + objTitle);
 
         // fetch DBPedia Infobox instances. Take the top candidate
-        findDBPediaMatchingTriples(arg1, rel, arg2, subjTitle.get(0), objTitle.get(0));
+        if (subjTitle.size() > 0 && objTitle.size() > 0)
+            findDBPediaMatchingTriples(arg1, rel, arg2, subjTitle.get(0), objTitle.get(0));
 
         // end time
         tn = System.currentTimeMillis();
@@ -122,19 +131,14 @@ public class BaseLine {
             String subjTitle,
             String objTitle) throws IOException {
 
-        List<FreeFormFactDao> nellTriples = null;
+        List<FreeFormFactDao> dbPediaTriples = null;
 
-        // updateStatsCounter(subjSurfaceForms, objSurfaceForms);
-
-        nellTriples = NELLQueryEngine.doSearch(Constants.DBPEDIA_INFO_INDEX_DIR, subjTitle,
+        dbPediaTriples = NELLQueryEngine.doSearch(Constants.DBPEDIA_INFO_INDEX_DIR, subjTitle,
                 objTitle);
 
-        for (FreeFormFactDao nellTriple : nellTriples) {
+        for (FreeFormFactDao dbPediaTriple : dbPediaTriples) {
             // save to DB all the values
-
-            DBWrapper.saveGoldStandard(nellTriple, arg1, rel, arg2);
-            // map.put(nellTriple, new FreeFormFactDao("DBP:"+arg1,
-            // "DBP:"+rel, "DBP:"+arg2));
+            DBWrapper.saveBaseLine(arg1, rel, arg2, dbPediaTriple);
         }
     }
 
