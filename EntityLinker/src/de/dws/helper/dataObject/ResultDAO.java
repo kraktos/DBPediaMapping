@@ -2,7 +2,7 @@
  * 
  */
 
-package de.dws.mapper.helper.dataObject;
+package de.dws.helper.dataObject;
 
 import java.util.Comparator;
 

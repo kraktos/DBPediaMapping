@@ -8,17 +8,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -30,23 +27,14 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
-import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl;
-
+import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBWrapper;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.Utilities;
-import de.dws.reasoner.axioms.Axiom;
-import de.dws.reasoner.axioms.AxiomCreator;
-import de.elog.Application;
 
 /**
  * This class reads the owl file generated after reasoning to find the all

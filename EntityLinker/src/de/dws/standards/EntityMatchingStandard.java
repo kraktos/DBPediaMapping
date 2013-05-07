@@ -17,7 +17,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import de.dws.mapper.dbConnectivity.DBWrapper;
-import de.dws.mapper.helper.util.Constants;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.Timer;
 import de.dws.nlp.dao.FreeFormFactDao;
 
 /**
@@ -78,7 +79,7 @@ public class EntityMatchingStandard {
         Timer timerObj = new Timer();
 
         // initiate Lucene searcher
-        NELLQueryEngine searcher = new NELLQueryEngine(Constants.NELL_ENT_INDEX_DIR);
+        TripleIndexQueryEngine searcher = new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR);
 
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
@@ -156,7 +157,7 @@ public class EntityMatchingStandard {
      * @throws InterruptedException
      * @throws IOException
      */
-    private static void processTriple(NELLQueryEngine searcher, String arg1, String rel, String arg2)
+    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel, String arg2)
             throws InterruptedException, ExecutionException, IOException {
 
         List<String> subjSurfaceForms = null;
@@ -188,7 +189,7 @@ public class EntityMatchingStandard {
      * @param objSurfaceForms list of object surface forms
      * @throws IOException
      */
-    private static void findNELLMatchingTriples(NELLQueryEngine searcher,
+    private static void findNELLMatchingTriples(TripleIndexQueryEngine searcher,
             String arg1, String rel, String arg2,
             List<String> subjSurfaceForms,
             List<String> objSurfaceForms) throws IOException {

@@ -2,26 +2,12 @@
 package de.dws.standards;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -29,37 +15,26 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.store.FSDirectory;
 
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-
-import de.dws.mapper.controller.ITupleProcessor;
-import de.dws.mapper.dbConnectivity.DBConnection;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.engine.index.DBPediaIndexBuilder;
-import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.Utilities;
-import de.dws.mapper.wrapper.QueryAPIWrapper;
 import de.dws.nlp.dao.FreeFormFactDao;
 
 /**
- * This class is an API for making query over the DBPedia indices
+ * This class is an API for making query over the indices over N3 data
  * 
  * @author Arnab Dutta
  */
-public class NELLQueryEngine
+public class TripleIndexQueryEngine
 {
 
     // logger
-    public static Logger logger = Logger.getLogger(NELLQueryEngine.class.getName());
+    public static Logger logger = Logger.getLogger(TripleIndexQueryEngine.class.getName());
 
     /**
      * searcher instance
@@ -73,7 +48,7 @@ public class NELLQueryEngine
     static PreparedStatement pstmt = null;
 
     // Default Constructor
-    public NELLQueryEngine(String indexLocation)
+    public TripleIndexQueryEngine(String indexLocation)
     {
         try
         {
@@ -193,7 +168,7 @@ public class NELLQueryEngine
 
         // ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
         // doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
-        new NELLQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("tom cruise", "a few good men");
+        new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("tom cruise", "a few good men");
     }
 
 }

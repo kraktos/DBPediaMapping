@@ -32,17 +32,14 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 
+import de.dws.helper.dataObject.ResultDAO;
+import de.dws.helper.dataObject.SuggestedFactDAO;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBConnection;
 import de.dws.mapper.engine.query.QueryEngine;
 import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
-import de.dws.mapper.helper.util.Constants;
 import de.dws.mapper.knowledgeBase.UncertainKB;
-import de.dws.mapper.logic.FactSuggestion;
 import de.dws.reasoner.axioms.AxiomCreator;
-import de.dws.reasoner.inference.Inference;
-import de.elog.Application;
 
 /**
  * This class tries to parse the tuples generated from NELL IE engine and

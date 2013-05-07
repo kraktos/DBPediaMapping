@@ -13,11 +13,11 @@ import java.util.concurrent.ExecutionException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 import de.dws.mapper.dbConnectivity.DBWrapper;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
-import de.dws.standards.NELLQueryEngine;
+import de.dws.standards.TripleIndexQueryEngine;
 
 /**
  * This class is a baseline for the mapping tool. This generates a bunch of NELL
@@ -61,7 +61,7 @@ public class BaseLine {
         String[] arr = null;
 
         // initiate Lucene searcher
-        NELLQueryEngine searcher = new NELLQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR);
+        TripleIndexQueryEngine searcher = new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR);
 
         // create a file reader stream
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
@@ -89,7 +89,7 @@ public class BaseLine {
 
     }
 
-    private static void processTriple(NELLQueryEngine searcher, String arg1, String rel, String arg2)
+    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel, String arg2)
             throws InterruptedException, ExecutionException, IOException {
 
         List<String> subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
@@ -108,7 +108,7 @@ public class BaseLine {
 
     }
 
-    private static void findDBPediaMatchingTriples(NELLQueryEngine searcher, String arg1,
+    private static void findDBPediaMatchingTriples(TripleIndexQueryEngine searcher, String arg1,
             String rel, String arg2,
             String subjTitle,
             String objTitle) throws IOException {

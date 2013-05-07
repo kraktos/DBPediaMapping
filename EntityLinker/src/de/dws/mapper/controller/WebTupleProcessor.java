@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package de.dws.mapper.controller;
 
 import java.io.File;
@@ -12,9 +13,9 @@ import java.util.concurrent.ExecutorService;
 
 import org.apache.log4j.Logger;
 
+import de.dws.helper.dataObject.ResultDAO;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.engine.query.QueryEngine;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.util.Constants;
 
 /**
  * This class is responsible for processing the tuples coming from Web Interface
@@ -86,19 +87,23 @@ public class WebTupleProcessor implements ITupleProcessor
 
     /*
      * (non-Javadoc)
-     * @see com.mapper.relationMatcher.TupleProcessor#processTuples(java.lang.String)
+     * @see
+     * com.mapper.relationMatcher.TupleProcessor#processTuples(java.lang.String)
      */
-    public void processTuples(String dataFilePath) throws IOException, InterruptedException, ExecutionException
+    public void processTuples(String dataFilePath) throws IOException, InterruptedException,
+            ExecutionException
     {
 
         File file = null;
 
         logger.info(this.subject + " | " + this.predicate + " | " + this.object);
-        if (!subject.equals("Subject") && !subject.equals("") && !object.equals("Object") && !object.equals("")) {
+        if (!subject.equals("Subject") && !subject.equals("") && !object.equals("Object")
+                && !object.equals("")) {
             this.retList = QueryEngine.performSearch(this.pool, this.subject, this.object);
         }
         if (!predicate.equals("Predicate") && !predicate.equals("")) {
-            // create File object of our index directory. this is the property index directory
+            // create File object of our index directory. this is the property
+            // index directory
             file = new File(Constants.DBPEDIA_PROP_INDEX_DIR);
 
             this.retListPredLookUp = QueryEngine.doLookUpSearch(predicate);

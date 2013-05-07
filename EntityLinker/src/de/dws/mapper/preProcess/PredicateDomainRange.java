@@ -20,8 +20,8 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBConnection;
-import de.dws.mapper.helper.util.Constants;
 
 /**
  * This class generates the domain and range of a property in DBPedia. For instance, the property "/ontology/spouse" has

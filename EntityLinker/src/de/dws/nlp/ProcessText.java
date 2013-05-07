@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import uk.ac.shef.wit.simmetrics.similaritymetrics.AbstractStringMetric;
 import uk.ac.shef.wit.simmetrics.similaritymetrics.CosineSimilarity;
-import de.dws.mapper.helper.util.Constants;
+import de.dws.helper.util.Constants;
 import de.dws.nlp.dao.FreeFormFactDao;
 import de.dws.nlp.dao.SentenceDao;
 import de.dws.nlp.dao.WikiDao;

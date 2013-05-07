@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.dws.mapper.helper.dataObject;
+package de.dws.helper.dataObject;
 
 /**
  * data access object for storing the suggested fact in the form of triples

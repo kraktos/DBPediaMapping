@@ -9,12 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -26,19 +21,17 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import de.dws.mapper.dbConnectivity.DBConnection;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.FileUtil;
-import de.dws.mapper.helper.util.Utilities;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 
 /**
- * This class builds an index over the DBPedia data.
+ * This class builds an index over any dataset, having S,P,O format of data.
  * 
  * @author Arnab Dutta
  */
-public class NELLIndexBuilder
+public class TripleIndexBuilder
 {
-    public static Logger logger = Logger.getLogger(NELLIndexBuilder.class.getName());
+    public static Logger logger = Logger.getLogger(TripleIndexBuilder.class.getName());
 
     // DB connection instance, one per servlet
     static Connection connection = null;

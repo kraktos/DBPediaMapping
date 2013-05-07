@@ -8,14 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
@@ -42,12 +39,13 @@ import org.apache.lucene.store.FSDirectory;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+
+import de.dws.helper.dataObject.ResultDAO;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 import de.dws.mapper.controller.ITupleProcessor;
 import de.dws.mapper.dbConnectivity.DBConnection;
 import de.dws.mapper.engine.index.DBPediaIndexBuilder;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.Utilities;
 import de.dws.mapper.wrapper.QueryAPIWrapper;
 
 /**
@@ -403,7 +401,7 @@ public class QueryEngine
 
                 logger.debug(" ratio for " + userQuery + " " + StringUtils
                         .getLevenshteinDistance(userQuery, uriTextField) + "  " + Math
-                        .max(userQuery.length(), uriTextField.length()) + "  " + (1-ratio));
+                        .max(userQuery.length(), uriTextField.length()) + "  " + (1 - ratio));
 
                 // Add to the result map, check for existing key, add or update
                 // the values accordingly
@@ -575,7 +573,7 @@ public class QueryEngine
 
         File f = new File(Constants.OWL_INPUT_FILE_PATH);
         System.out.println(f.getName());
-        
+
         // flag to determine if u need to recompute the indices
         if (Constants.INDEX_AGAIN) {
             DBPediaIndexBuilder.indexer();

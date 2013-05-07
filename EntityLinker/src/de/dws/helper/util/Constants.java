@@ -2,7 +2,7 @@
  * 
  */
 
-package de.dws.mapper.helper.util;
+package de.dws.helper.util;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

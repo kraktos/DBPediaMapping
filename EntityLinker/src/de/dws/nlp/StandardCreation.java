@@ -11,12 +11,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBWrapper;
-import de.dws.mapper.helper.util.Constants;
 import de.dws.nlp.dao.SentenceDao;
 import de.dws.nlp.dao.WikiDao;
 

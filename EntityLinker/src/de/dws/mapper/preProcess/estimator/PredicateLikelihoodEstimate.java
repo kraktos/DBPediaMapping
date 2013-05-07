@@ -27,10 +27,10 @@ import org.apache.log4j.Logger;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import de.dws.helper.dataObject.SuggestedFactDAO;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBConnection;
 import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
-import de.dws.mapper.helper.util.Constants;
 
 /**
  * This class is responsible for taking a predicate as input and fetching its

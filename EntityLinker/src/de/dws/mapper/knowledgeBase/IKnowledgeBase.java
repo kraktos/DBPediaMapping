@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
+import de.dws.helper.dataObject.SuggestedFactDAO;
 
 /**
  * This class provides functionalities to work upon the uncertain and certain knowledge bases

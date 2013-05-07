@@ -9,8 +9,6 @@ import java.sql.Statement;
 import org.apache.log4j.Logger;
 
 import de.dws.mapper.dbConnectivity.DBConnection;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.webInterface.servlet.EntryServlet;
 
 public class RunDB
 {

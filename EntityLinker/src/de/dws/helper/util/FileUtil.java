@@ -1,5 +1,5 @@
 
-package de.dws.mapper.helper.util;
+package de.dws.helper.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-import de.dws.mapper.helper.dataObject.PredicatesDAO;
+import de.dws.helper.dataObject.PredicatesDAO;
 import de.dws.mapper.webInterface.FileHandlerSingleton;
 
 /**

@@ -8,15 +8,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.Utilities;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
 import de.dws.nlp.dao.SurfaceFormDao;
 

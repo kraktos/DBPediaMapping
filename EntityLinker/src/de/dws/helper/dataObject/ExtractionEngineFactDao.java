@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.dws.mapper.helper.dataObject;
+package de.dws.helper.dataObject;
 
 /**
  * data access object for storing the fact coming as input from extraction engine

@@ -20,10 +20,10 @@ import org.apache.log4j.Logger;
 
 import de.dws.mapper.controller.ITupleProcessor;
 import de.dws.mapper.engine.query.QueryEngine;
-import de.dws.mapper.helper.dataObject.PredicatesDAO;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.FileUtil;
+import de.dws.helper.dataObject.PredicatesDAO;
+import de.dws.helper.dataObject.ResultDAO;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.FileUtil;
 
 /**
  * @author Arnab Dutta

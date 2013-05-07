@@ -11,9 +11,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import de.dws.helper.dataObject.SuggestedFactDAO;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBConnection;
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
-import de.dws.mapper.helper.util.Constants;
 
 /**
  * This class provides functionalities to work upon the uncertain and certain

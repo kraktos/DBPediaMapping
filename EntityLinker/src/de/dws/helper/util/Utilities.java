@@ -2,7 +2,7 @@
  * 
  */
 
-package de.dws.mapper.helper.util;
+package de.dws.helper.util;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;

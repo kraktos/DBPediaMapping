@@ -37,10 +37,10 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import de.dws.mapper.dbConnectivity.DBWrapper;
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.Utilities;
+import de.dws.helper.dataObject.ResultDAO;
+import de.dws.helper.dataObject.SuggestedFactDAO;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 
 /**
  * This class serves as a point of converting a given set of facts into .owl

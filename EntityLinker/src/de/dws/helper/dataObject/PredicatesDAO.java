@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.dws.mapper.helper.dataObject;
+package de.dws.helper.dataObject;
 
 /**
  * Class to hold the possible set of predicates, determined by the system

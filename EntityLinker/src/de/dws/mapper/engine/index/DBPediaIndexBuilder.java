@@ -26,9 +26,9 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import de.dws.mapper.dbConnectivity.DBConnection;
-import de.dws.mapper.helper.util.Constants;
-import de.dws.mapper.helper.util.FileUtil;
-import de.dws.mapper.helper.util.Utilities;
+import de.dws.helper.util.Constants;
+import de.dws.helper.util.FileUtil;
+import de.dws.helper.util.Utilities;
 
 /**
  * This class builds an index over the DBPedia data.

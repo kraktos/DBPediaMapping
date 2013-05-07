@@ -6,14 +6,11 @@ package de.dws.mapper.controller;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
 
-import de.dws.mapper.engine.query.QueryEngine;
-import de.dws.mapper.helper.util.Constants;
-
+import de.dws.helper.util.Constants;
 /**
  * This class tries to parse the tuples generated from ReVerb IE engine and processes them by each tuple. See
  * {@link ITupleProcessor}

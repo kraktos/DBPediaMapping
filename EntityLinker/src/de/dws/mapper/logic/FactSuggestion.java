@@ -11,9 +11,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import de.dws.mapper.helper.dataObject.ResultDAO;
-import de.dws.mapper.helper.dataObject.SuggestedFactDAO;
-import de.dws.mapper.helper.util.Constants;
+import de.dws.helper.dataObject.ResultDAO;
+import de.dws.helper.dataObject.SuggestedFactDAO;
+import de.dws.helper.util.Constants;
 import de.dws.mapper.preProcess.estimator.PredicateLikelihoodEstimate;
 
 /**
