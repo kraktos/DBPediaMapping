@@ -35,8 +35,14 @@ public class EntityMatchingStandard {
     // global timer
     private static long timer = 0;
 
+    /**
+     * triple returned after a match occurs
+     */
     static List<FreeFormFactDao> nellTriples = null;
 
+    /**
+     * caches the surface forms
+     */
     static Map<String, List<String>> inMemorySurfForms = new HashMap<String, List<String>>();
 
     /**
@@ -157,7 +163,8 @@ public class EntityMatchingStandard {
      * @throws InterruptedException
      * @throws IOException
      */
-    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel, String arg2)
+    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel,
+            String arg2)
             throws InterruptedException, ExecutionException, IOException {
 
         List<String> subjSurfaceForms = null;

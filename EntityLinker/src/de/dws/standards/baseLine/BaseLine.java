@@ -7,13 +7,16 @@ package de.dws.standards.baseLine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import de.dws.helper.util.Constants;
+import de.dws.helper.util.Timer;
 import de.dws.helper.util.Utilities;
 import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.nlp.dao.FreeFormFactDao;
@@ -32,7 +35,14 @@ public class BaseLine {
     // define Logger
     static Logger logger = Logger.getLogger(BaseLine.class.getName());
 
-    
+    private static Map<String, String> inMemoryTitles = new HashMap<String, String>();
+
+    // global timer
+    private static long timer = 0;
+
+    // global counter
+    private static long cntr = 0;
+
     /**
      * @param args
      * @throws NumberFormatException
@@ -50,24 +60,37 @@ public class BaseLine {
             PropertyConfigurator.configure(args[2]);
 
             logger.info("Starting processing " + args[0]);
-            processFile(args[0], Integer.parseInt(args[1]));
+            processIEInputFile(args[0], Integer.parseInt(args[1]));
         }
 
     }
 
-    private static void processFile(String filePath, int dataSize) throws IOException,
+    /**
+     * process the file from IE
+     * 
+     * @param filePath
+     * @param dataSize
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    private static void processIEInputFile(String filePath, int dataSize) throws IOException,
             InterruptedException, ExecutionException {
 
         String[] arr = null;
 
         // initiate Lucene searcher
-        TripleIndexQueryEngine searcher = new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR);
+        TripleIndexQueryEngine searcher = new TripleIndexQueryEngine(
+                Constants.DBPEDIA_INFO_INDEX_DIR);
 
         // create a file reader stream
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
         // init DB
         DBWrapper.init(Constants.GET_WIKI_TITLES_SQL);
+
+        // initiate timer
+        Timer timerObj = new Timer();
 
         if (tupleReader != null) {
 
@@ -76,8 +99,20 @@ public class BaseLine {
             while ((tripleFromIE = tupleReader.readLine()) != null) {
                 arr = tripleFromIE.split(Constants.NELL_IE_DELIMIT);
 
+                // process individual triples
                 processTriple(searcher, arr[0], arr[1], arr[2]);
 
+                if (cntr % 100 == 0) {
+                    timer = timer + timerObj.tick();
+
+                    cntr++;
+                    logger.info("Processed " + cntr + " triples in " + ((double) timer / 1000)
+                            + " secds");
+                }
+
+                /*
+                 * if (cntr == dataSize) break;
+                 */
             }
 
             // save resudual tuples
@@ -89,25 +124,70 @@ public class BaseLine {
 
     }
 
-    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel, String arg2)
+    /**
+     * @param searcher
+     * @param arg1
+     * @param rel
+     * @param arg2
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws IOException
+     */
+    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel,
+            String arg2)
             throws InterruptedException, ExecutionException, IOException {
 
-        List<String> subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
-                " "));
-        List<String> objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg2).replaceAll("_",
-                " "));
+        List<String> subjTitle = null;
+        List<String> objTitle = null;
+        String subj = null;
+        String obj = null;
 
-        logger.info(arg1 + ", " + rel + ", " + arg2);
+        // retrieve from cache if available else go on to make DB query
+        if (inMemoryTitles.containsKey(arg1)) {
+            subj = inMemoryTitles.get(arg1);
+        } else {
+            subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
+                    " "));
+            if (subjTitle.size() > 0) {
+                subj = subjTitle.get(0);
+                inMemoryTitles.put(arg1, subj);
+            }
+        }
+
+        if (inMemoryTitles.containsKey(arg2)) {
+            obj = inMemoryTitles.get(arg2);
+        } else {
+            objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg2).replaceAll("_",
+                    " "));
+            if (objTitle.size() > 0) {
+                obj = objTitle.get(0);
+                inMemoryTitles.put(arg2, obj);
+            }
+        }
+
+        logger.debug(arg1 + ", " + rel + ", " + arg2);
 
         logger.debug(arg1 + " => " + subjTitle);
         logger.debug(arg2 + " => " + objTitle);
 
         // fetch DBPedia Infobox instances. Take the top candidate
-        if (subjTitle.size() > 0 && objTitle.size() > 0)
-            findDBPediaMatchingTriples(searcher, arg1, rel, arg2, subjTitle.get(0), objTitle.get(0));
+        if (subj != null && obj != null) {
+            findDBPediaMatchingTriples(searcher, arg1, rel, arg2, subj, obj);
+        }
 
     }
 
+    /**
+     * Find the matching DBPedia triples given the IE SPO input
+     * 
+     * @param searcher
+     * @param arg1
+     * @param rel
+     * @param arg2
+     * @param subjTitle
+     * @param objTitle
+     * @throws IOException
+     */
     private static void findDBPediaMatchingTriples(TripleIndexQueryEngine searcher, String arg1,
             String rel, String arg2,
             String subjTitle,
@@ -115,6 +195,7 @@ public class BaseLine {
 
         List<FreeFormFactDao> dbPediaTriples = null;
 
+        // search over Lucene indices
         dbPediaTriples = searcher.doSearch(subjTitle,
                 objTitle);
 

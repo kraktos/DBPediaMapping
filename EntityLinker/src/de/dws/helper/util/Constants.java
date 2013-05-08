@@ -57,6 +57,8 @@ public class Constants
 
     public static final String DBPEDIA_INFO_INDEX_DIR = "/home/arnab/Work/data/DBPedia/infoIndex";
     
+    public static final String REVERB_ENT_INDEX_DIR = "/home/arnab/Work/data/ReVerb/index";
+    
     /**
      * location of the directory where the indices for predicates are stored
      */

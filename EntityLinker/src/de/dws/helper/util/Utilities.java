@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-
 
 /**
  * All different kinds of utility methods are placed here
@@ -42,6 +42,9 @@ public class Utilities
 
     // pattern for allowing english text only during indexing
     static Pattern pattern = Pattern.compile(Constants.ALLOWED_ENGLISH_TEXT);
+
+    // set o fstop words
+    static final Set<String> STOP_WORDS = new HashSet<String>(Arrays.asList("a", "the", "an", "of"));
 
     /**
      * Prints a map
@@ -228,6 +231,16 @@ public class Utilities
         return arg.toLowerCase();
     }
 
-    
+    public static String removeStopWords(String originalWord) {
+        StringBuffer retVal = new StringBuffer();
+        String[] arrWords = originalWord.split(" ");
+        for (String word : arrWords) {
+            if (!STOP_WORDS.contains(word.toLowerCase())) {
+                retVal.append(word + " ");
+            }
+        }
+
+        return retVal.toString().toLowerCase().trim();
+    }
 
 }

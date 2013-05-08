@@ -9,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -246,7 +248,8 @@ public class DBWrapper {
         try {
 
             fetchCountsPrepstmnt.setString(1, arg1);
-            fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceSubj()));
+            fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceSubj())
+                    .replaceAll("_", " "));
 
             // run the query finally
             rs = fetchCountsPrepstmnt.executeQuery();
@@ -256,7 +259,8 @@ public class DBWrapper {
             }
 
             fetchCountsPrepstmnt.setString(1, arg2);
-            fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceObj()));
+            fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceObj())
+                    .replaceAll("_", " "));
 
             // run the query finally
             rs = fetchCountsPrepstmnt.executeQuery();
@@ -323,7 +327,7 @@ public class DBWrapper {
 
         try {
             pstmt.setString(1, arg);
-            //pstmt.setInt(2, Constants.ATLEAST_LINKS);
+            // pstmt.setInt(2, Constants.ATLEAST_LINKS);
             pstmt.setInt(2, Constants.TOP_ANCHORS);
             // run the query finally
             rs = pstmt.executeQuery();
@@ -363,6 +367,41 @@ public class DBWrapper {
             }
         }
         dbConnection.shutDown();
+
+    }
+
+    public static Map<String, Long> getAllNellPreds(Map<String, Long> allPreds) {
+
+        try {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                allPreds.put(rs.getString(1), rs.getLong(2));
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return allPreds;
+
+    }
+
+    public static long findPredMatches(String arg) {
+        try {
+            pstmt.setString(1, arg);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
 
     }
 

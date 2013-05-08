@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -39,12 +40,34 @@ public class TripleIndexBuilder
     // prepared statement instance
     static PreparedStatement pstmt = null;
 
+    /**
+     * identifier for the type of data set
+     * 
+     * @author Arnab Dutta
+     */
+    public enum DATA_SET {
+        DBPEDIA, NELL, REVERB;
+    }
+
     public static void main(String[] args) throws Exception {
-        if (args.length == 2) {
+
+        PropertyConfigurator
+                .configure("/home/arnab/Workspaces/SchemaMapping/EntityLinker/log4j.properties");
+
+        if (args.length != 3) {
+            logger.info("USAGE: java -jar <jar file> <path of Data file> <path of index directory> <identifier> \n"
+                    +
+                    "0: DBPedia dataset\n" +
+                    "1: NELL dataset\n" +
+                    "2: ReVerb dataset");
+
+        }
+
+        if (args.length == 3) {
             indexer(args[0],
-                    args[1]);
+                    args[1], args[2]);
         } else {
-            indexer(Constants.NELL_DATA_PATH, Constants.NELL_ENT_INDEX_DIR);
+            // indexer(Constants.NELL_DATA_PATH, Constants.NELL_ENT_INDEX_DIR);
         }
     }
 
@@ -54,9 +77,11 @@ public class TripleIndexBuilder
      * 
      * @param indexPath
      * @param dataPath
+     * @param identifier
      * @throws Exception
      */
-    public static void indexer(String dataPath, String indexPath) throws Exception
+    public static void indexer(String dataPath, String indexPath, String identifier)
+            throws Exception
     {
 
         IndexWriter writer = null;
@@ -89,7 +114,7 @@ public class TripleIndexBuilder
         long start = Utilities.startTimer();
 
         // start indexing iteratively all files at the location
-        indexDocs(writer, docDir);
+        indexDocs(writer, docDir, identifier);
 
         writer.forceMerge(1);
         writer.commit();
@@ -128,9 +153,11 @@ public class TripleIndexBuilder
      *            stored
      * @param file The file to index, or the directory to recurse into to find
      *            files to index
+     * @param identifier
      * @throws IOException
      */
-    private static void indexDocs(IndexWriter writer, File file) throws IOException
+    private static void indexDocs(IndexWriter writer, File file, String identifier)
+            throws IOException
     {
         // do not try to index files that cannot be read
         if (file.canRead()) {
@@ -139,7 +166,7 @@ public class TripleIndexBuilder
                 // an IO error could occur
                 if (files != null) {
                     for (int i = 0; i < files.length; i++) {
-                        indexDocs(writer, new File(file, files[i]));
+                        indexDocs(writer, new File(file, files[i]), identifier);
                     }
                 }
             } else {
@@ -175,7 +202,7 @@ public class TripleIndexBuilder
                     while ((strLine = br.readLine()) != null) {
 
                         if (!strLine.startsWith("#")) {
-                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) { // NELL
+                            if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) { // NELL/ReVerb
                                                                                    // TRIPLES
                                 // break comma separated line using ","
                                 array = strLine.split(Constants.NELL_IE_DELIMIT);
@@ -186,20 +213,53 @@ public class TripleIndexBuilder
                                 // add the label, store it for display purpose
                                 object = (array[2] != null) ? array[2] : "";
 
-                                // store the subject field
-                                subjField = new StringField("subjField", Utilities.cleanse(subject
-                                        .trim()),
-                                        Field.Store.NO);
+                                if (identifier.equals("1")) { // specific
+                                                              // processing
+                                                              // related to NELL
+                                    // store the subject field
+                                    subjField = new StringField("subjField",
+                                            Utilities.cleanse(subject
+                                                    .trim()),
+                                            Field.Store.NO);
+                                    // store the subject field
+                                    predField = new StringField("predField",
+                                            Utilities.cleanse(predicate.trim()),
+                                            Field.Store.NO);
+                                    // store the subject field
+                                    objField = new StringField("objField", Utilities.cleanse(object
+                                            .trim()),
+                                            Field.Store.NO);
 
-                                // store the subject field
-                                predField = new StringField("predField",
-                                        Utilities.cleanse(predicate.trim()),
-                                        Field.Store.NO);
+                                    // store the entire triple as a string
+                                    tripleField = new StringField("tripleField",
+                                            replaceTags(strLine),
+                                            Field.Store.YES);
 
-                                // store the subject field
-                                objField = new StringField("objField", Utilities.cleanse(object
-                                        .trim()),
-                                        Field.Store.NO);
+                                } else if (identifier.equals("2")) { // specific
+                                                                     // processing
+                                                                     // related
+                                                                     // to
+                                                                     // ReVerb
+
+                                    // store the subject field
+                                    subjField = new StringField("subjField",
+                                            Utilities.removeStopWords(subject
+                                                    .trim().toLowerCase()),
+                                            Field.Store.NO);
+                                    // store the subject field
+                                    predField = new StringField("predField",
+                                            predicate.trim().toLowerCase(),
+                                            Field.Store.NO);
+                                    // store the subject field
+                                    objField = new StringField("objField",
+                                            Utilities.removeStopWords(object
+                                                    .trim().toLowerCase()),
+                                            Field.Store.NO);
+
+                                    tripleField = new StringField("tripleField",
+                                            strLine,
+                                            Field.Store.YES);
+                                }
 
                             } else if (strLine.indexOf(Constants.DBPEDIA_HEADER) != -1) { // DBPedia
                                                                                           // TRIPLES
@@ -231,12 +291,13 @@ public class TripleIndexBuilder
                                             .toLowerCase(),
                                             Field.Store.NO);
 
+                                    // store the entire triple as a string
+                                    tripleField = new StringField("tripleField",
+                                            replaceTags(strLine),
+                                            Field.Store.YES);
+
                                 }
                             }
-
-                            // store the entire triple as a string
-                            tripleField = new StringField("tripleField", replaceTags(strLine),
-                                    Field.Store.YES);
 
                             // add to document
                             document = new Document();

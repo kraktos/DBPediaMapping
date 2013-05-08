@@ -41,12 +41,6 @@ public class TripleIndexQueryEngine
      */
     private final IndexSearcher searcher;
 
-    // DB connection instance, one per servlet
-    static Connection connection = null;
-
-    // prepared statement instance
-    static PreparedStatement pstmt = null;
-
     // Default Constructor
     public TripleIndexQueryEngine(String indexLocation)
     {
@@ -129,9 +123,6 @@ public class TripleIndexQueryEngine
 
         List<FreeFormFactDao> triplesList = new ArrayList<FreeFormFactDao>();
 
-        String subject = null;
-        String predicate = null;
-        String object = null;
         String triple = null;
 
         double score;
@@ -147,7 +138,6 @@ public class TripleIndexQueryEngine
 
             score = scoredoc.score / hits.getMaxScore();
 
-            logger.debug(subject + "  " + predicate + "  " + object + " " + score);
             logger.debug(triple);
 
             elems = triple.split(Constants.NELL_IE_DELIMIT);
@@ -168,7 +158,10 @@ public class TripleIndexQueryEngine
 
         // ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
         // doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
-        new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("tom cruise", "a few good men");
+        // new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch(
+        // "tom_cruise","mission_impossible");
+        new TripleIndexQueryEngine(Constants.REVERB_ENT_INDEX_DIR).doSearch("Zeppelin",
+                "dirigible");
     }
 
 }
