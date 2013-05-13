@@ -115,8 +115,9 @@ public class BaseLine {
                  */
             }
 
-            // save resudual tuples
+            // save residual tuples
             DBWrapper.saveResidualBaseLine();
+            
             // shutdown DB
             DBWrapper.shutDown();
 
@@ -174,7 +175,6 @@ public class BaseLine {
         if (subj != null && obj != null) {
             findDBPediaMatchingTriples(searcher, arg1, rel, arg2, subj, obj);
         }
-
     }
 
     /**

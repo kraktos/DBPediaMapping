@@ -51,14 +51,23 @@ public class Constants
     public static final String DBPEDIA_ENT_INDEX_DIR = "/home/arnab/Work/data/DBPedia/indexFiles";
 
     /**
-     * location of the directory where the NELL indices for entities are stored
+     * location of the directory where the NELL indices for entities are stored.
+     * Gold Standard creation
      */
     public static final String NELL_ENT_INDEX_DIR = "/home/arnab/Work/data/NELL/indexFiles";
 
+    /**
+     * location of the directory where the DBPedia SO indices for entities are
+     * stored. Baseline creation
+     */
     public static final String DBPEDIA_INFO_INDEX_DIR = "/home/arnab/Work/data/DBPedia/infoIndex";
-    
+
+    /**
+     * location of the directory where the ReVerb indices for entities are
+     * stored. Gold Standard creation
+     */
     public static final String REVERB_ENT_INDEX_DIR = "/home/arnab/Work/data/ReVerb/index";
-    
+
     /**
      * location of the directory where the indices for predicates are stored
      */
@@ -183,7 +192,7 @@ public class Constants
 
     /**
      * only those entities with a match of value higher than this will be taken
-     * into consideration for further processing
+     * into consideration for further processing.
      */
     public static final double THRESHOLD_SCORE = 80;
 
@@ -199,14 +208,26 @@ public class Constants
 
     public static final String GET_LINK_COUNT = "select count(*) as cnt  from link_anchors l, title_2_id t where t.title = ? and l.anchor=? and l.target = t.id";
 
+    /**
+     * SQL to insert a gold standard instance
+     */
     public static final String INSERT_GOLD_STANDARD =
             "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ, SUB_LINK_CNT, OBJ_LINK_CNT ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+    /**
+     * SQL to insert a baseline instance
+     */
     public static final String INSERT_BASE_LINE =
             "INSERT INTO baseLine (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
-    
+
+    /**
+     * SQL to insert an axiom before running inference
+     */
     public static final String INSERT_AXIOM_SQL = "INSERT INTO axioms (E_ENTITY, CANDIDATE, APRIORI, APOSTERIORI) VALUES (?, ?, ?, ?)";
 
+    /**
+     * SQL to update an axiom after running inference
+     */
     public static final String UPDATE_AXIOM_SQL = "UPDATE axioms SET APOSTERIORI=? WHERE  E_ENTITY=? AND CANDIDATE=?";
 
     /**
@@ -222,7 +243,16 @@ public class Constants
     public static final String INSERT_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
 
+    /**
+     * fetch the top matching DBPedia predicates co-occurring with a given NELL
+     * predicate
+     */
+    public static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from goldStandard where E_PRED =? group by D_PRED order by cnt desc limit 5";
 
+    /**
+     * fetch all the NELL predicates matched with the DBPedia dataset
+     */
+    public static final String GET_NELL_PREDICATES = "select predicate, count(*) as cnt from nell group by predicate order by cnt desc";
 
     /**
      * defines the batch size for the Data base operations
