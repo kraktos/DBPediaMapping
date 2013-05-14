@@ -7,6 +7,7 @@ package de.dws.standards.randomTests;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import de.dws.mapper.dbConnectivity.DBWrapper;
 
@@ -15,7 +16,11 @@ import de.dws.mapper.dbConnectivity.DBWrapper;
  */
 public class MappingCoverage {
 
-    static Map<String, Long> ALL_NELL_PREDS = new HashMap<String, Long>();
+    private static final String NO_DUPLICATES_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from goldStandard where E_PRED = ?";
+    
+    private static final String DUPLICATES_SQL = "select count(*) from goldStandard where E_PRED = ?";
+
+    static Map<String, Long> ALL_NELL_PREDS = new TreeMap<String, Long>();
 
     /**
      * @param args
@@ -45,9 +50,7 @@ public class MappingCoverage {
             count = entry.getValue();
 
             DBWrapper
-                    .init("select count(*) from goldStandard where E_PRED = ?");
-            // select predicate, count(*) as cnt from nell group by predicate
-            // order by cnt desc
+                    .init(MappingCoverage.NO_DUPLICATES_SQL);            
 
             matchCount = DBWrapper.findPredMatches(pred);
 
