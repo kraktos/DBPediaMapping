@@ -49,7 +49,7 @@ public class PredicateMapper {
      */
     private static void iteratePredicates() {
 
-        Map<Long, String> rankedPredicates = null;
+        Map<String, Long> rankedPredicates = null;
 
         DBWrapper
                 .init(Constants.GET_COOCC_PREDICATES_SQL);
@@ -59,8 +59,8 @@ public class PredicateMapper {
             predicate = entry.getKey();
 
             rankedPredicates = DBWrapper.getRankedPredicates(predicate);
-            for (Entry<Long, String> rankedVal : rankedPredicates.entrySet()) {
-                logger.info(predicate + "," + rankedVal.getValue() + "," + rankedVal.getKey());
+            for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
+                System.out.println(predicate + "," + rankedVal.getKey() + "," + rankedVal.getValue());
             }
         }
     }
