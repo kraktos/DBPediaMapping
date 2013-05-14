@@ -197,7 +197,7 @@ public class BaseLine {
 
         // search over Lucene indices
         dbPediaTriples = searcher.doSearch(subjTitle,
-                objTitle);
+                objTitle, Constants.DBPEDIA_DATA_DELIMIT);
 
         for (FreeFormFactDao dbPediaTriple : dbPediaTriples) {
             // save to DB all the values

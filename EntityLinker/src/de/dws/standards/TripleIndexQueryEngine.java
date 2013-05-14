@@ -66,12 +66,14 @@ public class TripleIndexQueryEngine
      * 
      * @param subQuery the user provided search item
      * @param objQuery
+     * @param delimit
      * @param string
      * @param file
      * @return A List containing the matching DBPedia Entity URI as value
      * @throws Exception
      */
-    public List<FreeFormFactDao> doSearch(String subQuery, String objQuery) throws IOException
+    public List<FreeFormFactDao> doSearch(String subQuery, String objQuery, String delimit)
+            throws IOException
     {
         TopDocs hits = null;
 
@@ -82,7 +84,7 @@ public class TripleIndexQueryEngine
             // execute the search on top results
             hits = searcher.search(query, null, Constants.MAX_RESULTS);
 
-            return iterateResult(searcher, hits, subQuery);
+            return iterateResult(searcher, hits, subQuery, delimit);
 
         } catch (Exception ex) {
             logger.error("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
@@ -113,11 +115,12 @@ public class TripleIndexQueryEngine
      * @param hits document hits instance
      * @param userQuery the user input coming from web interface or extraction
      *            engines
+     * @param delimit
      * @return
      * @throws IOException
      */
     public static List<FreeFormFactDao> iterateResult(IndexSearcher searcher, TopDocs hits,
-            String userQuery)
+            String userQuery, String delimit)
             throws IOException
     {
 
@@ -140,7 +143,7 @@ public class TripleIndexQueryEngine
 
             logger.debug(triple);
 
-            elems = triple.split(Constants.NELL_IE_DELIMIT);
+            elems = triple.split(delimit);
 
             triplesList.add(new FreeFormFactDao(elems[0], elems[1], elems[2]));
         }
@@ -160,8 +163,8 @@ public class TripleIndexQueryEngine
         // doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
         // new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch(
         // "tom_cruise","mission_impossible");
-        new TripleIndexQueryEngine(Constants.REVERB_ENT_INDEX_DIR).doSearch("Zeppelin",
-                "dirigible");
+        new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR).doSearch("Alan_Hale,_Jr.",
+                "Los_Angeles", Constants.DBPEDIA_DATA_DELIMIT);
     }
 
 }

@@ -293,7 +293,7 @@ public class TripleIndexBuilder
 
                                     // store the entire triple as a string
                                     tripleField = new StringField("tripleField",
-                                            replaceTags(strLine),
+                                            replaceDBPTags(strLine),
                                             Field.Store.YES);
 
                                 }
@@ -330,6 +330,14 @@ public class TripleIndexBuilder
         arg = arg.replace(" ", ",");
         return arg;
     }
+    
+    private static String replaceDBPTags(String arg) {
+        arg = arg.replace(">", "");
+        arg = arg.replace("<", "");
+        arg = arg.replace(" ", Constants.DBPEDIA_DATA_DELIMIT);
+        return arg;
+    }
+    
 
     private static boolean checkIfValidTriple(String arg1, String rel, String arg2) {
         if (arg1.contains(Constants.DBPEDIA_HEADER) && rel.contains(Constants.ONTOLOGY_NAMESPACE) &&

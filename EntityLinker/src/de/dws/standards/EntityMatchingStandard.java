@@ -205,7 +205,7 @@ public class EntityMatchingStandard {
             String subj1 = subj.replaceAll(" ", "_");
             for (String obj : objSurfaceForms) {
                 String obj1 = obj.replaceAll(" ", "_");
-                nellTriples = searcher.doSearch(subj1, obj1);
+                nellTriples = searcher.doSearch(subj1, obj1, Constants.NELL_IE_DELIMIT);
                 for (FreeFormFactDao nellTriple : nellTriples) {
                     // save to DB all the values
                     // send the surface form or make the link counter case
