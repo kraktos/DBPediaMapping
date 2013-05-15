@@ -8,6 +8,9 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -243,4 +246,34 @@ public class Utilities
         return retVal.toString().toLowerCase().trim();
     }
 
+    /**
+     * encodes a string with special character to one with UTF-8 encoding
+     * 
+     * @param arg
+     * @return
+     */
+    public static String characterToUTF8(String arg) {
+        try {
+            return URLEncoder.encode(arg, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.info("Exception while encoding");
+        }
+        return arg;
+    }
+
+    /**
+     * decodes a string with UTF-8 encoding to special character
+     * 
+     * @param arg
+     * @return
+     */
+    private static String utf8ToCharacter(String arg) {
+        try {
+            return URLDecoder.decode(arg, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.info("Exception while dencoding");
+            e.printStackTrace();
+        }
+        return arg;
+    }
 }
