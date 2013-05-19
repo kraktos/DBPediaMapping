@@ -16,9 +16,10 @@ import java.util.concurrent.ExecutionException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Timer;
+import de.dws.helper.util.Utilities;
+import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.nlp.dao.FreeFormFactDao;
 
 /**
@@ -61,6 +62,7 @@ public class EntityMatchingStandard {
             logger.info("USAGE: java -jar runner.jar <path of file> <number of facts>");
         } else {
             logger.info("Starting processing " + args[0]);
+            //System.out.println(Utilities.utf8ToCharacter("K%C5%8Dichi_Yamadera"));
             processDBPediaTriple(args[0], Integer.parseInt(args[1]));
         }
     }
@@ -106,27 +108,23 @@ public class EntityMatchingStandard {
                     // facts
                     processTriple(searcher, stripHeaders(arr[0]),
                             stripHeaders(arr[1]), stripHeaders(arr[2]));
-
-                    // timer = timer + timerObj.tick("TO PROCESS " + cntr +
-                    // " INSTANCES");
-
-                    if ((cntr % 100) == 0)
-                        timer = timer + timerObj.tick();
-
-                    cntr++;
-                    double perc = ((double) cntr / (double) dataSize) * 100;
-                    if (perc % 10 == 0)
-                        logger.info(perc + " % completed in " + ((double) timer / (double) 1000)
-                                + " secds");
-
                 }
-                if (cntr == dataSize) // check point
-                    break;
+
+                cntr++;
+
+                if ((cntr % 50000) == 0) {
+                    timer = timer + timerObj.tick();
+                    logger.info(cntr + " completed in " + ((double) timer / (double) 1000)
+                            + " secds");
+                }
+
+                // if (cntr == dataSize) // check point
+                // break;
 
             } // end of while
 
             // write to DB residual tuples
-            DBWrapper.saveResiduals();
+            DBWrapper.saveResidualGS();
 
             // shutdown DB
             DBWrapper.shutDown();
@@ -142,12 +140,11 @@ public class EntityMatchingStandard {
      * @return stripped concept name
      */
     private static String stripHeaders(String arg) {
-        arg = arg.replace("<http://dbpedia.org/resource/", "");
-        arg = arg.replace("<http://dbpedia.org/ontology/", "");
-        arg = arg.replace(">", "");
-        arg = arg.replace("%", "");
+        // arg = arg.replace("<http://dbpedia.org/resource/", "");
+        arg = arg.replaceAll(">", "");
+        arg = arg.replaceAll("<", "");
 
-        return arg;
+        return Utilities.utf8ToCharacter(arg);
     }
 
     /**
@@ -202,10 +199,8 @@ public class EntityMatchingStandard {
             List<String> objSurfaceForms) throws IOException {
 
         for (String subj : subjSurfaceForms) {
-            String subj1 = subj.replaceAll(" ", "_");
             for (String obj : objSurfaceForms) {
-                String obj1 = obj.replaceAll(" ", "_");
-                nellTriples = searcher.doSearch(subj1, obj1, Constants.NELL_IE_DELIMIT);
+                nellTriples = searcher.doSearch(subj, obj, Constants.NELL_IE_DELIMIT);
                 for (FreeFormFactDao nellTriple : nellTriples) {
                     // save to DB all the values
                     // send the surface form or make the link counter case

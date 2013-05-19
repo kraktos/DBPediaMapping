@@ -243,11 +243,15 @@ public class Constants
     public static final String INSERT_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
 
+    public static final String INSERT_DB_SURFACE_FORMS_SQL =
+            "INSERT INTO surfaceForms (URI, SF, PROB) VALUES (?, ?, ?)";
+
+    
     /**
      * fetch the top matching DBPedia predicates co-occurring with a given NELL
      * predicate
      */
-    public static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from goldStandard where E_PRED =? group by D_PRED order by cnt desc limit 5";
+    public static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from goldStandard where E_PRED =? group by D_PRED order by cnt desc";
 
     /**
      * fetch all the NELL predicates matched with the DBPedia dataset
@@ -257,7 +261,7 @@ public class Constants
     /**
      * defines the batch size for the Data base operations
      */
-    public static final int BATCH_SIZE = 10;
+    public static final int BATCH_SIZE =50000;
 
     // *****************OWL
     // PARAMETES***************************************************

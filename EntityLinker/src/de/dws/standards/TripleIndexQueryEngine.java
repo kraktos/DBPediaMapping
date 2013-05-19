@@ -158,13 +158,9 @@ public class TripleIndexQueryEngine
         if (Constants.INDEX_AGAIN) {
             DBPediaIndexBuilder.indexer();
         }
-
-        // ar[0] = (ar[0] == null) ? Constants.NELL_ENT_INDEX_DIR : ar[0];
-        // doSearch(Constants.NELL_ENT_INDEX_DIR, "jay", "stanford");
-        // new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch(
-        // "tom_cruise","mission_impossible");
-        new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR).doSearch("Alan_Hale,_Jr.",
-                "Los_Angeles", Constants.DBPEDIA_DATA_DELIMIT);
+       
+        new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("microsoft",
+                "bill_gates", Constants.NELL_IE_DELIMIT);
     }
 
 }

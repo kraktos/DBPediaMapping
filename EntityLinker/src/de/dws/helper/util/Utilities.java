@@ -267,7 +267,7 @@ public class Utilities
      * @param arg
      * @return
      */
-    private static String utf8ToCharacter(String arg) {
+    public static String utf8ToCharacter(String arg) {
         try {
             return URLDecoder.decode(arg, "UTF-8");
         } catch (UnsupportedEncodingException e) {

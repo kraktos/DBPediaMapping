@@ -2,9 +2,9 @@
 
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java"
-	import="de.dws.mapper.helper.dataObject.ResultDAO"%>
+	import="de.dws.helper.dataObject.ResultDAO"%>
 <%@ page language="java"
-	import="de.dws.mapper.helper.dataObject.SuggestedFactDAO"%>
+	import="de.dws.helper.dataObject.SuggestedFactDAO"%>
 
 
 

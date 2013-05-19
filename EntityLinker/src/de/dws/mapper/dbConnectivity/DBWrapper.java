@@ -9,13 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import de.dws.helper.dataObject.SuggestedFactDAO;
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
@@ -64,6 +68,7 @@ public class DBWrapper {
 
             // create a statement
             pstmt = connection.prepareStatement(sql);
+            connection.setAutoCommit(false);
 
             insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
 
@@ -137,8 +142,7 @@ public class DBWrapper {
 
         try {
             pstmt.setString(1, arg);
-            pstmt.setInt(2, Constants.ATLEAST_LINKS);
-            pstmt.setInt(3, Constants.TOP_ANCHORS);
+            
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();
@@ -199,7 +203,6 @@ public class DBWrapper {
 
     public static void saveBaseLine(String nellArg1, String nellRel, String nellArg2,
             FreeFormFactDao dbPediaTriple) {
-        ResultSet rs = null;
 
         try {
 
@@ -237,6 +240,17 @@ public class DBWrapper {
 
     }
 
+    private static String stripHeaders(String arg) {
+        arg = arg.replace("http://dbpedia.org/resource/", "");
+        // arg = arg.replace("<http://dbpedia.org/ontology/", "");
+        // arg = arg.replace("<", "");
+        //arg = arg.replace(">", "");
+        // TODO
+        // arg = arg.replace("%", "");
+
+        return arg;
+    }
+    
     public static void saveGoldStandard(FreeFormFactDao nellTriple, String arg1, String rel,
             String arg2) {
 
@@ -246,8 +260,8 @@ public class DBWrapper {
         int objLinksCount = 0;
 
         try {
-
-            fetchCountsPrepstmnt.setString(1, arg1);
+            
+            fetchCountsPrepstmnt.setString(1, stripHeaders(arg1));
             fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceSubj())
                     .replaceAll("_", " "));
 
@@ -258,7 +272,7 @@ public class DBWrapper {
                 subjLinksCount = rs.getInt(1);
             }
 
-            fetchCountsPrepstmnt.setString(1, arg2);
+            fetchCountsPrepstmnt.setString(1, stripHeaders(arg2));
             fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceObj())
                     .replaceAll("_", " "));
 
@@ -277,16 +291,18 @@ public class DBWrapper {
             insertPrepstmnt.setString(1, nellTriple.getSurfaceSubj());
             insertPrepstmnt.setString(2, nellTriple.getRelationship());
             insertPrepstmnt.setString(3, nellTriple.getSurfaceObj());
-            insertPrepstmnt.setString(4, "http://dbpedia.org/resource/" + arg1);
-            insertPrepstmnt.setString(5, "http://dbpedia.org/ontology/" + rel);
-            insertPrepstmnt.setString(6, "http://dbpedia.org/resource/" + arg2);
+            insertPrepstmnt.setString(4, arg1);
+            insertPrepstmnt.setString(5, rel);
+            insertPrepstmnt.setString(6, arg2);
             insertPrepstmnt.setInt(7, subjLinksCount);
             insertPrepstmnt.setInt(8, objLinksCount);
 
             // insertPrepstmnt.executeUpdate();
             insertPrepstmnt.addBatch();
+            insertPrepstmnt.clearParameters();
+
             batchCounter++;
-            // logger.info(batchCounter % Constants.BATCH_SIZE);
+
             if (batchCounter % Constants.BATCH_SIZE == 0) { // batches of 100
                                                             // are flushed at
                                                             // a time
@@ -294,6 +310,9 @@ public class DBWrapper {
                 insertPrepstmnt.executeBatch();
 
                 logger.info("FLUSHED TO goldStandrd ..");
+                connection.commit();
+                insertPrepstmnt.clearBatch();
+
             }
 
         } catch (SQLException e) {
@@ -311,11 +330,23 @@ public class DBWrapper {
         }
     }
 
-    public static void saveResiduals() {
+    public static void saveResidualGS() {
         try {
-            if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
+            if (batchCounter % Constants.BATCH_SIZE != 0) {
                 insertPrepstmnt.executeBatch();
                 logger.info("FLUSHED TO goldStandard DB...");
+                connection.commit();
+            }
+        } catch (SQLException e) {
+        }
+    }
+
+    public static void saveResidualSFs() {
+        try {
+            if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
+                pstmt.executeBatch();
+                connection.commit();
+                logger.info("FLUSHED TO surfaceForms DB...");
             }
         } catch (SQLException e) {
         }
@@ -403,6 +434,78 @@ public class DBWrapper {
         }
         return 0;
 
+    }
+
+    public static Map<String, Long> getRankedPredicates(String predicate) {
+
+        /*
+         * Map<Long, String> rankedPredicates = new TreeMap<Long, String>(new
+         * Comparator<Long>() { public int compare(Long first, Long second) {
+         * return second.compareTo(first); } });
+         */
+
+        Map<String, Long> rankedPredicates = new TreeMap<String, Long>();
+
+        try {
+            pstmt.setString(1, predicate);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                rankedPredicates.put(rs.getString(2), rs.getLong(1));
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error while getting ranked list of prediucates..");
+        }
+
+        return rankedPredicates;
+
+    }
+
+    public static void saveSurfaceForms(String uri, String sf, double sfGivenUri) {
+
+        try {
+
+            pstmt.setString(1, uri);
+            pstmt.setString(2, sf);
+            pstmt.setDouble(3, sfGivenUri);
+
+            pstmt.addBatch();
+            pstmt.clearParameters();
+
+            batchCounter++;
+            if (batchCounter % Constants.BATCH_SIZE == 0) { // batches are
+                                                            // flushed at
+                                                            // a time
+                // execute batch update
+                pstmt.executeBatch();
+
+                logger.info("FLUSHED TO surfaceForm..." + batchCounter);
+                connection.commit();
+                pstmt.clearBatch();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error with batch insertion of surfaceForms .." + e.getMessage());
+        }
+
+    }
+
+    public static long findPerfectMatches(String pred) {
+        try {
+            pstmt.setString(1, pred);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return 0;
     }
 
 }
