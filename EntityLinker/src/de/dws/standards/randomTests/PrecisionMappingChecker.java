@@ -18,14 +18,17 @@ public class PrecisionMappingChecker{
 
     private static final String NO_DUPLICATES_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from goldStandard where E_PRED = ?";
 
-    private static final String DUPLICATES_SQL = "select count(*) from goldStandard where E_PRED = ?";
+    //private static final String DUPLICATES_SQL = "select count(*) from goldStandard where E_PRED = ?";
+    private static final String DUPLICATES_SQL = "SELECT SUM(cn) AS Total from (select count(*) as cn from eval where E_PRED = ? group by E_SUB , E_PRED , E_OBJ) as Aa";
 
     // EVALUATION TABLE
     private static final String NO_DUPLI_EVAL_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from eval where E_PRED = ?";
+    
 
     // find overall precision
-    static final String PRECISION_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from eval where G_SUB = B_SUB and G_OBJ = B_OBJ and E_PRED = ?";
-
+    //static final String PRECISION_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from eval where G_SUB = B_SUB and G_OBJ = B_OBJ and E_PRED = ?";
+    static final String PRECISION_SQL = "SELECT SUM(cn) AS Total from (select count(*) as cn from eval where G_SUB = B_SUB and G_OBJ = B_OBJ and E_PRED =? group by E_SUB , E_PRED , E_OBJ) as AA";
+    
     // subject precision
     static final String SUBJECT_PRECISION_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from eval where G_SUB = B_SUB and  E_PRED = ?";
 
@@ -63,7 +66,9 @@ public class PrecisionMappingChecker{
         long preciseCount = 0;
         long subjectCount = 0;
         long objectCount = 0;
-
+        long totalPrec = 0;
+        long totalMc = 0;
+        
         DBWrapper
                 .init(DUPLICATES_SQL);
 
@@ -73,23 +78,29 @@ public class PrecisionMappingChecker{
 
             if (true) {
 
-                DBWrapper
-                        .init(NO_DUPLI_EVAL_SQL);
+                DBWrapper.init(DUPLICATES_SQL);
                 matchCount = DBWrapper.findPredMatches(pred);
+                totalMc = totalMc + matchCount;
+                
                 DBWrapper.init(PRECISION_SQL);
                 preciseCount = DBWrapper.findPerfectMatches(pred);
-                DBWrapper.init(SUBJECT_PRECISION_SQL);
+                totalPrec = totalPrec + preciseCount;
+                
+                /*DBWrapper.init(SUBJECT_PRECISION_SQL);
                 subjectCount = DBWrapper.findPerfectMatches(pred);
+                
                 DBWrapper.init(OBJECT_PRECISION_SQL);
                 objectCount = DBWrapper.findPerfectMatches(pred);
+                */
                 double prec = (matchCount == 0) ? 0 : ((double) preciseCount / (double) matchCount);
                 double precSubj = (matchCount == 0) ? 0
                         : ((double) subjectCount / (double) matchCount);
                 double precObj = (matchCount == 0) ? 0
                         : ((double) objectCount / (double) matchCount);
+                
                 if (preciseCount > 0)
-                    System.out.println(pred + "," + " " + preciseCount + ", "
-                            + prec * 100 + ",  " + precSubj * 100 + ",  " + precObj * 100);
+                    System.out.println(pred + "," + " " + preciseCount + ", " + matchCount + ", "
+                            + prec * 100 ); //+ ",  " + precSubj * 100 + ",  " + precObj * 100);
 
             } else {
 
@@ -97,11 +108,17 @@ public class PrecisionMappingChecker{
 
                 System.out.println(pred + " " + matchCount);
             }
+            
 
-            DBWrapper.shutDown();
 
         }
+        DBWrapper.shutDown();
+
+        
+        System.out.println((double) totalPrec /(double) totalMc);
+
 
     }
 
 }
+
