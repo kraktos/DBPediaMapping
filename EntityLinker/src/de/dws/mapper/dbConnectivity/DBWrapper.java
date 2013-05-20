@@ -421,6 +421,26 @@ public class DBWrapper {
 
     }
 
+    public static List<FreeFormFactDao> getAllDuplicateNellPreds(
+            List<FreeFormFactDao> allDupliTriples) {
+
+        try {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                allDupliTriples.add(new FreeFormFactDao(rs.getString(1), rs.getString(2), rs
+                        .getString(3)));
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return allDupliTriples;
+
+    }
+
     public static Map<String, Long> getAllNellPreds(Map<String, Long> allPreds) {
 
         try {
@@ -525,8 +545,7 @@ public class DBWrapper {
 
         return aLL_URIS;
     }
-    
-    
+
     public static long findPerfectMatches(String pred) {
         try {
             pstmt.setString(1, pred);
@@ -540,6 +559,30 @@ public class DBWrapper {
         }
 
         return 0;
+    }
+
+    public static List<FreeFormFactDao> giveDupliRows(FreeFormFactDao nellTriple) {
+
+        List<FreeFormFactDao> retList = new ArrayList<FreeFormFactDao>();
+        
+        try {
+                        
+            pstmt.setString(1, nellTriple.getSurfaceSubj());
+            pstmt.setString(2, nellTriple.getRelationship());
+            pstmt.setString(3, nellTriple.getSurfaceObj());
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                retList.add(new FreeFormFactDao(rs.getString(1), rs.getString(2), rs.getString(3)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return retList;
+        
+
     }
 
 }
