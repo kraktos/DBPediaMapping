@@ -142,7 +142,7 @@ public class DBWrapper {
 
         try {
             pstmt.setString(1, arg);
-            
+
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();
@@ -244,13 +244,13 @@ public class DBWrapper {
         arg = arg.replace("http://dbpedia.org/resource/", "");
         // arg = arg.replace("<http://dbpedia.org/ontology/", "");
         // arg = arg.replace("<", "");
-        //arg = arg.replace(">", "");
+        // arg = arg.replace(">", "");
         // TODO
         // arg = arg.replace("%", "");
 
         return arg;
     }
-    
+
     public static void saveGoldStandard(FreeFormFactDao nellTriple, String arg1, String rel,
             String arg2) {
 
@@ -260,7 +260,7 @@ public class DBWrapper {
         int objLinksCount = 0;
 
         try {
-            
+
             fetchCountsPrepstmnt.setString(1, stripHeaders(arg1));
             fetchCountsPrepstmnt.setString(2, Utilities.cleanse(nellTriple.getSurfaceSubj())
                     .replaceAll("_", " "));
@@ -401,6 +401,26 @@ public class DBWrapper {
 
     }
 
+    public static Set<String> getAllSurfaceForms(Set<String> aLL_SURFACES, String arg) {
+
+        try {
+            pstmt.setString(1, arg);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                aLL_SURFACES.add(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return aLL_SURFACES;
+
+    }
+
     public static Map<String, Long> getAllNellPreds(Map<String, Long> allPreds) {
 
         try {
@@ -491,6 +511,22 @@ public class DBWrapper {
 
     }
 
+    public static Set<String> findURIs(Set<String> aLL_URIS, String pred) {
+        try {
+            pstmt.setString(1, pred);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                aLL_URIS.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return aLL_URIS;
+    }
+    
+    
     public static long findPerfectMatches(String pred) {
         try {
             pstmt.setString(1, pred);
@@ -499,12 +535,10 @@ public class DBWrapper {
             while (rs.next()) {
                 return rs.getLong(1);
             }
-
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         return 0;
     }
 
