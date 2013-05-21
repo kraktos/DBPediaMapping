@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutionException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.clarkparsia.pellet.sparqldl.engine.CostBasedQueryPlanNew;
+
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Timer;
 import de.dws.helper.util.Utilities;
@@ -31,6 +33,8 @@ import de.dws.standards.TripleIndexQueryEngine;
  * @author Arnab Dutta
  */
 public class BaseLine {
+
+    private static final String DELIMIT = Constants.REVERB_IE_DELIMIT; // Constants.NELL_IE_DELIMIT;
 
     // define Logger
     static Logger logger = Logger.getLogger(BaseLine.class.getName());
@@ -97,15 +101,15 @@ public class BaseLine {
             // read a random triple at a time
             String tripleFromIE;
             while ((tripleFromIE = tupleReader.readLine()) != null) {
-                arr = tripleFromIE.split(Constants.NELL_IE_DELIMIT);
+                arr = tripleFromIE.split(DELIMIT);
 
                 // process individual triples
                 processTriple(searcher, arr[0], arr[1], arr[2]);
+                cntr++;
 
-                if (cntr % 100 == 0) {
+                if (cntr % 10 == 0) {
                     timer = timer + timerObj.tick();
 
-                    cntr++;
                     logger.info("Processed " + cntr + " triples in " + ((double) timer / 1000)
                             + " secds");
                 }
@@ -117,7 +121,7 @@ public class BaseLine {
 
             // save residual tuples
             DBWrapper.saveResidualBaseLine();
-            
+
             // shutdown DB
             DBWrapper.shutDown();
 
@@ -147,8 +151,12 @@ public class BaseLine {
         if (inMemoryTitles.containsKey(arg1)) {
             subj = inMemoryTitles.get(arg1);
         } else {
-            subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
-                    " "));
+            if (Constants.IS_NELL)
+                subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
+                        " "));
+            else
+                subjTitle = DBWrapper.fetchWikiTitles(Utilities.removeStopWords(arg1.replaceAll(
+                        " 's", "'s")));
             if (subjTitle.size() > 0) {
                 subj = subjTitle.get(0);
                 inMemoryTitles.put(arg1, subj);
@@ -158,8 +166,13 @@ public class BaseLine {
         if (inMemoryTitles.containsKey(arg2)) {
             obj = inMemoryTitles.get(arg2);
         } else {
-            objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg2).replaceAll("_",
-                    " "));
+            if (Constants.IS_NELL)
+                objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg2).replaceAll("_",
+                        " "));
+            else
+                objTitle = DBWrapper.fetchWikiTitles(Utilities.removeStopWords(arg2.replaceAll(
+                        " 's", "'s")));
+
             if (objTitle.size() > 0) {
                 obj = objTitle.get(0);
                 inMemoryTitles.put(arg2, obj);

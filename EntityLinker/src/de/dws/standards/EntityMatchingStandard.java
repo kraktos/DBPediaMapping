@@ -19,6 +19,7 @@ import org.apache.log4j.PropertyConfigurator;
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Timer;
 import de.dws.helper.util.Utilities;
+import de.dws.mapper.controller.NellTupleProcessor;
 import de.dws.mapper.dbConnectivity.DBWrapper;
 import de.dws.nlp.dao.FreeFormFactDao;
 
@@ -26,6 +27,14 @@ import de.dws.nlp.dao.FreeFormFactDao;
  * @author Arnab Dutta
  */
 public class EntityMatchingStandard {
+
+    // delimiter for IE data
+    private static final String DELIMIT = Constants.REVERB_IE_DELIMIT; //Constants.NELL_IE_DELIMIT;
+    
+    //index paths for the indices location of data sets
+    private static final String INDEX_DIR = Constants.REVERB_ENT_INDEX_DIR;
+    
+            
 
     // define Logger
     static Logger logger = Logger.getLogger(EntityMatchingStandard.class.getName());
@@ -39,7 +48,7 @@ public class EntityMatchingStandard {
     /**
      * triple returned after a match occurs
      */
-    static List<FreeFormFactDao> nellTriples = null;
+    static List<FreeFormFactDao> ieTriples = null;
 
     /**
      * caches the surface forms
@@ -87,7 +96,7 @@ public class EntityMatchingStandard {
         Timer timerObj = new Timer();
 
         // initiate Lucene searcher
-        TripleIndexQueryEngine searcher = new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR);
+        TripleIndexQueryEngine searcher = new TripleIndexQueryEngine(INDEX_DIR);
 
         BufferedReader tupleReader = new BufferedReader(new FileReader(filePath));
 
@@ -183,7 +192,7 @@ public class EntityMatchingStandard {
 
         logger.debug(arg1 + ", " + rel + ", " + arg2);
 
-        findNELLMatchingTriples(searcher, arg1, rel, arg2, subjSurfaceForms, objSurfaceForms);
+        findIEMatchingTriples(searcher, arg1, rel, arg2, subjSurfaceForms, objSurfaceForms);
     }
 
     /**
@@ -193,19 +202,23 @@ public class EntityMatchingStandard {
      * @param objSurfaceForms list of object surface forms
      * @throws IOException
      */
-    private static void findNELLMatchingTriples(TripleIndexQueryEngine searcher,
+    private static void findIEMatchingTriples(TripleIndexQueryEngine searcher,
             String arg1, String rel, String arg2,
             List<String> subjSurfaceForms,
             List<String> objSurfaceForms) throws IOException {
 
         for (String subj : subjSurfaceForms) {
             for (String obj : objSurfaceForms) {
-                nellTriples = searcher.doSearch(subj, obj, Constants.NELL_IE_DELIMIT);
-                for (FreeFormFactDao nellTriple : nellTriples) {
-                    // save to DB all the values
-                    // send the surface form or make the link counter case
-                    // insensitive
-                    DBWrapper.saveGoldStandard(nellTriple, arg1, rel, arg2);
+                //logger.info(subj + " " + obj);
+                ieTriples = searcher.doSearch(subj, obj, DELIMIT);
+                if (ieTriples != null) {
+                    for (FreeFormFactDao ieTriple : ieTriples) {
+                        //logger.info(ieTriple.toString());
+                        // save to DB all the values
+                        // send the surface form or make the link counter case
+                        // insensitive
+                        DBWrapper.saveGoldStandard(ieTriple, arg1, rel, arg2);
+                    }
                 }
             }
         }

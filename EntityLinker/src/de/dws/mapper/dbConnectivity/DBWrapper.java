@@ -70,9 +70,14 @@ public class DBWrapper {
             pstmt = connection.prepareStatement(sql);
             connection.setAutoCommit(false);
 
-            insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
-
-            insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE);
+            //for nell
+            //insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
+            
+            //for reverb
+            insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD_REVERB);
+            
+            //insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE);
+            insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE_REVERB);
 
             fetchCountsPrepstmnt = connection.prepareStatement(Constants.GET_LINK_COUNT);
 
@@ -201,7 +206,7 @@ public class DBWrapper {
 
     }
 
-    public static void saveBaseLine(String nellArg1, String nellRel, String nellArg2,
+    public static void saveBaseLine(String ieArg1, String ieRel, String ieArg2,
             FreeFormFactDao dbPediaTriple) {
 
         try {
@@ -209,13 +214,13 @@ public class DBWrapper {
             logger.debug("[" + dbPediaTriple.getSurfaceSubj() + ", "
                     + dbPediaTriple.getRelationship()
                     + ", "
-                    + dbPediaTriple.getSurfaceObj() + "]  =>  [" + nellArg1 + ", " + nellRel + ", "
-                    + nellArg2
+                    + dbPediaTriple.getSurfaceObj() + "]  =>  [" + ieArg1 + ", " + ieRel + ", "
+                    + ieArg2
                     + "] ");
 
-            insertBaseLine.setString(1, nellArg1);
-            insertBaseLine.setString(2, nellRel);
-            insertBaseLine.setString(3, nellArg2);
+            insertBaseLine.setString(1, ieArg1);
+            insertBaseLine.setString(2, ieRel);
+            insertBaseLine.setString(3, ieArg2);
             insertBaseLine.setString(4, dbPediaTriple.getSurfaceSubj());
             insertBaseLine.setString(5, dbPediaTriple.getRelationship());
             insertBaseLine.setString(6, dbPediaTriple.getSurfaceObj());

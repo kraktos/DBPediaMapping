@@ -116,15 +116,15 @@ public class FreeFormFactDao {
             builder.append(surfaceSubj);
             builder.append(", ");
         }
-        if (surfaceObj != null) {
-
-            builder.append(surfaceObj);
+        if (relationship != null) {
+            builder.append(relationship);
             builder.append(", ");
         }
-        if (relationship != null) {
+        if (surfaceObj != null) {
 
-            builder.append(relationship);
+            builder.append(surfaceObj);            
         }
+        
         builder.append("]");
         return builder.toString();
     }

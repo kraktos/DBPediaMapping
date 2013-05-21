@@ -204,18 +204,22 @@ public class TripleIndexBuilder
                         if (!strLine.startsWith("#")) {
                             if (strLine.indexOf(Constants.DBPEDIA_HEADER) == -1) { // NELL/ReVerb
                                                                                    // TRIPLES
-                                // break comma separated line using ","
-                                array = strLine.split(Constants.NELL_IE_DELIMIT);
-                                // add the label, store it for display purpose
-                                subject = (array[0] != null) ? array[0] : "";
-                                // add the label, store it for display purpose
-                                predicate = (array[1] != null) ? array[1] : "";
-                                // add the label, store it for display purpose
-                                object = (array[2] != null) ? array[2] : "";
 
                                 if (identifier.equals("1")) { // specific
                                                               // processing
                                                               // related to NELL
+                                    // break comma separated line using ","
+                                    array = strLine.split(Constants.NELL_IE_DELIMIT);
+                                    // add the label, store it for display
+                                    // purpose
+                                    subject = (array[0] != null) ? array[0] : "";
+                                    // add the label, store it for display
+                                    // purpose
+                                    predicate = (array[1] != null) ? array[1] : "";
+                                    // add the label, store it for display
+                                    // purpose
+                                    object = (array[2] != null) ? array[2] : "";
+
                                     // store the subject field
                                     subjField = new StringField("subjField",
                                             Utilities.cleanse(subject
@@ -240,20 +244,32 @@ public class TripleIndexBuilder
                                                                      // related
                                                                      // to
                                                                      // ReVerb
+                                    logger.info(strLine);
+                                    // break semicolon separated line 
+                                    array = strLine.split(Constants.REVERB_IE_DELIMIT);
+                                    // add the label, store it for display
+                                    // purpose
+                                    subject = (array[0] != null) ? array[0] : "";
+                                    // add the label, store it for display
+                                    // purpose
+                                    predicate = (array[1] != null) ? array[1] : "";
+                                    // add the label, store it for display
+                                    // purpose
+                                    object = (array[2] != null) ? array[2] : "";
 
                                     // store the subject field
                                     subjField = new StringField("subjField",
                                             Utilities.removeStopWords(subject
-                                                    .trim().toLowerCase()),
+                                                    .trim().toLowerCase()).replaceAll(" 's", "'s").replaceAll(" ", "_"),
                                             Field.Store.NO);
                                     // store the subject field
                                     predField = new StringField("predField",
-                                            predicate.trim().toLowerCase(),
+                                            predicate.trim().toLowerCase().replaceAll(" ", "_"),
                                             Field.Store.NO);
                                     // store the subject field
                                     objField = new StringField("objField",
                                             Utilities.removeStopWords(object
-                                                    .trim().toLowerCase()),
+                                                    .trim().toLowerCase()).replaceAll(" 's", "'s").replaceAll(" ", "_"),
                                             Field.Store.NO);
 
                                     tripleField = new StringField("tripleField",
@@ -330,14 +346,13 @@ public class TripleIndexBuilder
         arg = arg.replace(" ", ",");
         return arg;
     }
-    
+
     private static String replaceDBPTags(String arg) {
         arg = arg.replace(">", "");
         arg = arg.replace("<", "");
         arg = arg.replace(" ", Constants.DBPEDIA_DATA_DELIMIT);
         return arg;
     }
-    
 
     private static boolean checkIfValidTriple(String arg1, String rel, String arg2) {
         if (arg1.contains(Constants.DBPEDIA_HEADER) && rel.contains(Constants.ONTOLOGY_NAMESPACE) &&

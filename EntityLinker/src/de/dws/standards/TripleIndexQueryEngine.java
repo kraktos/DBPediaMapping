@@ -87,7 +87,7 @@ public class TripleIndexQueryEngine
             return iterateResult(searcher, hits, subQuery, delimit);
 
         } catch (Exception ex) {
-            logger.error("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
+            //logger.error("NO MATCHING RECORDS FOUND FOR QUERY \"" + subQuery + "\" !! ");
         }
         return null;
     }
@@ -159,8 +159,17 @@ public class TripleIndexQueryEngine
             DBPediaIndexBuilder.indexer();
         }
        
-        new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("microsoft",
-                "bill_gates", Constants.NELL_IE_DELIMIT);
+        // NELL API
+        //new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("microsoft",                "bill_gates", Constants.NELL_IE_DELIMIT);
+        
+        //DBPedia API
+        //new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR).doSearch("John_F._Kennedy_International_Airport",                "New_York_City", Constants.DBPEDIA_DATA_DELIMIT);
+    
+        //ReVerb API
+        new TripleIndexQueryEngine(Constants.REVERB_ENT_INDEX_DIR).doSearch("Alexander_Severus",
+                "Elagabalus", Constants.REVERB_IE_DELIMIT);
+    
     }
+    
 
 }
