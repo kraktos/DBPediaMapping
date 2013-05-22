@@ -22,6 +22,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
 import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 import de.dws.mapper.engine.index.DBPediaIndexBuilder;
 import de.dws.nlp.dao.FreeFormFactDao;
 
@@ -141,7 +142,7 @@ public class TripleIndexQueryEngine
 
             score = scoredoc.score / hits.getMaxScore();
 
-            logger.debug(triple);
+            logger.debug(Utilities.utf8ToCharacter(triple));
 
             elems = triple.split(delimit);
 
@@ -163,11 +164,11 @@ public class TripleIndexQueryEngine
         //new TripleIndexQueryEngine(Constants.NELL_ENT_INDEX_DIR).doSearch("microsoft",                "bill_gates", Constants.NELL_IE_DELIMIT);
         
         //DBPedia API
-        //new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR).doSearch("John_F._Kennedy_International_Airport",                "New_York_City", Constants.DBPEDIA_DATA_DELIMIT);
+        new TripleIndexQueryEngine(Constants.DBPEDIA_INFO_INDEX_DIR).doSearch(
+                "DNŠ_Prevalje__Karič_Senad__1",                "Karič_Senad", Constants.DBPEDIA_DATA_DELIMIT);
     
         //ReVerb API
-        new TripleIndexQueryEngine(Constants.REVERB_ENT_INDEX_DIR).doSearch("Alexander_Severus",
-                "Elagabalus", Constants.REVERB_IE_DELIMIT);
+        //new TripleIndexQueryEngine(Constants.REVERB_ENT_INDEX_DIR).doSearch("Alexander_Severus",                "Elagabalus", Constants.REVERB_IE_DELIMIT);
     
     }
     

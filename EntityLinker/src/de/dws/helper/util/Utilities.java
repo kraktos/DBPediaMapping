@@ -46,8 +46,10 @@ public class Utilities
     // pattern for allowing english text only during indexing
     static Pattern pattern = Pattern.compile(Constants.ALLOWED_ENGLISH_TEXT);
 
-    // set o fstop words
+    // set of stop words
     static final Set<String> STOP_WORDS = new HashSet<String>(Arrays.asList("a", "the", "an", "of"));
+
+
 
     /**
      * Prints a map
@@ -230,7 +232,7 @@ public class Utilities
     }
 
     public static String cleanse(String arg) {
-        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());
+        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());        
         return arg.toLowerCase();
     }
 

@@ -168,7 +168,7 @@ public class Constants
     /**
      * Delimiter used to parse the ReVerb extracted tuples
      */
-    public static final String REVERB_IE_DELIMIT = "\t";
+    public static final String REVERB_IE_DELIMIT = ";";
 
     /**
      * Delimiter used to parse the ReVerb extracted tuples
@@ -209,17 +209,32 @@ public class Constants
     public static final String GET_LINK_COUNT = "select count(*) as cnt  from link_anchors l, title_2_id t where t.title = ? and l.anchor=? and l.target = t.id";
 
     /**
-     * SQL to insert a gold standard instance
+     * SQL to insert a gold standard instance for NELL
      */
     public static final String INSERT_GOLD_STANDARD =
             "INSERT INTO goldStandard (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ, SUB_LINK_CNT, OBJ_LINK_CNT ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
-     * SQL to insert a baseline instance
+     * SQL to insert a gold standard instance for ReVerb
+     */
+    public static final String INSERT_GOLD_STANDARD_REVERB =
+            "INSERT INTO goldStandard_2 (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ, SUB_LINK_CNT, OBJ_LINK_CNT ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    
+    
+    /**
+     * SQL to insert a baseline instance for NELL
      */
     public static final String INSERT_BASE_LINE =
             "INSERT INTO baseLine (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
 
+    /**
+     * SQL to insert a baseline instance for REVERB
+     */
+    public static final String INSERT_BASE_LINE_REVERB =
+            "INSERT INTO baseLine_2 (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
+
+    
     /**
      * SQL to insert an axiom before running inference
      */
@@ -233,12 +248,17 @@ public class Constants
     /**
      * given a title, fetch top surface forms
      */
-    public static final String GET_WIKI_SURFACE_FORMS_SQL = "select l.anchor as anchor, count(*) as cnt from link_anchors l, title_2_id t where t.title=? and t.id=l.target group by l.anchor having cnt > ? order by cnt desc limit ?";
+    // public static final String GET_WIKI_SURFACE_FORMS_SQL =
+    // "select l.anchor as anchor, count(*) as cnt from link_anchors l, title_2_id t where t.title=? and t.id=l.target group by l.anchor having cnt > ? order by cnt desc limit ?";
 
+    public static final String GET_WIKI_SURFACE_FORMS_SQL = "select SF, PROB from surfaceForms where URI = ? ";
     /**
      * given a surface form, fetch top titles it refers to
      */
-    public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
+    public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
+    		//"select URI from surfaceForms where SF =? order by PROB desc" ;
+    		//"select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
+    
 
     public static final String INSERT_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
@@ -246,7 +266,6 @@ public class Constants
     public static final String INSERT_DB_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms (URI, SF, PROB) VALUES (?, ?, ?)";
 
-    
     /**
      * fetch the top matching DBPedia predicates co-occurring with a given NELL
      * predicate
@@ -261,7 +280,7 @@ public class Constants
     /**
      * defines the batch size for the Data base operations
      */
-    public static final int BATCH_SIZE =50000;
+    public static final int BATCH_SIZE = 1000;
 
     // *****************OWL
     // PARAMETES***************************************************
@@ -364,5 +383,7 @@ public class Constants
 
     // take sentences with atmost these many words between them
     public static final int WORD_GAP = 5;
+    
+    public static final boolean IS_NELL = true;
 
 }

@@ -134,9 +134,9 @@ public class TripleIndexBuilder
         arg = arg.replace("<http://dbpedia.org/resource/", "");
         arg = arg.replace("<http://dbpedia.org/ontology/", "");
         arg = arg.replace(">", "");
-        arg = arg.replace("%", "");
-
-        return arg;
+        //arg = arg.replace("%", "");
+        
+        return Utilities.utf8ToCharacter(arg);
     }
 
     /**
@@ -347,6 +347,7 @@ public class TripleIndexBuilder
         return arg;
     }
 
+    
     private static String replaceDBPTags(String arg) {
         arg = arg.replace(">", "");
         arg = arg.replace("<", "");

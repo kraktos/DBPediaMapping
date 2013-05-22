@@ -55,14 +55,18 @@ public class PredicateMapper {
                 .init(Constants.GET_COOCC_PREDICATES_SQL);
 
         String predicate = null;
+        long total =0;
         for (Map.Entry<String, Long> entry : ALL_NELL_PREDS.entrySet()) {
             predicate = entry.getKey();
 
             rankedPredicates = DBWrapper.getRankedPredicates(predicate);
             for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
-                System.out.println(predicate + "," + rankedVal.getKey() + "," + rankedVal.getValue());
+                total = total + rankedVal.getValue();
+                logger.info(predicate + "," + rankedVal.getKey() + "," + rankedVal.getValue());
             }
         }
+        
+        System.out.println(total);
     }
 
     /**

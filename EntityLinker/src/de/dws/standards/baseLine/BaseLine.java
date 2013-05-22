@@ -34,7 +34,7 @@ import de.dws.standards.TripleIndexQueryEngine;
  */
 public class BaseLine {
 
-    private static final String DELIMIT = Constants.REVERB_IE_DELIMIT; // Constants.NELL_IE_DELIMIT;
+    private static final String DELIMIT = Constants.NELL_IE_DELIMIT;//Constants.REVERB_IE_DELIMIT; // Constants.NELL_IE_DELIMIT;
 
     // define Logger
     static Logger logger = Logger.getLogger(BaseLine.class.getName());
@@ -107,16 +107,12 @@ public class BaseLine {
                 processTriple(searcher, arr[0], arr[1], arr[2]);
                 cntr++;
 
-                if (cntr % 10 == 0) {
+                if (cntr % 50000 == 0) {
                     timer = timer + timerObj.tick();
 
                     logger.info("Processed " + cntr + " triples in " + ((double) timer / 1000)
                             + " secds");
-                }
-
-                /*
-                 * if (cntr == dataSize) break;
-                 */
+                }               
             }
 
             // save residual tuples
@@ -131,15 +127,15 @@ public class BaseLine {
 
     /**
      * @param searcher
-     * @param arg1
-     * @param rel
-     * @param arg2
+     * @param ieArg1
+     * @param ieRel
+     * @param ieArg2
      * @throws InterruptedException
      * @throws ExecutionException
      * @throws IOException
      */
-    private static void processTriple(TripleIndexQueryEngine searcher, String arg1, String rel,
-            String arg2)
+    private static void processTriple(TripleIndexQueryEngine searcher, String ieArg1, String ieRel,
+            String ieArg2)
             throws InterruptedException, ExecutionException, IOException {
 
         List<String> subjTitle = null;
@@ -148,48 +144,55 @@ public class BaseLine {
         String obj = null;
 
         // retrieve from cache if available else go on to make DB query
-        if (inMemoryTitles.containsKey(arg1)) {
-            subj = inMemoryTitles.get(arg1);
+        if (inMemoryTitles.containsKey(ieArg1)) {
+            subj = inMemoryTitles.get(ieArg1);
         } else {
             if (Constants.IS_NELL)
-                subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg1).replaceAll("_",
-                        " "));
+                subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(ieArg1).replaceAll("_",                        " "));
+                //subjTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(ieArg1));
             else
-                subjTitle = DBWrapper.fetchWikiTitles(Utilities.removeStopWords(arg1.replaceAll(
+                subjTitle = DBWrapper.fetchWikiTitles(Utilities.removeStopWords(ieArg1.replaceAll(
                         " 's", "'s")));
             if (subjTitle.size() > 0) {
                 subj = subjTitle.get(0);
-                inMemoryTitles.put(arg1, subj);
+                inMemoryTitles.put(ieArg1, subj);
             }
         }
 
-        if (inMemoryTitles.containsKey(arg2)) {
-            obj = inMemoryTitles.get(arg2);
+        if (inMemoryTitles.containsKey(ieArg2)) {
+            obj = inMemoryTitles.get(ieArg2);
         } else {
             if (Constants.IS_NELL)
-                objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(arg2).replaceAll("_",
-                        " "));
+                objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(ieArg2).replaceAll("_"," "));
+                //objTitle = DBWrapper.fetchWikiTitles(Utilities.cleanse(ieArg2));
             else
-                objTitle = DBWrapper.fetchWikiTitles(Utilities.removeStopWords(arg2.replaceAll(
+                objTitle = DBWrapper.fetchWikiTitles(Utilities.removeStopWords(ieArg2.replaceAll(
                         " 's", "'s")));
 
             if (objTitle.size() > 0) {
                 obj = objTitle.get(0);
-                inMemoryTitles.put(arg2, obj);
+                inMemoryTitles.put(ieArg2, obj);
             }
         }
 
-        logger.debug(arg1 + ", " + rel + ", " + arg2);
+        logger.debug(ieArg1 + ", " + ieRel + ", " + ieArg2);
 
-        logger.debug(arg1 + " => " + subjTitle);
-        logger.debug(arg2 + " => " + objTitle);
+        logger.debug(ieArg1 + " => " + subjTitle);
+        logger.debug(ieArg2 + " => " + objTitle);
 
         // fetch DBPedia Infobox instances. Take the top candidate
         if (subj != null && obj != null) {
-            findDBPediaMatchingTriples(searcher, arg1, rel, arg2, subj, obj);
+            findDBPediaMatchingTriples(searcher, ieArg1, ieRel, ieArg2, subj, obj);
         }
     }
 
+    
+    private static String stripHeaders(String arg) {
+        arg = arg.replace("http://dbpedia.org/resource/", "");
+        arg = arg.replace("http://dbpedia.org/ontology/", "");
+        
+        return arg;
+    }
     /**
      * Find the matching DBPedia triples given the IE SPO input
      * 
@@ -209,8 +212,8 @@ public class BaseLine {
         List<FreeFormFactDao> dbPediaTriples = null;
 
         // search over Lucene indices
-        dbPediaTriples = searcher.doSearch(subjTitle,
-                objTitle, Constants.DBPEDIA_DATA_DELIMIT);
+        dbPediaTriples = searcher.doSearch(stripHeaders(subjTitle),
+                stripHeaders(objTitle), Constants.DBPEDIA_DATA_DELIMIT);
 
         for (FreeFormFactDao dbPediaTriple : dbPediaTriples) {
             // save to DB all the values

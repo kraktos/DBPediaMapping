@@ -70,14 +70,16 @@ public class DBWrapper {
             pstmt = connection.prepareStatement(sql);
             connection.setAutoCommit(false);
 
-            //for nell
-            //insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
-            
-            //for reverb
+            // for nell
+            // insertPrepstmnt =
+            // connection.prepareStatement(Constants.INSERT_GOLD_STANDARD);
+
+            // for reverb
             insertPrepstmnt = connection.prepareStatement(Constants.INSERT_GOLD_STANDARD_REVERB);
-            
-            //insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE);
-            insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE_REVERB);
+
+            insertBaseLine = connection.prepareStatement(Constants.INSERT_BASE_LINE);
+            // insertBaseLine =
+            // connection.prepareStatement(Constants.INSERT_BASE_LINE_REVERB);
 
             fetchCountsPrepstmnt = connection.prepareStatement(Constants.GET_LINK_COUNT);
 
@@ -221,12 +223,13 @@ public class DBWrapper {
             insertBaseLine.setString(1, ieArg1);
             insertBaseLine.setString(2, ieRel);
             insertBaseLine.setString(3, ieArg2);
-            insertBaseLine.setString(4, dbPediaTriple.getSurfaceSubj());
-            insertBaseLine.setString(5, dbPediaTriple.getRelationship());
-            insertBaseLine.setString(6, dbPediaTriple.getSurfaceObj());
+            insertBaseLine.setString(4, Utilities.utf8ToCharacter(dbPediaTriple.getSurfaceSubj()));
+            insertBaseLine.setString(5, Utilities.utf8ToCharacter(dbPediaTriple.getRelationship()));
+            insertBaseLine.setString(6, Utilities.utf8ToCharacter(dbPediaTriple.getSurfaceObj()));
 
             // insertPrepstmnt.executeUpdate();
             insertBaseLine.addBatch();
+            insertBaseLine.clearParameters();
 
             batchCounter++;
             // logger.info(batchCounter % Constants.BATCH_SIZE);
@@ -237,6 +240,8 @@ public class DBWrapper {
                 insertBaseLine.executeBatch();
 
                 logger.info("FLUSHED TO baseLine...");
+                connection.commit();
+                insertBaseLine.clearBatch();
             }
 
         } catch (SQLException e) {
@@ -327,9 +332,11 @@ public class DBWrapper {
 
     public static void saveResidualBaseLine() {
         try {
-            if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
+            if (batchCounter % Constants.BATCH_SIZE != 0) { 
                 pstmt.executeBatch();
                 logger.info("FLUSHED TO baseLine DB...");
+                connection.commit();
+
             }
         } catch (SQLException e) {
         }
@@ -364,7 +371,7 @@ public class DBWrapper {
         try {
             pstmt.setString(1, arg);
             // pstmt.setInt(2, Constants.ATLEAST_LINKS);
-            pstmt.setInt(2, Constants.TOP_ANCHORS);
+            //pstmt.setInt(2, Constants.TOP_ANCHORS);
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();
@@ -552,30 +559,36 @@ public class DBWrapper {
     }
 
     public static long findPerfectMatches(String pred) {
+        int rsCount = 0;
+
         try {
             pstmt.setString(1, pred);
             ResultSet rs = pstmt.executeQuery();
 
+            int size = rs.getRow() * rs.getMetaData().getColumnCount();
+
             while (rs.next()) {
-                return rs.getLong(1);
+                rsCount++;
+
+                // return rs.getLong(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return rsCount;
     }
 
     public static List<FreeFormFactDao> giveDupliRows(FreeFormFactDao nellTriple) {
 
         List<FreeFormFactDao> retList = new ArrayList<FreeFormFactDao>();
-        
+
         try {
-                        
+
             pstmt.setString(1, nellTriple.getSurfaceSubj());
             pstmt.setString(2, nellTriple.getRelationship());
             pstmt.setString(3, nellTriple.getSurfaceObj());
-            
+
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -584,10 +597,28 @@ public class DBWrapper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return retList;
-        
 
     }
 
+    public static List<String> getWrongMappingsFromEval(String pred) {
+        List<String> results = new ArrayList<String>();
+
+        try {
+            pstmt.setString(1, pred);
+            pstmt.setString(2, pred);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                results.add(rs.getString(1) + "|" + rs.getString(2) + "|" + rs.getString(3) + "|"
+                        + rs.getString(4) + "|" + rs.getString(5) + "|" + rs.getString(6) + "|"
+                        + rs.getString(7) + "|" + rs.getString(8) + "|" + rs.getString(9) + "|");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return results;
+    }
 }
