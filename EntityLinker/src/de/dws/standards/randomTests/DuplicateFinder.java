@@ -37,7 +37,15 @@ public class DuplicateFinder {
 
     private static final List<FreeFormFactDao> ALL_DUPLI_TRIPLES = new ArrayList<FreeFormFactDao>();
 
-    
+    private static final List<FreeFormFactDao> ALL_DISTINCT_NELL_TRIPLES = new ArrayList<FreeFormFactDao>();
+    private static final List<String> ALL_DISTINCT_NELL_ROWS = new ArrayList<String>();
+
+    private static final String GET_TOP_TRIPLE_ON_LINK_COUNT = "select * from goldStandard where "
+            +
+            "E_SUB = ? and E_PRED = ? and E_OBJ=? order by SUB_LINK_CNT desc, OBJ_LINK_CNT desc limit 1";
+
+    private static final String INSERT_GOLDSTANDARD_CLEANER = "INSERT INTO goldStandardClean (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
+
     static Map<String, Long> ALL_NELL_PREDS = new TreeMap<String, Long>();
 
     /**
@@ -48,26 +56,67 @@ public class DuplicateFinder {
         PropertyConfigurator
                 .configure("/home/arnab/Workspaces/SchemaMapping/EntityLinker/log4j.properties");
 
+        // remove duplicate NELL triples, take the best one
+        fetchDistinctNELLTriples();
+        fetchTopCandidate();
+        loadTheUniqueRecords();
+
         // find wrong mappings in evaluation
-        loadNELLPredicates();
-        fetchWrongMappings();
-        
+        // loadNELLPredicates();
+        // fetchWrongMappings();
+
         // find duplicate gold standard instances
-        //loadDuplicateNellTriples();
-        //fetchTriples();
+        // loadDuplicateNellTriples();
+        // fetchTriples();
     }
-    
-    
+
+    private static void loadTheUniqueRecords() {
+        DBWrapper.init(INSERT_GOLDSTANDARD_CLEANER);
+        for (String tuple : ALL_DISTINCT_NELL_ROWS) {
+            DBWrapper.insertGold(tuple);
+        }
+
+        // save residual tuples
+        DBWrapper.saveResidualSFs();
+
+        // shutdown DB
+        DBWrapper.shutDown();
+
+    }
+
+    private static void fetchTopCandidate() {
+        int count = 0;
+        
+        DBWrapper.init(GET_TOP_TRIPLE_ON_LINK_COUNT);
+        for (FreeFormFactDao ieTriple : ALL_DISTINCT_NELL_TRIPLES) {
+            for (String result : DBWrapper.getTopTriples(ieTriple)) {
+                if(count++ % 1000 == 0){
+                    System.out.println(count + " triples processed..");
+                }
+                ALL_DISTINCT_NELL_ROWS.add(result);
+            }
+        }
+        System.out.println("Distinct triples = " + ALL_DISTINCT_NELL_TRIPLES.size());
+    }
+
+    private static void fetchDistinctNELLTriples() {
+        DBWrapper
+                .init("select distinct E_SUB, E_PRED, E_OBJ from goldStandard");
+
+        DBWrapper.getTriples(ALL_DISTINCT_NELL_TRIPLES);
+        System.out.println(ALL_DISTINCT_NELL_TRIPLES.size());
+    }
+
     private static void fetchWrongMappings() {
         String pred = null;
         List<String> result = new ArrayList<String>();
         String[] arr = null;
         DBWrapper.init(WRONG_MAPPINGS);
-        
-        for(Map.Entry<String, Long> entry : ALL_NELL_PREDS.entrySet()){
+
+        for (Map.Entry<String, Long> entry : ALL_NELL_PREDS.entrySet()) {
             pred = entry.getKey();
             result = DBWrapper.getWrongMappingsFromEval(pred);
-            
+
             if (result.size() > 0) {
                 logger.info(pred + " = " + result.size());
                 for (String resuString : result) {
@@ -78,14 +127,12 @@ public class DuplicateFinder {
         }
     }
 
-
     private static void loadNELLPredicates() {
         DBWrapper
                 .init("select E_PRED, count(*) as cnt from eval group by E_PRED order by cnt desc");
 
         DBWrapper.getAllNellPreds(ALL_NELL_PREDS);
     }
-    
 
     private static void fetchTriples() {
         List<FreeFormFactDao> retList = null;
@@ -104,7 +151,7 @@ public class DuplicateFinder {
 
     private static void loadDuplicateNellTriples() {
         DBWrapper.init(DUPLICATE_TRIPLES);
-        DBWrapper.getAllDuplicateNellPreds(ALL_DUPLI_TRIPLES);
+        DBWrapper.getTriples(ALL_DUPLI_TRIPLES);
     }
 
 }
