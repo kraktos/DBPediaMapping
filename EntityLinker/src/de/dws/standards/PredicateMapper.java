@@ -4,7 +4,9 @@
 
 package de.dws.standards;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -21,6 +23,8 @@ import de.dws.mapper.dbConnectivity.DBWrapper;
  * @author Arnab Dutta
  */
 public class PredicateMapper {
+
+    private static final String GET_SAMPLE = "select E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ from goldStandardClean where E_PRED =? and D_PRED=? limit 2";
 
     // define Logger
     static Logger logger = Logger.getLogger(PredicateMapper.class.getName());
@@ -51,21 +55,44 @@ public class PredicateMapper {
 
         Map<String, Long> rankedPredicates = null;
 
-        DBWrapper
-                .init(Constants.GET_COOCC_PREDICATES_SQL);
-
         String predicate = null;
-        long total =0;
+        long total = 0;
+        List<String> results = new ArrayList<String>();
+        String[] arr = null;
+
         for (Map.Entry<String, Long> entry : ALL_NELL_PREDS.entrySet()) {
             predicate = entry.getKey();
 
+            DBWrapper
+                    .init(Constants.GET_COOCC_PREDICATES_SQL);
+
             rankedPredicates = DBWrapper.getRankedPredicates(predicate);
+
             for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
                 total = total + rankedVal.getValue();
-                logger.info(predicate + "," + rankedVal.getKey() + "," + rankedVal.getValue());
+                // logger.info(predicate + "," + rankedVal.getKey() + "," +
+                // rankedVal.getValue());
+
+                // find two instances of them
+                DBWrapper
+                        .init(GET_SAMPLE);
+
+                results = DBWrapper.getSampleInstances(predicate, rankedVal.getKey());
+
+                for (String reString : results) {
+                    arr = reString.split(DBWrapper.GS_DELIMITER);
+                    logger.info(predicate + "\t" + rankedVal.getKey() + "\t" + rankedVal.getValue()
+                            + "\t" +
+                            arr[0] + "\t" + arr[1] + "\t" + arr[2] + "\t" + arr[3] + "\t" + arr[4]
+                            + "\t" + arr[5]);
+                }
+                
+                DBWrapper.shutDown();
             }
+
         }
-        
+
+
         System.out.println(total);
     }
 

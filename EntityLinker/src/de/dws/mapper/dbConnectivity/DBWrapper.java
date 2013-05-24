@@ -32,6 +32,8 @@ import de.dws.nlp.dao.SurfaceFormDao;
  */
 public class DBWrapper {
 
+    public static final String GS_DELIMITER = "~~";
+
     // define Logger
     static Logger logger = Logger.getLogger(DBWrapper.class.getName());
 
@@ -332,8 +334,8 @@ public class DBWrapper {
 
     public static void saveResidualBaseLine() {
         try {
-            if (batchCounter % Constants.BATCH_SIZE != 0) { 
-                pstmt.executeBatch();
+            if (batchCounter % Constants.BATCH_SIZE != 0) {
+                insertBaseLine.executeBatch();
                 logger.info("FLUSHED TO baseLine DB...");
                 connection.commit();
 
@@ -371,7 +373,7 @@ public class DBWrapper {
         try {
             pstmt.setString(1, arg);
             // pstmt.setInt(2, Constants.ATLEAST_LINKS);
-            //pstmt.setInt(2, Constants.TOP_ANCHORS);
+            // pstmt.setInt(2, Constants.TOP_ANCHORS);
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();
@@ -433,7 +435,7 @@ public class DBWrapper {
 
     }
 
-    public static List<FreeFormFactDao> getAllDuplicateNellPreds(
+    public static List<FreeFormFactDao> getTriples(
             List<FreeFormFactDao> allDupliTriples) {
 
         try {
@@ -620,5 +622,124 @@ public class DBWrapper {
         }
 
         return results;
+    }
+
+    public static List<String> getTopTriples(FreeFormFactDao ieTriple) {
+        List<String> results = new ArrayList<String>();
+
+        try {
+            pstmt.setString(1, ieTriple.getSurfaceSubj());
+            pstmt.setString(2, ieTriple.getRelationship());
+            pstmt.setString(3, ieTriple.getSurfaceObj());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                results.add(rs.getString(1) + GS_DELIMITER + rs.getString(2) + GS_DELIMITER
+                        + rs.getString(3)
+                        + GS_DELIMITER
+                        + rs.getString(4) + GS_DELIMITER + rs.getString(5) + GS_DELIMITER
+                        + rs.getString(6));
+            }
+        } catch (SQLException e) {
+            logger.error("Error in getTopTriples " + e.getMessage());
+        }
+
+        return results;
+    }
+
+    public static void insertGold(String tuple) {
+
+        String[] arr = tuple.split(GS_DELIMITER);
+        try {
+
+            pstmt.setString(1, arr[0].trim());
+            pstmt.setString(2, arr[1].trim());
+            pstmt.setString(3, arr[2].trim());
+            pstmt.setString(4, arr[3].trim());
+            pstmt.setString(5, arr[4].trim());
+            pstmt.setString(6, arr[5].trim());
+
+            pstmt.addBatch();
+            pstmt.clearParameters();
+
+            batchCounter++;
+            if (batchCounter % Constants.BATCH_SIZE == 0) { // batches are
+                                                            // flushed at
+                                                            // a time
+                // execute batch update
+                pstmt.executeBatch();
+
+                logger.info("FLUSHED TO better goldStandard");
+                connection.commit();
+                pstmt.clearBatch();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error with batch insertion of surfaceForms .." + e.getMessage());
+        }
+
+    }
+
+    public static Map<String, String> getCanonVsUriPairs(Map<String, String> pairs) {
+        try {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                pairs.put(rs.getString(1), rs.getString(2));
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return pairs;
+
+    }
+
+    public static List<String> getGoldTriples(List<String> allDistinctGoldTriples) {
+        try {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                allDistinctGoldTriples.add(rs.getString(1) + GS_DELIMITER + rs.getString(2)
+                        + GS_DELIMITER
+                        + rs.getString(3)
+                        + GS_DELIMITER
+                        + rs.getString(4) + GS_DELIMITER + rs.getString(5) + GS_DELIMITER
+                        + rs.getString(6));
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return allDistinctGoldTriples;
+
+    }
+
+    public static List<String> getSampleInstances(String predicate, String key) {
+        List<String> results = new ArrayList<String>();
+
+        try {
+            pstmt.setString(1, predicate);
+            pstmt.setString(2, key);
+           
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                results.add(rs.getString(1) + GS_DELIMITER + rs.getString(2) + GS_DELIMITER
+                        + rs.getString(3)
+                        + GS_DELIMITER
+                        + rs.getString(4) + GS_DELIMITER + rs.getString(5) + GS_DELIMITER
+                        + rs.getString(6));
+            }
+        } catch (SQLException e) {
+            logger.error("Error in getSampleInstances " + e.getMessage());
+        }
+
+        return results;
+        
     }
 }
