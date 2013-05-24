@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import de.dws.helper.dataObject.Pair;
 import de.dws.helper.dataObject.SuggestedFactDAO;
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
@@ -570,15 +571,13 @@ public class DBWrapper {
             int size = rs.getRow() * rs.getMetaData().getColumnCount();
 
             while (rs.next()) {
-                rsCount++;
-
-                // return rs.getLong(1);
+                return rs.getLong(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return rsCount;
+        return 0;
     }
 
     public static List<FreeFormFactDao> giveDupliRows(FreeFormFactDao nellTriple) {
@@ -680,16 +679,25 @@ public class DBWrapper {
 
     }
 
-    public static Map<String, String> getCanonVsUriPairs(Map<String, String> pairs) {
+    public static Map<Pair<String, String>, Long> getCanonVsUriPairs(
+            Map<Pair<String, String>, Long> pairs) {
+
+        long countVal = 0;
+
         try {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                pairs.put(rs.getString(1), rs.getString(2));
+                Pair<String, String> pair = new Pair<String, String>(rs.getString(1),
+                        rs.getString(2));
+                if (pairs.containsKey(pair)) {
+                    countVal = pairs.get(pair) + 1;
+                    pairs.put(pair, countVal);
+                } else {
+                    pairs.put(pair, 1L);
+                }
             }
-
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
 
@@ -725,7 +733,7 @@ public class DBWrapper {
         try {
             pstmt.setString(1, predicate);
             pstmt.setString(2, key);
-           
+
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -740,6 +748,41 @@ public class DBWrapper {
         }
 
         return results;
-        
+
+    }
+
+    public static void saveToBL(String tuple, String delimiter) {
+
+        String[] arr = tuple.split(delimiter);
+        try {
+
+            pstmt.setString(1, arr[0].trim());
+            pstmt.setString(2, arr[1].trim());
+            pstmt.setString(3, arr[2].trim());
+            pstmt.setString(4, arr[3].trim());
+            pstmt.setString(5, arr[4].trim());
+            pstmt.setString(6, arr[5].trim());
+            pstmt.setString(7, arr[6].trim());
+            pstmt.setString(8, arr[7].trim());
+
+            pstmt.addBatch();
+            pstmt.clearParameters();
+
+            batchCounter++;
+            if (batchCounter % Constants.BATCH_SIZE == 0) { // batches are
+                                                            // flushed at
+                                                            // a time
+                // execute batch update
+                pstmt.executeBatch();
+
+                logger.info("FLUSHED TO BL");
+                connection.commit();
+                pstmt.clearBatch();
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error with batch insertion of surfaceForms .." + e.getMessage());
+        }
+
     }
 }

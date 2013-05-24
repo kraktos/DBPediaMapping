@@ -270,17 +270,20 @@ public class Constants
      * fetch the top matching DBPedia predicates co-occurring with a given NELL
      * predicate
      */
-    public static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from goldStandard where E_PRED =? group by D_PRED order by cnt desc";
+    public static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc" ;
+    		//"select *, count(*) as cnt from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc" ;
+    		//"select count(*) as cnt, D_PRED from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc";
 
     /**
      * fetch all the NELL predicates matched with the DBPedia dataset
      */
-    public static final String GET_NELL_PREDICATES = "select predicate, count(*) as cnt from nell group by predicate order by cnt desc";
+    public static final String GET_NELL_PREDICATES = "select E_PRED, count(*) as cnt from goldStandardClean group by E_PRED order by cnt desc" ;
+    		//"select predicate, count(*) as cnt from nell group by predicate order by cnt desc";
 
     /**
      * defines the batch size for the Data base operations
      */
-    public static final int BATCH_SIZE = 1000;
+    public static final int BATCH_SIZE = 10000;
 
     // *****************OWL
     // PARAMETES***************************************************
@@ -384,6 +387,6 @@ public class Constants
     // take sentences with atmost these many words between them
     public static final int WORD_GAP = 5;
     
-    public static final boolean IS_NELL = true;
+    public static final boolean IS_NELL = false;
 
 }

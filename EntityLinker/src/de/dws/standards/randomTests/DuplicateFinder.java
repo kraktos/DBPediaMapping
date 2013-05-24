@@ -20,6 +20,10 @@ import de.dws.nlp.dao.FreeFormFactDao;
  */
 public class DuplicateFinder {
 
+    private static final String GS_DB_MULTIPLE_MAPPINGS = "goldStandard_2";
+
+    private static final String GS_DB_CLEAN = "goldStandardClean_Reverb";
+
     // define Logger
     static Logger logger = Logger.getLogger(DuplicateFinder.class.getName());
 
@@ -40,11 +44,17 @@ public class DuplicateFinder {
     private static final List<FreeFormFactDao> ALL_DISTINCT_NELL_TRIPLES = new ArrayList<FreeFormFactDao>();
     private static final List<String> ALL_DISTINCT_NELL_ROWS = new ArrayList<String>();
 
-    private static final String GET_TOP_TRIPLE_ON_LINK_COUNT = "select * from goldStandard where "
+    private static final String GET_TOP_TRIPLE_ON_LINK_COUNT = "select * from "
+            +
+            GS_DB_MULTIPLE_MAPPINGS
+            +
+            " where "
             +
             "E_SUB = ? and E_PRED = ? and E_OBJ=? order by SUB_LINK_CNT desc, OBJ_LINK_CNT desc limit 1";
 
-    private static final String INSERT_GOLDSTANDARD_CLEANER = "INSERT INTO goldStandardClean (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_GOLDSTANDARD_CLEANER = "INSERT INTO " +
+            GS_DB_CLEAN +
+            " (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
 
     static Map<String, Long> ALL_NELL_PREDS = new TreeMap<String, Long>();
 
@@ -56,9 +66,14 @@ public class DuplicateFinder {
         PropertyConfigurator
                 .configure("/home/arnab/Workspaces/SchemaMapping/EntityLinker/log4j.properties");
 
-        // remove duplicate NELL triples, take the best one
+        // find the distinct nell triples to be processed
         fetchDistinctNELLTriples();
+
+        // remove duplicate NELL triples, take the best one
         fetchTopCandidate();
+
+        // load the bunch of gold standard instance after duplicate mappings
+        // removal
         loadTheUniqueRecords();
 
         // find wrong mappings in evaluation
@@ -70,6 +85,9 @@ public class DuplicateFinder {
         // fetchTriples();
     }
 
+    /**
+     * load the bunch of gold standard instance after duplicate mappings removal
+     */
     private static void loadTheUniqueRecords() {
         DBWrapper.init(INSERT_GOLDSTANDARD_CLEANER);
         for (String tuple : ALL_DISTINCT_NELL_ROWS) {
@@ -84,13 +102,16 @@ public class DuplicateFinder {
 
     }
 
+    /**
+     * remove duplicate NELL triples, take the best one
+     */
     private static void fetchTopCandidate() {
         int count = 0;
-        
+
         DBWrapper.init(GET_TOP_TRIPLE_ON_LINK_COUNT);
         for (FreeFormFactDao ieTriple : ALL_DISTINCT_NELL_TRIPLES) {
             for (String result : DBWrapper.getTopTriples(ieTriple)) {
-                if(count++ % 1000 == 0){
+                if (count++ % 1000 == 0) {
                     System.out.println(count + " triples processed..");
                 }
                 ALL_DISTINCT_NELL_ROWS.add(result);
@@ -99,9 +120,13 @@ public class DuplicateFinder {
         System.out.println("Distinct triples = " + ALL_DISTINCT_NELL_TRIPLES.size());
     }
 
+    /**
+     * find the distinct NEll triples from Gold standard to be cleaned
+     */
     private static void fetchDistinctNELLTriples() {
         DBWrapper
-                .init("select distinct E_SUB, E_PRED, E_OBJ from goldStandard");
+                .init("select distinct E_SUB, E_PRED, E_OBJ from " +
+                        GS_DB_MULTIPLE_MAPPINGS);
 
         DBWrapper.getTriples(ALL_DISTINCT_NELL_TRIPLES);
         System.out.println(ALL_DISTINCT_NELL_TRIPLES.size());

@@ -21,7 +21,7 @@ public class PrecisionMappingChecker {
     // private static final String DUPLICATES_SQL =
     // "select count(*) from goldStandard where E_PRED = ?";
     private static final String DUPLICATES_SQL = "SELECT SUM(cn) AS Total from (select count(*) as cn from eval where E_PRED = ? group by E_SUB , E_PRED , E_OBJ) as Aa";
-
+    
     // EVALUATION TABLE
     private static final String NO_DUPLI_EVAL_SQL = "select count(distinct E_SUB, E_PRED, E_OBJ) from eval where E_PRED = ?";
 
@@ -40,25 +40,25 @@ public class PrecisionMappingChecker {
     // "select count(distinct E_SUB, E_PRED, E_OBJ) from eval where G_OBJ = B_OBJ and E_PRED = ?";
     static final String OBJECT_PRECISION_SQL = "SELECT SUM(cn) AS Total from (select count(*) as cn from eval where G_OBJ = B_OBJ and E_PRED =? group by E_SUB , E_PRED , E_OBJ) as AA";
 
-    static Map<String, Long> ALL_NELL_PREDS = new TreeMap<String, Long>();
+    static Map<String, Long> ALL_NELL_PREDS_IN_GS = new TreeMap<String, Long>();
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        loadNELLPredicates();
+        loadGSPredicates();
 
     }
 
-    private static void loadNELLPredicates() {
+    private static void loadGSPredicates() {
         DBWrapper
-                .init("select E_PRED, count(*) as cnt from eval group by E_PRED order by cnt desc");
+                .init("select E_PRED, count(*) as cnt from goldStandardClean group by E_PRED order by cnt desc");
 
-        DBWrapper.getAllNellPreds(ALL_NELL_PREDS);
-        // System.out.println(ALL_NELL_PREDS.size());
+        DBWrapper.getAllNellPreds(ALL_NELL_PREDS_IN_GS);
+        System.out.println(ALL_NELL_PREDS_IN_GS.size());
 
         // match predicate covered
-        fetchMatchedPreds(ALL_NELL_PREDS);
+        fetchMatchedPreds(ALL_NELL_PREDS_IN_GS);
 
         // precision on predicates
         // computePredicatePrecision(ALL_NELL_PREDS);
