@@ -270,7 +270,6 @@ public class Constants
      * fetch the top matching DBPedia predicates co-occurring with a given NELL
      * predicate
      */
-    public static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc" ;
     		//"select *, count(*) as cnt from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc" ;
     		//"select count(*) as cnt, D_PRED from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc";
 

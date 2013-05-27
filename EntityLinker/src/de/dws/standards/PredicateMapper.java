@@ -24,7 +24,20 @@ import de.dws.mapper.dbConnectivity.DBWrapper;
  */
 public class PredicateMapper {
 
-    private static final String GET_SAMPLE = "select E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ from goldStandardClean where E_PRED =? and D_PRED=? limit 2";
+    private static String DB_NAME = "goldStandardClean_Reverb";
+
+    private static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from " +
+            DB_NAME +
+            " where E_PRED =? group by D_PRED order by cnt desc";
+
+    public static final String GET_SAMPLE = "select E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ from "
+            +
+            DB_NAME +
+            " where E_PRED =? and D_PRED=? limit 2";
+
+    private static final String GET_NELL_PREDICATES = "select E_PRED, count(*) as cnt from " +
+            DB_NAME +
+            " group by E_PRED order by cnt desc";
 
     // define Logger
     static Logger logger = Logger.getLogger(PredicateMapper.class.getName());
@@ -60,11 +73,11 @@ public class PredicateMapper {
         List<String> results = new ArrayList<String>();
         String[] arr = null;
 
+        DBWrapper
+                .init(GET_COOCC_PREDICATES_SQL);
+
         for (Map.Entry<String, Long> entry : ALL_NELL_PREDS.entrySet()) {
             predicate = entry.getKey();
-
-            DBWrapper
-                    .init(Constants.GET_COOCC_PREDICATES_SQL);
 
             rankedPredicates = DBWrapper.getRankedPredicates(predicate);
 
@@ -74,8 +87,7 @@ public class PredicateMapper {
                 // rankedVal.getValue());
 
                 // find two instances of them
-                DBWrapper
-                        .init(GET_SAMPLE);
+                // DBWrapper.init(GET_SAMPLE);
 
                 results = DBWrapper.getSampleInstances(predicate, rankedVal.getKey());
 
@@ -86,13 +98,10 @@ public class PredicateMapper {
                             arr[0] + "\t" + arr[1] + "\t" + arr[2] + "\t" + arr[3] + "\t" + arr[4]
                             + "\t" + arr[5]);
                 }
-                
-                DBWrapper.shutDown();
-            }
-
+            }            
         }
-
-
+        
+        DBWrapper.shutDown();
         System.out.println(total);
     }
 
@@ -101,7 +110,7 @@ public class PredicateMapper {
      */
     private static void loadNELLPredicates() {
         DBWrapper
-                .init(Constants.GET_NELL_PREDICATES);
+                .init(GET_NELL_PREDICATES);
 
         DBWrapper.getAllNellPreds(ALL_NELL_PREDS);
     }

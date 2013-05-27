@@ -8,7 +8,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import de.dws.mapper.dbConnectivity.DBWrapper;
+import de.dws.standards.PredicateMapper;
 
 /**
  * Compute the precision og the Baseline ALgorithm comapred to the baseLine
@@ -17,23 +21,40 @@ import de.dws.mapper.dbConnectivity.DBWrapper;
  */
 public class PrecisionBL {
 
+    // define Logger
+    static Logger logger = Logger.getLogger(PrecisionBL.class.getName());
+
+    private static final String GS_DB_NAME = "goldStandardClean_Reverb";// "goldStandardClean_Reverb";
+
+    private static final String BL_DB_NAME = "BL_Reverb"; // "BL_Reverb"
+
     // All matching instances for a particular predicate, i.e, the BL subject,
     // GS subject match and BL object, GS object match
-    private static final String ALL_MATCHING_INSTANCES_BY_PREDICATE = "select count(*) from BL b where b.D_OBJ = b.B_OBJ and b.D_SUB = b.B_SUB and b.PRED=?";
+    public static final String ALL_MATCHING_INSTANCES_BY_PREDICATE = "select count(*) from " +
+            BL_DB_NAME +
+            " b where b.D_OBJ = b.B_OBJ and b.D_SUB = b.B_SUB and b.PRED=?";
 
     // All instances for a particular predicate,
-    private static final String ALL_INSTANCES_BY_PREDICATE = "select count(*) from BL b where b.PRED =?";
+    public static final String ALL_INSTANCES_BY_PREDICATE = "select count(*) from " +
+            BL_DB_NAME +
+            " b where b.PRED =?";
 
     // All instances for a particular predicate, where only BL subject,
     // GS subject match
-    static final String SUBJECT_PRECISION_SQL = "select count(*) from BL b where b.D_SUB = b.B_SUB and b.PRED=?";
+    public static final String SUBJECT_PRECISION_SQL = "select count(*) from " +
+            BL_DB_NAME +
+            " b where b.D_SUB = b.B_SUB and b.PRED=?";
 
     // All instances for a particular predicate, where only BL object, GS object
     // match
-    static final String OBJECT_PRECISION_SQL = "select count(*) from BL b where b.D_OBJ = b.B_OBJ and b.PRED=?";
+    public static final String OBJECT_PRECISION_SQL = "select count(*) from " +
+            BL_DB_NAME +
+            " b where b.D_OBJ = b.B_OBJ and b.PRED=?";
 
     // fet all GS predicates
-    static final String GET_GS_PREDICATES = "select E_PRED, count(*) as cnt from goldStandardClean group by E_PRED order by cnt desc";
+    public static final String GET_GS_PREDICATES = "select E_PRED, count(*) as cnt from " +
+            GS_DB_NAME +
+            " group by E_PRED order by cnt desc";
 
     // stores the Predicates retrieved from GS
     static Map<String, Long> ALL_NELL_PREDS_IN_GS = new TreeMap<String, Long>();
@@ -42,6 +63,9 @@ public class PrecisionBL {
      * @param args
      */
     public static void main(String[] args) {
+        PropertyConfigurator
+                .configure("resources/log4j.properties");
+
         // load the NEL properties from GS
         loadNELLPredicates();
 
@@ -77,21 +101,27 @@ public class PrecisionBL {
         long totalPrec = 0;
         long totalMc = 0;
 
+        // create a batch inititation of prepared statments required for only
+        // precision calculation.
+        // can be costly for many predicates, e.g ReVerb.
+        DBWrapper.batchInit();
+
         for (Entry<String, Long> entry : nellPredsMap.entrySet()) {
             pred = entry.getKey();
 
-            DBWrapper.init(ALL_INSTANCES_BY_PREDICATE);
+            // DBWrapper.init(ALL_INSTANCES_BY_PREDICATE);
             matchCount = DBWrapper.findPredMatches(pred);
 
-            DBWrapper.init(ALL_MATCHING_INSTANCES_BY_PREDICATE);
+            // DBWrapper.init(ALL_MATCHING_INSTANCES_BY_PREDICATE);
             preciseCount = DBWrapper.findPerfectMatches(pred);
 
-            DBWrapper.init(SUBJECT_PRECISION_SQL);
+            // DBWrapper.init(SUBJECT_PRECISION_SQL);
             subjectCount =
-                    DBWrapper.findPerfectMatches(pred);
-            DBWrapper.init(OBJECT_PRECISION_SQL);
+                    DBWrapper.findPerfectSubjectMatches(pred);
+
+            // DBWrapper.init(OBJECT_PRECISION_SQL);
             objectCount =
-                    DBWrapper.findPerfectMatches(pred);
+                    DBWrapper.findPerfectObjectMatches(pred);
 
             double prec = (matchCount == 0) ? 0 : ((double) preciseCount / (double) matchCount);
 
@@ -101,7 +131,7 @@ public class PrecisionBL {
                     (matchCount == 0) ? 0 : ((double) objectCount / (double)
                             matchCount);
 
-            System.out.println(pred + "," + " " + matchCount + ", " + preciseCount + ", "
+            logger.info(pred + "," + " " + matchCount + ", " + preciseCount + ", "
                     + prec * 100 + ",  " + precSubj * 100 + ",  " + precObj * 100);
 
             totalPrec = totalPrec + preciseCount;

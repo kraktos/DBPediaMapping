@@ -25,6 +25,8 @@ import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
 import de.dws.nlp.dao.FreeFormFactDao;
 import de.dws.nlp.dao.SurfaceFormDao;
+import de.dws.standards.PredicateMapper;
+import de.dws.standards.randomTests.PrecisionBL;
 
 /**
  * Wrapper class to initiate the DB operations
@@ -53,8 +55,45 @@ public class DBWrapper {
 
     static PreparedStatement fetchCountsPrepstmnt = null;
 
+    static PreparedStatement getOccurancePredicatesPrepStmnt = null;
+    
+    // For precision values
+    static PreparedStatement getAllPredPrepStmnt = null;
+        
+    static PreparedStatement getAllMatchingPredPrepStmnt = null;
+    
+    static PreparedStatement getAllSubPredPrepStmnt = null;
+    
+    static PreparedStatement getAllObjPredPrepStmnt = null;
+    
+    
     static int batchCounter = 0;
 
+    public static void batchInit(){
+        try {
+            // instantiate the DB connection
+            dbConnection = new DBConnection();
+
+            // retrieve the freshly created connection instance
+            connection = dbConnection.getConnection();
+
+            // create a statement
+            getAllPredPrepStmnt = connection.prepareStatement(PrecisionBL.ALL_INSTANCES_BY_PREDICATE);
+            
+            getAllMatchingPredPrepStmnt = connection.prepareStatement(PrecisionBL.ALL_MATCHING_INSTANCES_BY_PREDICATE);
+            
+            getAllSubPredPrepStmnt = connection.prepareStatement(PrecisionBL.SUBJECT_PRECISION_SQL);
+            
+            getAllObjPredPrepStmnt = connection.prepareStatement(PrecisionBL.OBJECT_PRECISION_SQL);
+            
+            connection.setAutoCommit(false);
+            
+        } catch (SQLException ex) {
+            logger.error("Connection Failed for batchInit! Check output console" + ex.getMessage());
+        }
+    }
+    
+    
     /**
      * initiats the connection parameters
      * 
@@ -85,6 +124,9 @@ public class DBWrapper {
             // connection.prepareStatement(Constants.INSERT_BASE_LINE_REVERB);
 
             fetchCountsPrepstmnt = connection.prepareStatement(Constants.GET_LINK_COUNT);
+            
+            
+            getOccurancePredicatesPrepStmnt = connection.prepareStatement(PredicateMapper.GET_SAMPLE);
 
         } catch (SQLException ex) {
             logger.error("Connection Failed! Check output console" + ex.getMessage());
@@ -476,8 +518,8 @@ public class DBWrapper {
 
     public static long findPredMatches(String arg) {
         try {
-            pstmt.setString(1, arg);
-            ResultSet rs = pstmt.executeQuery();
+            getAllPredPrepStmnt.setString(1, arg);
+            ResultSet rs = getAllPredPrepStmnt.executeQuery();
 
             while (rs.next()) {
                 return rs.getLong(1);
@@ -561,12 +603,53 @@ public class DBWrapper {
         return aLL_URIS;
     }
 
+    
+    public static long findPerfectObjectMatches(String pred) {
+        int rsCount = 0;
+
+        try {
+            getAllObjPredPrepStmnt.setString(1, pred);
+            ResultSet rs = getAllObjPredPrepStmnt.executeQuery();
+
+            int size = rs.getRow() * rs.getMetaData().getColumnCount();
+
+            while (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+    
+    
+    public static long findPerfectSubjectMatches(String pred) {
+        int rsCount = 0;
+
+        try {
+            getAllSubPredPrepStmnt.setString(1, pred);
+            ResultSet rs = getAllSubPredPrepStmnt.executeQuery();
+
+            int size = rs.getRow() * rs.getMetaData().getColumnCount();
+
+            while (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+    
+    
     public static long findPerfectMatches(String pred) {
         int rsCount = 0;
 
         try {
-            pstmt.setString(1, pred);
-            ResultSet rs = pstmt.executeQuery();
+            getAllMatchingPredPrepStmnt.setString(1, pred);
+            ResultSet rs = getAllMatchingPredPrepStmnt.executeQuery();
 
             int size = rs.getRow() * rs.getMetaData().getColumnCount();
 
@@ -731,10 +814,10 @@ public class DBWrapper {
         List<String> results = new ArrayList<String>();
 
         try {
-            pstmt.setString(1, predicate);
-            pstmt.setString(2, key);
+            getOccurancePredicatesPrepStmnt.setString(1, predicate);
+            getOccurancePredicatesPrepStmnt.setString(2, key);
 
-            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = getOccurancePredicatesPrepStmnt.executeQuery();
 
             while (rs.next()) {
                 results.add(rs.getString(1) + GS_DELIMITER + rs.getString(2) + GS_DELIMITER
