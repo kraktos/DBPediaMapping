@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import de.dws.OIE.NellHierarchyApi;
 import de.dws.helper.dataObject.Pair;
 import de.dws.helper.dataObject.SuggestedFactDAO;
 import de.dws.helper.util.Constants;
@@ -56,20 +57,26 @@ public class DBWrapper {
     static PreparedStatement fetchCountsPrepstmnt = null;
 
     static PreparedStatement getOccurancePredicatesPrepStmnt = null;
-    
+
     // For precision values
     static PreparedStatement getAllPredPrepStmnt = null;
-        
+
     static PreparedStatement getAllMatchingPredPrepStmnt = null;
-    
+
     static PreparedStatement getAllSubPredPrepStmnt = null;
-    
+
     static PreparedStatement getAllObjPredPrepStmnt = null;
-    
-    
+
+    // For NELL class hierarchy api
+    static PreparedStatement getSupClassesPrepStmnt = null;
+    static PreparedStatement getSubClassesPrepStmnt = null;
+    static PreparedStatement getInvRelPrepStmnt = null;
+    static PreparedStatement getDisjClassPrepStmnt = null;
+
     static int batchCounter = 0;
 
-    public static void batchInit(){
+    public static void initNellReasoner() {
+
         try {
             // instantiate the DB connection
             dbConnection = new DBConnection();
@@ -78,22 +85,51 @@ public class DBWrapper {
             connection = dbConnection.getConnection();
 
             // create a statement
-            getAllPredPrepStmnt = connection.prepareStatement(PrecisionBL.ALL_INSTANCES_BY_PREDICATE);
-            
-            getAllMatchingPredPrepStmnt = connection.prepareStatement(PrecisionBL.ALL_MATCHING_INSTANCES_BY_PREDICATE);
-            
-            getAllSubPredPrepStmnt = connection.prepareStatement(PrecisionBL.SUBJECT_PRECISION_SQL);
-            
-            getAllObjPredPrepStmnt = connection.prepareStatement(PrecisionBL.OBJECT_PRECISION_SQL);
-            
+            getSupClassesPrepStmnt = connection
+                    .prepareStatement(NellHierarchyApi.GET_ALL_SUPER_CLASSES);
+
+            getSubClassesPrepStmnt = connection
+                    .prepareStatement(NellHierarchyApi.GET_ALL_SUB_CLASSES);
+
+            getInvRelPrepStmnt = connection
+                    .prepareStatement(NellHierarchyApi.GET_INV_REL);
+
+            getDisjClassPrepStmnt = connection
+                    .prepareStatement(NellHierarchyApi.GET_DISJ_CLASSES);
+
             connection.setAutoCommit(false);
-            
+
         } catch (SQLException ex) {
             logger.error("Connection Failed for batchInit! Check output console" + ex.getMessage());
         }
     }
-    
-    
+
+    public static void batchInit() {
+        try {
+            // instantiate the DB connection
+            dbConnection = new DBConnection();
+
+            // retrieve the freshly created connection instance
+            connection = dbConnection.getConnection();
+
+            // create a statement
+            getAllPredPrepStmnt = connection
+                    .prepareStatement(PrecisionBL.ALL_INSTANCES_BY_PREDICATE);
+
+            getAllMatchingPredPrepStmnt = connection
+                    .prepareStatement(PrecisionBL.ALL_MATCHING_INSTANCES_BY_PREDICATE);
+
+            getAllSubPredPrepStmnt = connection.prepareStatement(PrecisionBL.SUBJECT_PRECISION_SQL);
+
+            getAllObjPredPrepStmnt = connection.prepareStatement(PrecisionBL.OBJECT_PRECISION_SQL);
+
+            connection.setAutoCommit(false);
+
+        } catch (SQLException ex) {
+            logger.error("Connection Failed for batchInit! Check output console" + ex.getMessage());
+        }
+    }
+
     /**
      * initiats the connection parameters
      * 
@@ -124,9 +160,9 @@ public class DBWrapper {
             // connection.prepareStatement(Constants.INSERT_BASE_LINE_REVERB);
 
             fetchCountsPrepstmnt = connection.prepareStatement(Constants.GET_LINK_COUNT);
-            
-            
-            getOccurancePredicatesPrepStmnt = connection.prepareStatement(PredicateMapper.GET_SAMPLE);
+
+            getOccurancePredicatesPrepStmnt = connection
+                    .prepareStatement(PredicateMapper.GET_SAMPLE);
 
         } catch (SQLException ex) {
             logger.error("Connection Failed! Check output console" + ex.getMessage());
@@ -454,6 +490,35 @@ public class DBWrapper {
             } catch (Exception excp) {
             }
         }
+
+        if (getSupClassesPrepStmnt != null) {
+            try {
+                getSupClassesPrepStmnt.close();
+            } catch (Exception excp) {
+            }
+        }
+
+        if (getSubClassesPrepStmnt != null) {
+            try {
+                getSubClassesPrepStmnt.close();
+            } catch (Exception excp) {
+            }
+        }
+
+        if (getInvRelPrepStmnt != null) {
+            try {
+                getInvRelPrepStmnt.close();
+            } catch (Exception excp) {
+            }
+        }
+
+        if (getDisjClassPrepStmnt != null) {
+            try {
+                getDisjClassPrepStmnt.close();
+            } catch (Exception excp) {
+            }
+        }
+
         dbConnection.shutDown();
 
     }
@@ -603,7 +668,6 @@ public class DBWrapper {
         return aLL_URIS;
     }
 
-    
     public static long findPerfectObjectMatches(String pred) {
         int rsCount = 0;
 
@@ -622,8 +686,7 @@ public class DBWrapper {
 
         return 0;
     }
-    
-    
+
     public static long findPerfectSubjectMatches(String pred) {
         int rsCount = 0;
 
@@ -642,8 +705,7 @@ public class DBWrapper {
 
         return 0;
     }
-    
-    
+
     public static long findPerfectMatches(String pred) {
         int rsCount = 0;
 
@@ -868,4 +930,67 @@ public class DBWrapper {
         }
 
     }
+
+    public static String getSuper(String arg) {
+        try {
+            getSupClassesPrepStmnt.setString(1, arg);
+            ResultSet rs = getSupClassesPrepStmnt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public static List<String> getSub(String arg) {
+        List<String> subClasses = new ArrayList<String>();
+
+        try {
+            getSubClassesPrepStmnt.setString(1, arg);
+            ResultSet rs = getSubClassesPrepStmnt.executeQuery();
+
+            while (rs.next()) {
+                subClasses.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subClasses;
+    }
+
+    public static String getInverseRel(String arg) {
+        try {
+            getInvRelPrepStmnt.setString(1, arg);
+            ResultSet rs = getInvRelPrepStmnt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public static List<String> getDisjClasses(String arg) {
+        List<String> subClasses = new ArrayList<String>();
+
+        try {
+            getSubClassesPrepStmnt.setString(1, arg);
+            ResultSet rs = getSubClassesPrepStmnt.executeQuery();
+
+            while (rs.next()) {
+                subClasses.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subClasses;
+    }
+
 }
