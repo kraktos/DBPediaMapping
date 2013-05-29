@@ -82,6 +82,8 @@ public class GenericConverter {
 
         boolean isConcept = false;
 
+        List<String> listDisjClasses = null;
+
         OWLCreator owlCreator = new OWLCreator(Constants.OIE_ONTOLOGY_NAMESPACE);
 
         for (Map.Entry<String, List<Pair<String, String>>> entry : NELL_CATG_RELTNS.entrySet()) {
@@ -100,12 +102,23 @@ public class GenericConverter {
                     // domain range restriction
                     owlCreator.creatDomainRangeRestriction(key.replaceAll(":", "_"),
                             domain.replaceAll(":", "_"), range.replaceAll(":", "_"));
+                }
 
-                    //inverse
+                if (inverse != null) {
+                    // inverse
                     owlCreator.createInverseRelations(key.replaceAll(":", "_"),
                             inverse.replaceAll(":", "_"));
+
                 }
             }
+
+            if (isConcept) {
+                listDisjClasses = getDisjointClasses(key);
+                
+                //disjoint
+                owlCreator.createDisjointClasses(key.replaceAll(":", "_"), listDisjClasses);
+            }
+
         }
 
         // flush to file

@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
@@ -98,6 +99,28 @@ public class OWLCreator {
      */
     public OWLOntology getOntology() {
         return ontology;
+    }
+
+    /**
+     * disjoint classes creation
+     * 
+     * @param key
+     * @param listDisjClasses
+     */
+    public void createDisjointClasses(String key, List<String> listDisjClasses) {
+        OWLClass ieProperty = factory.getOWLClass(key, prefixIE);
+        OWLDisjointClassesAxiom disjointClassesAxiom = null;
+        OWLClass disClass = null;
+
+        for (String cls : listDisjClasses) {
+            disClass = factory.getOWLClass(cls.replaceAll(":", "_"), prefixIE);
+
+            disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(
+                    ieProperty, disClass);
+
+            // add to the manager as hard constraints
+            manager.addAxiom(ontology, disjointClassesAxiom);
+        }
     }
 
     /**
