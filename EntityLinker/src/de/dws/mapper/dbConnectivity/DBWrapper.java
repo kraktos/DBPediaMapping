@@ -445,6 +445,31 @@ public class DBWrapper {
         }
     }
 
+    
+    public static List<String> fetchTopKWikiTitles(String arg, int topK) {
+        ResultSet rs = null;
+        List<String> results = null;
+
+        try {
+            pstmt.setString(1, arg);
+            pstmt.setInt(2, topK);
+            
+            // run the query finally
+            rs = pstmt.executeQuery();
+            results = new ArrayList<String>();
+
+            while (rs.next()) {
+                results.add(rs.getString(1)+"~~"+rs.getLong(2));
+            }
+
+        } catch (Exception e) {
+            logger.error(" exception while fetching " + arg + " " + e.getMessage());
+        }
+
+        return results;
+    }
+
+    
     public static List<String> fetchWikiTitles(String arg) {
         ResultSet rs = null;
         List<String> results = null;
@@ -991,6 +1016,23 @@ public class DBWrapper {
             e.printStackTrace();
         }
         return subClasses;
+    }
+
+    public static List<String> getCanonForms(List<String> listSurfaceForms) {
+        try {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                listSurfaceForms.add(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return listSurfaceForms;
+
     }
 
 }

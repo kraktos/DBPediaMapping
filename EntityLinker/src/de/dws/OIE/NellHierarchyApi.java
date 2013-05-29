@@ -49,7 +49,14 @@ public class NellHierarchyApi {
 
         getDisjointClasses("buildinglocatedincity");
 
+        isDisjoint("", "");
+
         DBWrapper.shutDown();
+    }
+
+    private static void isDisjoint(String arg1, String arg2) {
+        // TODO Auto-generated method stub
+
     }
 
     /**

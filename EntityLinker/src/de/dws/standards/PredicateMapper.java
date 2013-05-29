@@ -52,7 +52,7 @@ public class PredicateMapper {
      */
     public static void main(String[] args) {
         PropertyConfigurator
-                .configure("/home/arnab/Workspaces/SchemaMapping/EntityLinker/log4j.properties");
+                .configure("/resources/log4j.properties");
 
         loadNELLPredicates();
 
