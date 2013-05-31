@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
@@ -64,6 +65,8 @@ public class OWLCreator {
     PrefixManager prefixDBPedia = null;
 
     PrefixManager prefixIE = null;
+    PrefixManager prefixPredicateIE = null;
+    PrefixManager prefixConceptIE = null;
 
     /**
      * a list of Axioms, essentially these are weighted and hence soft
@@ -92,6 +95,12 @@ public class OWLCreator {
         prefixDBPedia = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_DBP_NS).toString());
         prefixIE = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_EXTRACTION_NS).toString());
 
+        prefixPredicateIE = new DefaultPrefixManager(IRI.create(
+                Constants.ONTOLOGY_EXTRACTION_PREDICATE_NS).toString());
+
+        prefixConceptIE = new DefaultPrefixManager(IRI.create(
+                Constants.ONTOLOGY_EXTRACTION_CONCEPT_NS).toString());
+
     }
 
     /**
@@ -108,12 +117,13 @@ public class OWLCreator {
      * @param listDisjClasses
      */
     public void createDisjointClasses(String key, List<String> listDisjClasses) {
-        OWLClass ieProperty = factory.getOWLClass(key, prefixIE);
         OWLDisjointClassesAxiom disjointClassesAxiom = null;
         OWLClass disClass = null;
 
+        OWLClass ieProperty = factory.getOWLClass(key, prefixConceptIE);
+
         for (String cls : listDisjClasses) {
-            disClass = factory.getOWLClass(cls.replaceAll(":", "_"), prefixIE);
+            disClass = factory.getOWLClass(cls.replaceAll(":", "_"), prefixConceptIE);
 
             disjointClassesAxiom = factory.getOWLDisjointClassesAxiom(
                     ieProperty, disClass);
@@ -131,16 +141,53 @@ public class OWLCreator {
      */
     public void createInverseRelations(String predicate, String inverse) {
         OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
-                predicate, prefixIE);
+                predicate, prefixPredicateIE);
 
         OWLObjectProperty ieInverseProperty = factory.getOWLObjectProperty(
-                inverse, prefixIE);
+                inverse, prefixPredicateIE);
 
         OWLInverseObjectPropertiesAxiom inverseAxiom = factory.getOWLInverseObjectPropertiesAxiom(
                 ieProperty, ieInverseProperty);
 
         // add to the manager as hard constraints
         manager.addAxiom(ontology, inverseAxiom);
+    }
+
+    /**
+     * creates a subsumption axiom between two classes
+     * 
+     * @param subsumes child class
+     * @param supCls parent class
+     * @param isClass is a predicate or a concept
+     */
+    public void createSubsumption(String subsumes, List<String> supCls, int isClass) {
+
+        OWLClass subsumpCls = null;
+        OWLClass cls = null;
+        OWLSubClassOfAxiom subClassAxiom = null;
+
+        if (isClass == 1) {
+            for (String supClass : supCls) {
+                subsumpCls = factory.getOWLClass(subsumes, prefixConceptIE);
+                cls = factory.getOWLClass(supClass, prefixConceptIE);
+
+                subClassAxiom = factory.getOWLSubClassOfAxiom(subsumpCls, cls);
+
+                // add to the manager as hard constraints
+                manager.addAxiom(ontology, subClassAxiom);
+            }
+        }
+        if (isClass == 0) {
+            for (String supClass : supCls) {
+                subsumpCls = factory.getOWLClass(subsumes, prefixPredicateIE);
+                cls = factory.getOWLClass(supClass, prefixPredicateIE);
+
+                subClassAxiom = factory.getOWLSubClassOfAxiom(subsumpCls, cls);
+
+                // add to the manager as hard constraints
+                manager.addAxiom(ontology, subClassAxiom);
+            }
+        }
     }
 
     /**
@@ -156,10 +203,11 @@ public class OWLCreator {
                 predicate, prefixIE);
 
         // also add domain range restriction on the property
-        OWLClass domainCls = factory.getOWLClass(IRI.create(Constants.ONTOLOGY_EXTRACTION_NS
-                + domain));
+        OWLClass domainCls = factory.getOWLClass(IRI
+                .create(Constants.ONTOLOGY_EXTRACTION_CONCEPT_NS
+                        + domain));
         OWLClass rangeCls = factory.getOWLClass(IRI
-                .create(Constants.ONTOLOGY_EXTRACTION_NS + range));
+                .create(Constants.ONTOLOGY_EXTRACTION_CONCEPT_NS + range));
 
         OWLObjectPropertyDomainAxiom domainAxiom = factory.getOWLObjectPropertyDomainAxiom(
                 ieProperty,

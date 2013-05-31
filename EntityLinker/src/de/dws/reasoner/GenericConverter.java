@@ -36,15 +36,23 @@ public class GenericConverter {
     // hierarchy
     static Map<String, List<Pair<String, String>>> NELL_CATG_RELTNS = new HashMap<String, List<Pair<String, String>>>();
 
+    // how domain property is defined in NELL
     private static final String DOMAIN_DEFN = "domain";
+
+    // how range is defined in NELL
     private static final String RANGE_DEFN = "range";
 
+    // disjointness property definition
     private static final String DISJOINT_DEFN = "mutexpredicates";
 
+    // inverse property definition
     private static final String INVERSE_DEFN = "inverse";
 
     // is it a concept or predicate is defined by this relation ..
     private static final String MEMBER_TYPE_DEFN = "memberofsets";
+
+    // subsumption definition
+    private static final String SUBSUMP_DEFN = "generalizations";
 
     // ..and by these four values
     private static final String CATG_TYPE_DEFN_I = "concept:rtwcategory";
@@ -83,18 +91,28 @@ public class GenericConverter {
         boolean isConcept = false;
 
         List<String> listDisjClasses = null;
+        List<String> supCls = null;
 
         OWLCreator owlCreator = new OWLCreator(Constants.OIE_ONTOLOGY_NAMESPACE);
 
         for (Map.Entry<String, List<Pair<String, String>>> entry : NELL_CATG_RELTNS.entrySet()) {
+            // get the key
             key = entry.getKey();
-            inverse = getInverse(key);
 
+            // check if this is a concept or predicate
             isConcept = isConcept(key);
 
+            // get its super type
+            supCls = isTypeOf(key);
+
+            // ******* FOR RELATIONS
+            // **********************************************
+            // only predicates will have domain range restrictions and inverses
             if (!isConcept) {
+                // get domain and range
                 domain = getDomain(key);
                 range = getRange(key);
+
                 if (domain != null && range != null) {
                     logger.info(domain + "  " + key + "  " + range);
 
@@ -104,21 +122,35 @@ public class GenericConverter {
                             domain.replaceAll(":", "_"), range.replaceAll(":", "_"));
                 }
 
+                // get the inverse
+                inverse = getInverse(key);
+
                 if (inverse != null) {
                     // inverse
                     owlCreator.createInverseRelations(key.replaceAll(":", "_"),
                             inverse.replaceAll(":", "_"));
 
                 }
+
+                if (supCls != null) {
+                    owlCreator.createSubsumption(key.replaceAll(":", "_"),
+                            supCls, 0);
+                }
             }
 
+            // ******* FOR CONCEPTS
+            // ***********************************************
             if (isConcept) {
                 listDisjClasses = getDisjointClasses(key);
-                
-                //disjoint
-                owlCreator.createDisjointClasses(key.replaceAll(":", "_"), listDisjClasses);
-            }
 
+                // disjoint
+                owlCreator.createDisjointClasses(key.replaceAll(":", "_"), listDisjClasses);
+
+                if (supCls != null) {
+                    owlCreator.createSubsumption(key.replaceAll(":", "_"),
+                            supCls, 1);
+                }
+            }
         }
 
         // flush to file
@@ -151,8 +183,6 @@ public class GenericConverter {
                     elements = line.split(delimiter);
 
                     if (elements.length == 3) {
-                        // logger.info(elements[0] + "=== " + elements[1] +
-                        // "  ===  " + elements[2]);
 
                         // create a custom data structure with these elements
                         pair = new Pair<String, String>(elements[1], elements[2]);
@@ -176,6 +206,24 @@ public class GenericConverter {
         } catch (IOException e) {
             logger.info("Error processing " + line + " " + e.getMessage());
         }
+    }
+
+    /**
+     * get super concept/property of a given property
+     * 
+     * @param arg property
+     * @return immediate super concept
+     */
+    private static List<String> isTypeOf(String arg) {
+
+        List<String> retList = new ArrayList<String>();
+
+        List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
+        for (Pair<String, String> pair : list) {
+            if (pair.getFirst().equals(SUBSUMP_DEFN))
+                retList.add(pair.getSecond().replaceAll(":", "_"));
+        }
+        return retList;
     }
 
     /**
