@@ -62,9 +62,7 @@ public class OWLCreator {
     /**
      * PrefixManager instance
      */
-    PrefixManager prefixDBPedia = null;
 
-    PrefixManager prefixIE = null;
     PrefixManager prefixPredicateIE = null;
     PrefixManager prefixConceptIE = null;
 
@@ -92,8 +90,6 @@ public class OWLCreator {
         factory = manager.getOWLDataFactory();
 
         // set up a prefix manager to make things easier
-        prefixDBPedia = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_DBP_NS).toString());
-        prefixIE = new DefaultPrefixManager(IRI.create(Constants.ONTOLOGY_EXTRACTION_NS).toString());
 
         prefixPredicateIE = new DefaultPrefixManager(IRI.create(
                 Constants.ONTOLOGY_EXTRACTION_PREDICATE_NS).toString());
@@ -200,7 +196,7 @@ public class OWLCreator {
     public void creatDomainRangeRestriction(String predicate, String domain, String range) {
 
         OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
-                predicate, prefixIE);
+                predicate, prefixPredicateIE);
 
         // also add domain range restriction on the property
         OWLClass domainCls = factory.getOWLClass(IRI
