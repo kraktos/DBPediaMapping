@@ -8,18 +8,27 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+
+import com.clarkparsia.owlapi.explanation.PelletExplanation;
+import com.clarkparsia.pellet.owlapiv3.PelletReasoner;
+import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
 
 import de.dws.helper.util.Constants;
 
@@ -59,6 +68,7 @@ public class MLNFormulater {
      * location where evidences of the model are dumped
      */
     private static final String MLN_EVIDENCE_FILE = "resources/evidence.db";
+    private static final String MLN_MAT_EVIDENCE_FILE = "resources/evidenceMaterialized.db";
 
     public MLNFormulater(String owlFilePath) {
         // create the manager
@@ -96,15 +106,115 @@ public class MLNFormulater {
                 .configure("resources/log4j.properties");
 
         try {
-            new MLNFormulater(
-                    "resources/NellOntology.owl")
-                    .convertOWLToMLN();
+            if (true) {
+                new MLNFormulater(
+                        "resources/NellOntology.owl")
+                        .convertOWLToMaterializedMLN();
+                logger.info("Done writing to " + MLN_MAT_EVIDENCE_FILE);
+            }
+            else {
+                new MLNFormulater(
+                        "resources/NellOntology.owl")
+                        .convertOWLToMLN();
+
+                logger.info("Done writing to " + MLN_EVIDENCE_FILE);
+            }
+
         } catch (IOException e) {
             logger.error("Error reading owl file ");
         }
     }
 
     /**
+     * Creates a MLN from the provided input owl file. This is materialized
+     * ontology.
+     * 
+     * @throws IOException
+     */
+    public void convertOWLToMaterializedMLN() throws IOException {
+        String value = null;
+
+        Set<OWLClass> setClasses = null;
+        NodeSet<OWLClass> subClasses = null;
+        NodeSet<OWLClass> disjClasses = null;
+
+        // the file where the evidences for the MLN are written out
+        FileWriter fw = new FileWriter(MLN_MAT_EVIDENCE_FILE);
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        // Use Pellet
+        PelletExplanation.setup();
+        logger.info("loaded pellet ");
+
+        // Create the reasoner and load the ontology
+        PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+        logger.info("loaded reasoner ");
+
+        // Create an explanation generator
+        PelletExplanation expGen = new PelletExplanation(reasoner);
+        logger.info("loaded explaination ");
+
+        // iterate over all axioms in the loaded ontology
+        HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontology.getAxioms();
+        for (OWLAxiom axiom : allAxioms) {
+            // if os subclass type (concepts and predicates both)
+            if (axiom.getAxiomType() == AxiomType.SUBCLASS_OF) {
+
+                // get the classes involved, here order doesnot matter
+                setClasses = axiom.getClassesInSignature();
+
+                for (OWLClass arg1Class : setClasses) {
+
+                    // ask reasoner who are its sub classes
+                    subClasses = reasoner.getSubClasses(arg1Class, true);
+
+                    // pair with each one of them and form a subsumption
+                    // relation
+                    for (Node<OWLClass> arg2Class : subClasses) {
+
+                        value = alterSemantics(axiom.getAxiomType().toString(),
+                                arg2Class.toString(), arg1Class.toString());
+
+                        if (value != null) {
+                            writeToFile(value, arg2Class.toString(),
+                                    arg1Class.toString(), bw);
+                        }
+                    }
+                }
+            }
+
+            if (axiom.getAxiomType() == AxiomType.DISJOINT_CLASSES) {
+                // get the classes involved, here order doesnot matter
+                setClasses = axiom.getClassesInSignature();
+
+                for (OWLClass arg1Class : setClasses) {
+
+                    // ask reasoner who are its disjoint classes
+                    disjClasses = reasoner.getDisjointClasses(arg1Class);
+
+                    // pair with each one of them and form a subsumption
+                    // relation
+                    for (Node<OWLClass> arg2Class : disjClasses) {
+
+                        value = alterSemantics(axiom.getAxiomType().toString(),
+                                arg2Class.toString(), arg1Class.toString());
+
+                        if (value != null) {
+                            writeToFile(value, arg2Class.toString(),
+                                    arg1Class.toString(), bw);
+                        }
+                    }
+                }
+            }
+        }
+        // close the stream
+        bw.close();
+    }
+
+    /**
+     * Creates a MLN from the provided input owl file. This is non-materialized
+     * ontology
+     * 
      * @throws IOException
      */
     public void convertOWLToMLN() throws IOException {
@@ -139,15 +249,13 @@ public class MLNFormulater {
                             arg1, arg2);
 
                     if (value != null) {
-                        bw.write(value + "(" + removeTags(arg1)
-                                + ", " + removeTags(arg2) + ")\n");
+                        writeToFile(value, arg1, arg2, bw);
                     }
                 }
             }
         }
         // close the stream
         bw.close();
-        logger.info("Done writing to " + MLN_EVIDENCE_FILE);
     }
 
     /**
@@ -180,7 +288,7 @@ public class MLNFormulater {
     }
 
     /**
-     * cleanes of the "<" or ">" on the concepts
+     * cleans of the "<" or ">" on the concepts
      * 
      * @param arg value to be cleaned
      * @return
@@ -190,6 +298,20 @@ public class MLNFormulater {
         arg = arg.toString().replaceAll("<", "");
         arg = arg.replaceAll(">", "");
         arg = arg.replaceAll("\\)", "");
-        return "\"" + arg + "\"";
+        arg = arg.replaceAll("Node\\(", "");
+        return "\"" + arg.trim() + "\"";
+    }
+
+    /**
+     * @param arg1
+     * @param arg2
+     * @param axiomType
+     * @param bw
+     * @throws IOException
+     */
+    public void writeToFile(String axiomType, String arg1, String arg2, BufferedWriter bw)
+            throws IOException {
+        bw.write(axiomType + "(" + removeTags(arg1)
+                + ", " + removeTags(arg2) + ")\n");
     }
 }
