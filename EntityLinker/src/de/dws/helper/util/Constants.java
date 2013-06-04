@@ -291,6 +291,9 @@ public class Constants
      * namespace of the ontology to be used for creation of the axiom files
      */
     public static String ONTOLOGY_NAMESPACE = "http://dbpedia.org/ontology/";
+    public static String DBPEDIA_NAMESPACE = "http://dbpedia.org/";
+    
+    public static String OIE_ONTOLOGY_NAMESPACE = "OpenInfoExtraction#";
 
     /**
      * DBPedia namespace
@@ -301,7 +304,15 @@ public class Constants
      * extraction engine namespace
      */
     public static String ONTOLOGY_EXTRACTION_NS = ONTOLOGY_NAMESPACE + "Extract#";
-
+    
+    public static String ONTOLOGY_EXTRACTION_CONCEPT_NS = OIE_ONTOLOGY_NAMESPACE + "Concept/";
+    public static String ONTOLOGY_EXTRACTION_PREDICATE_NS = OIE_ONTOLOGY_NAMESPACE + "Predicate/";
+    public static String ONTOLOGY_EXTRACTION_INSTANCE_NS = OIE_ONTOLOGY_NAMESPACE + "Instance/";
+    
+    public static String DBPEDIA_CONCEPT_NS = DBPEDIA_NAMESPACE + "ontology/";
+    public static String DBPEDIA_PREDICATE_NS = DBPEDIA_NAMESPACE + "ontology/";
+    public static String DBPEDIA_INSTANCE_NS = DBPEDIA_NAMESPACE + "resource/";
+    
     /**
      * DBPedia TBOX info file
      */

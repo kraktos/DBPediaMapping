@@ -15,8 +15,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+
 import de.dws.helper.dataObject.Pair;
 import de.dws.helper.util.Constants;
+import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import de.dws.reasoner.owl.OWLCreator;
 
 /**
@@ -29,8 +34,6 @@ public class GenericConverter {
 
     // define Logger
     static Logger logger = Logger.getLogger(GenericConverter.class.getName());
-
-    private static final String NELL_ONTOLOGY_FILE = "resources/NellOntology.owl";
 
     // data structure to hold the pairs of NELL categories and relations and its
     // hierarchy
@@ -54,6 +57,10 @@ public class GenericConverter {
     // subsumption definition
     private static final String SUBSUMP_DEFN = "generalizations";
 
+    public enum TYPE {
+        NELL_ONTO, NELL_PRED_ANNO, NELL_CLASS_ANNO, NELL_ABOX; // ; is optional
+    }
+
     // ..and by these four values
     private static final String CATG_TYPE_DEFN_I = "concept:rtwcategory";
     private static final String CATG_TYPE_DEFN_II = "rtwcategory";
@@ -65,24 +72,172 @@ public class GenericConverter {
      * 
      * @param inputCsvFile input file
      * @param delimit delimiter of input file
+     * @param outputOwlFile
+     * @param
      */
-    public static void convertCsvToOwl(String inputCsvFile, String delimit) {
-        loadCsvInMemory(inputCsvFile, delimit);
+    public static void convertCsvToOwl(String inputCsvFile, String delimit, TYPE type,
+            String outputOwlFile) {
+        // If we are processing the baseline vs nell triple, no need to load it
+        // in memory
+        // since, we can readily convert the rows to a set of assertion
+        // statements
+        if (!type.equals(TYPE.NELL_ABOX)) {
+            loadCsvInMemory(inputCsvFile, delimit);
 
-        try {
-            createOwlFile();
-        } catch (OWLOntologyCreationException e) {
-            e.printStackTrace();
+            try {
+                createOwlFile(type, outputOwlFile);
+            } catch (OWLOntologyCreationException e) {
+                e.printStackTrace();
+            }
+        }
+        else { // deal NELL ABox stuff separately
+            try {
+                readCsvAndCreateOwlFile(inputCsvFile, delimit, outputOwlFile);
+            } catch (OWLOntologyCreationException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     /**
-     * creates the owl file reading the contents of the csv file loaded in
-     * memory
+     * creates the owl file reading the contents of the csv file.
      * 
+     * @param inputCsvFile input csv file
+     * @param delimit delimiter of csv file
+     * @param outputOwlFile output pwl file path
      * @throws OWLOntologyCreationException
      */
-    private static void createOwlFile() throws OWLOntologyCreationException {
+    private static void readCsvAndCreateOwlFile(String inputCsvFile, String delimit,
+            String outputOwlFile)
+            throws OWLOntologyCreationException {
+
+        String line = null;
+        BufferedReader tupleReader;
+        String[] elements = null;
+
+        // Nell specific variables;
+        String nellSub = null;
+        String nellSubType = null;
+
+        String nellObj = null;
+        String nellObjType = null;
+
+        String blSubjInst = null;
+        String blObjInst = null;
+
+        List<String> listTypes = null;
+
+        OWLCreator owlCreator = new OWLCreator(Constants.OIE_ONTOLOGY_NAMESPACE);
+
+        try {
+            tupleReader = new BufferedReader(new FileReader(inputCsvFile));
+            if (tupleReader != null) {
+                while ((line = tupleReader.readLine()) != null) {
+                    elements = line.split(delimit);
+                    if (elements.length == 8) {
+                        nellSub = getInst(elements[0]);
+                        nellObj = getInst(elements[2]);
+                        blSubjInst = removeHeader(elements[6]);
+                        blObjInst = removeHeader(elements[7]);
+                        nellSubType = getType(elements[0]);
+                        nellObjType = getType(elements[2]);
+
+                        logger.info(nellSub + " " + nellSubType + " " + nellObj + " " + nellObjType
+                                + "  " + blSubjInst + " " + blObjInst);
+
+                        listTypes = getInstanceTypes(blSubjInst);
+                        if (listTypes.size() > 0) {
+                            if (nellSub != null && nellSubType != null) {
+
+                                // type assertion
+                                owlCreator.createIsTypeOf(blSubjInst, listTypes);
+                                owlCreator.createIsTypeOf(nellSub, nellSubType);
+
+                                // same as
+                                owlCreator.createSameAs(nellSub, blSubjInst);
+
+                            }
+                        }
+
+                        listTypes = getInstanceTypes(blObjInst);
+                        if (listTypes.size() > 0) {
+                            if (nellObj != null && nellObjType != null) {
+
+                                // type assertion
+                                owlCreator.createIsTypeOf(blObjInst, listTypes);
+                                owlCreator.createIsTypeOf(nellObj, nellObjType);
+
+                                // same as
+                                owlCreator.createSameAs(nellObj, blObjInst);
+                            }
+                        }
+                    }
+                }
+
+                // flush to file
+                owlCreator.createOutput(outputOwlFile);
+            }
+        } catch (IOException e) {
+            logger.info("Error processing " + line + " " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * get type of a given instance
+     * 
+     * @param inst instance
+     * @return list of its type
+     */
+    private static List<String> getInstanceTypes(String inst) {
+        List<String> result = new ArrayList<String>();
+
+        try {
+            ResultSet results = null;
+            String sparqlQuery = "select ?val where{ <http://dbpedia.org/resource/" + inst
+                    + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val} ";
+
+            // fetch the result set
+            results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
+            List<QuerySolution> listResults = ResultSetFormatter.toList(results);
+
+            for (QuerySolution querySol : listResults) {
+                if (querySol.get("val").toString().indexOf(Constants.DBPEDIA_CONCEPT_NS) != -1)
+                    result.add(removeHeader(querySol.get("val").toString()));
+            }
+        } catch (Exception e) {
+            logger.info("");
+        }
+        return result;
+    }
+
+    private static String getInst(String arg) {
+
+        if (arg.indexOf(":") != -1)
+            return arg.substring(arg.indexOf(":") + 1, arg.length());
+        else
+            return null;
+    }
+
+    private static String getType(String arg) {
+        if (arg.indexOf(":") != -1)
+            return arg.substring(0, arg.indexOf(":"));
+        else
+            return null;
+    }
+
+    /**
+     * creates the owl file reading the contents of the csv file loaded in
+     * memory. Basically, the csv input file can be the NELL ontology or the
+     * predicate mapping annotated file, so we require slightly different way of
+     * parsing the files
+     * 
+     * @param type type of inpput file, NELL or annotated file
+     * @param outputOwlFile
+     * @throws OWLOntologyCreationException
+     */
+    private static void createOwlFile(TYPE type, String outputOwlFile)
+            throws OWLOntologyCreationException {
         String key = null;
         String domain = null;
         String range = null;
@@ -90,8 +245,14 @@ public class GenericConverter {
 
         boolean isConcept = false;
 
+        // for NELL ontology
         List<String> listDisjClasses = null;
         List<String> supCls = null;
+
+        // for Nell predicate matches
+        List<String> subClasses = null;
+        List<String> supClasses = null;
+        List<String> equivClasses = null;
 
         OWLCreator owlCreator = new OWLCreator(Constants.OIE_ONTOLOGY_NAMESPACE);
 
@@ -99,62 +260,88 @@ public class GenericConverter {
             // get the key
             key = entry.getKey();
 
-            // check if this is a concept or predicate
-            isConcept = isConcept(key);
+            if (type.equals(TYPE.NELL_ONTO)) {
+                // check if this is a concept or predicate
+                isConcept = isConcept(key);
+                // get its super type
+                supCls = isTypeOf(key);
+                // ******* FOR RELATIONS
+                // **********************************************
+                // only predicates will have domain range restrictions and
+                // inverses
+                if (!isConcept) {
+                    // get domain and range
+                    domain = getDomain(key);
+                    range = getRange(key);
 
-            // get its super type
-            supCls = isTypeOf(key);
+                    if (domain != null && range != null) {
+                        logger.info(domain + "  " + key + "  " + range);
 
-            // ******* FOR RELATIONS
-            // **********************************************
-            // only predicates will have domain range restrictions and inverses
-            if (!isConcept) {
-                // get domain and range
-                domain = getDomain(key);
-                range = getRange(key);
+                        // create an ontology with these values
+                        // domain range restriction
+                        owlCreator.creatDomainRangeRestriction(key.replaceAll(":", "_"),
+                                domain.replaceAll(":", "_"), range.replaceAll(":", "_"));
+                    }
 
-                if (domain != null && range != null) {
-                    logger.info(domain + "  " + key + "  " + range);
+                    // get the inverse
+                    inverse = getInverse(key);
 
-                    // create an ontology with these values
-                    // domain range restriction
-                    owlCreator.creatDomainRangeRestriction(key.replaceAll(":", "_"),
-                            domain.replaceAll(":", "_"), range.replaceAll(":", "_"));
+                    if (inverse != null) {
+                        // inverse
+                        owlCreator.createInverseRelations(key.replaceAll(":", "_"),
+                                inverse.replaceAll(":", "_"));
+
+                    }
+
+                    if (supCls != null) {
+                        owlCreator.createSubsumption(key.replaceAll(":", "_"),
+                                supCls, 0);
+                    }
                 }
+                // ******* FOR CONCEPTS
+                // ***********************************************
+                if (isConcept) {
+                    listDisjClasses = getDisjointClasses(key);
 
-                // get the inverse
-                inverse = getInverse(key);
+                    // disjoint
+                    owlCreator.createDisjointClasses(key.replaceAll(":", "_"), listDisjClasses);
 
-                if (inverse != null) {
-                    // inverse
-                    owlCreator.createInverseRelations(key.replaceAll(":", "_"),
-                            inverse.replaceAll(":", "_"));
-
-                }
-
-                if (supCls != null) {
-                    owlCreator.createSubsumption(key.replaceAll(":", "_"),
-                            supCls, 0);
+                    if (supCls != null) {
+                        owlCreator.createSubsumption(key.replaceAll(":", "_"),
+                                supCls, 1);
+                    }
                 }
             }
 
-            // ******* FOR CONCEPTS
-            // ***********************************************
-            if (isConcept) {
-                listDisjClasses = getDisjointClasses(key);
+            // ****** FOR THE NELL PREDICATES MATCHINGS
+            // *****************************
+            if (type.equals(TYPE.NELL_PRED_ANNO)) {
+                // idea is get the set of predicates with subsumption relations
+                // or equivalence relation
+                subClasses = getSubClasses(key);
+                if (subClasses.size() > 0)
+                    logger.info(key + "  " + subClasses);
 
-                // disjoint
-                owlCreator.createDisjointClasses(key.replaceAll(":", "_"), listDisjClasses);
+                supClasses = getSupClasses(key);
+                if (supClasses.size() > 0)
+                    logger.info(key + "  " + supClasses);
 
-                if (supCls != null) {
-                    owlCreator.createSubsumption(key.replaceAll(":", "_"),
-                            supCls, 1);
-                }
+                equivClasses = getEquivClasses(key);
+                if(equivClasses.size() > 0)
+                    logger.info(key + "  " + equivClasses);
+
+                // with these bunch of sub and super classes, create subsumption
+                // relations as an owl ontology
+                owlCreator.createCrossDomainSubsumption(key, supClasses, 0, 0);
+                owlCreator.createCrossDomainSubsumption(key, subClasses, 1, 0);
+                
+                // add create the equivalent properties
+                owlCreator.createEquivalentProperties(key, equivClasses);
             }
         }
 
         // flush to file
-        owlCreator.createOutput(NELL_ONTOLOGY_FILE);
+        owlCreator.createOutput(outputOwlFile);
     }
 
     /**
@@ -162,6 +349,7 @@ public class GenericConverter {
      * 
      * @param filePath path of the input file
      * @param delimiter file delimiter
+     * @param dataType
      */
     private static void loadCsvInMemory(String filePath, String delimiter) {
 
@@ -182,31 +370,39 @@ public class GenericConverter {
                 while ((line = tupleReader.readLine()) != null) {
                     elements = line.split(delimiter);
 
+                    // processing logic for NELL
                     if (elements.length == 3) {
 
-                        // create a custom data structure with these elements
-                        pair = new Pair<String, String>(elements[1], elements[2]);
+                        // create a custom data structure with these
+                        // elements
+                        if (!elements[2].equals("INCORRECT")) {
+                            pair = new Pair<String, String>(elements[1], elements[2]);
 
-                        if (NELL_CATG_RELTNS.containsKey(elements[0])) {
-                            // get the list for this key
-                            listPairs = NELL_CATG_RELTNS.get(elements[0]);
+                            if (NELL_CATG_RELTNS.containsKey(elements[0])) {
+                                // get the list for this key
+                                listPairs = NELL_CATG_RELTNS.get(elements[0]);
 
-                            // check if the pair exists in the list, else add it
-                            if (!listPairs.contains(pair)) {
+                                // check if the pair exists in the list,
+                                // else add it
+                                if (!listPairs.contains(pair)) {
+                                    listPairs.add(pair);
+                                }
+                            } else {
+                                listPairs = new ArrayList<Pair<String, String>>();
                                 listPairs.add(pair);
+                                NELL_CATG_RELTNS.put(elements[0], listPairs);
                             }
-                        } else {
-                            listPairs = new ArrayList<Pair<String, String>>();
-                            listPairs.add(pair);
-                            NELL_CATG_RELTNS.put(elements[0], listPairs);
                         }
                     }
                 }
             }
+
         } catch (IOException e) {
             logger.info("Error processing " + line + " " + e.getMessage());
         }
     }
+
+    // ****************** FOR NELL ONTOLOGY *****************************
 
     /**
      * get super concept/property of a given property
@@ -311,6 +507,72 @@ public class GenericConverter {
                 retList.add(pair.getSecond());
         }
         return retList;
+    }
+
+    // ****************** FOR NELL PREDICATE MATCHES
+    // *****************************
+
+    /**
+     * get super classes(in DBPedia) of the nell property
+     * 
+     * @param arg nell predicate
+     * @return list of super classes
+     */
+    private static List<String> getSubClasses(String arg) {
+        List<String> retList = new ArrayList<String>();
+
+        List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
+        for (Pair<String, String> pair : list) {
+            if (pair.getSecond().equals("SUPPROP"))
+                retList.add(removeHeader(pair.getFirst()));
+        }
+        return retList;
+    }
+
+    /**
+     * get sub classes(in DBPedia) of the nell property
+     * 
+     * @param arg nell predicate
+     * @return list of sub classes
+     */
+    private static List<String> getSupClasses(String arg) {
+        List<String> retList = new ArrayList<String>();
+
+        List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
+        for (Pair<String, String> pair : list) {
+            if (pair.getSecond().equals("SUBPROP"))
+                retList.add(removeHeader(pair.getFirst()));
+        }
+        return retList;
+    }
+
+    /**
+     * get quivalent classes for a given class
+     * 
+     * @param arg provide class
+     * @return equivalent class
+     */
+    private static List<String> getEquivClasses(String arg) {
+        List<String> retList = new ArrayList<String>();
+
+        List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
+        for (Pair<String, String> pair : list) {
+            if (pair.getSecond().equals("EQUIV"))
+                retList.add(removeHeader(pair.getFirst()));
+        }
+        return retList;
+    }
+
+    // ***************************************************************
+    /**
+     * removes the DBpedia header uri information
+     * 
+     * @param arg
+     * @return
+     */
+    private static String removeHeader(String arg) {
+        return arg.replaceAll(Constants.DBPEDIA_PREDICATE_NS, "").replaceAll(
+                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":", ""); // TODO
     }
 
     public static void print() {
