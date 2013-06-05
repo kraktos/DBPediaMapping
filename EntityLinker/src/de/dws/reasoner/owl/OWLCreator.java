@@ -30,6 +30,7 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.util.OWLOntologyMerger;
 
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
@@ -280,7 +281,8 @@ public class OWLCreator {
                 manager.addAxiom(ontology, subPropAxiom);
 
                 // add it to list of soft constraints with high probability
-                //listAxioms.add(new Axiom(subPropAxiom, Utilities.convertProbabilityToWeight(1.0)));
+                // listAxioms.add(new Axiom(subPropAxiom,
+                // Utilities.convertProbabilityToWeight(1.0)));
             }
         }
     }
@@ -374,5 +376,28 @@ public class OWLCreator {
                     + path);
         }
     }
+
+    /*public static void merge(String inputOwlFile1, String inputOwlFile2, String mergedOutputOwlFile)
+            throws OWLOntologyCreationException {
+
+        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+
+        OWLOntology ontology = man.loadOntologyFromOntologyDocument(new File(inputOwlFile1));
+
+        OWLOntology ontology2 =
+                man.loadOntologyFromOntologyDocument(new File(
+                        inputOwlFile2));
+
+        // Create our ontology merger
+        OWLOntologyMerger merger = new OWLOntologyMerger(man);
+
+        System.out.println("Loaded onto 2");
+
+        IRI mergedOntologyIRI = IRI.create("http://www.semanticweb.com/mymergedont");
+        OWLOntology merged = merger.createMergedOntology(man, mergedOntologyIRI);
+
+        System.out.println("Loaded and merged");
+
+    }*/
 
 }

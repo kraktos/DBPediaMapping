@@ -5,6 +5,7 @@
 package de.dws.reasoner;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import com.hp.hpl.jena.query.QuerySolution;
@@ -327,14 +330,14 @@ public class GenericConverter {
                     logger.info(key + "  " + supClasses);
 
                 equivClasses = getEquivClasses(key);
-                if(equivClasses.size() > 0)
+                if (equivClasses.size() > 0)
                     logger.info(key + "  " + equivClasses);
 
                 // with these bunch of sub and super classes, create subsumption
                 // relations as an owl ontology
                 owlCreator.createCrossDomainSubsumption(key, supClasses, 0, 0);
                 owlCreator.createCrossDomainSubsumption(key, subClasses, 1, 0);
-                
+
                 // add create the equivalent properties
                 owlCreator.createEquivalentProperties(key, equivClasses);
             }
@@ -588,5 +591,20 @@ public class GenericConverter {
             }
         }
     }
+
+   /* public static void mergeOntologies(String inputOwlFile1, String inputOwlFile2,
+            String mergedOutputOwlFile) {
+
+        try {
+            OWLCreator.merge(inputOwlFile1, inputOwlFile2, mergedOutputOwlFile);
+        } catch (OWLOntologyCreationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new
+        // File(file1));
+
+    }*/
 
 }
