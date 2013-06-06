@@ -1,0 +1,1857 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://dws/OIE#"
+     xml:base="http://dws/OIE"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://dws/OIE#"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org/ontology/affiliation -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/affiliation">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/subpartof"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/subpartoforganization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/almaMater -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/almaMater">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/personattendsschool"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/associatedBand -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/associatedBand">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/musicianinmusicartist"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/personbelongstoorganization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/associatedMusicalArtist -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/associatedMusicalArtist">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/musicianinmusicartist"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/athletics -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/athletics">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/author -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/author"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/award -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/award"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/bandMember -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/bandMember">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/battle -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/battle">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/birthPlace -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/birthPlace"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/board -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/board">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/branchFrom -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/branchFrom"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/broadcastArea -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/broadcastArea"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/broadcastNetwork -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/broadcastNetwork">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/subpartoforganization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/campus -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/campus">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/canton -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/canton">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/capital -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/capital">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/child -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/child">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/hasfamilymember"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/city -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/city">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/class -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/class">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/animalistypeofanimal"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/specializationof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/country -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/country">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/county -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/county">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/countySeat -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/countySeat">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/creator -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/creator"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/currency -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/currency"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/debutTeam -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/debutTeam">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/athleteledsportsteam"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/athleteplaysforteam"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/district -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/district">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/division -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/division">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/domain -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/domain">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/draftTeam -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/draftTeam">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/athleteledsportsteam"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/athleteplaysforteam"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/employer -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/employer">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/personbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/worksfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/equipment -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/equipment"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/family -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/family">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/animalistypeofanimal"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/specializationof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/federalState -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/federalState">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/field -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/field"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/formerBandMember -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/formerBandMember">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/formerBroadcastNetwork -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/formerBroadcastNetwork">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/formerTeam -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/formerTeam">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/athleteledsportsteam"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/athleteplaysforteam"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/personbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/worksfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/foundationPlace -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/foundationPlace">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/foundedBy -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/foundedBy">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/garrison -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/garrison">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/genre -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/genre"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/genus -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/genus"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/ground -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/ground">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/teamhomestadium"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/headquarter -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/headquarter">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentactsinlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/headquarteredin"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/hometown -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/hometown">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/personbornincity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/hubAirport -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/hubAirport">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentactsinlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/ideology -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/ideology"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/industry -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/industry"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/ingredient -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/ingredient"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/instrument -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/instrument"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/isPartOf -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/isPartOf">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/subpartof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/isPartOfWineRegion -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/isPartOfWineRegion">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/locationlocatedwithinlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/subpartof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/jurisdiction -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/jurisdiction">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/keyPerson -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/keyPerson">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcontrols"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/kingdom -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/kingdom">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/animalistypeofanimal"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/specializationof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/knownFor -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/knownFor"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/largestCity -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/largestCity">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/locationlocatedwithinlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/league -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/league">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/athleteplaysinleague"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/leftTributary -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/leftTributary">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/riveremptiesintoriver"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/locatedInArea -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/locatedInArea">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/locationlocatedwithinlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/subpartof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/location -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/location">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/locationCity -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/locationCity">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/locationCountry -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/locationCountry">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentactsinlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/manager -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/manager"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/managerClub -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/managerClub">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/personbelongstoorganization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/mouthMountain -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/mouthMountain">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/mouthPlace -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/mouthPlace">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/movement -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/movement"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/nationality -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/nationality">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/personhascitizenship"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/nearestCity -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/nearestCity"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/notableWork -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/notableWork">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/agentcontributedtocreativework"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentcreated"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/occupation -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/occupation">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/personhasjobposition"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/operatedBy -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/operatedBy">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/operator -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/operator">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/order -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/order">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/animalistypeofanimal"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/specializationof"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/origin -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/origin"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/owner -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/owner">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/parent -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/parent">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/parentofperson"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/partner -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/partner"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/party -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/party">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/politicianusmemberofpoliticalgroup"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/phylum -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/phylum">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/animalistypeofanimal"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/place -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/place">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/populationPlace -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/populationPlace">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/president -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/president">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/politicianusendorsedbypoliticianus"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/product -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/product">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/producesproduct"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/profession -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/profession">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/personhasjobposition"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/region -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/region">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/regionServed -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/regionServed"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/religion -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/religion">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/personhasreligion"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/residence -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/residence">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/personhasresidenceingeopoliticallocation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/rightTributary -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/rightTributary">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/riveremptiesintoriver"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/river -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/river"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/riverMouth -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/riverMouth"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/routeStart -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/routeStart">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/sourceConfluenceState -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sourceConfluenceState">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/species -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/species">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/generalizations"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/spokenIn -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/spokenIn">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/sport -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sport"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/spouse -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/spouse">
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/hasspouse"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/state -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/state">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/atlocation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/stateOfOrigin -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/stateOfOrigin"/>
+    
+
+
+    <!-- http://dbpedia.org/ontology/subsidiary -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/subsidiary">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/subpartoforganization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/successor -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/successor">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/politicianusendorsedbypoliticianus"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/team -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/team">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/athleteledsportsteam"/>
+        <owl:equivalentProperty rdf:resource="http://dws/OIE#Predicate/athleteplaysforteam"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/mutualproxyfor"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/personbelongstoorganization"/>
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/worksfor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/vicePresident -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/vicePresident">
+        <rdfs:subPropertyOf rdf:resource="http://dws/OIE#Predicate/politicianusendorsedbypoliticianus"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org/ontology/writer -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/writer"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/acquired -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/acquired">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/division"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/subsidiary"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/actorstarredinmovie -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/actorstarredinmovie">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/knownFor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agentactsinlocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agentactsinlocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agentbelongstoorganization -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agentbelongstoorganization"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agentcollaborateswithagent -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agentcollaborateswithagent"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agentcontributedtocreativework -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agentcontributedtocreativework"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agentcontrols -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agentcontrols"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agentcreated -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agentcreated"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agriculturalproductcamefromcountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agriculturalproductcamefromcountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/origin"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agriculturalproductcontainchemical -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agriculturalproductcontainchemical">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/ingredient"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/agriculturalproductcookedwithagriculturalproduct -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/agriculturalproductcookedwithagriculturalproduct">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/ingredient"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/airportincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/airportincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/animalistypeofanimal -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/animalistypeofanimal"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/animalsuchasinsect -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/animalsuchasinsect">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/class"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/animalsuchasinvertebrate -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/animalsuchasinvertebrate">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/class"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/phylum"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/animalsuchasmollusk -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/animalsuchasmollusk">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/phylum"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/aquariumincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/aquariumincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/arteryarisesfromartery -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/arteryarisesfromartery">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/branchFrom"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/athleteledsportsteam -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/athleteledsportsteam"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/athleteplaysforteam -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/athleteplaysforteam"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/athleteplaysinleague -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/athleteplaysinleague"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/athletewinsawardtrophytournament -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/athletewinsawardtrophytournament">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/award"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/atlocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/atlocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/attractionofcity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/attractionofcity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/automobilemakercardealersinstateorprovince -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/automobilemakercardealersinstateorprovince">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/state"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/automobilemakerchiefexecutiveceo -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/automobilemakerchiefexecutiveceo">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/keyPerson"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/automobilemakerdealersincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/automobilemakerdealersincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/automobilemakerdealersincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/automobilemakerdealersincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCountry"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/regionServed"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/bankbankincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/bankbankincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCountry"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/regionServed"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/bookwriter -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/bookwriter">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/author"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/creator"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/writer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/buildinglocatedincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/buildinglocatedincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locatedInArea"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/ceoof -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/ceoof">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/board"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/employer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/citycapitalofcountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/citycapitalofcountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/cityliesonriver -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/cityliesonriver">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/river"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/citylocatedincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/citylocatedincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCountry"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/citylocatedingeopoliticallocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/citylocatedingeopoliticallocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locatedInArea"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/state"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/citylocatedinstate -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/citylocatedinstate">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locatedInArea"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/state"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/coachesinleague -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/coachesinleague">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/league"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/coachesteam -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/coachesteam">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/team"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/coachwontrophy -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/coachwontrophy">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/award"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/companyeconomicsector -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/companyeconomicsector">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/industry"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/countryalsoknownas -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/countryalsoknownas">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/countrycurrency -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/countrycurrency">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/currency"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/generalizations -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/generalizations"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hasfamilymember -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hasfamilymember"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hashusband -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hashusband">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/spouse"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hasofficeincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hasofficeincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/headquarter"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hasofficeincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hasofficeincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCountry"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hasspouse -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hasspouse">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/partner"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/haswife -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/haswife">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/partner"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/spouse"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/headquarteredin -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/headquarteredin">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hospitalincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hospitalincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/region"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/hotelincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/hotelincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/itemfoundinroom -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/itemfoundinroom">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/journalistwritesforpublication -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/journalistwritesforpublication">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/employer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/lakeinstate -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/lakeinstate">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/state"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/languageofcountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/languageofcountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/spokenIn"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/locationlocatedwithinlocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/locationlocatedwithinlocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/malemovedtostateorprovince -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/malemovedtostateorprovince">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/residence"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/mammalsuchasmammal -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/mammalsuchasmammal">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/family"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/kingdom"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/species"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/mountaininstate -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/mountaininstate">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locatedInArea"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/region"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/state"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/museumincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/museumincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/musicartistgenre -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/musicartistgenre">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/genre"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/musicianinmusicartist -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/musicianinmusicartist"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/musicianplaysinstrument -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/musicianplaysinstrument">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/instrument"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/mutualproxyfor -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/mutualproxyfor"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/newspaperincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/newspaperincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/headquarter"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/organizationheadquarteredincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/organizationheadquarteredincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/headquarter"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/organizationheadquarteredincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/organizationheadquarteredincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/organizationhiredperson -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/organizationhiredperson">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/manager"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/parentofperson -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/parentofperson"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/parkincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/parkincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locatedInArea"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personattendsschool -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personattendsschool"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personbelongstoorganization -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personbelongstoorganization"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personbornincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personbornincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/birthPlace"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personbornincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personbornincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/birthPlace"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personborninlocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personborninlocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/birthPlace"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/persongraduatedfromuniversity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/persongraduatedfromuniversity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/almaMater"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhascitizenship -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhascitizenship">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/origin"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/stateOfOrigin"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhasjobposition -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhasjobposition"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhasreligion -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhasreligion"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhasresidenceincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhasresidenceincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/residence"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhasresidenceincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhasresidenceincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhasresidenceingeopoliticallocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhasresidenceingeopoliticallocation"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personhasresidenceinstateorprovince -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personhasresidenceinstateorprovince">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/region"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/personleadsorganization -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/personleadsorganization">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/employer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/plantincludeplant -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/plantincludeplant">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/division"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/genus"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/politicianholdsoffice -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/politicianholdsoffice">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/occupation"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/profession"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/politicianrepresentslocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/politicianrepresentslocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/region"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/residence"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/politicianusendorsedbypoliticianus -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/politicianusendorsedbypoliticianus"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/politicianusmemberofpoliticalgroup -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/politicianusmemberofpoliticalgroup"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/politicsgroupconcernsissue -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/politicsgroupconcernsissue">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/ideology"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/producesproduct -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/producesproduct"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/radiostationincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/radiostationincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/broadcastArea"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/riveremptiesintoriver -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/riveremptiesintoriver">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/riverMouth"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/shoppingmallincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/shoppingmallincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/specializationof -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/specializationof"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/sportfansincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/sportfansincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/sportschoolincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/sportschoolincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/sportusesequipment -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/sportusesequipment">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/equipment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/stadiumlocatedincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/stadiumlocatedincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/nearestCity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/statehascapital -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/statehascapital">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/capital"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/statelocatedincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/statelocatedincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCountry"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/statelocatedingeopoliticallocation -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/statelocatedingeopoliticallocation">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/streetincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/streetincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/subpartof -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/subpartof"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/subpartoforganization -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/subpartoforganization">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/isPartOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/teamhomestadium -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/teamhomestadium"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/teamplaysincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/teamplaysincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/teamplayssport -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/teamplayssport">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/sport"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/televisionstationaffiliatedwith -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/televisionstationaffiliatedwith">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/broadcastNetwork"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/formerBroadcastNetwork"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/televisionstationincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/televisionstationincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/city"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/locationCity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/transportationincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/transportationincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/visualartistartform -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/visualartistartform">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/field"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/visualartistartmovement -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/visualartistartmovement">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/movement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/weaponmadeincountry -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/weaponmadeincountry">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/country"/>
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/origin"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/worksfor -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/worksfor"/>
+    
+
+
+    <!-- http://dws/OIE#Predicate/writerwasbornincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/writerwasbornincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/birthPlace"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dws/OIE#Predicate/zooincity -->
+
+    <owl:ObjectProperty rdf:about="http://dws/OIE#Predicate/zooincity">
+        <rdfs:subPropertyOf rdf:resource="http://dbpedia.org/ontology/location"/>
+    </owl:ObjectProperty>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.3) http://owlapi.sourceforge.net -->
+
