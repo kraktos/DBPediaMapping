@@ -65,9 +65,9 @@ public class GenericConverter {
     }
 
     // ..and by these four values
-    private static final String CATG_TYPE_DEFN_I = "concept:rtwcategory";
+    // private static final String CATG_TYPE_DEFN_I = "concept:rtwcategory";
     private static final String CATG_TYPE_DEFN_II = "rtwcategory";
-    private static final String REL_TYPE_DEFN_I = "concept:rtwrelation";
+    // private static final String REL_TYPE_DEFN_I = "concept:rtwrelation";
     private static final String REL_TYPE_DEFN_II = "rtwrelation";
 
     /**
@@ -107,7 +107,7 @@ public class GenericConverter {
      * 
      * @param inputCsvFile input csv file
      * @param delimit delimiter of csv file
-     * @param outputOwlFile output pwl file path
+     * @param outputOwlFile output owl file path
      * @throws OWLOntologyCreationException
      */
     private static void readCsvAndCreateOwlFile(String inputCsvFile, String delimit,
@@ -118,9 +118,11 @@ public class GenericConverter {
         BufferedReader tupleReader;
         String[] elements = null;
 
-        // Nell specific variables;
+        // Nell specific variables
         String nellSub = null;
         String nellSubType = null;
+
+        String nellPred = null;
 
         String nellObj = null;
         String nellObjType = null;
@@ -138,25 +140,37 @@ public class GenericConverter {
                 while ((line = tupleReader.readLine()) != null) {
                     elements = line.split(delimit);
                     if (elements.length == 8) {
+
                         nellSub = getInst(elements[0]);
+                        nellPred = elements[1];
                         nellObj = getInst(elements[2]);
+
                         blSubjInst = removeHeader(elements[6]);
                         blObjInst = removeHeader(elements[7]);
+
                         nellSubType = getType(elements[0]);
                         nellObjType = getType(elements[2]);
 
                         logger.info(nellSub + " " + nellSubType + " " + nellObj + " " + nellObjType
                                 + "  " + blSubjInst + " " + blObjInst);
 
+                        // create a property assertion on the nell triple
+                        if (nellPred != null && nellSub != null && nellObj != null)
+                            owlCreator.createPropertyAssertion(nellPred, nellSub, nellObj);
+
                         listTypes = getInstanceTypes(blSubjInst);
                         if (listTypes.size() > 0) {
                             if (nellSub != null && nellSubType != null) {
 
-                                // type assertion
+                                // type assertion of DBPedia instances occurring
+                                // as subjects
                                 owlCreator.createIsTypeOf(blSubjInst, listTypes);
+
+                                // type assertion of NELL instances as subjects
                                 owlCreator.createIsTypeOf(nellSub, nellSubType);
 
-                                // same as
+                                // same as between NELL and DBpedia instance as
+                                // subjects
                                 owlCreator.createSameAs(nellSub, blSubjInst);
 
                             }
@@ -166,14 +180,19 @@ public class GenericConverter {
                         if (listTypes.size() > 0) {
                             if (nellObj != null && nellObjType != null) {
 
-                                // type assertion
+                                // type assertion of DBPedia instances as
+                                // objects
                                 owlCreator.createIsTypeOf(blObjInst, listTypes);
+
+                                // type assertion of NELL instances as objects
                                 owlCreator.createIsTypeOf(nellObj, nellObjType);
 
-                                // same as
+                                // same as between NELL and DBpedia instance as
+                                // objects
                                 owlCreator.createSameAs(nellObj, blObjInst);
                             }
                         }
+
                     }
                 }
 
@@ -289,12 +308,14 @@ public class GenericConverter {
                     // get the inverse
                     inverse = getInverse(key);
 
-                    if (inverse != null) {
-                        // inverse
-                        owlCreator.createInverseRelations(key.replaceAll(":", "_"),
-                                inverse.replaceAll(":", "_"));
-
-                    }
+                    // NO INVERSE AS OF NOW
+                    // if (inverse != null) {
+                    // // inverse
+                    // owlCreator.createInverseRelations(key.replaceAll(":",
+                    // "_"),
+                    // inverse.replaceAll(":", "_"));
+                    //
+                    // }
 
                     if (supCls != null) {
                         owlCreator.createSubsumption(key.replaceAll(":", "_"),
@@ -378,7 +399,8 @@ public class GenericConverter {
 
                         // create a custom data structure with these
                         // elements
-                        if (!elements[2].equals("INCORRECT")) {
+                        if (!elements[2].equals("INCORRECT")
+                                && elements[0].indexOf("concept:") == -1) {
                             pair = new Pair<String, String>(elements[1], elements[2]);
 
                             if (NELL_CATG_RELTNS.containsKey(elements[0])) {
@@ -487,8 +509,8 @@ public class GenericConverter {
         for (Pair<String, String> pair : list) {
             if (pair.getFirst().equals(MEMBER_TYPE_DEFN)
                     &&
-                    (pair.getSecond().equals(CATG_TYPE_DEFN_I) || pair.getSecond().equals(
-                            CATG_TYPE_DEFN_II)))
+                    pair.getSecond().equals(
+                            CATG_TYPE_DEFN_II))
                 return true;
         }
         return false;
@@ -592,19 +614,13 @@ public class GenericConverter {
         }
     }
 
-   /* public static void mergeOntologies(String inputOwlFile1, String inputOwlFile2,
-            String mergedOutputOwlFile) {
-
-        try {
-            OWLCreator.merge(inputOwlFile1, inputOwlFile2, mergedOutputOwlFile);
-        } catch (OWLOntologyCreationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new
-        // File(file1));
-
-    }*/
+    /*
+     * public static void mergeOntologies(String inputOwlFile1, String
+     * inputOwlFile2, String mergedOutputOwlFile) { try {
+     * OWLCreator.merge(inputOwlFile1, inputOwlFile2, mergedOutputOwlFile); }
+     * catch (OWLOntologyCreationException e) { // TODO Auto-generated catch
+     * block e.printStackTrace(); } // OWLOntology ontology =
+     * manager.loadOntologyFromOntologyDocument(new // File(file1)); }
+     */
 
 }

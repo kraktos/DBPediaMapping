@@ -49,8 +49,6 @@ public class Utilities
     // set of stop words
     static final Set<String> STOP_WORDS = new HashSet<String>(Arrays.asList("a", "the", "an", "of"));
 
-
-
     /**
      * Prints a map
      * 
@@ -232,7 +230,7 @@ public class Utilities
     }
 
     public static String cleanse(String arg) {
-        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());        
+        arg = arg.substring(arg.lastIndexOf(":") + 1, arg.length());
         return arg.toLowerCase();
     }
 
@@ -277,5 +275,21 @@ public class Utilities
             e.printStackTrace();
         }
         return arg;
+    }
+
+    /**
+     * @param prob
+     * @return
+     */
+    public static double convertProbabilityToWeight(double prob) {
+        // smoothing
+        if (prob >= 1)
+            prob = 0.99;
+        if (prob <= 0)
+            prob = 0.01;
+
+        double conf = Math.log(prob / (1 - prob));
+        // logger.info(prob + " => " + conf);
+        return conf;
     }
 }

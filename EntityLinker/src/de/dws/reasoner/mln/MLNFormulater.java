@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -54,8 +55,8 @@ public class MLNFormulater {
     /**
      * OWLOntology instance
      */
-    static OWLOntology ontologyABox = null;
-    static OWLOntology ontologyTBox = null;
+    static OWLOntology ontologyABOX = null;
+    static OWLOntology ontologyTBOX = null;
 
     /**
      * OWLDataFactory instance
@@ -82,7 +83,7 @@ public class MLNFormulater {
 
     private static final String TBOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/TBoxAll.owl";
 
-    private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/NELLBaseline.owl";
+    private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/wrong.owl";
 
     /**
      * overloaded constructor where we want frame MLN from both the ABox and
@@ -98,11 +99,11 @@ public class MLNFormulater {
         try {
 
             // load the first ontology WITH the annotations
-            ontologyABox = manager.loadOntology(IRI
+            ontologyABOX = manager.loadOntology(IRI
                     .create("file:" + aBoxOwlFile));
 
             // load the first ontology WITH the annotations
-            ontologyTBox = manager.loadOntology(IRI
+            ontologyTBOX = manager.loadOntology(IRI
                     .create("file:" + tBoxOwlFile));
 
             // Get hold of a data factory from the manager and
@@ -148,7 +149,7 @@ public class MLNFormulater {
             logger.info("Loading " + owlFilePath);
 
             // load the first ontology WITH the annotations
-            ontologyTBox = manager.loadOntology(IRI
+            ontologyTBOX = manager.loadOntology(IRI
                     .create("file:" + owlFilePath));
 
             // Get hold of a data factory from the manager and
@@ -219,7 +220,7 @@ public class MLNFormulater {
         logger.info("loaded pellet ");
 
         // Create the reasoner and load the ontology
-        PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontologyTBox);
+        PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontologyTBOX);
         logger.info("loaded reasoner ");
 
         // Create an explanation generator
@@ -227,7 +228,7 @@ public class MLNFormulater {
         logger.info("loaded explaination ");
 
         // iterate over all axioms in the loaded ontology
-        HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontologyTBox.getAxioms();
+        HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontologyTBOX.getAxioms();
         for (OWLAxiom axiom : allAxioms) {
             // if os subclass type (concepts and predicates both)
             if (axiom.getAxiomType() == AxiomType.SUBCLASS_OF) {
@@ -292,6 +293,8 @@ public class MLNFormulater {
     public void convertOWLToMLN() throws IOException {
         String arg1 = null;
         String arg2 = null;
+        String arg3 = null;
+
         String axiomType = null;
         String value = null;
         String[] elements = null;
@@ -302,10 +305,13 @@ public class MLNFormulater {
         BufferedWriter bw = new BufferedWriter(fw);
 
         // iterate over all axioms in the loaded ontology
-        HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontologyTBox.getAxioms();
+        HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontologyTBOX.getAxioms();
+        System.out.println("Tbox Ontology loaded: " + ontologyTBOX);
+
         for (OWLAxiom axiom : allAxioms) {
 
-            logger.info("T " + axiom.toString());
+            // if (axiom.getAxiomType() == AxiomType.OBJECT_PROPERTY_ASSERTION)
+            // System.out.println(axiom.toString());
 
             /**
              * since it returns a set of classes, the order is never promised,
@@ -340,10 +346,16 @@ public class MLNFormulater {
         }
 
         // iterate over all axioms in the loaded ontology
-        allAxioms = (HashSet<OWLAxiom>) ontologyABox.getAxioms();
-        for (OWLAxiom axiom : allAxioms) {
+        allAxioms = (HashSet<OWLAxiom>) ontologyABOX.getAxioms();
+        System.out.println("Abox Ontology loaded: " + ontologyABOX);
 
-            logger.info("A " + axiom.toString());
+        // Set<String> s = new TreeSet<String>();
+        for (OWLAxiom axiom : allAxioms) {
+            // s.add(axiom.getAxiomType().toString());
+
+            // if (axiom.getAxiomType() == AxiomType.ANNOTATION_ASSERTION)
+            // System.out.println(axiom);
+
             /**
              * since it returns a set of classes, the order is never promised,
              * hence this weird way of getting the two arguments of the axiom
@@ -357,7 +369,8 @@ public class MLNFormulater {
                     if (elements[1] != null) {
                         arguments = elements[1].split("\\s");
 
-                        if (arguments.length >= 2) {
+                        if (arguments.length == 2
+                                || (arguments.length == 3 && arguments[2].equals(")")) ) {
                             arg1 = arguments[0];
                             arg2 = arguments[1];
 
@@ -365,14 +378,23 @@ public class MLNFormulater {
                                     arg1, arg2);
 
                             if (value != null) {
-                                if (value.equals("sameAs")) {
-                                    bw.write(value + "(" + removeTags(arg1)
-                                            + ", " + removeTags(arg2) + ",1.0)\n");
+                                writeToFile(value, arg1, arg2, bw);
+                            }
+                        }
+                        else if (arguments.length == 3) {
+                            arg1 = arguments[0];
+                            arg2 = arguments[1];
+                            arg3 = arguments[2];
 
-                                } else {
+                            value = alterSemantics(axiomType,
+                                    arg1, arg2);
 
-                                    writeToFile(value, arg1, arg2, bw);
-                                }
+                            // if (removeTags(arg3).equals("\"\""))
+                            // arg3 = "1.0";
+                            if (value != null) {
+
+                                bw.write(value + "(" + removeTags(arg1)
+                                        + ", " + removeTags(arg2) + ", " + removeTags(arg3) + ")\n");
                             }
                         }
                     }
@@ -393,6 +415,7 @@ public class MLNFormulater {
      * @param axiomType type of axiom
      * @param arg1 first argument
      * @param arg2 second argument
+     * @param arg3
      * @return altered semantics for the axioms
      */
     private String alterSemantics(String axiomType, String arg1, String arg2) {
@@ -414,7 +437,17 @@ public class MLNFormulater {
             return "isOfType";
 
         if (axiomType.toString().equals("SameIndividual"))
-            return "sameAs";
+            return "sameAsConf";
+
+        if (axiomType.toString().equals("EquivalentObjectProperties"))
+            return "equivProp";
+
+        if (axiomType.toString().equals("AnnotationAssertion") && arg1.indexOf("rdfs:label") == -1
+                && arg1.indexOf("rdfs:comment") == -1)
+            return "propAsst";
+
+        if (axiomType.toString().equals("ObjectPropertyAssertion"))
+            return "propAsst";
 
         return null;
     }
@@ -431,6 +464,7 @@ public class MLNFormulater {
         arg = arg.replaceAll(">", "");
         arg = arg.replaceAll("\\)", "");
         arg = arg.replaceAll("Node\\(", "");
+
         return "\"" + arg.trim() + "\"";
     }
 
@@ -443,7 +477,13 @@ public class MLNFormulater {
      */
     public void writeToFile(String axiomType, String arg1, String arg2, BufferedWriter bw)
             throws IOException {
-        bw.write(axiomType + "(" + removeTags(arg1)
-                + ", " + removeTags(arg2) + ")\n");
+
+        if (axiomType.equals("sameAsConf"))
+            bw.write(axiomType + "(" + removeTags(arg1)
+                    + ", " + removeTags(arg2) + ",1.0)\n");
+        else
+            bw.write(axiomType + "(" + removeTags(arg1)
+                    + ", " + removeTags(arg2) + ")\n");
+
     }
 }

@@ -293,7 +293,7 @@ public class Constants
     public static String ONTOLOGY_NAMESPACE = "http://dbpedia.org/ontology/";
     public static String DBPEDIA_NAMESPACE = "http://dbpedia.org/";
     
-    public static String OIE_ONTOLOGY_NAMESPACE = "OpenInfoExtraction#";
+    public static String OIE_ONTOLOGY_NAMESPACE = "http://dws/OIE#";
 
     /**
      * DBPedia namespace

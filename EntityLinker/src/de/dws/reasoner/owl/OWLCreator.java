@@ -6,11 +6,14 @@ package de.dws.reasoner.owl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -19,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -152,6 +156,30 @@ public class OWLCreator {
     }
 
     /**
+     * create a property assertion for the IE triple
+     * 
+     * @param nellPred
+     * @param nellSub
+     * @param nellObj
+     */
+    public void createPropertyAssertion(String nellPred, String nellSub, String nellObj) {
+        OWLNamedIndividual sub = factory.getOWLNamedIndividual(
+                nellSub, prefixInstanceIE);
+
+        OWLNamedIndividual obj = factory.getOWLNamedIndividual(
+                nellObj, prefixInstanceIE);
+
+        OWLObjectProperty ieProperty = factory.getOWLObjectProperty(
+                nellPred, prefixPredicateIE);
+
+        OWLAxiom objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(ieProperty, sub,
+                obj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+
+    }
+
+    /**
      * creates a class assertion given an instance and its type
      * 
      * @param inst
@@ -244,6 +272,7 @@ public class OWLCreator {
         for (String clss : equivClasses) {
             arg2Prop = factory.getOWLObjectProperty(clss, prefixDBPediaPredicate);
             equivPropAxiom = factory.getOWLEquivalentObjectPropertiesAxiom(arg1Prop, arg2Prop);
+
             manager.addAxiom(ontology, equivPropAxiom);
         }
 
@@ -377,27 +406,33 @@ public class OWLCreator {
         }
     }
 
-    /*public static void merge(String inputOwlFile1, String inputOwlFile2, String mergedOutputOwlFile)
-            throws OWLOntologyCreationException {
+    public void getDisjointness(String string) {
 
-        OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+        // load the first ontology WITH the annotations
+        try {
+            ontology = manager.loadOntology(IRI
+                    .create("file:" + string));
 
-        OWLOntology ontology = man.loadOntologyFromOntologyDocument(new File(inputOwlFile1));
+            // iterate over all axioms in the loaded ontology
+            HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontology.getAxioms();
+            System.out.println("Tbox Ontology loaded: " + ontology);
 
-        OWLOntology ontology2 =
-                man.loadOntologyFromOntologyDocument(new File(
-                        inputOwlFile2));
+            // clear up the old ontology already in manager
+            manager.removeOntology(ontology);
+            ontology = manager.createOntology(ontologyIRI);
 
-        // Create our ontology merger
-        OWLOntologyMerger merger = new OWLOntologyMerger(man);
+            
+            for (OWLAxiom axiom : allAxioms) {
+                if (axiom.getAxiomType() == AxiomType.DISJOINT_CLASSES) {
+                    manager.addAxiom(ontology, axiom);
+                }
+            }
 
-        System.out.println("Loaded onto 2");
+        } catch (OWLOntologyCreationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        IRI mergedOntologyIRI = IRI.create("http://www.semanticweb.com/mymergedont");
-        OWLOntology merged = merger.createMergedOntology(man, mergedOntologyIRI);
-
-        System.out.println("Loaded and merged");
-
-    }*/
+    }
 
 }
