@@ -24,6 +24,7 @@ import com.hp.hpl.jena.query.ResultSetFormatter;
 
 import de.dws.helper.dataObject.Pair;
 import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 import de.dws.reasoner.owl.OWLCreator;
 
@@ -146,35 +147,39 @@ public class GenericConverter {
                         nellObj = getInst(elements[2]);
 
                         blSubjInst = removeHeader(elements[6]);
+                        blSubjInst = Utilities.characterToUTF8(blSubjInst);
+
                         blObjInst = removeHeader(elements[7]);
+                        blObjInst = Utilities.characterToUTF8(blObjInst);
 
                         nellSubType = getType(elements[0]);
                         nellObjType = getType(elements[2]);
 
-                        logger.info(nellSub + " " + nellSubType + " " + nellObj + " " + nellObjType
-                                + "  " + blSubjInst + " " + blObjInst);
+                        logger.info(nellSubType + " " + nellSub + " " + nellObjType + " " + nellObj
+                                + " -- " + Utilities.characterToUTF8(blSubjInst) + " " + blObjInst);
 
                         // create a property assertion on the nell triple
                         if (nellPred != null && nellSub != null && nellObj != null)
                             owlCreator.createPropertyAssertion(nellPred, nellSub, nellObj);
 
                         listTypes = getInstanceTypes(blSubjInst);
+
                         if (listTypes.size() > 0) {
-                            if (nellSub != null && nellSubType != null) {
+                            if (nellSub != null) {
 
                                 // type assertion of DBPedia instances occurring
                                 // as subjects
                                 owlCreator.createIsTypeOf(blSubjInst, listTypes);
-
-                                // type assertion of NELL instances as subjects
-                                owlCreator.createIsTypeOf(nellSub, nellSubType);
-
-                                // same as between NELL and DBpedia instance as
-                                // subjects
-                                owlCreator.createSameAs(nellSub, blSubjInst);
-
                             }
                         }
+
+                        // type assertion of NELL instances as subjects
+                        if (nellSubType != null)
+                            owlCreator.createIsTypeOf(nellSub, nellSubType);
+
+                        // same as between NELL and DBpedia instance as
+                        // subjects
+                        owlCreator.createSameAs(nellSub, blSubjInst);
 
                         listTypes = getInstanceTypes(blObjInst);
                         if (listTypes.size() > 0) {
@@ -184,15 +189,16 @@ public class GenericConverter {
                                 // objects
                                 owlCreator.createIsTypeOf(blObjInst, listTypes);
 
-                                // type assertion of NELL instances as objects
-                                owlCreator.createIsTypeOf(nellObj, nellObjType);
-
-                                // same as between NELL and DBpedia instance as
-                                // objects
-                                owlCreator.createSameAs(nellObj, blObjInst);
                             }
                         }
 
+                        // type assertion of NELL instances as objects
+                        if (nellObjType != null)
+                            owlCreator.createIsTypeOf(nellObj, nellObjType);
+
+                        // same as between NELL and DBpedia instance as
+                        // objects
+                        owlCreator.createSameAs(nellObj, blObjInst);
                     }
                 }
 
@@ -238,14 +244,14 @@ public class GenericConverter {
         if (arg.indexOf(":") != -1)
             return arg.substring(arg.indexOf(":") + 1, arg.length());
         else
-            return null;
+            return arg;
     }
 
     private static String getType(String arg) {
         if (arg.indexOf(":") != -1)
             return arg.substring(0, arg.indexOf(":"));
         else
-            return null;
+            return arg;
     }
 
     /**
@@ -597,7 +603,7 @@ public class GenericConverter {
      */
     private static String removeHeader(String arg) {
         return arg.replaceAll(Constants.DBPEDIA_PREDICATE_NS, "").replaceAll(
-                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":", ""); // TODO
+                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":", "").replaceAll("\"", ""); // TODO
     }
 
     public static void print() {

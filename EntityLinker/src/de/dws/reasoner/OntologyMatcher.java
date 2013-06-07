@@ -16,23 +16,23 @@ import de.dws.reasoner.owl.OWLCreator;
  */
 public class OntologyMatcher {
 
-     private static final String INPUT_CSV_FILE =
-     "/home/arnab/Work/data/NELL/ontology/NELL.ontology.csv";
-     private static final String OUTPUT_OWL_FILE =
-     "/home/arnab/Work/data/NELL/ontology/NellOntology.owl";
-     private static final String DELIMIT = "\t";
-
-//    private static final String INPUT_CSV_FILE =
-//            "/home/arnab/Work/data/NELL/ontology/NELLPredMatches.csv";
-//    private static final String OUTPUT_OWL_FILE =
-//            "/home/arnab/Work/data/NELL/ontology/NellPredMatch.owl";
-//    private static final String DELIMIT = "\t";
+    // private static final String INPUT_CSV_FILE =
+    // "/home/arnab/Work/data/NELL/ontology/NELL.ontology.csv";
+    // private static final String OUTPUT_OWL_FILE =
+    // "/home/arnab/Work/data/NELL/ontology/NellOntology.owl";
+    // private static final String DELIMIT = "\t";
 
     // private static final String INPUT_CSV_FILE =
-    // "/home/arnab/Work/data/NELL/ontology/wrong.csv";
+    // "/home/arnab/Work/data/NELL/ontology/NELLPredMatches.csv";
     // private static final String OUTPUT_OWL_FILE =
-    // "/home/arnab/Work/data/NELL/ontology/wrong.owl";
+    // "/home/arnab/Work/data/NELL/ontology/NellPredMatch.owl";
     // private static final String DELIMIT = "\t";
+
+    private static final String INPUT_CSV_FILE =
+            "/home/arnab/Work/data/NELL/ontology/wrong.csv";
+    private static final String OUTPUT_OWL_FILE =
+            "/home/arnab/Work/data/NELL/ontology/wrong.owl";
+    private static final String DELIMIT = "\t";
 
     // define Logger
     static Logger logger = Logger.getLogger(OntologyMatcher.class.getName());
@@ -46,7 +46,7 @@ public class OntologyMatcher {
                 .configure("resources/log4j.properties");
 
         GenericConverter.convertCsvToOwl(INPUT_CSV_FILE, DELIMIT,
-                GenericConverter.TYPE.NELL_ONTO, OUTPUT_OWL_FILE);
+                GenericConverter.TYPE.NELL_ABOX, OUTPUT_OWL_FILE);
 
         // OWLCreator owlCreator = new
         // OWLCreator("http://dbpedia.org/ontology/");

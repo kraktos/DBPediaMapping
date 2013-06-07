@@ -32,6 +32,7 @@ import com.clarkparsia.pellet.owlapiv3.PelletReasoner;
 import com.clarkparsia.pellet.owlapiv3.PelletReasonerFactory;
 
 import de.dws.helper.util.Constants;
+import de.dws.helper.util.Utilities;
 
 /**
  * This class formulates MLN ground atoms (observed variables) from a given set
@@ -81,9 +82,11 @@ public class MLNFormulater {
     private static final String MLN_EVIDENCE_FILE = "/home/arnab/Work/data/experiments/reasoning/evidence.db";
     private static final String MLN_MAT_EVIDENCE_FILE = "resources/evidenceMaterialized.db";
 
-    private static final String TBOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/TBoxAll.owl";
+    private static final String TBOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/TBOX.owl";
 
-    private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/wrong.owl";
+    private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/NELLBaseline.owl"; // "/home/arnab/Work/data/NELL/ontology/wrong.owl";
+
+    // "/home/arnab/Work/data/experiments/reasoning/wrong.owl";
 
     /**
      * overloaded constructor where we want frame MLN from both the ABox and
@@ -351,17 +354,13 @@ public class MLNFormulater {
 
         // Set<String> s = new TreeSet<String>();
         for (OWLAxiom axiom : allAxioms) {
-            // s.add(axiom.getAxiomType().toString());
-
-            // if (axiom.getAxiomType() == AxiomType.ANNOTATION_ASSERTION)
-            // System.out.println(axiom);
 
             /**
              * since it returns a set of classes, the order is never promised,
              * hence this weird way of getting the two arguments of the axiom
              */
             // separates the axiom and the arguments
-            elements = axiom.toString().trim().split("\\(");
+            elements = axiom.toString().trim().split("\\(<");
             axiomType = elements[0];
 
             try {
@@ -370,7 +369,7 @@ public class MLNFormulater {
                         arguments = elements[1].split("\\s");
 
                         if (arguments.length == 2
-                                || (arguments.length == 3 && arguments[2].equals(")")) ) {
+                                || (arguments.length == 3 && arguments[2].equals(")"))) {
                             arg1 = arguments[0];
                             arg2 = arguments[1];
 
@@ -389,8 +388,6 @@ public class MLNFormulater {
                             value = alterSemantics(axiomType,
                                     arg1, arg2);
 
-                            // if (removeTags(arg3).equals("\"\""))
-                            // arg3 = "1.0";
                             if (value != null) {
 
                                 bw.write(value + "(" + removeTags(arg1)
@@ -460,11 +457,15 @@ public class MLNFormulater {
      */
     private String removeTags(String arg) {
 
-        arg = arg.toString().replaceAll("<", "");
+        arg = arg.replaceAll("<", "");
+        arg = arg.replaceAll(">\\)", "");
         arg = arg.replaceAll(">", "");
-        arg = arg.replaceAll("\\)", "");
+        arg = arg.replaceAll(",_", "__");
+        arg = arg.replaceAll("'", "*");
+        arg = arg.replaceAll("%", "~");
         arg = arg.replaceAll("Node\\(", "");
-
+        arg = arg.replaceAll("\\)", "]");
+        arg = arg.replaceAll("\\(", "[");
         return "\"" + arg.trim() + "\"";
     }
 
@@ -478,9 +479,10 @@ public class MLNFormulater {
     public void writeToFile(String axiomType, String arg1, String arg2, BufferedWriter bw)
             throws IOException {
 
-        if (axiomType.equals("sameAsConf"))
+        if (axiomType.equals("sameAsConf")) {
             bw.write(axiomType + "(" + removeTags(arg1)
                     + ", " + removeTags(arg2) + ",1.0)\n");
+        }
         else
             bw.write(axiomType + "(" + removeTags(arg1)
                     + ", " + removeTags(arg2) + ")\n");
