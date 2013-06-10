@@ -7,6 +7,7 @@ package de.dws.reasoner.mln;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import de.dws.helper.dataObject.Pair;
+import de.dws.reasoner.GenericConverter;
 
 /**
  * Checks and compares the output of the MLN and its evidence files for the
@@ -24,6 +26,8 @@ import de.dws.helper.dataObject.Pair;
  * @author Arnab Dutta
  */
 public class ParityChecker {
+
+    private static Map<String, String> inMemMap = new HashMap<String, String>();
 
     /**
      * @param args
@@ -56,10 +60,15 @@ public class ParityChecker {
                     strLine1 = strLine1.replaceAll("sameAsConf\\(", "").replaceAll("\"", "");
                     arr = strLine1.split(",");
 
-                    if (arr[1].indexOf("http://dws/OIE#") != -1
-                            && arr[0].indexOf("http://dbpedia.org") != -1) {
-                        // pair = new Pair<String, String>(arr[0], arr[1]);
-                        map.put(arr[0], arr[1]);
+                    if (arr[0].indexOf("DBP#") != -1
+                            && arr[1].indexOf("OIE#") != -1) {
+
+                        // make the OIE instance key, since it will always map
+                        // to one DBP instance, not the
+                        // other way round
+                        map.put(arr[1].trim(), arr[0].trim());
+                        // System.out.println(arr[1]);
+
                     }
                 }
             }
@@ -67,20 +76,26 @@ public class ParityChecker {
             Map<String, String> temp = map;
             while ((strLine2 = input2.readLine()) != null) {
                 if (strLine2.startsWith("sameAs")) {
-                    strLine2 = strLine2.replaceAll("sameAs\\(", "").replaceAll("\"", "");
+                    strLine2 = strLine2.replaceAll("sameAs\\(", "").replaceAll("\"", "")
+                            .replaceAll("\\)", "");
+
                     arr = strLine2.split(",");
 
-                    if (arr[1].indexOf("http://dws/OIE#") != -1
-                            && arr[0].indexOf("http://dbpedia.org") != -1) {
-
-                        temp.remove(arr[0]);
+                    if (arr[0].indexOf("DBP#") != -1
+                            && arr[1].indexOf("OIE#") != -1) {
+                        temp.remove(arr[1].trim());
                     }
                 }
             }
 
             System.out.println("Removed \n");
+
+            loadUri2CanonInMemory();
+
             for (Map.Entry<String, String> entry : temp.entrySet()) {
-                System.out.println(entry.getKey() + " ==> " + entry.getValue());
+                System.out.println(inMemMap.get(entry.getKey().trim()) + " (" + entry.getKey()
+                        + ") ==> " +
+                        entry.getValue());
             }
 
         } catch (IOException ioe) {
@@ -89,6 +104,38 @@ public class ParityChecker {
             System.out.println("Error: " + e);
         }
 
+    }
+
+    /**
+     * read the OIE uri to canonical forms in memory, for using it for
+     * comparison purposes
+     */
+    public static void loadUri2CanonInMemory() {
+        BufferedReader br = null;
+
+        try {
+
+            String sCurrentLine;
+
+            br = new BufferedReader(new FileReader(GenericConverter.URI_CANONICAL_FILE));
+
+            while ((sCurrentLine = br.readLine()) != null) {
+
+                String key = sCurrentLine.split("\t")[0].trim();
+                String value = sCurrentLine.split("\t")[1].trim();
+                inMemMap.put(key, value);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

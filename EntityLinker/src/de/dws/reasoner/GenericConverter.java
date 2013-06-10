@@ -5,8 +5,10 @@
 package de.dws.reasoner;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,8 @@ public class GenericConverter {
     // hierarchy
     static Map<String, List<Pair<String, String>>> NELL_CATG_RELTNS = new HashMap<String, List<Pair<String, String>>>();
 
+    private static int cntr = 0;
+
     // how domain property is defined in NELL
     private static final String DOMAIN_DEFN = "domain";
 
@@ -61,6 +65,12 @@ public class GenericConverter {
     // subsumption definition
     private static final String SUBSUMP_DEFN = "generalizations";
 
+    public static long ENTITY_COUNTER = 0;
+
+    public static Map<String, Long> MAP_COUNTER = new HashMap<String, Long>();
+
+    private static final Map<String, String> URI_2_ENTITY_MAP = new HashMap<String, String>();
+
     public enum TYPE {
         NELL_ONTO, NELL_PRED_ANNO, NELL_CLASS_ANNO, NELL_ABOX; // ; is optional
     }
@@ -70,6 +80,8 @@ public class GenericConverter {
     private static final String CATG_TYPE_DEFN_II = "rtwcategory";
     // private static final String REL_TYPE_DEFN_I = "concept:rtwrelation";
     private static final String REL_TYPE_DEFN_II = "rtwrelation";
+
+    public static final String URI_CANONICAL_FILE = "resources/uri2CanonMapping.tsv";
 
     /**
      * converts a csv file to owl file
@@ -155,23 +167,20 @@ public class GenericConverter {
                         nellSubType = getType(elements[0]);
                         nellObjType = getType(elements[2]);
 
-                        logger.info(nellSubType + " " + nellSub + " " + nellObjType + " " + nellObj
-                                + " -- " + Utilities.characterToUTF8(blSubjInst) + " " + blObjInst);
+                        nellSub = generateUniqueURI(nellSub, elements[0]);
+                        nellObj = generateUniqueURI(nellObj, elements[2]);
+
+                        // logger.info(nellSubType + " " + nellSub + " " +
+                        // nellObjType + " " + nellObj
+                        // + " -- " + Utilities.characterToUTF8(blSubjInst) +
+                        // " " + blObjInst);
 
                         // create a property assertion on the nell triple
                         if (nellPred != null && nellSub != null && nellObj != null)
                             owlCreator.createPropertyAssertion(nellPred, nellSub, nellObj);
 
-                        listTypes = getInstanceTypes(blSubjInst);
-
-                        if (listTypes.size() > 0) {
-                            if (nellSub != null) {
-
-                                // type assertion of DBPedia instances occurring
-                                // as subjects
-                                owlCreator.createIsTypeOf(blSubjInst, listTypes);
-                            }
-                        }
+                        // get types of subject instances
+                        getTypes(blSubjInst, owlCreator);
 
                         // type assertion of NELL instances as subjects
                         if (nellSubType != null)
@@ -181,16 +190,8 @@ public class GenericConverter {
                         // subjects
                         owlCreator.createSameAs(nellSub, blSubjInst);
 
-                        listTypes = getInstanceTypes(blObjInst);
-                        if (listTypes.size() > 0) {
-                            if (nellObj != null && nellObjType != null) {
-
-                                // type assertion of DBPedia instances as
-                                // objects
-                                owlCreator.createIsTypeOf(blObjInst, listTypes);
-
-                            }
-                        }
+                        // get types of subject instances
+                        getTypes(blObjInst, owlCreator);
 
                         // type assertion of NELL instances as objects
                         if (nellObjType != null)
@@ -199,9 +200,14 @@ public class GenericConverter {
                         // same as between NELL and DBpedia instance as
                         // objects
                         owlCreator.createSameAs(nellObj, blObjInst);
+
                     }
                 }
 
+                // System.out.println(GenericConverter.MAP_COUNTER);
+                dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
+
+                System.out.println(cntr + " no type");
                 // flush to file
                 owlCreator.createOutput(outputOwlFile);
             }
@@ -212,12 +218,71 @@ public class GenericConverter {
     }
 
     /**
+     * dump the uri to canonical form mappings to some local file
+     * 
+     * @param uri2EntityMap
+     * @param path
+     * @throws IOException
+     */
+    private static void dumpToLocalFile(Map<String, String> uri2EntityMap, String path)
+            throws IOException {
+        String key = null;
+        String value = null;
+
+        FileWriter fw = new FileWriter(path);
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        for (Map.Entry<String, String> entry : uri2EntityMap.entrySet()) {
+            key = entry.getKey();
+            value = entry.getValue();
+            bw.write("OIE#Instance/" + key + "\t" + value + "\n");
+        }
+
+        bw.close();
+    }
+
+    private static String generateUniqueURI(String nellInst, String classInstance) {
+        // check if this URI is already there
+        if (GenericConverter.MAP_COUNTER.containsKey(nellInst)) {
+            long value = GenericConverter.MAP_COUNTER.get(nellInst);
+            GenericConverter.MAP_COUNTER.put(nellInst, value + 1);
+
+            // create an unique URI because same entity already has been
+            // encountered before
+            nellInst = nellInst + "_" + String.valueOf(value + 1);
+
+        } else {
+            GenericConverter.MAP_COUNTER.put(nellInst, 1L);
+        }
+
+        GenericConverter.URI_2_ENTITY_MAP.put(nellInst, classInstance);
+        return nellInst;
+    }
+
+    /**
+     * @param blInst
+     * @param owlCreator
+     */
+    public static void getTypes(String blInst, OWLCreator owlCreator) {
+        List<String> listTypes;
+
+        // get DBPedia types
+        listTypes = getInstanceTypes(Utilities.utf8ToCharacter(blInst));
+
+        if (listTypes.size() > 0) {
+            // type assertion of DBPedia instances occurring
+            // as subjects
+            owlCreator.createIsTypeOf(blInst, listTypes);
+        }
+    }
+
+    /**
      * get type of a given instance
      * 
      * @param inst instance
      * @return list of its type
      */
-    private static List<String> getInstanceTypes(String inst) {
+    public static List<String> getInstanceTypes(String inst) {
         List<String> result = new ArrayList<String>();
 
         try {

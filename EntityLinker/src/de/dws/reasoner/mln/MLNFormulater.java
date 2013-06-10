@@ -84,7 +84,8 @@ public class MLNFormulater {
 
     private static final String TBOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/TBOX.owl";
 
-    private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/NELLBaseline.owl"; // "/home/arnab/Work/data/NELL/ontology/wrong.owl";
+    private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/NELL/ontology/wrong.owl";
+            //"/home/arnab/Work/data/experiments/reasoning/NELLBaseline.owl"; // "/home/arnab/Work/data/NELL/ontology/wrong.owl";
 
     // "/home/arnab/Work/data/experiments/reasoning/wrong.owl";
 
@@ -313,9 +314,6 @@ public class MLNFormulater {
 
         for (OWLAxiom axiom : allAxioms) {
 
-            // if (axiom.getAxiomType() == AxiomType.OBJECT_PROPERTY_ASSERTION)
-            // System.out.println(axiom.toString());
-
             /**
              * since it returns a set of classes, the order is never promised,
              * hence this weird way of getting the two arguments of the axiom
@@ -466,6 +464,8 @@ public class MLNFormulater {
         arg = arg.replaceAll("Node\\(", "");
         arg = arg.replaceAll("\\)", "]");
         arg = arg.replaceAll("\\(", "[");
+        arg = arg.replaceAll("http://dbpedia.org", "DBP#");
+        arg = arg.replaceAll("http://dws/", "");
         return "\"" + arg.trim() + "\"";
     }
 
