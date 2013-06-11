@@ -149,10 +149,12 @@ public class GenericConverter {
 
         try {
             tupleReader = new BufferedReader(new FileReader(inputCsvFile));
+            logger.info("Reading " + inputCsvFile + " ... Please wait !!");
+
             if (tupleReader != null) {
                 while ((line = tupleReader.readLine()) != null) {
                     elements = line.split(delimit);
-                    if (elements.length == 8) {
+                    if (elements.length >= 8) {
 
                         nellSub = getInst(elements[0]);
                         nellPred = elements[1];
@@ -167,13 +169,13 @@ public class GenericConverter {
                         nellSubType = getType(elements[0]);
                         nellObjType = getType(elements[2]);
 
-                        nellSub = generateUniqueURI(nellSub, elements[0]);
-                        nellObj = generateUniqueURI(nellObj, elements[2]);
+                        nellSub = generateUniqueURI(nellSub, elements[0], elements[1], elements[2]);
+                        nellObj = generateUniqueURI(nellObj, elements[0], elements[1], elements[2]);
 
-                        // logger.info(nellSubType + " " + nellSub + " " +
-                        // nellObjType + " " + nellObj
-                        // + " -- " + Utilities.characterToUTF8(blSubjInst) +
-                        // " " + blObjInst);
+                        logger.info(nellSubType + " " + nellSub + " " +
+                                nellObjType + " " + nellObj
+                                + " -- " + blSubjInst +
+                                " " + blObjInst);
 
                         // create a property assertion on the nell triple
                         if (nellPred != null && nellSub != null && nellObj != null)
@@ -204,17 +206,14 @@ public class GenericConverter {
                     }
                 }
 
-                // System.out.println(GenericConverter.MAP_COUNTER);
                 dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
 
-                System.out.println(cntr + " no type");
                 // flush to file
                 owlCreator.createOutput(outputOwlFile);
             }
         } catch (IOException e) {
             logger.info("Error processing " + line + " " + e.getMessage());
         }
-
     }
 
     /**
@@ -238,10 +237,24 @@ public class GenericConverter {
             bw.write("OIE#Instance/" + key + "\t" + value + "\n");
         }
 
+        // clear the counter map
+        GenericConverter.MAP_COUNTER.clear();
+
+        // close the writer stream
         bw.close();
     }
 
-    private static String generateUniqueURI(String nellInst, String classInstance) {
+    /**
+     * takes a nell/reverb instance and creates an unique URI out of it. So if
+     * multiple times an entity occurs, each one will have different uris.
+     * 
+     * @param nellInst
+     * @param classInstance
+     * @param elements2
+     * @param elements
+     * @return
+     */
+    private static String generateUniqueURI(String nellInst, String sub, String pred, String obj) {
         // check if this URI is already there
         if (GenericConverter.MAP_COUNTER.containsKey(nellInst)) {
             long value = GenericConverter.MAP_COUNTER.get(nellInst);
@@ -255,7 +268,7 @@ public class GenericConverter {
             GenericConverter.MAP_COUNTER.put(nellInst, 1L);
         }
 
-        GenericConverter.URI_2_ENTITY_MAP.put(nellInst, classInstance);
+        GenericConverter.URI_2_ENTITY_MAP.put(nellInst, sub + "\t" + pred + "\t" + obj);
         return nellInst;
     }
 
@@ -668,7 +681,7 @@ public class GenericConverter {
      */
     private static String removeHeader(String arg) {
         return arg.replaceAll(Constants.DBPEDIA_PREDICATE_NS, "").replaceAll(
-                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":", "").replaceAll("\"", ""); // TODO
+                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":_", "__").replaceAll("\"", ""); // TODO
     }
 
     public static void print() {

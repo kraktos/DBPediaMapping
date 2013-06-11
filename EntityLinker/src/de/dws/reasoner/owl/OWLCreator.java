@@ -38,6 +38,7 @@ import org.semanticweb.owlapi.util.OWLOntologyMerger;
 
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
+import de.dws.reasoner.GenericConverter;
 import de.dws.reasoner.axioms.Axiom;
 
 /**
@@ -140,6 +141,8 @@ public class OWLCreator {
      * @param blInst dbpedia instance
      */
     public void createSameAs(String nellInst, String blInst) {
+
+
         OWLNamedIndividual arg1Value = factory.getOWLNamedIndividual(
                 nellInst, prefixInstanceIE);
 
@@ -154,6 +157,8 @@ public class OWLCreator {
         manager.addAxiom(ontology, sameAsIndividualAxiom);
 
     }
+
+    
 
     /**
      * create a property assertion for the IE triple
@@ -421,7 +426,6 @@ public class OWLCreator {
             manager.removeOntology(ontology);
             ontology = manager.createOntology(ontologyIRI);
 
-            
             for (OWLAxiom axiom : allAxioms) {
                 if (axiom.getAxiomType() == AxiomType.DISJOINT_CLASSES) {
                     manager.addAxiom(ontology, axiom);

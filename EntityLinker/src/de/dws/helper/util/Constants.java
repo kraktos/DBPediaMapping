@@ -26,7 +26,7 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql";
     // "http://dbpedia.org/sparql";
     // "http://live.dbpedia.org/sparql";
 

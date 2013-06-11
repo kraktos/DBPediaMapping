@@ -85,7 +85,9 @@ public class MLNFormulater {
     private static final String TBOX_OWL_INPUT = "/home/arnab/Work/data/experiments/reasoning/TBOX.owl";
 
     private static final String ABOX_OWL_INPUT = "/home/arnab/Work/data/NELL/ontology/wrong.owl";
-            //"/home/arnab/Work/data/experiments/reasoning/NELLBaseline.owl"; // "/home/arnab/Work/data/NELL/ontology/wrong.owl";
+
+    // "/home/arnab/Work/data/experiments/reasoning/NELLBaseline.owl"; //
+    // "/home/arnab/Work/data/NELL/ontology/wrong.owl";
 
     // "/home/arnab/Work/data/experiments/reasoning/wrong.owl";
 
@@ -179,24 +181,12 @@ public class MLNFormulater {
         PropertyConfigurator
                 .configure("resources/log4j.properties");
 
+        if (args.length != 2)
+            throw (new RuntimeException("Usage : java -jar MLN.jar <owlFile> <outputEvidenceFile>"));
+
         try {
-            if (true) {
-
-                new MLNFormulater(TBOX_OWL_INPUT, ABOX_OWL_INPUT).convertOWLToMLN();
-
-                // new MLNFormulater(
-                // "resources/NellOntology.owl")
-                // .convertOWLToMaterializedMLN();
-                logger.info("Done writing to " + MLN_EVIDENCE_FILE);
-            }
-            else {
-                new MLNFormulater(
-                        "resources/NellOntology.owl")
-                        .convertOWLToMLN();
-
-                logger.info("Done writing to " + MLN_EVIDENCE_FILE);
-            }
-
+            new MLNFormulater(TBOX_OWL_INPUT, ABOX_OWL_INPUT).convertOWLToMLN();
+            logger.info("Done writing to " + MLN_EVIDENCE_FILE);
         } catch (IOException e) {
             logger.error("Error reading owl file ");
         }

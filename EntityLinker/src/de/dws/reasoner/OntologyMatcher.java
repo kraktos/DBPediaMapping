@@ -8,9 +8,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
-import de.dws.helper.util.Constants;
-import de.dws.reasoner.owl.OWLCreator;
-
 /**
  * @author Arnab Dutta
  */

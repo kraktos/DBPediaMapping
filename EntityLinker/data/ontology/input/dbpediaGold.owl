@@ -6954,7 +6954,9 @@
 
     <owl:ObjectProperty rdf:about="http://dbpedia.org/ontology/sourceConfluenceState">
         <rdfs:label xml:lang="en">source confluence state</rdfs:label>
+<!--
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/Island"/>
+-->
         <rdfs:range rdf:resource="http://dbpedia.org/ontology/PopulatedPlace"/>
         <rdfs:domain rdf:resource="http://dbpedia.org/ontology/River"/>
     </owl:ObjectProperty>
@@ -21421,7 +21423,7 @@
         <owl:disjointWith rdf:resource="http://dbpedia.org/ontology/RoadJunction"/>
         <owl:disjointWith rdf:resource="http://schema.org/Hotel"/>
         <owl:disjointWith rdf:resource="http://schema.org/Museum"/>
-        <owl:disjointWith>
+        <!--<owl:disjointWith>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="http://dbpedia.org/ontology/Activity"/>
@@ -21444,6 +21446,7 @@
                 </owl:intersectionOf>
             </owl:Class>
         </owl:disjointWith>
+-->
     </owl:Class>
     
 
@@ -23950,7 +23953,7 @@
         <owl:disjointWith rdf:resource="http://schema.org/CreativeWork"/>
         <owl:disjointWith rdf:resource="http://schema.org/Hotel"/>
         <owl:disjointWith rdf:resource="http://schema.org/Sculpture"/>
-        <owl:disjointWith>
+        <!--<owl:disjointWith>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
                     <rdf:Description rdf:about="http://dbpedia.org/ontology/Activity"/>
@@ -23973,6 +23976,7 @@
                 </owl:intersectionOf>
             </owl:Class>
         </owl:disjointWith>
+-->
     </owl:Class>
     
 

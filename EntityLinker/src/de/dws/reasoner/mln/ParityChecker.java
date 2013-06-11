@@ -9,12 +9,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import de.dws.helper.dataObject.Pair;
 import de.dws.reasoner.GenericConverter;
@@ -29,11 +31,23 @@ public class ParityChecker {
 
     private static Map<String, String> inMemMap = new HashMap<String, String>();
 
+    // define Logger
+    static Logger logger = Logger.getLogger(ParityChecker.class.getName());
+
     /**
      * @param args
      * @throws FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException {
+
+        Map<String, String> map = new HashMap<String, String>();
+
+        String strLine1, strLine2;
+        long originalSize = 0;
+
+        PropertyConfigurator
+                .configure("resources/log4j.properties");
+
         FileInputStream file1 = new FileInputStream(args[0]);
         FileInputStream file2 = new FileInputStream(args[1]);
 
@@ -42,19 +56,13 @@ public class ParityChecker {
 
         BufferedReader input2 = new BufferedReader
                 (new InputStreamReader(file2));
-        String strLine1, strLine2;
-
-        Set<Pair<String, String>> setPairs = new TreeSet<Pair<String, String>>();
-
-        Map<String, String> map = new HashMap<String, String>();
 
         try {
             if (args.length != 2)
                 throw (new RuntimeException("Usage : java compare <filetoread> <filetoread>"));
 
             String[] arr = null;
-            Pair<String, String> pair = null;
-
+            
             while ((strLine1 = input1.readLine()) != null) {
                 if (strLine1.startsWith("sameAsConf")) {
                     strLine1 = strLine1.replaceAll("sameAsConf\\(", "").replaceAll("\"", "");
@@ -67,11 +75,10 @@ public class ParityChecker {
                         // to one DBP instance, not the
                         // other way round
                         map.put(arr[1].trim(), arr[0].trim());
-                        // System.out.println(arr[1]);
-
                     }
                 }
             }
+            originalSize = map.size();
 
             Map<String, String> temp = map;
             while ((strLine2 = input2.readLine()) != null) {
@@ -88,22 +95,22 @@ public class ParityChecker {
                 }
             }
 
-            System.out.println("Removed \n");
-
             loadUri2CanonInMemory();
 
             for (Map.Entry<String, String> entry : temp.entrySet()) {
-                System.out.println(inMemMap.get(entry.getKey().trim()) + " (" + entry.getKey()
+                logger.info(inMemMap.get(entry.getKey().trim()) + " (" + entry.getKey()
                         + ") ==> " +
                         entry.getValue());
             }
+
+            logger.info("===========================\n " +
+                    "REMOVAL RATE = " + ((double) temp.size() / (double) originalSize));
 
         } catch (IOException ioe) {
             System.out.println("Error: " + ioe);
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
-
     }
 
     /**
@@ -116,18 +123,19 @@ public class ParityChecker {
         try {
 
             String sCurrentLine;
+            String key = null;
+            String value = null;
 
             br = new BufferedReader(new FileReader(GenericConverter.URI_CANONICAL_FILE));
 
             while ((sCurrentLine = br.readLine()) != null) {
-
-                String key = sCurrentLine.split("\t")[0].trim();
-                String value = sCurrentLine.split("\t")[1].trim();
+                key = sCurrentLine.split("\t")[0].trim();
+                value = sCurrentLine.split("\t")[1].trim();
                 inMemMap.put(key, value);
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Error reading " + GenericConverter.URI_CANONICAL_FILE);
         } finally {
             try {
                 if (br != null)
