@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -70,8 +71,12 @@ public class MLNFileGenerator {
     private static Map<Pair<String, String>, Double> LINK_APRIORI_MAP = new HashMap<Pair<String, String>, Double>();
     private static final String APRIORI_PROB_FILE = "/home/arnab/Work/data/NELL/ontology/sameAsAPriori.txt";
 
-    private static final String NELL_CONFIDENCE_FILE = "/home/arnab/Work/data/NELL/ontology/NELLBaselineConf.csv";
-    private static Map<String, Double> NELL_CONFIDENCE_MAP = new HashMap<String, Double>();
+    private static final String NELL_CONFIDENCE_FILE = "/home/arnab/Work/data/NELL/ontology/wrong.csv";
+    private static final String NELL_PRED_CONF_FILE = "/home/arnab/Work/data/NELL/ontology/NELLPredMatchesConf.csv";
+
+    private static Map<String, Double> NELL_FACTS_CONFIDENCE_MAP = new HashMap<String, Double>();
+
+    private static Map<String, Double> NELL_PRED_MAPPING_MAP = new HashMap<String, Double>();
 
     /**
      * constructor with owl input file
@@ -135,17 +140,58 @@ public class MLNFileGenerator {
             outputEvidence = args[1];
             axiomType = args[2];
 
-            System.out.println("Loading apriori confidences file...");
-            loadAprioriConfidencesFile();
+            System.out.println("Loading apriori confidences of surface forms...");
+            loadSameAsConfidences();
 
-            System.out.println("Loading NELL confidences file...");
+            System.out.println("Loading NELL triples' confidences ...");
             loadNELLConfidencesFile();
+
+            loadNELLPredConfidencesFile();
 
             new MLNFileGenerator(owlFileInput).generateMLN(outputEvidence,
                     axiomType);
 
             System.out.println("Done writing to " + outputEvidence);
         }
+    }
+
+    private static void loadNELLPredConfidencesFile() throws IOException {
+
+        String nellPred = null;
+        String dbpPred = null;
+        double conf = 0D;
+
+        String strLine;
+
+        FileInputStream file = new FileInputStream(NELL_PRED_CONF_FILE);
+        BufferedReader input = new BufferedReader
+                (new InputStreamReader(file));
+
+        while ((strLine = input.readLine()) != null) {
+            try {
+                nellPred = (strLine.split("\t")[0]);
+                dbpPred = (strLine.split("\t")[1]);
+                conf = Double.valueOf(strLine.split("\t")[2]);
+
+                // if (obj.indexOf("jeffrey_eugenides") != -1)
+                // System.out.println("ADDING TO MAP = \n " + sub + "\t" + pred
+                // + "\t" + obj);
+
+                if (nellPred.indexOf("journalistwritesforpublication") != -1)
+                    System.out.println("");
+
+                NELL_PRED_MAPPING_MAP.put(
+                        nellPred.trim() + "\t"
+                                + dbpPred.trim().replaceAll("http://dbpedia.org/ontology/", ""),
+                        new Double(conf));
+            } catch (Exception e) {
+                continue;
+            }
+        }
+
+        System.out.println("Loading Predicate confidences completed..."
+                + NELL_PRED_MAPPING_MAP.size());
+
     }
 
     private static void loadNELLConfidencesFile() throws IOException {
@@ -167,14 +213,18 @@ public class MLNFileGenerator {
                 pred = strip(strLine.split("\t")[1]);
                 obj = strip(strLine.split("\t")[2]);
                 conf = Double.valueOf(strip(strLine.split("\t")[8]));
-                NELL_CONFIDENCE_MAP.put(sub + "\t" + pred + "\t" + obj, new Double(conf));
+
+                // if (obj.indexOf("jeffrey_eugenides") != -1)
+                // System.out.println("ADDING TO MAP = \n " + sub + "\t" + pred
+                // + "\t" + obj);
+
+                NELL_FACTS_CONFIDENCE_MAP.put(sub + "\t" + pred + "\t" + obj, new Double(conf));
             } catch (Exception e) {
                 continue;
             }
         }
 
-        // System.out.println("Loading NELL confidence file completed..." +
-        // NELL_CONFIDENCE_MAP);
+        System.out.println("Loading NELL confidences completed...");
 
     }
 
@@ -184,7 +234,7 @@ public class MLNFileGenerator {
      * 
      * @throws IOException
      */
-    private static void loadAprioriConfidencesFile() throws IOException {
+    private static void loadSameAsConfidences() throws IOException {
 
         String sf = null;
         String uri = null;
@@ -206,7 +256,7 @@ public class MLNFileGenerator {
             LINK_APRIORI_MAP.put(pair, Double.parseDouble(conf));
         }
 
-        System.out.println("Loading confidence file completed...");
+        System.out.println("Loading completed...");
 
     }
 
@@ -246,6 +296,7 @@ public class MLNFileGenerator {
         System.out.println("Ontology loaded from " + ontology);
 
         Set<String> set = new HashSet<String>();
+        Set<OWLClass> setOWLClasses = null;
 
         for (OWLAxiom axiom : allAxioms) {
             /**
@@ -260,16 +311,60 @@ public class MLNFileGenerator {
                 elements = axiom.toString().split("\\(");
 
                 try {
-                    if (elements.length >= 2) {
+                    if (axiomType.equals("cdis")) {
+
+                        setOWLClasses = axiom.getClassesInSignature();
+                        createDisjointClasses(setOWLClasses, axiomType, bw);
+
+                    } else if (elements.length >= 2) {
                         if (elements[1] != null) {
                             arguments = elements[1].split("\\s");
 
                             arg1 = elements[1].split("\\s")[0];
                             arg2 = elements[1].split("\\s")[1];
 
-                            if (arguments.length == 2) {
+                            if (arguments.length == 2) { // Class Assertions
+                                if (axiomType.equals("psubConf")) {
 
-                                if (arg2.indexOf("owl:Thing") == -1
+                                    // System.out.println(cleanse(arg1) + "\t"
+                                    // + cleanse(arg2));
+                                    conf = NELL_PRED_MAPPING_MAP.get(cleanse(arg1) + "\t"
+                                            + cleanse(arg2));
+                                    if (conf == null)
+                                        conf = NELL_PRED_MAPPING_MAP.get(cleanse(arg2) + "\t"
+                                                + cleanse(arg1));
+
+                                    conf = (conf == null) ? 0.0 : conf;
+                                    // // System.out.println(cleanse(arg1) +
+                                    // "  " + cleanse(arg2) + " "
+                                    // + conf);
+
+                                    bw.write(axiomType + "(" + removeTags(arg1) + ", "
+                                            + removeTags(arg2) + ", " + conf + ")\n");
+
+                                }
+                                else if (axiomType.equals("isOfTypeConf")) {
+
+                                    System.out.println(cleanse(arg2) + "\t"
+                                            + cleanse(arg1));
+                                    conf = NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2) + "\t"
+                                            + "generalizations" + "\t"
+                                            + cleanse(arg1));
+
+                                    if (conf != null)
+                                        bw.write(axiomType + "(" + removeTags(arg1) + ", "
+                                                + removeTags(arg2) + ", " + conf + ")\n");
+
+                                } else if (axiomType.equals("isOfType")) {
+
+                                    conf = NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2) + "\t"
+                                            + "generalizations" + "\t"
+                                            + cleanse(arg1));
+
+                                    if (conf == null)
+                                        writeToFile(axiomType, arg1, arg2, null, bw);
+                                }
+                                else if (arg2.indexOf("owl:Thing") == -1
                                         && arg1.indexOf("http://schema.org") == -1
                                         && arg2.indexOf("http://schema.org") == -1) {
 
@@ -278,9 +373,12 @@ public class MLNFileGenerator {
 
                             } else {
                                 if (axiomType.equals("sameAsConf")) {
+                                    if(arg2.indexOf("hellbender") != -1)
+                                        System.out.println("");
+                                    
                                     pair = new Pair<String, String>(cleanse(arg2), cleanse(arg1));
                                     conf = LINK_APRIORI_MAP.get(pair);
-                                    // System.out.println(pair + " " + conf);
+
                                     if (conf != null)
                                         writeToFile(axiomType, arg1, arg2, String.valueOf(conf), bw);
                                 }
@@ -288,7 +386,15 @@ public class MLNFileGenerator {
                                     arg3 = elements[1].split("\\s")[2];
 
                                     if (axiomType.equals("propAsstConf")) {
-                                        conf = NELL_CONFIDENCE_MAP.get(cleanse(arg2) + "\t"
+
+                                        // if (arg3.indexOf("jeffrey_eugenides")
+                                        // != -1)
+                                        // System.out.println(" GETTING FROM MAP \n = "
+                                        // + cleanse(arg2) + "\t"
+                                        // + cleanse(arg1) + "\t"
+                                        // + cleanse(arg3));
+
+                                        conf = NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2) + "\t"
                                                 + cleanse(arg1) + "\t"
                                                 + cleanse(arg3));
 
@@ -302,7 +408,7 @@ public class MLNFileGenerator {
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("ontologyTBox = " + elements);
+                    System.out.println("ontologyTBox = " + " " + e.getMessage() + " " + axiom);
                     continue;
                 }
             }
@@ -315,6 +421,22 @@ public class MLNFileGenerator {
         // close the stream
         bw.close();
 
+    }
+
+    private void createDisjointClasses(Set<OWLClass> setOWLClasses, String axiomType,
+            BufferedWriter bw) throws IOException {
+        for (OWLClass class1 : setOWLClasses) {
+            for (OWLClass class2 : setOWLClasses) {
+                if (!class1.toString().equals(class2.toString())) {
+                    if (class1.toString().indexOf("http://schema.org") == -1 &&
+                            class2.toString().indexOf("http://schema.org") == -1 &&
+                            class1.toString().indexOf("http://www.w3.org/") == -1 &&
+                            class2.toString().indexOf("http://www.w3.org/") == -1) {
+                        writeToFile(axiomType, class1.toString(), class2.toString(), null, bw);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -334,6 +456,8 @@ public class MLNFileGenerator {
             return "ObjectPropertyDomain";
         else if (axiomType.equals("psub"))
             return "SubObjectPropertyOf";
+        else if (axiomType.equals("psubConf"))
+            return "SubObjectPropertyOf";
         else if (axiomType.equals("psub"))
             return "SubObjectPropertyOf";
         else if (axiomType.equals("equivProp"))
@@ -345,6 +469,8 @@ public class MLNFileGenerator {
         else if (axiomType.equals("sameAsConf"))
             return "SameIndividual";
         else if (axiomType.equals("isOfType"))
+            return "ClassAssertion";
+        else if (axiomType.equals("isOfTypeConf"))
             return "ClassAssertion";
 
         return axiomType;
@@ -393,6 +519,7 @@ public class MLNFileGenerator {
      */
     private String removeTags(String arg) {
 
+        arg = arg.replaceAll("_:", "");
         arg = arg.replaceAll("<", "");
         arg = arg.replaceAll(">\\)", "");
         arg = arg.replaceAll(">", "");
@@ -415,14 +542,20 @@ public class MLNFileGenerator {
      */
     private String cleanse(String arg) {
         arg = arg.replaceAll("http://dbpedia.org/resource/", "");
+        arg = arg.replaceAll("http://dbpedia.org/ontology/", "");
         arg = arg.replaceAll("http://dws/OIE#Instance/", "");
         arg = arg.replaceAll("http://dws/OIE#Predicate/", "");
+        arg = arg.replaceAll("http://dws/OIE#Concept/", "");
 
         arg = arg.replaceAll("<", "");
         arg = arg.replaceAll(">\\)", "");
         arg = arg.replaceAll(">", "");
-        if (Character.isDigit(arg.charAt(arg.length() - 1))) {
-            arg = arg.replaceAll("_[0-9]+/*\\.*[0-9]*", "");
+        arg = arg.replaceAll("_:", "");
+        arg = Utilities.utf8ToCharacter(arg);
+        while (Character.isDigit(arg.charAt(arg.length() - 1))) {
+            arg = arg.substring(0, arg.length() - 1);
+            if (arg.charAt(arg.length() - 1) == '_')
+                return Utilities.utf8ToCharacter(arg.substring(0, arg.length() - 1));
         }
         return Utilities.utf8ToCharacter(arg);
     }

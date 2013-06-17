@@ -178,7 +178,7 @@ public class GenericConverter {
                                 " " + blObjInst);
 
                         // create a property assertion on the nell triple
-                        if (nellPred != null && nellSub != null && nellObj != null)
+                        if (nellPred != null && nellSub != null && nellObj != null && !nellPred.equals("generalizations"))
                             owlCreator.createPropertyAssertion(nellPred, nellSub, nellObj);
 
                         // get types of subject instances

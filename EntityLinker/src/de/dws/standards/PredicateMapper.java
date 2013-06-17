@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import de.dws.helper.dataObject.Pair;
 import de.dws.helper.util.Constants;
 import de.dws.mapper.dbConnectivity.DBWrapper;
 
@@ -24,7 +25,7 @@ import de.dws.mapper.dbConnectivity.DBWrapper;
  */
 public class PredicateMapper {
 
-    private static String DB_NAME = "goldStandardClean_Reverb";
+    private static String DB_NAME = "goldStandardClean";
 
     private static final String GET_COOCC_PREDICATES_SQL = "select count(*) as cnt, D_PRED from " +
             DB_NAME +
@@ -45,14 +46,17 @@ public class PredicateMapper {
     /**
      * stores all the matched NELL predicates to DBPedia predicates
      */
+
     static Map<String, Long> ALL_NELL_PREDS = new HashMap<String, Long>();
+
+    static Map<Pair<String, String>, Double> map = new HashMap<Pair<String, String>, Double>();
 
     /**
      * @param args
      */
     public static void main(String[] args) {
         PropertyConfigurator
-                .configure("/resources/log4j.properties");
+                .configure("resources/log4j.properties");
 
         loadNELLPredicates();
 
@@ -70,37 +74,71 @@ public class PredicateMapper {
 
         String predicate = null;
         long total = 0;
+
+        long instCount = 0;
         List<String> results = new ArrayList<String>();
         String[] arr = null;
 
         DBWrapper
                 .init(GET_COOCC_PREDICATES_SQL);
 
+        Pair<String, String> pair = null;
+
         for (Map.Entry<String, Long> entry : ALL_NELL_PREDS.entrySet()) {
+
+            long predTotal = 0;
+
             predicate = entry.getKey();
 
             rankedPredicates = DBWrapper.getRankedPredicates(predicate);
 
             for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
+
+                pair = new Pair<String, String>(predicate, rankedVal.getKey());
                 total = total + rankedVal.getValue();
-                // logger.info(predicate + "," + rankedVal.getKey() + "," +
-                // rankedVal.getValue());
+                instCount = rankedVal.getValue();
+
+                // logger.info(predicate + "\t" + rankedVal.getKey() + "\t" +
+                // instCount);
+
+                if (instCount > 5) {
+                    predTotal = predTotal + instCount;
+                    map.put(pair, new Double(instCount));
+                }
 
                 // find two instances of them
                 // DBWrapper.init(GET_SAMPLE);
 
-                results = DBWrapper.getSampleInstances(predicate, rankedVal.getKey());
+                // results = DBWrapper.getSampleInstances(predicate,
+                // rankedVal.getKey());
 
-                for (String reString : results) {
-                    arr = reString.split(DBWrapper.GS_DELIMITER);
-                    logger.info(predicate + "\t" + rankedVal.getKey() + "\t" + rankedVal.getValue()
-                            + "\t" +
-                            arr[0] + "\t" + arr[1] + "\t" + arr[2] + "\t" + arr[3] + "\t" + arr[4]
-                            + "\t" + arr[5]);
+                // for (String reString : results) {
+                // arr = reString.split(DBWrapper.GS_DELIMITER);
+                // logger.info(predicate + "\t" + rankedVal.getKey() + "\t" +
+                // rankedVal.getValue());
+                // }
+            }
+
+            for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
+
+                pair = new Pair<String, String>(predicate, rankedVal.getKey());
+                // update the map..
+                Double value = map.get(pair);
+                if (value != null) {
+                    value = value / predTotal;
+                    System.out.println(pair.getFirst() + "\t" + pair.getSecond() + "\t" + value);
                 }
-            }            
+            }
+
         }
-        
+
+        // for (Map.Entry<Pair<String, String>, Double> e : map.entrySet()) {
+        // System.out.println(e.getKey().getFirst() + " " +
+        // e.getKey().getSecond() + " "
+        // + e.getValue());
+        //
+        // }
+
         DBWrapper.shutDown();
         System.out.println(total);
     }
