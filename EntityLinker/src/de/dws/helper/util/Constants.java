@@ -26,7 +26,7 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
     // "http://dbpedia.org/sparql";
     // "http://live.dbpedia.org/sparql";
 
@@ -220,8 +220,6 @@ public class Constants
     public static final String INSERT_GOLD_STANDARD_REVERB =
             "INSERT INTO goldStandard_2 (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ, SUB_LINK_CNT, OBJ_LINK_CNT ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    
-    
     /**
      * SQL to insert a baseline instance for NELL
      */
@@ -234,7 +232,6 @@ public class Constants
     public static final String INSERT_BASE_LINE_REVERB =
             "INSERT INTO baseLine_2 (E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ ) VALUES (?, ?, ?, ?, ?, ?)";
 
-    
     /**
      * SQL to insert an axiom before running inference
      */
@@ -256,9 +253,8 @@ public class Constants
      * given a surface form, fetch top titles it refers to
      */
     public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
-    		//"select URI from surfaceForms where SF =? order by PROB desc" ;
-    		//"select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
-    
+    // "select URI from surfaceForms where SF =? order by PROB desc" ;
+    // "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
 
     public static final String INSERT_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms_2_uri (uri, surface, count) VALUES (?, ?, ?)";
@@ -270,14 +266,15 @@ public class Constants
      * fetch the top matching DBPedia predicates co-occurring with a given NELL
      * predicate
      */
-    		//"select *, count(*) as cnt from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc" ;
-    		//"select count(*) as cnt, D_PRED from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc";
+    // "select *, count(*) as cnt from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc"
+    // ;
+    // "select count(*) as cnt, D_PRED from goldStandardClean where E_PRED =? group by D_PRED order by cnt desc";
 
     /**
      * fetch all the NELL predicates matched with the DBPedia dataset
      */
-    public static final String GET_NELL_PREDICATES = "select E_PRED, count(*) as cnt from goldStandardClean group by E_PRED order by cnt desc" ;
-    		//"select predicate, count(*) as cnt from nell group by predicate order by cnt desc";
+    public static final String GET_NELL_PREDICATES = "select E_PRED, count(*) as cnt from goldStandardClean group by E_PRED order by cnt desc";
+    // "select predicate, count(*) as cnt from nell group by predicate order by cnt desc";
 
     /**
      * defines the batch size for the Data base operations
@@ -292,7 +289,7 @@ public class Constants
      */
     public static String ONTOLOGY_NAMESPACE = "http://dbpedia.org/ontology/";
     public static String DBPEDIA_NAMESPACE = "http://dbpedia.org/";
-    
+
     public static String OIE_ONTOLOGY_NAMESPACE = "http://dws/OIE#";
 
     /**
@@ -304,15 +301,15 @@ public class Constants
      * extraction engine namespace
      */
     public static String ONTOLOGY_EXTRACTION_NS = ONTOLOGY_NAMESPACE + "Extract#";
-    
+
     public static String ONTOLOGY_EXTRACTION_CONCEPT_NS = OIE_ONTOLOGY_NAMESPACE + "Concept/";
     public static String ONTOLOGY_EXTRACTION_PREDICATE_NS = OIE_ONTOLOGY_NAMESPACE + "Predicate/";
     public static String ONTOLOGY_EXTRACTION_INSTANCE_NS = OIE_ONTOLOGY_NAMESPACE + "Instance/";
-    
+
     public static String DBPEDIA_CONCEPT_NS = DBPEDIA_NAMESPACE + "ontology/";
     public static String DBPEDIA_PREDICATE_NS = DBPEDIA_NAMESPACE + "ontology/";
     public static String DBPEDIA_INSTANCE_NS = DBPEDIA_NAMESPACE + "resource/";
-    
+
     /**
      * DBPedia TBOX info file
      */
@@ -396,7 +393,22 @@ public class Constants
 
     // take sentences with atmost these many words between them
     public static final int WORD_GAP = 5;
-    
+
     public static final boolean IS_NELL = false;
 
+    private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/subFiles/DS_1000/";
+
+    public static final String INPUT_CSV_FILE = DIRECTORY + "data.csv";
+
+    public static final String OUTPUT_OWL_FILE = DIRECTORY + "data.owl";
+
+    public static final String DELIMIT_INPUT_CSV = "\t";
+
+    public static final String GOLD_MLN_EVIDENCE = DIRECTORY + "goldEvidencePostFixed.db";
+
+    public static final String IS_OF_TYPE_CONF_NELL_EVIDENCE = DIRECTORY + "isOfTypeConf.nell.db";
+
+    public static final String POST_FIX = "_";
+
+    public static final String IS_OF_TYPE_DBPEDIA_EVIDENCE = DIRECTORY + "isOfType.dbpedia.db";    
 }

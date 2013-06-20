@@ -7,13 +7,18 @@ package de.dws.reasoner;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -83,6 +88,11 @@ public class GenericConverter {
 
     public static final String URI_CANONICAL_FILE = "resources/uri2CanonMapping.tsv";
 
+    private static Map<Pair<String, String>, Double> NELL_CLASS_ASSERT_MAP = new HashMap<Pair<String, String>, Double>();
+    private static Set<String> uniqueEntities = new HashSet<String>();
+
+    private static final String NELL_CLASS_ASSERTIONS_FILE = "/home/arnab/Work/data/NELL/NellClassAsserions.csv";
+
     /**
      * converts a csv file to owl file
      * 
@@ -97,6 +107,7 @@ public class GenericConverter {
         // in memory
         // since, we can readily convert the rows to a set of assertion
         // statements
+
         if (!type.equals(TYPE.NELL_ABOX)) {
             loadCsvInMemory(inputCsvFile, delimit);
 
@@ -107,8 +118,13 @@ public class GenericConverter {
             }
         }
         else { // deal NELL ABox stuff separately
+            System.out.println("Loading confidence values of the NELL class assertions ...");
+            loadNELLClassAssertConfidences();
+            System.out.println("Loading Completed...");
+
             try {
-                readCsvAndCreateOwlFile(inputCsvFile, delimit, outputOwlFile);
+                readCsvAndCreateOwlFile(inputCsvFile, delimit,
+                        outputOwlFile);
             } catch (OWLOntologyCreationException e) {
                 e.printStackTrace();
             }
@@ -143,6 +159,9 @@ public class GenericConverter {
         String blSubjInst = null;
         String blObjInst = null;
 
+        String goldSub = null;
+        String goldObj = null;
+
         List<String> listTypes = null;
 
         OWLCreator owlCreator = new OWLCreator(Constants.OIE_ONTOLOGY_NAMESPACE);
@@ -151,14 +170,26 @@ public class GenericConverter {
             tupleReader = new BufferedReader(new FileReader(inputCsvFile));
             logger.info("Reading " + inputCsvFile + " ... Please wait !!");
 
+            // the file where the evidences for the MLN are written out
+
+            BufferedWriter goldEvidenceWriter = new BufferedWriter(new FileWriter(
+                    Constants.GOLD_MLN_EVIDENCE));
+
+            BufferedWriter isOfTypeEvidenceWriter = new BufferedWriter(new FileWriter(
+                    Constants.IS_OF_TYPE_CONF_NELL_EVIDENCE));
+
             if (tupleReader != null) {
                 while ((line = tupleReader.readLine()) != null) {
                     elements = line.split(delimit);
                     if (elements.length >= 8) {
 
+                        // get the individual NELL subject, predicate and object
                         nellSub = getInst(elements[0]);
                         nellPred = elements[1];
                         nellObj = getInst(elements[2]);
+
+                        goldSub = elements[3].trim();
+                        goldObj = elements[5].trim();
 
                         blSubjInst = removeHeader(elements[6]);
                         blSubjInst = Utilities.characterToUTF8(blSubjInst);
@@ -169,8 +200,13 @@ public class GenericConverter {
                         nellSubType = getType(elements[0]);
                         nellObjType = getType(elements[2]);
 
-                        nellSub = generateUniqueURI(nellSub, elements[0], elements[1], elements[2]);
-                        nellObj = generateUniqueURI(nellObj, elements[0], elements[1], elements[2]);
+                        if (!nellSubType.equals(nellSub))
+                            nellSub = generateUniqueURI(nellSub, elements[0], elements[1],
+                                    elements[2]);
+
+                        if (!nellObjType.equals(nellObj))
+                            nellObj = generateUniqueURI(nellObj, elements[0], elements[1],
+                                    elements[2]);
 
                         logger.info(nellSubType + " " + nellSub + " " +
                                 nellObjType + " " + nellObj
@@ -178,34 +214,52 @@ public class GenericConverter {
                                 " " + blObjInst);
 
                         // create a property assertion on the nell triple
-                        if (nellPred != null && nellSub != null && nellObj != null && !nellPred.equals("generalizations"))
+                        if (nellPred != null && nellSub != null && nellObj != null
+                                && !nellPred.equals("generalizations"))
                             owlCreator.createPropertyAssertion(nellPred, nellSub, nellObj);
+
+                        // check for the types of the instances, if any
+                        if (!nellSubType.equals(nellSub))
+                            createTypeOfMLN(nellSub, isOfTypeEvidenceWriter);
+
+                        if (!nellObjType.equals(nellObj))
+                            createTypeOfMLN(nellObj, isOfTypeEvidenceWriter);
 
                         // get types of subject instances
                         getTypes(blSubjInst, owlCreator);
 
                         // type assertion of NELL instances as subjects
-                        if (nellSubType != null)
-                            owlCreator.createIsTypeOf(nellSub, nellSubType);
+                        // if (!nellSubType.equals(nellSub))
+                        // owlCreator.createIsTypeOf(nellSub, nellSubType);
 
                         // same as between NELL and DBpedia instance as
                         // subjects
-                        owlCreator.createSameAs(nellSub, blSubjInst);
+                        if (!nellSubType.equals(nellSub))
+                            owlCreator.createSameAs(nellSub, blSubjInst);
 
                         // get types of subject instances
                         getTypes(blObjInst, owlCreator);
 
                         // type assertion of NELL instances as objects
-                        if (nellObjType != null)
-                            owlCreator.createIsTypeOf(nellObj, nellObjType);
+                        // if (!nellObjType.equals(nellObj))
+                        // owlCreator.createIsTypeOf(nellObj, nellObjType);
 
                         // same as between NELL and DBpedia instance as
                         // objects
-                        owlCreator.createSameAs(nellObj, blObjInst);
+                        if (!nellObjType.equals(nellObj))
+                            owlCreator.createSameAs(nellObj, blObjInst);
 
+                        // Create Gold MLN
+                        createGoldMLN(goldSub, nellSub, goldEvidenceWriter);
+                        if (!nellPred.equals("generalizations")) {
+                            createGoldMLN(goldObj, nellObj, goldEvidenceWriter);
+                        }
                     }
                 }
 
+                goldEvidenceWriter.close();
+                isOfTypeEvidenceWriter.close();
+                
                 dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
 
                 // flush to file
@@ -214,6 +268,52 @@ public class GenericConverter {
         } catch (IOException e) {
             logger.info("Error processing " + line + " " + e.getMessage());
         }
+    }
+
+    private static String createTypeOfMLN(String entity, BufferedWriter isOfTypeEvidenceWriter) {
+
+        String type;
+
+        String tempEntity = entity.replaceAll(Constants.POST_FIX + "[0-9]", "");
+
+        for (Map.Entry<Pair<String, String>, Double> entry : NELL_CLASS_ASSERT_MAP.entrySet()) {
+            if (entry.getKey().getFirst().equals(tempEntity)) {
+                type = entry.getKey().getSecond();
+                try {
+                    if (!uniqueEntities.contains(entity + type)) {
+                        isOfTypeEvidenceWriter.write("isOfTypeConf(\"NELL#Concept/"
+                                + type + "\", \"NELL#Instance/" + entity
+                                + "\", " + entry.getValue() + ")\n");
+
+                        uniqueEntities.add(entity + type);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return null;
+    }
+
+    private static void createGoldMLN(String gold, String nell, BufferedWriter bw)
+            throws IOException {
+
+        String nellFiltered = nell.substring(nell.indexOf(":") + 1, nell.length());
+        String goldFiltered = gold.replaceAll("http://dbpedia.org/resource/", "");
+
+        // if (gold.indexOf("Carrie_") != -1)
+        // System.out.println("");
+
+        goldFiltered = Utilities.characterToUTF8(goldFiltered);
+        goldFiltered = goldFiltered.replaceAll("%", "~");
+        goldFiltered = goldFiltered.replaceAll("~28", "[");
+        goldFiltered = goldFiltered.replaceAll("~29", "]");
+        goldFiltered = goldFiltered.replaceAll("~27", "*");
+
+        bw.write("sameAs(\"DBP#resource/" + goldFiltered + "\", \"NELL#Instance/" + nellFiltered
+                + "\")\n");
+
     }
 
     /**
@@ -262,7 +362,7 @@ public class GenericConverter {
 
             // create an unique URI because same entity already has been
             // encountered before
-            nellInst = nellInst + "_" + String.valueOf(value + 1);
+            nellInst = nellInst + Constants.POST_FIX + String.valueOf(value + 1);
 
         } else {
             GenericConverter.MAP_COUNTER.put(nellInst, 1L);
@@ -279,6 +379,9 @@ public class GenericConverter {
     public static void getTypes(String blInst, OWLCreator owlCreator) {
         List<String> listTypes;
 
+//        if(blInst.indexOf("Pierre") != -1 )
+//            System.out.println("");
+        
         // get DBPedia types
         listTypes = getInstanceTypes(Utilities.utf8ToCharacter(blInst));
 
@@ -297,10 +400,11 @@ public class GenericConverter {
      */
     public static List<String> getInstanceTypes(String inst) {
         List<String> result = new ArrayList<String>();
-
+        String sparqlQuery = null;
+        
         try {
             ResultSet results = null;
-            String sparqlQuery = "select ?val where{ <http://dbpedia.org/resource/" + inst
+            sparqlQuery = "select ?val where{ <http://dbpedia.org/resource/" + inst
                     + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val} ";
 
             // fetch the result set
@@ -312,7 +416,7 @@ public class GenericConverter {
                     result.add(removeHeader(querySol.get("val").toString()));
             }
         } catch (Exception e) {
-            logger.info("");
+            logger.info("problem with " + sparqlQuery + " " + e.getMessage());
         }
         return result;
     }
@@ -698,13 +802,41 @@ public class GenericConverter {
         }
     }
 
-    /*
-     * public static void mergeOntologies(String inputOwlFile1, String
-     * inputOwlFile2, String mergedOutputOwlFile) { try {
-     * OWLCreator.merge(inputOwlFile1, inputOwlFile2, mergedOutputOwlFile); }
-     * catch (OWLOntologyCreationException e) { // TODO Auto-generated catch
-     * block e.printStackTrace(); } // OWLOntology ontology =
-     * manager.loadOntologyFromOntologyDocument(new // File(file1)); }
-     */
+    private static void loadNELLClassAssertConfidences() {
 
+        String strLine = null;
+
+        String sub = null;
+        String pred = null;
+        String obj = null;
+        double conf = 0D;
+        try {
+            FileInputStream file = new FileInputStream(NELL_CLASS_ASSERTIONS_FILE);
+            BufferedReader input = new BufferedReader
+                    (new InputStreamReader(file));
+
+            Pair<String, String> pairEntity = null;
+
+            while ((strLine = input.readLine()) != null) {
+
+                sub = (strLine.split(",")[0]);
+                sub = sub.substring(sub.indexOf(":") + 1, sub.length());
+
+                pred = (strLine.split(",")[1]);
+                obj = (strLine.split(",")[2]);
+                conf = Double.valueOf((strLine.split(",")[3]));
+
+                pairEntity = new Pair<String, String>(sub, obj);
+
+                // if (NELL_CLASS_ASSERT_MAP.containsKey(pairEntity))
+                // System.out.println(pairEntity + " " +
+                // NELL_CLASS_ASSERT_MAP.get(pairEntity));
+                // else
+                NELL_CLASS_ASSERT_MAP.put(pairEntity, conf);
+
+            }
+        } catch (IOException ex) {
+            System.out.println("Exception with line = " + strLine + "  " + ex.getMessage());
+        }
+    }
 }
