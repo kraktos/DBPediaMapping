@@ -252,7 +252,11 @@ public class Constants
     /**
      * given a surface form, fetch top titles it refers to
      */
-    public static final String GET_WIKI_TITLES_SQL = "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
+    public static final String GET_WIKI_TITLES_SQL =  "select URI, SUM(COUNT) as cnt from wikiPrep where SF = ? group by URI order by cnt desc limit 2";
+                                                       
+            
+            //"select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
+    
     // "select URI from surfaceForms where SF =? order by PROB desc" ;
     // "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
 
@@ -394,7 +398,7 @@ public class Constants
     // take sentences with atmost these many words between them
     public static final int WORD_GAP = 5;
 
-    public static final boolean IS_NELL = false;
+    public static final boolean IS_NELL = true;
 
     private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/subFiles/DS_1000/";
 
@@ -410,5 +414,9 @@ public class Constants
 
     public static final String POST_FIX = "_";
 
-    public static final String IS_OF_TYPE_DBPEDIA_EVIDENCE = DIRECTORY + "isOfType.dbpedia.db";    
+    public static final String IS_OF_TYPE_DBPEDIA_EVIDENCE = DIRECTORY + "isOfType.dbpedia.db";
+    
+    
+    //select URI, SF, SUM(COUNT), (SUM(COUNT)/(select SUM(COUNT) from wikiPrep where SF = 'satun')) as prob from wikiPrep where SF = 'satun'  group by URI order by prob asc;
+
 }
