@@ -24,8 +24,8 @@ public class BLCompute {
     // define Logger
     static Logger logger = Logger.getLogger(BLCompute.class.getName());
 
-    private static final String DB_NAME_SOURCE_GS = "goldStandardClean_Reverb";
-    private static final String DB_NAME_TARGET_BL = "BL_Reverb";
+    private static final String DB_NAME_SOURCE_GS = "goldStandardClean";
+    private static final String DB_NAME_TARGET_BL = "NEW_BL";
 
     private static final String DISTINCT_IE_TRIPLES_GS = "select distinct E_SUB, E_PRED, E_OBJ, D_SUB, D_PRED, D_OBJ from "
             +
@@ -57,6 +57,8 @@ public class BLCompute {
         // get the most frequent URI
         getMostFreqConcept();
 
+        System.out.println(BL_INSERT_ROWS.size());
+        
         // save to baseline DB
         dumpToDB();
 
@@ -138,7 +140,7 @@ public class BLCompute {
                             .replaceAll(" 's", "'s")));
                 }
                 if (subjConcepts.size() > 0) {
-                    blSubj = subjConcepts.get(0);
+                    blSubj = subjConcepts.get(0).replaceAll("\\s", "_");
                     IN_MEMORY_CONCEPTS.put(ieSubj, Utilities.utf8ToCharacter(blSubj));
                 }
             }
@@ -156,7 +158,7 @@ public class BLCompute {
                             .replaceAll(" 's", "'s")));
                 }
                 if (objConcepts.size() > 0) {
-                    blObj = objConcepts.get(0);
+                    blObj = objConcepts.get(0).replaceAll("\\s", "_");
                     IN_MEMORY_CONCEPTS.put(ieObj, Utilities.utf8ToCharacter(blObj));
                 }
             }

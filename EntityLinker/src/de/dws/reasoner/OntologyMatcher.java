@@ -39,9 +39,7 @@ public class OntologyMatcher {
                 .configure("resources/log4j.properties");
 
         GenericConverter.convertCsvToOwl(Constants.INPUT_CSV_FILE, Constants.DELIMIT_INPUT_CSV,
-                GenericConverter.TYPE.NELL_ABOX, Constants.OUTPUT_OWL_FILE);
-
-        
+                GenericConverter.TYPE.NELL_ABOX, Constants.OUTPUT_OWL_FILE);        
     }
 
 }

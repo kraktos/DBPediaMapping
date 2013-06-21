@@ -79,7 +79,7 @@ public class MLNFileGenerator {
     PrefixManager prefixDBPediaInstance = null;
 
     private static Map<Pair<String, String>, Double> SAMEAS_LINK_APRIORI_MAP = new HashMap<Pair<String, String>, Double>();
-    private static final String APRIORI_PROB_FILE = "/home/arnab/Work/data/NELL/ontology/sameAsAPriori.txt";
+    private static final String APRIORI_PROB_FILE = "/home/arnab/Work/data/NELL/ontology/sameAsAPriori2.txt";
 
     private static final String NELL_CONFIDENCE_FILE = Constants.INPUT_CSV_FILE;
     private static final String NELL_PRED_CONF_FILE = "/home/arnab/Work/data/NELL/ontology/NELLPredMatchesConf.csv";
@@ -138,9 +138,9 @@ public class MLNFileGenerator {
 
     /**
      * @param args
-     * @throws IOException
+     * @throws Exception 
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         String owlFileInput = null;
         String outputEvidence = null;
@@ -259,15 +259,14 @@ public class MLNFileGenerator {
     /**
      * load the apriori probabilities of the uris given a surface from. Source:
      * WikiPrep
-     * 
-     * @throws IOException
+     * @throws Exception 
      */
-    private static void loadSameAsConfidences() throws IOException {
+    private static void loadSameAsConfidences() throws Exception {
 
         String sf = null;
         String uri = null;
         String conf = null;
-        String strLine;
+        String strLine = null;
 
         Pair<String, String> pair = null;
 
@@ -275,13 +274,18 @@ public class MLNFileGenerator {
         BufferedReader input = new BufferedReader
                 (new InputStreamReader(file));
 
-        while ((strLine = input.readLine()) != null) {
-            sf = strip(strLine.split("\t")[0]);
-            uri = strip(strLine.split("\t")[1]);
-            conf = strip(strLine.split("\t")[2]);
+        try {
+            while ((strLine = input.readLine()) != null) {
+                sf = strip(strLine.split("\t")[0]);
+                uri = strip(strLine.split("\t")[1]);
+                conf = strip(strLine.split("\t")[2]);
 
-            pair = new Pair<String, String>(sf, uri);
-            SAMEAS_LINK_APRIORI_MAP.put(pair, Double.parseDouble(conf));
+                pair = new Pair<String, String>(sf, uri);
+                SAMEAS_LINK_APRIORI_MAP.put(pair, Double.parseDouble(conf));
+            }
+        } catch (Exception e) {
+            System.out.println("strLine = " + strLine + " " + e.getMessage());
+            throw new Exception();
         }
 
         System.out.println("Loading completed...");
