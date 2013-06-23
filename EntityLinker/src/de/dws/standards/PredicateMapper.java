@@ -51,6 +51,10 @@ public class PredicateMapper {
 
     static Map<Pair<String, String>, Double> map = new HashMap<Pair<String, String>, Double>();
 
+    static Map<String, Long> nellPredMap = new HashMap<String, Long>();
+
+    static Map<String, Long> dbpPredicateMap = new HashMap<String, Long>();
+
     /**
      * @param args
      */
@@ -92,18 +96,36 @@ public class PredicateMapper {
 
             rankedPredicates = DBWrapper.getRankedPredicates(predicate);
 
+            long val = 0;
+            String dbpPred;
+
             for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
 
                 pair = new Pair<String, String>(predicate, rankedVal.getKey());
                 total = total + rankedVal.getValue();
                 instCount = rankedVal.getValue();
+                dbpPred = rankedVal.getKey();
 
-                // logger.info(predicate + "\t" + rankedVal.getKey() + "\t" +
+                // logger.info(predicate + "\t" + dbpPred + "\t" +
                 // instCount);
 
                 if (instCount > 5) {
-                    predTotal = predTotal + instCount;
+                    // predTotal = predTotal + instCount;
                     map.put(pair, new Double(instCount));
+
+                    if (nellPredMap.containsKey(predicate)) {
+                        val = nellPredMap.get(predicate);
+                        nellPredMap.put(predicate, val + instCount);
+                    } else {
+                        nellPredMap.put(predicate, instCount);
+                    }
+
+                    if (dbpPredicateMap.containsKey(dbpPred)) {
+                        val = dbpPredicateMap.get(dbpPred);
+                        dbpPredicateMap.put(dbpPred, val + instCount);
+                    } else {
+                        dbpPredicateMap.put(dbpPred, instCount);
+                    }
                 }
 
                 // find two instances of them
@@ -119,17 +141,25 @@ public class PredicateMapper {
                 // }
             }
 
-            for (Entry<String, Long> rankedVal : rankedPredicates.entrySet()) {
+        }
 
-                pair = new Pair<String, String>(predicate, rankedVal.getKey());
-                // update the map..
-                Double value = map.get(pair);
-                if (value != null) {
-                    value = value / predTotal;
-                    System.out.println(pair.getFirst() + "\t" + pair.getSecond() + "\t" + value);
-                }
-            }
+        for (Entry<Pair<String, String>, Double> rankedVal : map.entrySet()) {
 
+            long nellval = nellPredMap.get(rankedVal.getKey().getFirst());
+            long dbpVal = dbpPredicateMap.get(rankedVal.getKey().getSecond());
+            double joinedVal = rankedVal.getValue();
+            System.out.println(rankedVal.getKey() + " " + joinedVal + ",  P(nell|dbp) = "
+                    + joinedVal / (double) dbpVal + ",  P(dbp|nell) = " + joinedVal
+                    / (double) nellval);
+
+            // pair = new Pair<String, String>(predicate, rankedVal.getKey());
+            // // update the map..
+            // Double value = map.get(pair);
+            // if (value != null) {
+            // value = value / predTotal;
+            // System.out.println(pair.getFirst() + "\t" + pair.getSecond() +
+            // "\t" + value);
+            // }
         }
 
         // for (Map.Entry<Pair<String, String>, Double> e : map.entrySet()) {
@@ -151,6 +181,8 @@ public class PredicateMapper {
                 .init(GET_NELL_PREDICATES);
 
         DBWrapper.getAllNellPreds(ALL_NELL_PREDS);
+
+        System.out.println("after fetching,,predicatres = " + ALL_NELL_PREDS.size());
     }
 
 }
