@@ -142,7 +142,6 @@ public class OWLCreator {
      */
     public void createSameAs(String nellInst, String blInst) {
 
-
         OWLNamedIndividual arg1Value = factory.getOWLNamedIndividual(
                 nellInst, prefixInstanceIE);
 
@@ -157,8 +156,6 @@ public class OWLCreator {
         manager.addAxiom(ontology, sameAsIndividualAxiom);
 
     }
-
-    
 
     /**
      * create a property assertion for the IE triple

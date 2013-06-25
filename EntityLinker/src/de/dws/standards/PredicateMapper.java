@@ -143,13 +143,18 @@ public class PredicateMapper {
 
         }
 
+        System.out.println("NELL Pred\t" + "DBPedia Pred\t" + "Instance Count\t" + "P(nell|dbp)\t"
+                + "P(dbp|nell)\t");
+
         for (Entry<Pair<String, String>, Double> rankedVal : map.entrySet()) {
 
             long nellval = nellPredMap.get(rankedVal.getKey().getFirst());
             long dbpVal = dbpPredicateMap.get(rankedVal.getKey().getSecond());
             double joinedVal = rankedVal.getValue();
-            System.out.println(rankedVal.getKey() + " " + joinedVal + ",  P(nell|dbp) = "
-                    + joinedVal / (double) dbpVal + ",  P(dbp|nell) = " + joinedVal
+
+            System.out.println(rankedVal.getKey().getFirst() + "\t"
+                    + rankedVal.getKey().getSecond() +
+                    "\t" + joinedVal + "\t" + joinedVal / (double) dbpVal + "\t" + joinedVal
                     / (double) nellval);
 
             // pair = new Pair<String, String>(predicate, rankedVal.getKey());

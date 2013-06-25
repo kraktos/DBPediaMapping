@@ -149,11 +149,13 @@ public class GenericConverter {
 
         // Nell specific variables
         String nellSub = null;
+        String nellSubPFxd = null;
         String nellSubType = null;
 
         String nellPred = null;
 
         String nellObj = null;
+        String nellObjPFxd = null;
         String nellObjType = null;
 
         String blSubjInst = null;
@@ -181,61 +183,57 @@ public class GenericConverter {
             if (tupleReader != null) {
                 while ((line = tupleReader.readLine()) != null) {
                     elements = line.split(delimit);
-                    if (elements.length >= 8) {
+                    if (elements.length >= 5) {
 
                         // get the individual NELL subject, predicate and object
                         nellSub = getInst(elements[0]);
                         nellPred = elements[1];
                         nellObj = getInst(elements[2]);
 
-                        goldSub = elements[3].trim();
-                        goldObj = elements[5].trim();
+                        // goldSub = elements[3].trim();
+                        // goldObj = elements[5].trim();
 
-                        blSubjInst = removeHeader(elements[6]);
+                        blSubjInst = Utilities.cleanDBpediaURI(elements[3]);
                         blSubjInst = Utilities.characterToUTF8(blSubjInst);
 
-                        blObjInst = removeHeader(elements[7]);
+                        blObjInst = Utilities.cleanDBpediaURI(elements[4]);
                         blObjInst = Utilities.characterToUTF8(blObjInst);
 
                         nellSubType = getType(elements[0]);
                         nellObjType = getType(elements[2]);
 
                         if (!nellSubType.equals(nellSub))
-                            nellSub = generateUniqueURI(nellSub, elements[0], elements[1],
+                            nellSubPFxd = generateUniqueURI(nellSub, elements[0], elements[1],
                                     elements[2]);
 
                         if (!nellObjType.equals(nellObj))
-                            nellObj = generateUniqueURI(nellObj, elements[0], elements[1],
+                            nellObjPFxd = generateUniqueURI(nellObj, elements[0], elements[1],
                                     elements[2]);
 
-                        logger.info(nellSubType + " " + nellSub + " " +
-                                nellObjType + " " + nellObj
-                                + " -- " + blSubjInst +
-                                " " + blObjInst);
-
-                        // create a property assertion on the nell triple
+                        // create a property assertion on the nell triple after
+                        // entities are postfixed
                         if (nellPred != null && nellSub != null && nellObj != null
                                 && !nellPred.equals("generalizations"))
-                            owlCreator.createPropertyAssertion(nellPred, nellSub, nellObj);
+                            owlCreator.createPropertyAssertion(nellPred, nellSubPFxd, nellObjPFxd);
 
                         // check for the types of the instances, if any
                         if (!nellSubType.equals(nellSub))
-                            createTypeOfMLN(nellSub, isOfTypeEvidenceWriter);
+                            createTypeOfMLN(nellSub, nellSubPFxd, isOfTypeEvidenceWriter);
 
                         if (!nellObjType.equals(nellObj))
-                            createTypeOfMLN(nellObj, isOfTypeEvidenceWriter);
+                            createTypeOfMLN(nellObj, nellObjPFxd, isOfTypeEvidenceWriter);
 
                         // get types of subject instances
                         getTypes(blSubjInst, owlCreator);
-
+                        //
                         // type assertion of NELL instances as subjects
                         // if (!nellSubType.equals(nellSub))
-                        // owlCreator.createIsTypeOf(nellSub, nellSubType);
+                        // owlCreator.createIsTypeOf(nellSubPFxd, nellSubType);
 
                         // same as between NELL and DBpedia instance as
-                        // subjects
+                        // // subjects
                         if (!nellSubType.equals(nellSub))
-                            owlCreator.createSameAs(nellSub, blSubjInst);
+                            owlCreator.createSameAs(nellSubPFxd, blSubjInst);
 
                         // get types of subject instances
                         getTypes(blObjInst, owlCreator);
@@ -247,19 +245,19 @@ public class GenericConverter {
                         // same as between NELL and DBpedia instance as
                         // objects
                         if (!nellObjType.equals(nellObj))
-                            owlCreator.createSameAs(nellObj, blObjInst);
+                            owlCreator.createSameAs(nellObjPFxd, blObjInst);
 
-                        // Create Gold MLN
-                        createGoldMLN(goldSub, nellSub, goldEvidenceWriter);
-                        if (!nellPred.equals("generalizations")) {
-                            createGoldMLN(goldObj, nellObj, goldEvidenceWriter);
-                        }
+                        // // Create Gold MLN
+                        // createGoldMLN(goldSub, nellSub, goldEvidenceWriter);
+                        // if (!nellPred.equals("generalizations")) {
+                        // createGoldMLN(goldObj, nellObj, goldEvidenceWriter);
+                        // }
                     }
                 }
 
                 goldEvidenceWriter.close();
                 isOfTypeEvidenceWriter.close();
-                
+
                 dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
 
                 // flush to file
@@ -270,27 +268,29 @@ public class GenericConverter {
         }
     }
 
-    private static String createTypeOfMLN(String entity, BufferedWriter isOfTypeEvidenceWriter) {
+    private static String createTypeOfMLN(String originalNELLEntity,
+            String nellEntityPrefixed, BufferedWriter isOfTypeEvidenceWriter) {
 
         String type;
 
-        String tempEntity = entity.replaceAll(Constants.POST_FIX + "[0-9]", "");
+        // String tempEntity = originalNELLEntity.replaceAll(Constants.POST_FIX
+        // + "[0-9]", "");
 
         for (Map.Entry<Pair<String, String>, Double> entry : NELL_CLASS_ASSERT_MAP.entrySet()) {
-            if (entry.getKey().getFirst().equals(tempEntity)) {
+            if (entry.getKey().getFirst().equals(originalNELLEntity)) {
                 type = entry.getKey().getSecond();
                 try {
-                    if (!uniqueEntities.contains(entity + type)) {
+                    if (!uniqueEntities.contains(nellEntityPrefixed + type)) {
                         isOfTypeEvidenceWriter.write("isOfTypeConf(\"NELL#Concept/"
-                                + type + "\", \"NELL#Instance/" + entity
-                                + "\", " + entry.getValue() + ")\n");
+                                + type + "\", \"NELL#Instance/" + nellEntityPrefixed
+                                + "\", " + Utilities.convertProbabilityToWeight(entry.getValue())
+                                + ")\n");
 
-                        uniqueEntities.add(entity + type);
+                        uniqueEntities.add(nellEntityPrefixed + type);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         }
         return null;
@@ -379,9 +379,9 @@ public class GenericConverter {
     public static void getTypes(String blInst, OWLCreator owlCreator) {
         List<String> listTypes;
 
-//        if(blInst.indexOf("Pierre") != -1 )
-//            System.out.println("");
-        
+        // if(blInst.indexOf("Pierre") != -1 )
+        // System.out.println("");
+
         // get DBPedia types
         listTypes = getInstanceTypes(Utilities.utf8ToCharacter(blInst));
 
@@ -389,6 +389,9 @@ public class GenericConverter {
             // type assertion of DBPedia instances occurring
             // as subjects
             owlCreator.createIsTypeOf(blInst, listTypes);
+        }
+        else {
+            System.out.println(" No TYPE found for = " + blInst);
         }
     }
 
@@ -401,7 +404,7 @@ public class GenericConverter {
     public static List<String> getInstanceTypes(String inst) {
         List<String> result = new ArrayList<String>();
         String sparqlQuery = null;
-        
+
         try {
             ResultSet results = null;
             sparqlQuery = "select ?val where{ <http://dbpedia.org/resource/" + inst
@@ -413,7 +416,7 @@ public class GenericConverter {
 
             for (QuerySolution querySol : listResults) {
                 if (querySol.get("val").toString().indexOf(Constants.DBPEDIA_CONCEPT_NS) != -1)
-                    result.add(removeHeader(querySol.get("val").toString()));
+                    result.add(Utilities.cleanDBpediaURI(querySol.get("val").toString()));
             }
         } catch (Exception e) {
             logger.info("problem with " + sparqlQuery + " " + e.getMessage());
@@ -421,6 +424,12 @@ public class GenericConverter {
         return result;
     }
 
+    /**
+     * get the actual nell instance, following the ":" if any
+     * 
+     * @param arg
+     * @return
+     */
     private static String getInst(String arg) {
 
         if (arg.indexOf(":") != -1)
@@ -737,7 +746,7 @@ public class GenericConverter {
         List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
         for (Pair<String, String> pair : list) {
             if (pair.getSecond().equals("SUPPROP"))
-                retList.add(removeHeader(pair.getFirst()));
+                retList.add(Utilities.cleanDBpediaURI(pair.getFirst()));
         }
         return retList;
     }
@@ -754,7 +763,7 @@ public class GenericConverter {
         List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
         for (Pair<String, String> pair : list) {
             if (pair.getSecond().equals("SUBPROP"))
-                retList.add(removeHeader(pair.getFirst()));
+                retList.add(Utilities.cleanDBpediaURI(pair.getFirst()));
         }
         return retList;
     }
@@ -771,21 +780,9 @@ public class GenericConverter {
         List<Pair<String, String>> list = NELL_CATG_RELTNS.get(arg);
         for (Pair<String, String> pair : list) {
             if (pair.getSecond().equals("EQUIV"))
-                retList.add(removeHeader(pair.getFirst()));
+                retList.add(Utilities.cleanDBpediaURI(pair.getFirst()));
         }
         return retList;
-    }
-
-    // ***************************************************************
-    /**
-     * removes the DBpedia header uri information
-     * 
-     * @param arg
-     * @return
-     */
-    private static String removeHeader(String arg) {
-        return arg.replaceAll(Constants.DBPEDIA_PREDICATE_NS, "").replaceAll(
-                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":_", "__").replaceAll("\"", ""); // TODO
     }
 
     public static void print() {

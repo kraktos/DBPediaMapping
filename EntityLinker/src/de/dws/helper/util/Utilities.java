@@ -12,8 +12,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -284,12 +288,42 @@ public class Utilities
     public static double convertProbabilityToWeight(double prob) {
         // smoothing
         if (prob >= 1)
-            prob = 0.99;
+            prob = 1 - Math.pow(10, -6);
         if (prob <= 0)
-            prob = 0.01;
+            prob = 0 + Math.pow(10, -6);
 
         double conf = Math.log(prob / (1 - prob));
         // logger.info(prob + " => " + conf);
         return conf;
+    }
+
+    public static Map sortByValue(Map map) {
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o2, Object o1) {
+                return ((Comparable) ((Map.Entry) (o1)).getValue())
+                        .compareTo(((Map.Entry) (o2)).getValue());
+            }
+        });
+
+        Map result = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
+
+    // ***************************************************************
+    /**
+     * removes the DBpedia header uri information and cleanes the concept from
+     * any special character by converting it to to UTF-8
+     * 
+     * @param arg
+     * @return
+     */
+    public static String cleanDBpediaURI(String arg) {
+        return arg.replaceAll(Constants.DBPEDIA_PREDICATE_NS, "").replaceAll(
+                Constants.DBPEDIA_INSTANCE_NS, "").replaceAll(":_", "__").replaceAll("\"", ""); // TODO
     }
 }

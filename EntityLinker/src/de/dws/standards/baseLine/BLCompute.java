@@ -46,7 +46,9 @@ public class BLCompute {
     // stores all the distinct gold standard triples
     private static final List<String> ALL_DISTINCT_GOLD_TRIPLES = new ArrayList<String>();
 
-    private static final String NEW_GS_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/toAnnotate_topAll.tsv";
+    private static final String NEW_GS_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/toAnnotate_NEW.tsv";
+
+    private static final String NEW_BL_FILE = "/home/arnab/Work/data/experiments/reasoning/newBL/blData.tsv";
 
     // put -1 for all
     private static final int TOPK = -1;
@@ -74,11 +76,10 @@ public class BLCompute {
         // save to baseline DB
         // dumpToDB();
 
-        loadAnnotatedPredicateMappings();
+        // loadAnnotatedPredicateMappings();
         createBLFromRandomTriples();
-        
 
-        //System.out.println(BL_INSERT_ROWS.size());
+        // System.out.println(BL_INSERT_ROWS.size());
 
     }
 
@@ -108,7 +109,7 @@ public class BLCompute {
             predicate = arrElems[0];
             dbpPredicate = arrElems[1];
             instCount = Double.parseDouble(arrElems[2]);
-            prob = Double.parseDouble(arrElems[3]);    
+            prob = Double.parseDouble(arrElems[3]);
 
             try {
                 if (arrElems[3] != null) {
@@ -131,7 +132,8 @@ public class BLCompute {
     private static List<String> getByFirst(String arg, int topK) {
         List<String> listPredicates = new ArrayList<String>();
 
-        for (Map.Entry<Pair<String, String>, Double> entry : IN_MEMORY_PREDICATE_MAPPINGS.entrySet()) {
+        for (Map.Entry<Pair<String, String>, Double> entry : IN_MEMORY_PREDICATE_MAPPINGS
+                .entrySet()) {
             if (entry.getKey().getFirst().equals(arg)) {
                 if (topK == -1)
                     listPredicates.add(entry.getKey().getSecond());
@@ -165,6 +167,9 @@ public class BLCompute {
         BufferedWriter goldWriter = new BufferedWriter(new FileWriter(
                 NEW_GS_FILE));
 
+        BufferedWriter blWriter = new BufferedWriter(new FileWriter(
+                NEW_BL_FILE));
+
         long totalRecds = 0;
         long notMapped = 0;
 
@@ -175,7 +180,8 @@ public class BLCompute {
             DBWrapper.init(Constants.GET_WIKI_TITLES_SQL);
 
             // sort the map by value
-            IN_MEMORY_PREDICATE_MAPPINGS = Utilities.sortByValue(IN_MEMORY_PREDICATE_MAPPINGS);
+            // IN_MEMORY_PREDICATE_MAPPINGS =
+            // Utilities.sortByValue(IN_MEMORY_PREDICATE_MAPPINGS);
 
             // iterate the the nell sample tripels
             while ((line = tupleReader.readLine()) != null) {
@@ -194,32 +200,70 @@ public class BLCompute {
                             "\\_+", " ")));
 
                     // fetch the predicates from the in-memory map
-                    dbpPredicates = getByFirst(ieRel, TOPK);
+                    // dbpPredicates = getByFirst(ieRel, TOPK);
 
                     // if both the subject and object is map-able,
                     if (subjConcepts.size() > 0 && objConcepts.size() > 0) {
                         // System.out.print(ieSubj + "\t" + ieRel + "\t" + ieObj
                         // + "\t");
-                        goldWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj + "\n");
-                        for (String subjs : subjConcepts) {
-                            for (String objs : objConcepts) {
+                        // goldWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj
+                        // + "\n");
+                        blWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj);
 
-                                if (dbpPredicates.size() > 0) {
-                                    for (String preds : dbpPredicates) {
-                                        goldWriter.write("" + "\t" + "" + "\t" + "" + "\t"
-                                                + subjs.replaceAll("\\s", "_") + "\t"
-                                                + preds + "\t"
-                                                + objs.replaceAll("\\s", "_") + "\n");
-                                    }
-                                }
-                                else {
+                        StringBuffer s = new StringBuffer();
 
-                                    goldWriter.write("" + "\t" + "" + "\t" + "" + "\t"
-                                            + subjs.replaceAll("\\s", "_") + "\t"
-                                            + objs.replaceAll("\\s", "_") + "\n");
-                                }
-                            }
-                        }
+                        // createDisplayPattern(subjConcepts, objConcepts,
+                        // goldWriter);
+
+                        blWriter.write("\t"
+                                + Constants.DBPEDIA_INSTANCE_NS
+                                + subjConcepts.get(0).replaceAll("\\s",
+                                        "_") + "\t"
+                                + Constants.DBPEDIA_INSTANCE_NS
+                                + objConcepts.get(0).replaceAll("\\s",
+                                        "_") + "\n");
+
+                        // int sizeSub = subjConcepts.size();
+                        // int sizeObj = objConcepts.size();
+                        //
+                        // int size = (sizeSub > sizeObj) ? sizeSub : sizeObj;
+
+                        // for (int i = 0; i < size; i++) {
+                        // for (int j = 0; j < 2; j++) {
+                        // System.out.println("\t" + contents[i][j]);
+                        // }
+                        // System.out.println("\t\t\t");
+                        // }
+
+                        // for (String subjs : subjConcepts) {
+                        // for (; subCntr < subjConcepts.size();) {
+                        //
+                        // s.append("" + "\t" + "" + "\t" + "" + "\t"
+                        // + Constants.DBPEDIA_INSTANCE_NS
+                        // + subjConcepts.get(subCntr).replaceAll("\\s", "_") +
+                        // "\t");
+                        // subCntr++;
+                        //
+                        // // for (String objs : objConcepts) {
+                        // for (; objCntr < objConcepts.size();) {
+                        // s.append(Constants.DBPEDIA_INSTANCE_NS
+                        // + objConcepts.get(objCntr).replaceAll("\\s", "_") +
+                        // "\n");
+                        // objCntr++;
+                        // break;
+                        //
+                        // // System.out.println("" + "\t" + "" + "\t" + ""
+                        // // + "\t"
+                        // // + Constants.DBPEDIA_INSTANCE_NS
+                        // // + subjConcepts.get(subCntr).replaceAll("\\s",
+                        // // "_") + "\t"
+                        // // + Constants.DBPEDIA_INSTANCE_NS
+                        // // + objConcepts.get(objCntr).replaceAll("\\s",
+                        // // "_") + "\n");
+                        // }
+                        //
+                        // }
+
                     } else {
                         notMapped++;
                         // System.out.println(line);
@@ -230,9 +274,48 @@ public class BLCompute {
                 }
             }
 
+            blWriter.close();
             goldWriter.close();
 
         }
+    }
+
+    private static String[][] createDisplayPattern(List<String> subjConcepts,
+            List<String> objConcepts, BufferedWriter goldWriter) throws IOException {
+        int sizeSub = subjConcepts.size();
+        int sizeObj = objConcepts.size();
+
+        int size = (sizeSub > sizeObj) ? sizeSub : sizeObj;
+
+        String contents[][] = new String[size][2];
+
+        for (int sCntr = 0; sCntr < size; sCntr++) {
+            if (sCntr < sizeSub) {
+                contents[sCntr][0] = Constants.DBPEDIA_INSTANCE_NS
+                        + subjConcepts.get(sCntr).replaceAll("\\s", "_");
+            } else {
+                contents[sCntr][0] = "";
+            }
+        }
+        for (int oCntr = 0; oCntr < size; oCntr++) {
+            if (oCntr < sizeObj) {
+                contents[oCntr][1] = Constants.DBPEDIA_INSTANCE_NS
+                        + objConcepts.get(oCntr).replaceAll("\\s", "_");
+            } else {
+                contents[oCntr][1] = "";
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            goldWriter.write("\t\t\t");
+            for (int j = 0; j < 2; j++) {
+                goldWriter.write("\t\t" + contents[i][j]);
+            }
+            goldWriter.write("\t\t\t\n");
+        }
+        goldWriter.write("\n");
+
+        return contents;
     }
 
     /**

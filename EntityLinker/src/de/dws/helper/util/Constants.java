@@ -252,7 +252,7 @@ public class Constants
     /**
      * given a surface form, fetch top titles it refers to
      */
-    public static final String GET_WIKI_TITLES_SQL =  "select URI, SUM(COUNT) as cnt from wikiPrep where SF = ? group by URI order by cnt desc limit 2";
+    public static final String GET_WIKI_TITLES_SQL =  "select URI, SUM(COUNT) as cnt from wikiPrep where SF = ? group by URI order by cnt desc limit ?";
                                                        
             
             //"select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
@@ -389,7 +389,7 @@ public class Constants
     public static final String WIKI_PAGE_HEADER = "http://en.wikipedia.org/wiki/";
 
     // Top surface forms for a given wikipedia page
-    public static final int TOP_ANCHORS = 2;
+    public static final int TOP_ANCHORS = 1;
 
     // anchors with atleast these many occurrence in wikipedia pointing to the
     // page
@@ -400,9 +400,9 @@ public class Constants
 
     public static final boolean IS_NELL = true;
 
-    private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/subFiles/DS_1000/";
+    private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/newBL/ds_lakeinstate/";
 
-    public static final String INPUT_CSV_FILE = DIRECTORY + "data.csv";
+    public static final String INPUT_CSV_FILE = DIRECTORY + "sample_lakeinstate.tsv";
 
     public static final String OUTPUT_OWL_FILE = DIRECTORY + "data.owl";
 
