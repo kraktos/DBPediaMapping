@@ -11,7 +11,6 @@ import java.io.IOException;
 public class FileOverlap {
 
     private static final String GS = "/home/arnab/Work/data/experiments/reasoning/newGS/ALL.tsv";
-    private static final String BL = "/home/arnab/Work/data/experiments/reasoning/newBL/blData.tsv";
     private static final String sample = "/home/arnab/Work/data/experiments/reasoning/newBL/";
 
     /**
@@ -26,7 +25,7 @@ public class FileOverlap {
     private static void computeOverlap(String predicate) throws IOException {
 
         BufferedReader goldReaer = new BufferedReader(new FileReader(GS));
-        BufferedReader baseReaer = new BufferedReader(new FileReader(BL));
+        BufferedReader baseReaer = new BufferedReader(new FileReader(Constants.BL));
 
         BufferedWriter sampleWriter = new BufferedWriter(new FileWriter(
                 sample + "sample_" + predicate + ".tsv"));

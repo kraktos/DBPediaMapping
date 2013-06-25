@@ -252,11 +252,10 @@ public class Constants
     /**
      * given a surface form, fetch top titles it refers to
      */
-    public static final String GET_WIKI_TITLES_SQL =  "select URI, SUM(COUNT) as cnt from wikiPrep where SF = ? group by URI order by cnt desc limit ?";
-                                                       
-            
-            //"select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
-    
+    public static final String GET_WIKI_TITLES_SQL = "select URI, SUM(COUNT) as cnt from wikiPrep where SF = ? group by URI order by cnt desc limit ?";
+
+    // "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
+
     // "select URI from surfaceForms where SF =? order by PROB desc" ;
     // "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit ?";
 
@@ -415,8 +414,15 @@ public class Constants
     public static final String POST_FIX = "_";
 
     public static final String IS_OF_TYPE_DBPEDIA_EVIDENCE = DIRECTORY + "isOfType.dbpedia.db";
-    
-    
-    //select URI, SF, SUM(COUNT), (SUM(COUNT)/(select SUM(COUNT) from wikiPrep where SF = 'satun')) as prob from wikiPrep where SF = 'satun'  group by URI order by prob asc;
+
+    public static final String BL = "/home/arnab/Work/data/experiments/reasoning/newBL/blData.tsv";
+
+    public static final String APRIORI_PROB_FILE = "/home/arnab/Work/data/NELL/ontology/sameAsLinksPrior.tsv";
+
+    public static final String PSUBCONF_FILE = DIRECTORY + "psubConf.nell.dbpedia.db";
+
+    // select URI, SF, SUM(COUNT), (SUM(COUNT)/(select SUM(COUNT) from wikiPrep
+    // where SF = 'satun')) as prob from wikiPrep where SF = 'satun' group by
+    // URI order by prob asc;
 
 }

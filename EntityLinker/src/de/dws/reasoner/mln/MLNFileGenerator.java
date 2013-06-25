@@ -79,18 +79,19 @@ public class MLNFileGenerator {
     PrefixManager prefixDBPediaInstance = null;
 
     private static Map<Pair<String, String>, Double> SAMEAS_LINK_APRIORI_MAP = new HashMap<Pair<String, String>, Double>();
-    private static final String APRIORI_PROB_FILE = "/home/arnab/Work/data/NELL/ontology/sameAsAPriori2.txt";
+    // private static final String APRIORI_PROB_FILE =
+    // "/home/arnab/Work/data/NELL/ontology/sameAsAPriori2.txt";
 
-    private static final String NELL_CONFIDENCE_FILE = Constants.INPUT_CSV_FILE;
-    private static final String NELL_PRED_CONF_FILE = "/home/arnab/Work/data/NELL/ontology/NELLPredMatchesConf.csv";
+    private static final String NELL_CONFIDENCE_FILE = "/home/arnab/Work/data/NELL/ontology/NELLTripleConfidences.csv";
+    private static final String NELL_PRED_CONF_FILE = "/home/arnab/Work/data/NELL/ontology/NELLPredSubConf.csv";
 
     private static Map<String, Double> NELL_FACTS_CONFIDENCE_MAP = new HashMap<String, Double>();
 
-    private static Map<String, Double> NELL_PRED_MAPPING_MAP = new HashMap<String, Double>();
+    private static Map<Pair<String, String>, Pair<Double, Double>> NELL_PRED_MAPPING_MAP = new HashMap<Pair<String, String>, Pair<Double, Double>>();
 
     static String topK = null;
 
-    DecimalFormat decimalFormatter = new DecimalFormat("0.00000");
+    DecimalFormat decimalFormatter = new DecimalFormat("00.00000000");
 
     /**
      * constructor with owl input file
@@ -138,7 +139,7 @@ public class MLNFileGenerator {
 
     /**
      * @param args
-     * @throws Exception 
+     * @throws Exception
      */
     public static void main(String[] args) throws Exception {
 
@@ -161,20 +162,17 @@ public class MLNFileGenerator {
             } catch (Exception e) {
                 topK = "1";
             }
-            System.out
-                    .println("Loading apriori confidence values of NELL surface forms from WikiPrep data...");
+
             loadSameAsConfidences();
-            System.out.println("Loading Completed...");
-
             System.out
-                    .println("Loading confidence values of the NELL Triples occuring in the gold standard ...");
+                    .println("Loading apriori confidence values of NELL surface forms Completed...");
+
             loadNELLConfidences();
-            System.out.println("Loading Completed...");
+            System.out.println("Loading confidence values of the NELL Triples Completed...");
 
+            createPropertSubsumptionMLN();
             System.out
-                    .println("Loading confidence values of the NELL to DBPedia Predicate matchings from the annotated file ...");
-            loadNELLPredConfidences();
-            System.out.println("Loading Completed...");
+                    .println("Loading confidence values of the NELL to DBPedia Predicate matchings Completed...");
 
             new MLNFileGenerator(owlFileInput).generateMLN(outputEvidence,
                     axiomType);
@@ -183,23 +181,38 @@ public class MLNFileGenerator {
         }
     }
 
-    private static void loadNELLPredConfidences() throws IOException {
+    /**
+     * creates psubConf MLN
+     * 
+     * @throws IOException
+     */
+    private static void createPropertSubsumptionMLN() throws IOException {
 
         String nellPred = null;
         String dbpPred = null;
         double conf = 0D;
+        double probDBPSubNELL = 0D;
+        double probNELLSubDBP = 0D;
 
         String strLine;
 
-        FileInputStream file = new FileInputStream(NELL_PRED_CONF_FILE);
         BufferedReader input = new BufferedReader
-                (new InputStreamReader(file));
+                (new InputStreamReader(new FileInputStream(NELL_PRED_CONF_FILE)));
+
+        // the file where the evidences for the MLN are written out
+        BufferedWriter bw = new BufferedWriter(new FileWriter(Constants.PSUBCONF_FILE));
 
         while ((strLine = input.readLine()) != null) {
             try {
                 nellPred = (strLine.split("\t")[0]);
                 dbpPred = (strLine.split("\t")[1]);
-                conf = Double.valueOf(strLine.split("\t")[2]);
+                probDBPSubNELL = Double.valueOf(strLine.split("\t")[2]);
+                probNELLSubDBP = Double.valueOf(strLine.split("\t")[3]);
+
+                // probPair = new Pair<Double, Double>(probDBPSubNELL,
+                // probNELLSubDBP);
+                // predPair = new Pair<String, String>(nellPred.trim(),
+                // dbpPred.trim());
 
                 // if (obj.indexOf("jeffrey_eugenides") != -1)
                 // System.out.println("ADDING TO MAP = \n " + sub + "\t" + pred
@@ -208,17 +221,25 @@ public class MLNFileGenerator {
                 // if (nellPred.indexOf("journalistwritesforpublication") != -1)
                 // System.out.println("");
 
-                NELL_PRED_MAPPING_MAP.put(
-                        nellPred.trim() + "\t"
-                                + dbpPred.trim().replaceAll("http://dbpedia.org/ontology/", ""),
-                        new Double(conf));
+                // NELL_PRED_MAPPING_MAP.put(predPair, probPair);
+
+                bw.write("psubConf(\"" + nellPred + "\", \"" + dbpPred + "\", "
+                        + Utilities.convertProbabilityToWeight(probNELLSubDBP) + ")\n");
+
+                bw.write("psubConf(\"" + dbpPred + "\", \"" + nellPred + "\", "
+                        + Utilities.convertProbabilityToWeight(probDBPSubNELL) + ")\n");
+
+                // NELL_PRED_MAPPING_MAP.put(
+                // nellPred.trim() + "\t"
+                // + dbpPred.trim().replaceAll("http://dbpedia.org/ontology/",
+                // ""),
+                // new Double(conf));
             } catch (Exception e) {
                 continue;
             }
         }
 
-        System.out.println("Loading Predicate confidences completed..."
-                + NELL_PRED_MAPPING_MAP.size());
+        bw.close();
 
     }
 
@@ -231,16 +252,15 @@ public class MLNFileGenerator {
 
         String strLine;
 
-        FileInputStream file = new FileInputStream(NELL_CONFIDENCE_FILE);
         BufferedReader input = new BufferedReader
-                (new InputStreamReader(file));
+                (new InputStreamReader(new FileInputStream(NELL_CONFIDENCE_FILE)));
 
         while ((strLine = input.readLine()) != null) {
             try {
-                sub = strip(strLine.split("\t")[0]);
-                pred = strip(strLine.split("\t")[1]);
-                obj = strip(strLine.split("\t")[2]);
-                conf = Double.valueOf(strip(strLine.split("\t")[8]));
+                sub = cleanNellInstances(strLine.split("\t")[0]);
+                pred = cleanNellInstances(strLine.split("\t")[1]);
+                obj = cleanNellInstances(strLine.split("\t")[2]);
+                conf = Double.valueOf(cleanNellInstances(strLine.split("\t")[3]));
 
                 // if (obj.indexOf("jeffrey_eugenides") != -1)
                 // System.out.println("ADDING TO MAP = \n " + sub + "\t" + pred
@@ -259,7 +279,8 @@ public class MLNFileGenerator {
     /**
      * load the apriori probabilities of the uris given a surface from. Source:
      * WikiPrep
-     * @throws Exception 
+     * 
+     * @throws Exception
      */
     private static void loadSameAsConfidences() throws Exception {
 
@@ -270,15 +291,14 @@ public class MLNFileGenerator {
 
         Pair<String, String> pair = null;
 
-        FileInputStream file = new FileInputStream(APRIORI_PROB_FILE);
         BufferedReader input = new BufferedReader
-                (new InputStreamReader(file));
+                (new InputStreamReader(new FileInputStream(Constants.APRIORI_PROB_FILE)));
 
         try {
             while ((strLine = input.readLine()) != null) {
-                sf = strip(strLine.split("\t")[0]);
-                uri = strip(strLine.split("\t")[1]);
-                conf = strip(strLine.split("\t")[2]);
+                sf = cleanNellInstances(strLine.split("\t")[0]);
+                uri = cleanNellInstances(strLine.split("\t")[1]);
+                conf = cleanNellInstances(strLine.split("\t")[2]);
 
                 pair = new Pair<String, String>(sf, uri);
                 SAMEAS_LINK_APRIORI_MAP.put(pair, Double.parseDouble(conf));
@@ -292,7 +312,7 @@ public class MLNFileGenerator {
 
     }
 
-    private static String strip(String arg) {
+    private static String cleanNellInstances(String arg) {
         arg = arg.replaceAll("\"", "").replaceAll(":_", "~3A_");
         arg = arg.substring(arg.indexOf(":") + 1, arg.length());
         return arg;
@@ -306,7 +326,7 @@ public class MLNFileGenerator {
      * @throws IOException
      */
     private void generateMLN(String outputEvidence, String axiomType) throws IOException {
-        Double conf;
+        Double conf = null;
 
         String[] elements = null;
         String[] arguments = null;
@@ -322,8 +342,7 @@ public class MLNFileGenerator {
         Pair<String, String> pair = null;
 
         // the file where the evidences for the MLN are written out
-        FileWriter fw = new FileWriter(outputEvidence);
-        BufferedWriter bw = new BufferedWriter(fw);
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputEvidence));
 
         // iterate over all axioms in the loaded ontology
         HashSet<OWLAxiom> allAxioms = (HashSet<OWLAxiom>) ontology.getAxioms();
@@ -332,9 +351,14 @@ public class MLNFileGenerator {
         Set<String> set = new HashSet<String>();
         Set<OWLClass> setOWLClasses = null;
 
-        BufferedWriter isOfTypeEvidenceWriter = new BufferedWriter(
-                new FileWriter(
-                        Constants.IS_OF_TYPE_DBPEDIA_EVIDENCE));
+        Set<String> uniques = new HashSet<String>();
+
+        BufferedWriter isOfTypeEvidenceWriter = null;
+        if (axiomType.equals("sameAsConf")) {
+            isOfTypeEvidenceWriter = new BufferedWriter(
+                    new FileWriter(
+                            Constants.IS_OF_TYPE_DBPEDIA_EVIDENCE));
+        }
 
         for (OWLAxiom axiom : allAxioms) {
             /**
@@ -366,41 +390,54 @@ public class MLNFileGenerator {
 
                                     // System.out.println(cleanse(arg1) + "\t"
                                     // + cleanse(arg2));
-                                    conf = NELL_PRED_MAPPING_MAP.get(cleanse(arg1) + "\t"
-                                            + cleanse(arg2));
-                                    if (conf == null)
-                                        conf = NELL_PRED_MAPPING_MAP.get(cleanse(arg2) + "\t"
-                                                + cleanse(arg1));
+                                    // conf =
+                                    // NELL_PRED_MAPPING_MAP.get(
+                                    // new Pair<String, String>(cleanse(arg1),
+                                    // cleanse(arg2))).getFirst();
+                                    // if (conf == null)
+                                    // conf =
+                                    // NELL_PRED_MAPPING_MAP.get(cleanse(arg2) +
+                                    // "\t"
+                                    // + cleanse(arg1));
 
-                                    conf = (conf == null) ? 0.0 : conf;
+                                    // conf = (conf == null) ? 0.0 : conf;
                                     // // System.out.println(cleanse(arg1) +
                                     // "  " + cleanse(arg2) + " "
                                     // + conf);
 
-                                    bw.write(axiomType + "(" + removeTags(arg1) + ", "
-                                            + removeTags(arg2) + ", " + conf + ")\n");
+                                    // bw.write(axiomType + "(" +
+                                    // removeTags(arg1) + ", "
+                                    // + removeTags(arg2) + ", " + conf +
+                                    // ")\n");
 
                                 }
                                 else if (axiomType.equals("isOfTypeConf")) {
 
-                                    System.out.println(cleanse(arg2) + "\t"
-                                            + cleanse(arg1));
-                                    conf = NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2) + "\t"
-                                            + "generalizations" + "\t"
-                                            + cleanse(arg1));
-
-                                    if (conf != null)
-                                        bw.write(axiomType + "(" + removeTags(arg1) + ", "
-                                                + removeTags(arg2) + ", " + conf + ")\n");
+                                    // System.out.println(cleanse(arg2) + "\t"
+                                    // + cleanse(arg1));
+                                    // conf =
+                                    // NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2)
+                                    // + "\t"
+                                    // + "generalizations" + "\t"
+                                    // + cleanse(arg1));
+                                    //
+                                    // if (conf != null)
+                                    // bw.write(axiomType + "(" +
+                                    // removeTags(arg1) + ", "
+                                    // + removeTags(arg2) + ", " + conf +
+                                    // ")\n");
 
                                 } else if (axiomType.equals("isOfType")) {
 
-                                    conf = NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2) + "\t"
-                                            + "generalizations" + "\t"
-                                            + cleanse(arg1));
-
-                                    if (conf == null)
-                                        writeToFile(axiomType, arg1, arg2, null, bw);
+                                    // conf =
+                                    // NELL_FACTS_CONFIDENCE_MAP.get(cleanse(arg2)
+                                    // + "\t"
+                                    // + "generalizations" + "\t"
+                                    // + cleanse(arg1));
+                                    //
+                                    // if (conf == null)
+                                    // writeToFile(axiomType, arg1, arg2, null,
+                                    // bw);
                                 }
                                 else if (arg2.indexOf("owl:Thing") == -1
                                         && arg1.indexOf("http://schema.org") == -1
@@ -430,23 +467,29 @@ public class MLNFileGenerator {
                                         for (Map.Entry<Pair<String, String>, Double> en : mapPairs
                                                 .entrySet()) {
 
-                                            generateDBPediaTypeMLN(en.getKey(),
-                                                    isOfTypeEvidenceWriter);
+                                            if (!uniques.contains(en.getKey().getSecond())) {
+                                                generateDBPediaTypeMLN(en.getKey(),
+                                                        isOfTypeEvidenceWriter);
+                                                uniques.add(en.getKey().getSecond());
+                                            }
 
                                             if (cntr++ < Integer.parseInt(topK)) {
 
-                                                conf = en.getValue();
-                                                formattedConf = decimalFormatter
-                                                        .format(conf);
-
-                                                conf = Double.parseDouble(decimalFormatter
-                                                        .format(conf));
+                                                conf = Utilities.convertProbabilityToWeight(en
+                                                        .getValue());
+                                                // formattedConf =
+                                                // decimalFormatter
+                                                // .format(Utilities.convertProbabilityToWeight(conf));
+                                                // //
+                                                // conf =
+                                                // Double.parseDouble(decimalFormatter
+                                                // .format(conf));
 
                                                 arg1 = "DBP#resource/" + en.getKey().getSecond();
 
                                                 if (conf != null)
                                                     writeToFile(axiomType, arg1, arg2,
-                                                            formattedConf, bw);
+                                                            String.valueOf(conf), bw);
                                             }
                                         }
                                     }
@@ -469,7 +512,9 @@ public class MLNFileGenerator {
 
                                         bw.write(axiomType + "(" + removeTags(arg1) + ", "
                                                 + removeTags(arg2) + ", "
-                                                + removeTags(arg3) + ", " + conf + ")\n");
+                                                + removeTags(arg3) + ", "
+                                                + Utilities.convertProbabilityToWeight(conf)
+                                                + ")\n");
                                     } else
                                         writeToFile(axiomType, arg1, arg2, arg3, bw);
                                 }
@@ -489,7 +534,9 @@ public class MLNFileGenerator {
 
         // close the stream
         bw.close();
-        isOfTypeEvidenceWriter.close();
+
+        if (isOfTypeEvidenceWriter != null)
+            isOfTypeEvidenceWriter.close();
 
     }
 
@@ -503,8 +550,8 @@ public class MLNFileGenerator {
         // {
 
         dbPediaInstance = pair.getSecond();
-        if (dbPediaInstance.indexOf("Raffael_Caetano_de_Ara") != -1)
-            System.out.println("");
+        // if (dbPediaInstance.indexOf("Raffael_Caetano_de_Ara") != -1)
+        // System.out.println("");
 
         // get DBPedia types
         listTypes = GenericConverter.getInstanceTypes(dbPediaInstance);
@@ -513,12 +560,14 @@ public class MLNFileGenerator {
             // System.out.println(dbPediaInstance + " =>  " + listTypes);
             for (String type : listTypes) {
                 try {
+
                     isOfTypeEvidenceWriter.write("isOfType(\"DBP#ontology/"
                             + type
                             + "\", "
                             + removeTags("DBP#resource/"
                                     + dbPediaInstance)
                             + ")\n");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

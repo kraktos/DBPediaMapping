@@ -224,7 +224,7 @@ public class GenericConverter {
                             createTypeOfMLN(nellObj, nellObjPFxd, isOfTypeEvidenceWriter);
 
                         // get types of subject instances
-                        getTypes(blSubjInst, owlCreator);
+                        getDBpediaTypes(blSubjInst, owlCreator);
                         //
                         // type assertion of NELL instances as subjects
                         // if (!nellSubType.equals(nellSub))
@@ -236,7 +236,7 @@ public class GenericConverter {
                             owlCreator.createSameAs(nellSubPFxd, blSubjInst);
 
                         // get types of subject instances
-                        getTypes(blObjInst, owlCreator);
+                        getDBpediaTypes(blObjInst, owlCreator);
 
                         // type assertion of NELL instances as objects
                         // if (!nellObjType.equals(nellObj))
@@ -376,7 +376,7 @@ public class GenericConverter {
      * @param blInst
      * @param owlCreator
      */
-    public static void getTypes(String blInst, OWLCreator owlCreator) {
+    public static void getDBpediaTypes(String blInst, OWLCreator owlCreator) {
         List<String> listTypes;
 
         // if(blInst.indexOf("Pierre") != -1 )

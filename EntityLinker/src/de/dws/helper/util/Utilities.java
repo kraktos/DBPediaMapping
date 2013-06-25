@@ -282,6 +282,8 @@ public class Utilities
     }
 
     /**
+     * converts a probability to weights with smoothing
+     * 
      * @param prob
      * @return
      */
@@ -292,9 +294,7 @@ public class Utilities
         if (prob <= 0)
             prob = 0 + Math.pow(10, -6);
 
-        double conf = Math.log(prob / (1 - prob));
-        // logger.info(prob + " => " + conf);
-        return conf;
+        return Math.log(prob / (1 - prob));
     }
 
     public static Map sortByValue(Map map) {
