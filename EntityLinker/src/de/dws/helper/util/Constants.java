@@ -399,9 +399,9 @@ public class Constants
 
     public static final boolean IS_NELL = true;
 
-    private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/newBL/ds_lakeinstate/";
+    private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/newBL/ds_bookwriter/";
 
-    public static final String INPUT_CSV_FILE = DIRECTORY + "sample_lakeinstate.tsv";
+    public static final String INPUT_CSV_FILE = DIRECTORY + "goldBL_bookwriter.tsv";
 
     public static final String OUTPUT_OWL_FILE = DIRECTORY + "data.owl";
 
@@ -413,13 +413,20 @@ public class Constants
 
     public static final String POST_FIX = "_";
 
-    public static final String IS_OF_TYPE_DBPEDIA_EVIDENCE = DIRECTORY + "isOfType.dbpedia.db";
+    public static final String IS_OF_TYPE_DBPEDIA_EVIDENCE = DIRECTORY + "isOfType.dbpedia";
 
     public static final String BL = "/home/arnab/Work/data/experiments/reasoning/newBL/blData.tsv";
 
-    public static final String APRIORI_PROB_FILE = "/home/arnab/Work/data/NELL/ontology/sameAsLinksPrior.tsv";
+    public static final String APRIORI_PROB_FILE = DIRECTORY + "sameAsLinksPrior.tsv";
 
     public static final String PSUBCONF_FILE = DIRECTORY + "psubConf.nell.dbpedia.db";
+
+    public static final String DIFFERENTFROM_DBPEDIA_EVIDENCE = DIRECTORY
+            + "differentFrom.dbpedia";
+
+    public static final String NELL_CONFIDENCE_FILE = DIRECTORY + "NELLTripleConfidences.csv";
+
+    public static final String PREDICATE = "bookwriter";
 
     // select URI, SF, SUM(COUNT), (SUM(COUNT)/(select SUM(COUNT) from wikiPrep
     // where SF = 'satun')) as prob from wikiPrep where SF = 'satun' group by

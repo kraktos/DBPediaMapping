@@ -190,8 +190,8 @@ public class GenericConverter {
                         nellPred = elements[1];
                         nellObj = getInst(elements[2]);
 
-                        // goldSub = elements[3].trim();
-                        // goldObj = elements[5].trim();
+                        goldSub = elements[5].trim();
+                        goldObj = elements[6].trim();
 
                         blSubjInst = Utilities.cleanDBpediaURI(elements[3]);
                         blSubjInst = Utilities.characterToUTF8(blSubjInst);
@@ -248,17 +248,17 @@ public class GenericConverter {
                             owlCreator.createSameAs(nellObjPFxd, blObjInst);
 
                         // // Create Gold MLN
-                        // createGoldMLN(goldSub, nellSub, goldEvidenceWriter);
-                        // if (!nellPred.equals("generalizations")) {
-                        // createGoldMLN(goldObj, nellObj, goldEvidenceWriter);
-                        // }
+                        createGoldMLN(goldSub, nellSubPFxd, goldEvidenceWriter);
+                        if (!nellPred.equals("generalizations")) {
+                            createGoldMLN(goldObj, nellObjPFxd, goldEvidenceWriter);
+                        }
                     }
                 }
 
                 goldEvidenceWriter.close();
                 isOfTypeEvidenceWriter.close();
 
-                dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
+                //dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
 
                 // flush to file
                 owlCreator.createOutput(outputOwlFile);
@@ -296,7 +296,7 @@ public class GenericConverter {
         return null;
     }
 
-    private static void createGoldMLN(String gold, String nell, BufferedWriter bw)
+    public static void createGoldMLN(String gold, String nell, BufferedWriter bw)
             throws IOException {
 
         String nellFiltered = nell.substring(nell.indexOf(":") + 1, nell.length());
@@ -430,7 +430,7 @@ public class GenericConverter {
      * @param arg
      * @return
      */
-    private static String getInst(String arg) {
+    public static String getInst(String arg) {
 
         if (arg.indexOf(":") != -1)
             return arg.substring(arg.indexOf(":") + 1, arg.length());

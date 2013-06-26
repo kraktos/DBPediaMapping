@@ -82,7 +82,6 @@ public class MLNFileGenerator {
     // private static final String APRIORI_PROB_FILE =
     // "/home/arnab/Work/data/NELL/ontology/sameAsAPriori2.txt";
 
-    private static final String NELL_CONFIDENCE_FILE = "/home/arnab/Work/data/NELL/ontology/NELLTripleConfidences.csv";
     private static final String NELL_PRED_CONF_FILE = "/home/arnab/Work/data/NELL/ontology/NELLPredSubConf.csv";
 
     private static Map<String, Double> NELL_FACTS_CONFIDENCE_MAP = new HashMap<String, Double>();
@@ -91,7 +90,7 @@ public class MLNFileGenerator {
 
     static String topK = null;
 
-    DecimalFormat decimalFormatter = new DecimalFormat("00.00000000");
+    DecimalFormat decimalFormatter = new DecimalFormat("0.00000000");
 
     /**
      * constructor with owl input file
@@ -253,7 +252,7 @@ public class MLNFileGenerator {
         String strLine;
 
         BufferedReader input = new BufferedReader
-                (new InputStreamReader(new FileInputStream(NELL_CONFIDENCE_FILE)));
+                (new InputStreamReader(new FileInputStream(Constants.NELL_CONFIDENCE_FILE)));
 
         while ((strLine = input.readLine()) != null) {
             try {
@@ -272,7 +271,8 @@ public class MLNFileGenerator {
             }
         }
 
-        System.out.println("Loading NELL confidences completed...");
+        System.out.println("Loading NELL confidences completed..."
+                + NELL_FACTS_CONFIDENCE_MAP.size());
 
     }
 
@@ -308,8 +308,7 @@ public class MLNFileGenerator {
             throw new Exception();
         }
 
-        System.out.println("Loading completed...");
-
+        System.out.println("SAMEAS_LINK_APRIORI_MAP size = " + SAMEAS_LINK_APRIORI_MAP.size());
     }
 
     private static String cleanNellInstances(String arg) {
@@ -357,7 +356,7 @@ public class MLNFileGenerator {
         if (axiomType.equals("sameAsConf")) {
             isOfTypeEvidenceWriter = new BufferedWriter(
                     new FileWriter(
-                            Constants.IS_OF_TYPE_DBPEDIA_EVIDENCE));
+                            Constants.IS_OF_TYPE_DBPEDIA_EVIDENCE + ".top" + topK + ".db"));
         }
 
         for (OWLAxiom axiom : allAxioms) {
@@ -467,19 +466,19 @@ public class MLNFileGenerator {
                                         for (Map.Entry<Pair<String, String>, Double> en : mapPairs
                                                 .entrySet()) {
 
-                                            if (!uniques.contains(en.getKey().getSecond())) {
-                                                generateDBPediaTypeMLN(en.getKey(),
-                                                        isOfTypeEvidenceWriter);
-                                                uniques.add(en.getKey().getSecond());
-                                            }
-
                                             if (cntr++ < Integer.parseInt(topK)) {
+
+                                                if (!uniques.contains(en.getKey().getSecond())) {
+                                                    generateDBPediaTypeMLN(en.getKey(),
+                                                            isOfTypeEvidenceWriter);
+                                                    uniques.add(en.getKey().getSecond());
+                                                }
 
                                                 conf = Utilities.convertProbabilityToWeight(en
                                                         .getValue());
-                                                // formattedConf =
-                                                // decimalFormatter
-                                                // .format(Utilities.convertProbabilityToWeight(conf));
+                                                 formattedConf =
+                                                 decimalFormatter
+                                                 .format(Utilities.convertProbabilityToWeight(conf));
                                                 // //
                                                 // conf =
                                                 // Double.parseDouble(decimalFormatter
@@ -489,7 +488,7 @@ public class MLNFileGenerator {
 
                                                 if (conf != null)
                                                     writeToFile(axiomType, arg1, arg2,
-                                                            String.valueOf(conf), bw);
+                                                            formattedConf, bw);
                                             }
                                         }
                                     }
@@ -532,11 +531,59 @@ public class MLNFileGenerator {
         for (String str : set)
             System.out.println("\t" + str);
 
+        createDifferentFromMLN(uniques);
+
         // close the stream
         bw.close();
 
         if (isOfTypeEvidenceWriter != null)
             isOfTypeEvidenceWriter.close();
+
+    }
+
+    private void createDifferentFromMLN(Set<String> uniques) {
+
+        BufferedWriter differentFromWriter = null;
+        try {
+            if (uniques.size() > 0) {
+                differentFromWriter = new BufferedWriter(
+                        new FileWriter(
+                                Constants.DIFFERENTFROM_DBPEDIA_EVIDENCE + ".top" + topK + ".db"));
+
+                Set<String> temp = uniques;
+                for (String dbpediaInst1 : uniques) {
+                    for (String dbpediaInst2 : uniques) {
+                        // System.out.println("Comparing " +
+                        // createDBpediaMLNEntry(dbpediaInst1) + " "
+                        // + createDBpediaMLNEntry(dbpediaInst2));
+
+                        differentFromWriter.write("diffFrom(\""
+                                + createDBpediaMLNEntry(dbpediaInst1)
+                                + "\", \""
+                                + createDBpediaMLNEntry(dbpediaInst2) + "\")\n");
+                    }
+                }
+                differentFromWriter.close();
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static String createDBpediaMLNEntry(String goldFiltered)
+            throws IOException {
+
+        // if (gold.indexOf("Carrie_") != -1)
+        // System.out.println("");
+
+        goldFiltered = Utilities.characterToUTF8(goldFiltered);
+        goldFiltered = goldFiltered.replaceAll("%", "~");
+        goldFiltered = goldFiltered.replaceAll("~28", "[");
+        goldFiltered = goldFiltered.replaceAll("~29", "]");
+        goldFiltered = goldFiltered.replaceAll("~27", "*");
+
+        return "DBP#resource/" + goldFiltered.trim();
 
     }
 

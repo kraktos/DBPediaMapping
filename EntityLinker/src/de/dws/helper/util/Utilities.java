@@ -289,12 +289,13 @@ public class Utilities
      */
     public static double convertProbabilityToWeight(double prob) {
         // smoothing
-        if (prob >= 1)
-            prob = 1 - Math.pow(10, -6);
-        if (prob <= 0)
-            prob = 0 + Math.pow(10, -6);
-
-        return Math.log(prob / (1 - prob));
+//        if (prob >= 1)
+//            prob = 1 - Math.pow(10, -6);
+//        if (prob <= 0)
+//            prob = 0 + Math.pow(10, -6);
+//
+//        return Math.log(prob / (1 - prob));
+        return prob;
     }
 
     public static Map sortByValue(Map map) {
