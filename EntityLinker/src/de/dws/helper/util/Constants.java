@@ -8,6 +8,8 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.util.Version;
 
+import de.dws.experiment.ExperimentAutomation;
+
 /**
  * This class stores a set of constants required for the application
  * 
@@ -254,6 +256,8 @@ public class Constants
      */
     public static final String GET_WIKI_TITLES_SQL = "select URI, SUM(COUNT) as cnt from wikiPrep where SF = ? group by URI order by cnt desc limit ?";
 
+    public static final String GET_NELL_CONF = "select confidence from nell where subject = ? and predicate = ? and object = ?";
+
     // "select  t.title, count(*) as cnt from link_anchors l, title_2_id t where l.anchor=? and l.target=t.id group by t.title order by cnt desc limit 2";
 
     // "select URI from surfaceForms where SF =? order by PROB desc" ;
@@ -399,9 +403,18 @@ public class Constants
 
     public static final boolean IS_NELL = true;
 
-    private static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/newBL/ds_bookwriter/";
+    public static String PREDICATE = ExperimentAutomation.PREDICATE;
 
-    public static final String INPUT_CSV_FILE = DIRECTORY + "goldBL_bookwriter.tsv";
+    public static final String DIRECTORY = "/home/arnab/Work/data/experiments/reasoning/newBL/ds_"
+            + PREDICATE + "/";
+
+    public static final String INPUT_CSV_FILE = DIRECTORY + "goldBL_" + PREDICATE + ".tsv";
+
+    // public static final String INPUT_CSV_FILE_WO_INCORRECT = DIRECTORY +
+    // "goldBL_" + PREDICATE + ".WOIC.tsv";
+    // public static final String INPUT_CSV_FILE_W_INCORRECT = DIRECTORY +
+    // "goldBL_" + PREDICATE + ".WIC.tsv";
+    //
 
     public static final String OUTPUT_OWL_FILE = DIRECTORY + "data.owl";
 
@@ -425,8 +438,6 @@ public class Constants
             + "differentFrom.dbpedia";
 
     public static final String NELL_CONFIDENCE_FILE = DIRECTORY + "NELLTripleConfidences.csv";
-
-    public static final String PREDICATE = "bookwriter";
 
     // select URI, SF, SUM(COUNT), (SUM(COUNT)/(select SUM(COUNT) from wikiPrep
     // where SF = 'satun')) as prob from wikiPrep where SF = 'satun' group by

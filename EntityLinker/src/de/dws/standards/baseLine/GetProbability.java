@@ -49,8 +49,8 @@ public class GetProbability {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        PropertyConfigurator
-                .configure("resources/log4j.properties");
+//        PropertyConfigurator
+//                .configure("resources/log4j.properties");
 
         // get the distinct IE triples from gold standard
         //getGoldStdIETriples();
@@ -108,18 +108,18 @@ public class GetProbability {
             ieSubj = arrBaseLineInst[0];
             ieObj = arrBaseLineInst[2];
 
-            if(ieObj.indexOf("naipaul") != -1)
+            if(ieObj.indexOf("_israel") != -1)
                 System.out.println(""); 
             
             uriVsProbabilities = DBWrapper.fetchTopKLinksWikiPrepProb(Utilities.cleanse(ieSubj)
-                    .replaceAll("\\_", " "), 3);
+                    .replaceAll("\\_+", " "), 3);
 
             for (String val : uriVsProbabilities) {
-                if (!s.contains(val)) {
+                if (!s.contains(ieSubj+val)) {
                     bw.write(ieSubj + "\t" + Utilities.utf8ToCharacter(val) + "\n");
                     // if (val.indexOf("Alfonso") != -1)
                     // System.out.println(Utilities.utf8ToCharacter(val));
-                    s.add(val);
+                    s.add(ieSubj+val);
                 }
             }
             uriVsProbabilities = null;
@@ -128,11 +128,11 @@ public class GetProbability {
                     .replaceAll("\\_+", " "), 3);
 
             for (String val : uriVsProbabilities) {
-                if (!s.contains(val)) {
+                if (!s.contains(ieObj+val)) {
                     bw.write(ieObj + "\t" + Utilities.utf8ToCharacter(val) + "\n");
                     // if (val.indexOf("Alfonso") != -1)
                     // System.out.println(Utilities.utf8ToCharacter(val));
-                    s.add(val);
+                    s.add(ieObj+val);
                 }
             }
             

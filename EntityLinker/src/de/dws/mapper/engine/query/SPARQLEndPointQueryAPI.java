@@ -1,8 +1,10 @@
 /**
  * 
  */
+
 package de.dws.mapper.engine.query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,7 +17,8 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import de.dws.helper.util.Constants;
-
+import de.dws.helper.util.Utilities;
+import de.dws.reasoner.GenericConverter;
 
 /**
  * @author Arnab Dutta
@@ -33,7 +36,8 @@ public class SPARQLEndPointQueryAPI
         String sparqlQueryString1 = QUERY;
 
         Query query = QueryFactory.create(sparqlQueryString1);
-        QueryExecution qexec = QueryExecutionFactory.sparqlService(Constants.DBPEDIA_SPARQL_ENDPOINT, query);
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(
+                Constants.DBPEDIA_SPARQL_ENDPOINT, query);
 
         // get the result set
         ResultSet results = qexec.execSelect();
@@ -59,7 +63,8 @@ public class SPARQLEndPointQueryAPI
     {
 
         Query query = QueryFactory.create(QUERY);
-        QueryExecution qexec = QueryExecutionFactory.sparqlService(Constants.DBPEDIA_SPARQL_ENDPOINT, query);
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(
+                Constants.DBPEDIA_SPARQL_ENDPOINT, query);
 
         // get the result set
         ResultSet results = qexec.execSelect();
@@ -68,5 +73,62 @@ public class SPARQLEndPointQueryAPI
         return results;
     }
 
-    
+    /**
+     * get type of a given instance
+     * 
+     * @param inst instance
+     * @return list of its type
+     */
+    public static List<String> getInstanceTypes(String inst) {
+        List<String> result = new ArrayList<String>();
+        String sparqlQuery = null;
+
+        try {
+            ResultSet results = null;
+            sparqlQuery = "select ?val where{ <http://dbpedia.org/resource/" + inst
+                    + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val} ";
+
+            // fetch the result set
+            results = queryDBPediaEndPoint(sparqlQuery);
+            List<QuerySolution> listResults = ResultSetFormatter.toList(results);
+
+            for (QuerySolution querySol : listResults) {
+                if (querySol.get("val").toString().indexOf(Constants.DBPEDIA_CONCEPT_NS) != -1)
+                    result.add(Utilities.cleanDBpediaURI(querySol.get("val").toString()));
+            }
+        } catch (Exception e) {
+            GenericConverter.logger.info("problem with " + sparqlQuery + " " + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * get type of a given instance
+     * 
+     * @param inst instance
+     * @return list of its type
+     */
+    public static List<String> getInstanceTypesAll(String inst) {
+        List<String> result = new ArrayList<String>();
+        String sparqlQuery = null;
+
+        try {
+            ResultSet results = null;
+            sparqlQuery = "select ?val where{ <" + inst
+                    + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val} ";
+
+            // fetch the result set
+            results = queryDBPediaEndPoint(sparqlQuery);
+            List<QuerySolution> listResults = ResultSetFormatter.toList(results);
+
+            for (QuerySolution querySol : listResults) {
+                if (querySol.get("val").toString().indexOf(Constants.DBPEDIA_CONCEPT_NS) != -1)
+                    result.add(querySol.get("val").toString());
+            }
+        } catch (Exception e) {
+            GenericConverter.logger.info("problem with " + sparqlQuery + " " + e.getMessage());
+        }
+        return result;
+    }
+
 } // end class

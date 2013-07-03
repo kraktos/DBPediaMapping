@@ -46,9 +46,9 @@ public class BLCompute {
     // stores all the distinct gold standard triples
     private static final List<String> ALL_DISTINCT_GOLD_TRIPLES = new ArrayList<String>();
 
-    private static final String NEW_GS_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/toAnnotate_NEW.tsv";
+    private static final String NEW_GS_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/new/toAnnotate_NEW.tsv";
 
-    private static final String NEW_BL_FILE = "/home/arnab/Work/data/experiments/reasoning/newBL/blData.tsv";
+    private static final String NEW_BL_FILE = "/home/arnab/Work/data/experiments/reasoning/newBL/blData_gener.tsv";
 
     // put -1 for all
     private static final int TOPK = -1;
@@ -154,7 +154,7 @@ public class BLCompute {
      */
     private static void createBLFromRandomTriples() throws IOException {
         BufferedReader tupleReader = new BufferedReader(new FileReader(
-                "/home/arnab/Work/data/NELL/ontology/toAnnotate/Nell.sample"));
+                "/home/arnab/Work/data/NELL/ontology/toAnnotate/new/Nell.sample"));
 
         String ieSubj = null;
         String ieRel = null;
@@ -206,14 +206,14 @@ public class BLCompute {
                     if (subjConcepts.size() > 0 && objConcepts.size() > 0) {
                         // System.out.print(ieSubj + "\t" + ieRel + "\t" + ieObj
                         // + "\t");
-                        // goldWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj
-                        // + "\n");
+                        goldWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj
+                                + "\n");
                         blWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj);
 
                         StringBuffer s = new StringBuffer();
 
-                        // createDisplayPattern(subjConcepts, objConcepts,
-                        // goldWriter);
+                        createDisplayPattern(subjConcepts, objConcepts,
+                                goldWriter);
 
                         blWriter.write("\t"
                                 + Constants.DBPEDIA_INSTANCE_NS

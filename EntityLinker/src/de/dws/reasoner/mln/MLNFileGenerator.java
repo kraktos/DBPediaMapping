@@ -39,7 +39,7 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import de.dws.helper.dataObject.Pair;
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
-import de.dws.reasoner.GenericConverter;
+import de.dws.mapper.engine.query.SPARQLEndPointQueryAPI;
 
 /**
  * @author Arnab Dutta
@@ -476,15 +476,16 @@ public class MLNFileGenerator {
 
                                                 conf = Utilities.convertProbabilityToWeight(en
                                                         .getValue());
-                                                 formattedConf =
-                                                 decimalFormatter
-                                                 .format(Utilities.convertProbabilityToWeight(conf));
+                                                formattedConf =
+                                                        decimalFormatter
+                                                                .format(Utilities
+                                                                        .convertProbabilityToWeight(conf));
                                                 // //
                                                 // conf =
                                                 // Double.parseDouble(decimalFormatter
                                                 // .format(conf));
 
-                                                arg1 = "DBP#resource/" + en.getKey().getSecond();
+                                                arg1 = "DBP#resource/" + Utilities.characterToUTF8(en.getKey().getSecond());
 
                                                 if (conf != null)
                                                     writeToFile(axiomType, arg1, arg2,
@@ -557,10 +558,12 @@ public class MLNFileGenerator {
                         // createDBpediaMLNEntry(dbpediaInst1) + " "
                         // + createDBpediaMLNEntry(dbpediaInst2));
 
-                        differentFromWriter.write("diffFrom(\""
-                                + createDBpediaMLNEntry(dbpediaInst1)
-                                + "\", \""
-                                + createDBpediaMLNEntry(dbpediaInst2) + "\")\n");
+                        if (!dbpediaInst1.equals(dbpediaInst2)) {
+                            differentFromWriter.write("diffFrom(\""
+                                    + createDBpediaMLNEntry(dbpediaInst1)
+                                    + "\", \""
+                                    + createDBpediaMLNEntry(dbpediaInst2) + "\")\n");
+                        }
                     }
                 }
                 differentFromWriter.close();
@@ -600,19 +603,23 @@ public class MLNFileGenerator {
         // if (dbPediaInstance.indexOf("Raffael_Caetano_de_Ara") != -1)
         // System.out.println("");
 
+        if(dbPediaInstance.indexOf("China_Mi") != -1)
+            System.out.println("");
+        
         // get DBPedia types
-        listTypes = GenericConverter.getInstanceTypes(dbPediaInstance);
+        listTypes = SPARQLEndPointQueryAPI.getInstanceTypes(dbPediaInstance);
 
         if (listTypes.size() > 0) {
             // System.out.println(dbPediaInstance + " =>  " + listTypes);
             for (String type : listTypes) {
                 try {
 
+                    
                     isOfTypeEvidenceWriter.write("isOfType(\"DBP#ontology/"
                             + type
                             + "\", "
                             + removeTags("DBP#resource/"
-                                    + dbPediaInstance)
+                                    + Utilities.characterToUTF8(dbPediaInstance))
                             + ")\n");
 
                 } catch (IOException e) {

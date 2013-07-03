@@ -25,9 +25,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
 
 import de.dws.helper.dataObject.Pair;
 import de.dws.helper.util.Constants;
@@ -44,7 +41,7 @@ import de.dws.reasoner.owl.OWLCreator;
 public class GenericConverter {
 
     // define Logger
-    static Logger logger = Logger.getLogger(GenericConverter.class.getName());
+    public static Logger logger = Logger.getLogger(GenericConverter.class.getName());
 
     // data structure to hold the pairs of NELL categories and relations and its
     // hierarchy
@@ -190,6 +187,9 @@ public class GenericConverter {
                         nellPred = elements[1];
                         nellObj = getInst(elements[2]);
 
+                        if(nellObj.indexOf("_israel") != -1)
+                            System.out.println("");
+                        
                         goldSub = elements[5].trim();
                         goldObj = elements[6].trim();
 
@@ -248,17 +248,24 @@ public class GenericConverter {
                             owlCreator.createSameAs(nellObjPFxd, blObjInst);
 
                         // // Create Gold MLN
-                        createGoldMLN(goldSub, nellSubPFxd, goldEvidenceWriter);
+                        createGoldSameAsMLN(goldSub, nellSubPFxd, goldEvidenceWriter);
                         if (!nellPred.equals("generalizations")) {
-                            createGoldMLN(goldObj, nellObjPFxd, goldEvidenceWriter);
+                            createGoldSameAsMLN(goldObj, nellObjPFxd, goldEvidenceWriter);
                         }
+
+                        //System.out.println(elements[7]);
+                        if (elements[7].trim().equals("C"))
+                            createGoldPropAsstMLN(nellPred, nellSubPFxd, nellObjPFxd,
+                                    goldEvidenceWriter);
+
                     }
                 }
 
                 goldEvidenceWriter.close();
                 isOfTypeEvidenceWriter.close();
 
-                //dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP, URI_CANONICAL_FILE);
+                // dumpToLocalFile(GenericConverter.URI_2_ENTITY_MAP,
+                // URI_CANONICAL_FILE);
 
                 // flush to file
                 owlCreator.createOutput(outputOwlFile);
@@ -296,7 +303,7 @@ public class GenericConverter {
         return null;
     }
 
-    public static void createGoldMLN(String gold, String nell, BufferedWriter bw)
+    public static void createGoldSameAsMLN(String gold, String nell, BufferedWriter bw)
             throws IOException {
 
         String nellFiltered = nell.substring(nell.indexOf(":") + 1, nell.length());
@@ -313,6 +320,13 @@ public class GenericConverter {
 
         bw.write("sameAs(\"DBP#resource/" + goldFiltered + "\", \"NELL#Instance/" + nellFiltered
                 + "\")\n");
+    }
+
+    private static void createGoldPropAsstMLN(String nellPred, String nellSubPFxd,
+            String nellObjPFxd, BufferedWriter goldEvidenceWriter) throws IOException {
+
+        goldEvidenceWriter.write("propAsst(\"NELL#Predicate/" + nellPred + "\", \"NELL#Instance/"
+                + nellSubPFxd + "\", \"NELL#Instance/" + nellObjPFxd + "\")\n");
 
     }
 
@@ -383,7 +397,7 @@ public class GenericConverter {
         // System.out.println("");
 
         // get DBPedia types
-        listTypes = getInstanceTypes(Utilities.utf8ToCharacter(blInst));
+        listTypes = SPARQLEndPointQueryAPI.getInstanceTypes(Utilities.utf8ToCharacter(blInst));
 
         if (listTypes.size() > 0) {
             // type assertion of DBPedia instances occurring
@@ -393,35 +407,6 @@ public class GenericConverter {
         else {
             System.out.println(" No TYPE found for = " + blInst);
         }
-    }
-
-    /**
-     * get type of a given instance
-     * 
-     * @param inst instance
-     * @return list of its type
-     */
-    public static List<String> getInstanceTypes(String inst) {
-        List<String> result = new ArrayList<String>();
-        String sparqlQuery = null;
-
-        try {
-            ResultSet results = null;
-            sparqlQuery = "select ?val where{ <http://dbpedia.org/resource/" + inst
-                    + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val} ";
-
-            // fetch the result set
-            results = SPARQLEndPointQueryAPI.queryDBPediaEndPoint(sparqlQuery);
-            List<QuerySolution> listResults = ResultSetFormatter.toList(results);
-
-            for (QuerySolution querySol : listResults) {
-                if (querySol.get("val").toString().indexOf(Constants.DBPEDIA_CONCEPT_NS) != -1)
-                    result.add(Utilities.cleanDBpediaURI(querySol.get("val").toString()));
-            }
-        } catch (Exception e) {
-            logger.info("problem with " + sparqlQuery + " " + e.getMessage());
-        }
-        return result;
     }
 
     /**

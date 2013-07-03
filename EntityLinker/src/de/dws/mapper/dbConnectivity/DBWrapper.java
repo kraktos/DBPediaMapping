@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -439,13 +440,12 @@ public class DBWrapper {
             if (batchCounter % Constants.BATCH_SIZE != 0) { // batches of 100
                 pstmt.executeBatch();
                 connection.commit();
-                logger.info("FLUSHED TO surfaceForms DB...");
+                logger.info("FLUSHED TO DB...");
             }
         } catch (SQLException e) {
         }
     }
 
-    
     public static List<String> fetchTopKWikiTitles(String arg, int topK) {
         ResultSet rs = null;
         List<String> results = null;
@@ -453,13 +453,13 @@ public class DBWrapper {
         try {
             pstmt.setString(1, arg);
             pstmt.setInt(2, topK);
-            
+
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();
 
             while (rs.next()) {
-                results.add(rs.getString(1)+"~~"+rs.getLong(2));
+                results.add(rs.getString(1) + "~~" + rs.getLong(2));
             }
 
         } catch (Exception e) {
@@ -469,15 +469,66 @@ public class DBWrapper {
         return results;
     }
 
-    
+    public static List<String> fetchTopKLinksWikiPrepProb(String arg, int limit) {
+        ResultSet rs = null;
+        List<String> results = null;
+
+        DecimalFormat decimalFormatter = new DecimalFormat("0.00000");
+
+        try {
+            pstmt.setString(1, arg.trim());
+            pstmt.setString(2, arg.trim());
+            pstmt.setInt(3, limit);
+
+            rs = pstmt.executeQuery();
+            results = new ArrayList<String>();
+
+            while (rs.next()) {
+
+                results.add(Utilities.characterToUTF8((rs.getString(1)).replaceAll("\\s", "_"))
+                        + "\t" + decimalFormatter
+                                .format(rs.getDouble(2)));
+            }
+
+        } catch (Exception e) {
+            logger.error(" exception while fetching " + arg + " " + e.getMessage());
+        }
+
+        return results;
+    }
+
+    public static List<Double> fetchNELLConfidence(String sub, String pred, String obj) {
+        ResultSet rs = null;
+        List<Double> results = null;
+
+        try {
+            pstmt.setString(1, sub.trim());
+            pstmt.setString(2, pred.trim());
+            pstmt.setString(3, obj.trim());
+
+            // run the query finally
+            rs = pstmt.executeQuery();
+            results = new ArrayList<Double>();
+
+            while (rs.next()) {
+                results.add(rs.getDouble(1));
+            }
+
+        } catch (Exception e) {
+            logger.error(" exception while fetching fetchNELLConfidence " + " " + e.getMessage());
+        }
+
+        return results;
+    }
+
     public static List<String> fetchWikiTitles(String arg) {
         ResultSet rs = null;
         List<String> results = null;
 
         try {
-            pstmt.setString(1, arg);
+            pstmt.setString(1, arg.trim());
             // pstmt.setInt(2, Constants.ATLEAST_LINKS);
-            // pstmt.setInt(2, Constants.TOP_ANCHORS);
+            pstmt.setInt(2, Constants.TOP_ANCHORS);
             // run the query finally
             rs = pstmt.executeQuery();
             results = new ArrayList<String>();
@@ -1033,6 +1084,120 @@ public class DBWrapper {
 
         return listSurfaceForms;
 
+    }
+
+    public static void insertIntoPredTypes(String nellPredicate, List<String> listTypes,
+            String instance) {
+        try {
+
+            for (String types : listTypes) {
+
+                pstmt.setString(1, nellPredicate.trim());
+                pstmt.setString(2, types.trim());
+                pstmt.setString(3, instance);
+
+                pstmt.addBatch();
+                pstmt.clearParameters();
+                batchCounter++;
+                if (batchCounter % Constants.BATCH_SIZE == 0) { // batches are
+                                                                // flushed at
+                                                                // a time
+                    // execute batch update
+                    pstmt.executeBatch();
+
+                    logger.info("FLUSHED TO PRED TYPES");
+                    connection.commit();
+                    pstmt.clearBatch();
+                }
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error with batch insertion of surfaceForms .." + e.getMessage());
+        }
+
+    }
+
+    public static List<Pair<String, Long>> getTfIdf(String predicate) {
+
+        List<Pair<String, Long>> termFrequencies = new ArrayList<Pair<String, Long>>();
+        Pair<String, Long> pair = null;
+
+        try {
+            pstmt.setString(1, predicate.trim());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                pair = new Pair<String, Long>(rs.getString(1), rs.getLong(2));
+                termFrequencies.add(pair);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return termFrequencies;
+
+    }
+
+    public static double getInverseDocFreq(String predicate, String type) {
+        try {
+            pstmt.setString(1, type.trim());
+            // pstmt.setString(2, type.trim());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static List<String> getTypes(String predicate) {
+        List<String> types = new ArrayList<String>();
+
+        try {
+            pstmt.setString(1, predicate.trim());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                types.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return types;
+    }
+
+    public static double getInstances(String predicate, String type) {
+        try {
+            pstmt.setString(1, predicate.trim());
+            pstmt.setString(2, type.trim());
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getDistinctInstancesByPred(String predicate) {
+        try {
+            pstmt.setString(1, predicate.trim());
+            
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }
