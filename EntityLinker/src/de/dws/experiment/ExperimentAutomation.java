@@ -15,7 +15,7 @@ import de.dws.standards.baseLine.GetProbability;
  */
 public class ExperimentAutomation {
 
-    public static String PREDICATE;
+    public static String PREDICATE = "bookwriter";
 
     /**
      * @param args

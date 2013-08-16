@@ -65,7 +65,7 @@ public class Score {
         RunStats.global_blSize = RunStats.global_blSize + this.alignment.size();
         RunStats.global_gsSize = RunStats.global_gsSize + this.goldStandard.size();
                
-        System.out.println("tp = " + this.intersection.size() + "\t baseSize =" + this.alignment.size() + "\t gold = " + this.goldStandard.size()) ;
+        //System.out.println("tp = " + this.intersection.size() + "\t baseSize =" + this.alignment.size() + "\t gold = " + this.goldStandard.size()) ;
         return rep;
     }
 

@@ -28,7 +28,11 @@ public class Constants
     /**
      * DBPedia End point URL
      */
-    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://dbpedia.org/sparql";
+    public static final String DBPEDIA_SPARQL_ENDPOINT = "http://live.dbpedia.org/sparql"; 
+             
+            //"http://dbpedia.org/sparql"; 
+            //"http://wifo5-32.informatik.uni-mannheim.de:8890/sparql";
+
     // "http://dbpedia.org/sparql";
     // "http://live.dbpedia.org/sparql";
 
@@ -269,6 +273,8 @@ public class Constants
     public static final String INSERT_DB_SURFACE_FORMS_SQL =
             "INSERT INTO surfaceForms (URI, SF, PROB) VALUES (?, ?, ?)";
 
+    public static final String GET_WIKI_LINKS_APRIORI_SQL = "select  URI, (SUM(COUNT)/(select  SUM(COUNT) from wikiPrep  where SF =?)) as p from wikiPrep  where SF =? group by URI order by p desc limit ?";
+
     /**
      * fetch the top matching DBPedia predicates co-occurring with a given NELL
      * predicate
@@ -392,7 +398,7 @@ public class Constants
     public static final String WIKI_PAGE_HEADER = "http://en.wikipedia.org/wiki/";
 
     // Top surface forms for a given wikipedia page
-    public static final int TOP_ANCHORS = 1;
+    public static final int TOP_ANCHORS = 3;
 
     // anchors with atleast these many occurrence in wikipedia pointing to the
     // page
@@ -415,6 +421,11 @@ public class Constants
     // public static final String INPUT_CSV_FILE_W_INCORRECT = DIRECTORY +
     // "goldBL_" + PREDICATE + ".WIC.tsv";
     //
+
+
+    
+    public static final String DOMCONF = DIRECTORY + "domConf.nell.dbpedia.db";
+    public static final String RANCONF = DIRECTORY + "ranConf.nell.dbpedia.db";
 
     public static final String OUTPUT_OWL_FILE = DIRECTORY + "data.owl";
 
@@ -442,5 +453,9 @@ public class Constants
     // select URI, SF, SUM(COUNT), (SUM(COUNT)/(select SUM(COUNT) from wikiPrep
     // where SF = 'satun')) as prob from wikiPrep where SF = 'satun' group by
     // URI order by prob asc;
+
+    public static final String SILVER_STANDARD_DUMP = "/home/arnab/Work/data/NELL/ontology/GoldStandardPredicateTypes.tsv";
+
+    public static final String AIRPEDIA_DUMP = "/home/arnab/Work/data/airpedia/airpedia-classes-en.nt";
 
 }

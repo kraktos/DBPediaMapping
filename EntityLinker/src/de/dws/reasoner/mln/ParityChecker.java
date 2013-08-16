@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import de.dws.helper.dataObject.Pair;
 import de.dws.helper.util.Utilities;
+import de.dws.reasoner.GenericConverter;
 
 //import de.dws.reasoner.GenericConverter;
 
@@ -36,12 +37,16 @@ public class ParityChecker {
 
     private static final String GOLD_EVIDENCE = "resources/goldEvidence.db";
 
+    public static final String URI_CANONICAL_FILE = "/home/arnab/Work/data/experiments/reasoning/subFiles/DS_1000/uri2CanonMapping.tsv";
+
     private static Map<String, String> inMemMap = new HashMap<String, String>();
 
     // define Logger
     static Logger logger = Logger.getLogger(ParityChecker.class.getName());
 
-    private static Map<Pair<String, String>, List<String>> INVERTED_MAP_SAMEAS = new HashMap<Pair<String, String>, List<String>>();
+    // private static Map<Pair<String, String>, List<String>>
+    // INVERTED_MAP_SAMEAS = new HashMap<Pair<String, String>, List<String>>();
+    private static Map<String, List<Pair<String, String>>> GOLD_MAP = new HashMap<String, List<Pair<String, String>>>();
 
     static int numTriples = 0;
 
@@ -100,16 +105,11 @@ public class ParityChecker {
             createSameAsMLN(nellObj, goldObj, bw, nellSub + "\t" + nellPred
                     + "\t" + nellObj);
 
-            //
-            // if (set.contains(nellSub + "\t" + nellPred + "\t" + nellObj))
-            // System.out.println("oops");
-            // else
-            // set.add(nellSub + "\t" + nellPred + "\t" + nellObj);
-
             numTriples++;
         }
 
-        logger.info(numTriples + " " + INVERTED_MAP_SAMEAS.size());
+        logger.info("\nTriples processed = " + numTriples + " \n" + " Unique values = "
+                + GOLD_MAP.size());
 
         bw.close();
 
@@ -117,16 +117,15 @@ public class ParityChecker {
 
     private static void maintainInvertedIndexOfSameAs(Pair<String, String> pair, String string) {
 
-        if (INVERTED_MAP_SAMEAS.containsKey(pair)) {
-            List<String> list = INVERTED_MAP_SAMEAS.get(pair);
-            list.add(string);
-            INVERTED_MAP_SAMEAS.put(pair, list);
+        if (GOLD_MAP.containsKey(string)) {
+            List<Pair<String, String>> list = GOLD_MAP.get(string);
+            list.add(pair);
+            GOLD_MAP.put(string, list);
         } else {
-            List<String> list = new ArrayList<String>();
-            list.add(string);
-            INVERTED_MAP_SAMEAS.put(pair, list);
+            List<Pair<String, String>> list = new ArrayList<Pair<String, String>>();
+            list.add(pair);
+            GOLD_MAP.put(string, list);
         }
-
     }
 
     private static void createSameAsMLN(String nell, String gold, BufferedWriter bw, String string)
@@ -198,22 +197,22 @@ public class ParityChecker {
                 }
             }
 
-            System.out.println(map.size());
+            // System.out.println(map.size());
             // System.out.println(map);
             originalSize = map.size();
 
             int count = 0;
-            int c1 = 0;
-            int c2 = 0;
 
             // put in another variable, to avoid messing up the evidence file
             Map<Pair<String, String>, String> temp = map;
+
+            loadUri2CanonInMemory();
+            //System.out.println(GOLD_MAP);
 
             // read the output file and read the sameAs Axioms
             while ((outputFileLine = output.readLine()) != null) {
                 if (outputFileLine.startsWith("sameAs")) {
 
-                    c1++;
                     outputFileLine = outputFileLine.replaceAll("sameAs\\(", "")
                             .replaceAll("\"", "")
                             .replaceAll("\\)", "");
@@ -224,72 +223,82 @@ public class ParityChecker {
                     if (arr[0].indexOf("DBP#") != -1
                             && arr[1].indexOf("NELL#") != -1) {
 
-                        c2++;
-                        while (Character.isDigit(arr[1].charAt(arr[1].length() - 1))) {
-                            arr[1] = arr[1].substring(0, arr[1].length() - 1);
-                            if (arr[1].charAt(arr[1].length() - 1) == '_')
-                                arr[1] = Utilities.utf8ToCharacter(arr[1].substring(0,
-                                        arr[1].length() - 1));
-                        }
+                        // System.out.println(arr[1] + "\t" +
+                        // inMemMap.get(arr[1].trim()));
 
-                        pair = new Pair<String, String>(Utilities.utf8ToCharacter(arr[0].trim()
-                                .replaceAll("~", "%"))
-                                , Utilities.utf8ToCharacter(arr[1].trim().replaceAll("~", "%")));
+                        // while
+                        // (Character.isDigit(arr[1].charAt(arr[1].length() -
+                        // 1))) {
+                        // arr[1] = arr[1].substring(0, arr[1].length() - 1);
+                        // if (arr[1].charAt(arr[1].length() - 1) == '_')
+                        // arr[1] =
+                        // Utilities.utf8ToCharacter(arr[1].substring(0,
+                        // arr[1].length() - 1));
+                        // }
 
-                        if(arr[0].indexOf("Louisville~2C_Kentucky")!= -1)
-                            System.out.println("");
-                        
+                        // pair = new Pair<String,
+                        // String>(Utilities.utf8ToCharacter(arr[0].trim()
+                        // .replaceAll("~", "%"))
+                        // ,
+                        // Utilities.utf8ToCharacter(arr[1].trim().replaceAll("~",
+                        // "%")));
+
+                        // if(arr[0].indexOf("Louisville~2C_Kentucky")!= -1)
+                        // System.out.println("");
+                        //
                         // System.out.println(pair);
 
-                        if (isThereInGold(temp, pair)) {
-                            count++;
-                            temp.remove(pair);
-
-                        } 
-//                        else {
-//                            System.out.println(pair);
-//                            INVERTED_MAP_SAMEAS.remove(pair);
-//                        }
+                        
+                        GOLD_MAP.remove(inMemMap.get(arr[1].trim()));
+                        // if (isThereInGold(temp, pair)) {
+                        // count++;
+                        // temp.remove(pair);
+                        // }
+                        // else {
+                        // System.out.println(pair);
+                        // INVERTED_MAP_SAMEAS.remove(pair);
+                        // }
                     }
                 }
             }
-            //System.out.println(c1 + " "+ c2);
-            
-
-            // loadUri2CanonInMemory();
+            // System.out.println(c1 + " "+ c2);
 
             // ones left are the ones which are actually removed by reasoning
             // from the evidence file
-            for (Map.Entry<Pair<String, String>, String> entry : temp.entrySet()) {
-                // logger.info(inMemMap.get(entry.getKey().trim()) + " (" +
-                // entry.getKey()
-                // + ") ==> " +
-                // entry.getValue());
+            // for (Map.Entry<Pair<String, String>, String> entry :
+            // temp.entrySet()) {
+            // // logger.info(inMemMap.get(entry.getKey().trim()) + " (" +
+            // // entry.getKey()
+            // // + ") ==> " +
+            // // entry.getValue());
+            //
+            // // logger.info(entry.getKey().getFirst() + " " +
+            // // entry.getKey().getSecond());
+            // INVERTED_MAP_SAMEAS.remove(entry.getKey());
+            // }
 
-                // logger.info(entry.getKey().getFirst() + " " +
-                // entry.getKey().getSecond());
-                INVERTED_MAP_SAMEAS.remove(entry.getKey());
-            }
+//            logger.info("===========================\n " +
+//                    "ACCURACY OF SAME AS  = " + ((double) count / (double) originalSize));
 
-            logger.info("===========================\n " +
-                    "ACCURACY OF SAME AS  = " + ((double) count / (double) originalSize));
+            logger.info(numTriples + " " + GOLD_MAP.size());
 
-            logger.info(numTriples + " " + INVERTED_MAP_SAMEAS.size());
-
+            logger.info(GOLD_MAP);
             int triplesLeft = 0;
             Set<String> qq = new TreeSet<String>();
-            for (Map.Entry<Pair<String, String>, List<String>> entry : INVERTED_MAP_SAMEAS
-                    .entrySet()) {
-                triplesLeft = triplesLeft + entry.getValue().size();
-                // qq.add(entry.getValue());
-                for (String s : entry.getValue()) {
-                    qq.add(s);
-                }
-            }
+            
+            // for (Map.Entry<Pair<String, String>, List<String>> entry :
+            // INVERTED_MAP_SAMEAS
+            // .entrySet()) {
+            // triplesLeft = triplesLeft + entry.getValue().size();
+            // // qq.add(entry.getValue());
+            // for (String s : entry.getValue()) {
+            // qq.add(s);
+            // }
+            // }
 
-            System.out.println(qq.size() + "  " + triplesLeft);
-            logger.info("===========================\n " +
-                    "ACCURACY OF OUTPUT  = " + (((double) qq.size() / (double) numTriples)));
+//            System.out.println(qq.size() + "  " + triplesLeft);
+//            logger.info("===========================\n " +
+//                    "ACCURACY OF OUTPUT  = " + (((double) qq.size() / (double) numTriples)));
 
         } catch (IOException ioe) {
             System.out.println("Error: " + ioe);
@@ -332,15 +341,19 @@ public class ParityChecker {
 
             String sCurrentLine;
             String key = null;
-            String value = null;
+            String valueS = null;
+            String valueP = null;
+            String valueO = null;
 
-            // br = new BufferedReader(new
-            // FileReader(GenericConverter.URI_CANONICAL_FILE));
+            br = new BufferedReader(new
+                    FileReader(URI_CANONICAL_FILE));
 
             while ((sCurrentLine = br.readLine()) != null) {
                 key = sCurrentLine.split("\t")[0].trim();
-                value = sCurrentLine.split("\t")[1].trim();
-                inMemMap.put(key, value);
+                valueS = sCurrentLine.split("\t")[1].trim();
+                valueP = sCurrentLine.split("\t")[2].trim();
+                valueO = sCurrentLine.split("\t")[3].trim();
+                inMemMap.put(key, valueS + "\t" + valueP + "\t" + valueO);
             }
 
         } catch (IOException e) {

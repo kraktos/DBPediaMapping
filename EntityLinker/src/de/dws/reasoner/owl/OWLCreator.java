@@ -11,8 +11,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -20,6 +23,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -35,6 +39,7 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLOntologyMerger;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import de.dws.helper.util.Constants;
 import de.dws.helper.util.Utilities;
@@ -152,8 +157,142 @@ public class OWLCreator {
         OWLSameIndividualAxiom sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
                 arg1Value, arg2Value);
 
-        // add it to list of soft constraints with some weight
         manager.addAxiom(ontology, sameAsIndividualAxiom);
+
+    }
+
+    public void createAnnotatedAxioms(String nellSub, String nellPred, String nellObj,
+            String nellInst, String goldInst,
+            String nellInst_2, String goldInst_2) {
+
+        // define all the named individuals
+        OWLNamedIndividual originalSubj = factory.getOWLNamedIndividual(
+                nellSub, prefixInstanceIE);
+
+        OWLNamedIndividual originalObj = factory.getOWLNamedIndividual(
+                nellObj, prefixInstanceIE);
+
+        OWLObjectProperty originalProp = factory.getOWLObjectProperty(
+                nellPred, prefixPredicateIE);
+
+        OWLNamedIndividual postFixdSubj = factory.getOWLNamedIndividual(
+                nellInst, prefixInstanceIE);
+
+        OWLNamedIndividual postFixdObj = factory.getOWLNamedIndividual(
+                nellInst_2, prefixInstanceIE);
+
+        OWLNamedIndividual goldSubj = factory.getOWLNamedIndividual(
+                goldInst, prefixDBPediaInstance);
+
+        OWLNamedIndividual goldObj = factory.getOWLNamedIndividual(
+                goldInst_2, prefixDBPediaInstance);
+
+        OWLObjectProperty hasGoldProp = factory.getOWLObjectProperty(
+                "hasGold", prefixPredicateIE);
+
+        OWLObjectProperty hasSubjProp = factory.getOWLObjectProperty(
+                "hasSubj", prefixPredicateIE);
+
+        OWLObjectProperty hasObjProp = factory.getOWLObjectProperty(
+                "hasObj", prefixPredicateIE);
+        
+        OWLObjectProperty hasPredProp = factory.getOWLObjectProperty(
+                "hasPred", prefixPredicateIE);
+        
+        
+        //****************************
+        OWLAxiom objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(originalProp,
+                postFixdSubj,
+                postFixdObj);
+
+        
+        manager.addAxiom(ontology, objPropAssertAxiom);
+
+        objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(hasGoldProp,
+                postFixdSubj,
+                goldSubj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+
+        objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(hasSubjProp,
+                postFixdSubj,
+                originalSubj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+
+        
+        objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(hasObjProp,
+                postFixdSubj,
+                originalObj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+        
+        //**************
+        
+        
+        objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(hasGoldProp,
+                postFixdObj,
+                goldObj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+
+        objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(hasSubjProp,
+                postFixdObj,
+                originalSubj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+
+        
+        objPropAssertAxiom = factory.getOWLObjectPropertyAssertionAxiom(hasObjProp,
+                postFixdObj,
+                originalObj);
+
+        manager.addAxiom(ontology, objPropAssertAxiom);
+        
+
+        // same as between postfixed subjects and gold standard subjects
+        // OWLSameIndividualAxiom sameAsIndividualAxiom =
+        // factory.getOWLSameIndividualAxiom(
+        // postFixdSubj, goldSubj);
+        //
+        // manager.addAxiom(ontology, sameAsIndividualAxiom);
+
+        // create a same as link between subjects and postfixed subjects
+        // sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
+        // sub, arg1Value);
+        //
+        // manager.addAxiom(ontology, sameAsIndividualAxiom);
+
+        // same as between postfixed objects and gold standard objects
+
+        // goldSubj = factory.getOWLNamedIndividual(
+        // goldInst_2, prefixDBPediaInstance);
+
+        // create a same as link between subjects
+        // sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
+        // postFixdSubj, goldSubj);
+        //
+        // manager.addAxiom(ontology, sameAsIndividualAxiom);
+
+        // create a same as link between subjects and postfixed subjects
+        // sameAsIndividualAxiom = factory.getOWLSameIndividualAxiom(
+        // obj, arg1Value);
+        //
+        // manager.addAxiom(ontology, sameAsIndividualAxiom);
+
+        //
+        // // the annotation property we will use for the probabilities
+        // OWLAnnotationProperty annotationProbability =
+        // factory.getOWLAnnotationProperty(IRI.create("OIE#Triple"));
+        //
+        // OWLAnnotation b =
+        // factory.getOWLAnnotation(annotationProbability,
+        // factory.getOWLLiteral(nellInst));
+        //
+        // HashSet<OWLAnnotation> annotationSet = new HashSet<OWLAnnotation>();
+        // annotationSet.add(b);
+        // OWLAxiom annotatedAxiom =
+        // objPropAssertAxiom.getAnnotatedAxiom(annotationSet);
 
     }
 

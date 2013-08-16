@@ -52,17 +52,18 @@ public class RunStats
             
             GenericConverter.MAP_COUNTER.clear();
             
-            allBase = new Allgn(file, false, 10);
+            allBase = new Allgn(file, false, 1);
             // calculate the score of the baselines (both Precison and recall)
             baselineScore = new Score(allBase ,allGold);
 
             //System.out.println(s + "\t" + (200-allGold.size())/(double)2);
 
             System.out.println(s + "\t" + baselineScore);
+            
         }
 
-        System.out.println("Micro Precision = " + global_tp/(double)global_blSize + " \t" + global_tp + "\t" + global_blSize);
-        System.out.println("Micro Recall = " + global_tp/(double)global_gsSize + "\t" + global_tp + "\t" + global_gsSize);
+        //System.out.println("Micro Precision = " + global_tp/(double)global_blSize + " \t" + global_tp + "\t" + global_blSize);
+        //System.out.println("Micro Recall = " + global_tp/(double)global_gsSize + "\t" + global_tp + "\t" + global_gsSize);
         
     }
 

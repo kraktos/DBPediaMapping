@@ -46,9 +46,10 @@ public class BLCompute {
     // stores all the distinct gold standard triples
     private static final List<String> ALL_DISTINCT_GOLD_TRIPLES = new ArrayList<String>();
 
-    private static final String NEW_GS_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/new/toAnnotate_NEW.tsv";
+    private static final String NEW_GS_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/NEWtoAnnotate_NEW.tsv";
+    private static final String NON_MAP_FILE = "/home/arnab/Work/data/NELL/ontology/toAnnotate/NEWtoAnnotate_NonMapp.tsv";
 
-    private static final String NEW_BL_FILE = "/home/arnab/Work/data/experiments/reasoning/newBL/blData_gener.tsv";
+    private static final String NEW_BL_FILE = "/home/arnab/Work/data/experiments/reasoning/TOANNOTATE.tsv";
 
     // put -1 for all
     private static final int TOPK = -1;
@@ -154,7 +155,7 @@ public class BLCompute {
      */
     private static void createBLFromRandomTriples() throws IOException {
         BufferedReader tupleReader = new BufferedReader(new FileReader(
-                "/home/arnab/Work/data/NELL/ontology/toAnnotate/new/Nell.sample"));
+                "/home/arnab/Work/data/NELL/ontology/toAnnotate/Nell.sample"));
 
         String ieSubj = null;
         String ieRel = null;
@@ -166,6 +167,9 @@ public class BLCompute {
 
         BufferedWriter goldWriter = new BufferedWriter(new FileWriter(
                 NEW_GS_FILE));
+
+        BufferedWriter notMappWriter = new BufferedWriter(new FileWriter(
+                NON_MAP_FILE));
 
         BufferedWriter blWriter = new BufferedWriter(new FileWriter(
                 NEW_BL_FILE));
@@ -206,6 +210,9 @@ public class BLCompute {
                     if (subjConcepts.size() > 0 && objConcepts.size() > 0) {
                         // System.out.print(ieSubj + "\t" + ieRel + "\t" + ieObj
                         // + "\t");
+
+                        // *******************************
+
                         goldWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj
                                 + "\n");
                         blWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj);
@@ -214,15 +221,16 @@ public class BLCompute {
 
                         createDisplayPattern(subjConcepts, objConcepts,
                                 goldWriter);
+                        //
+                        // blWriter.write("\t"
+                        // + Constants.DBPEDIA_INSTANCE_NS
+                        // + subjConcepts.get(0).replaceAll("\\s",
+                        // "_") + "\t"
+                        // + Constants.DBPEDIA_INSTANCE_NS
+                        // + objConcepts.get(0).replaceAll("\\s",
+                        // "_") + "\n");
 
-                        blWriter.write("\t"
-                                + Constants.DBPEDIA_INSTANCE_NS
-                                + subjConcepts.get(0).replaceAll("\\s",
-                                        "_") + "\t"
-                                + Constants.DBPEDIA_INSTANCE_NS
-                                + objConcepts.get(0).replaceAll("\\s",
-                                        "_") + "\n");
-
+                        // ********************************************
                         // int sizeSub = subjConcepts.size();
                         // int sizeObj = objConcepts.size();
                         //
@@ -266,13 +274,28 @@ public class BLCompute {
 
                     } else {
                         notMapped++;
-                        // System.out.println(line);
+                        if (objConcepts.size() > 0)
+                            notMappWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj + "\t\t"
+                                    + Constants.DBPEDIA_INSTANCE_NS
+                                    + objConcepts.get(0).replaceAll("\\s",
+                                            "_") + "\n");
+
+                        else if (subjConcepts.size() > 0)
+                            notMappWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj + "\t"
+                                    + Constants.DBPEDIA_INSTANCE_NS
+                                    + subjConcepts.get(0).replaceAll("\\s",
+                                            "_") + "\t\n");
+
+                        else
+                            notMappWriter.write(ieSubj + "\t" + ieRel + "\t" + ieObj + "\n");
                     }
 
                 } catch (Exception e) {
                     System.out.println("Error while reading = " + line + " " + e.getMessage());
                 }
             }
+
+            notMappWriter.close();
 
             blWriter.close();
             goldWriter.close();

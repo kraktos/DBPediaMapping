@@ -161,7 +161,7 @@ public class Allgn {
     }
 
     
-    private static String generateUniqueURI(String nellInst) {
+    public static String generateUniqueURI(String nellInst) {
         
         // check if this URI is already there
         if (GenericConverter.MAP_COUNTER.containsKey(nellInst)) {
